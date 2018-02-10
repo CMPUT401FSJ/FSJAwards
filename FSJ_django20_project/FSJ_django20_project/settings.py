@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
+    'FSJ.apps.FsjConfig',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
@@ -76,7 +77,7 @@ WSGI_APPLICATION = 'FSJ_django20_project.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'fsj.db'),
+        'NAME': os.path.join(BASE_DIR, 'FSJ.db'),
     }
 }
 
@@ -105,7 +106,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'America/Edmonton'
 
 USE_I18N = True
 
@@ -118,3 +119,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
 
 STATIC_URL = '/static/'
+
+LOGIN_URL = '/FSJ/login/'
+LOGIN_REDIRECT_URL = '/FSJ/home/'
+LOGOUT_REDIRECT_URL = '/FSJ/login/'
