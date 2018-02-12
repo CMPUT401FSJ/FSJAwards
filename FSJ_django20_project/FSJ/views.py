@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from django.core.exceptions import PermissionDenied
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
+from django.template import loader
 from .models import *
 
 def is_student(user):
@@ -19,11 +20,14 @@ def redirect_to_home(request):
 def home(request):
     FSJ_user = get_FSJ_user(request.user.username)
     if isinstance(FSJ_user, Student):
-        return render(request, "student_home.html") #should likely redirect to the student's main landing page versus having a student home?
+        template = loader.get_template("FSJ/student_home.html") #should likely redirect to the student's main landing page versus having a student home?
+        return HttpResponse(template.render(context, request))
     elif isinstance(FSJ_user, Coordinator):
-        return render(request, "home.html") #should likely redirect here too
+        template = loader.get_template("FSJ/home.html") #should likely redirect here too
+        return HttpResponse(template.render(context, request))
     elif isinstance(FSJ_user, Adjudicator):
-        return render(request, "home.html") #should likely redirect here too       
+        template = loader.get_template("FSJ/home.html") #should likely redirect here too
+        return HttpResponse(template.render(context, request))
     else:
         raise PermissionDenied("User is not a student, coordinator, or adjudicator")
     
@@ -32,7 +36,8 @@ def profile(request):
     FSJ_user = get_FSJ_user(request.user.username)
     context = get_standard_context()
     context['FSJ_user'] = FSJ_user
-    return render(request, "profile.html", context)
+    template = loader.get_template("FSJ/profile.html")
+    return HttpResponse(template.render(context, request))
 
 def get_FSJ_user(usr):
     FSJ_user = None
