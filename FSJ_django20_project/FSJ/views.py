@@ -19,6 +19,7 @@ def redirect_to_home(request):
 @user_passes_test(is_student)
 def home(request):
     FSJ_user = get_FSJ_user(request.user.username)
+    context = get_standard_context(FSJ_user)   
     if isinstance(FSJ_user, Student):
         template = loader.get_template("FSJ/student_home.html") #should likely redirect to the student's main landing page versus having a student home?
         return HttpResponse(template.render(context, request))
@@ -34,8 +35,7 @@ def home(request):
 @login_required
 def profile(request):
     FSJ_user = get_FSJ_user(request.user.username)
-    context = get_standard_context()
-    context['FSJ_user'] = FSJ_user
+    context = get_standard_context(FSJ_user)
     template = loader.get_template("FSJ/profile.html")
     return HttpResponse(template.render(context, request))
 
@@ -53,8 +53,8 @@ def get_FSJ_user(usr):
                 pass
     return FSJ_user
 
-def get_standard_context():
+def get_standard_context(usr):
     context = dict()
-    context['FSJ_user'] = None
+    context['FSJ_user'] = usr
     return context
 
