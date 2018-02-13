@@ -1,0 +1,1 @@
+from django.db import modelsfrom .models_FSJUser import FSJUserclass Coordinator(FSJUser):    def user_class(self):        return "Coordinator"

@@ -1,0 +1,1 @@
+from django.db import modelsfrom .models_FSJUser import FSJUserclass Student(FSJUser):    program = models.CharField(max_length=50)    def user_class(self):        return "Student"                def get_program(self):        return self.program
