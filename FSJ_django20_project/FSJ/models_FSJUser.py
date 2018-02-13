@@ -1,0 +1,1 @@
+from django.db import modelsclass FSJUser(models.Model):    username = models.CharField(max_length=100)    ccid = models.CharField(max_length=8)        def __str__(self):        return self.username        def user_class(self):        return None          def get_ccid(self):        return self.ccid        def get_username(self):        return self.username
