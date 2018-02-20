@@ -31,3 +31,7 @@ def profile(request):
     template = loader.get_template("FSJ/profile.html")
     return HttpResponse(template.render(context, request))
 
+@login_required
+@user_passes_test(is_coordinator)
+def studentview(request):
+    return coordinator_studentview(request)
