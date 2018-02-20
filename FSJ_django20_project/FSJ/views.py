@@ -1,7 +1,7 @@
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.core.exceptions import PermissionDenied
-from django.http import HttpResponse
-from django.template import loader
+from django.http import HttpResponse, Http404
+from django.template import loader 
 from .forms import *
 from .models import *
 from .utils import *

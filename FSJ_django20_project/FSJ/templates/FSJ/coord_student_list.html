@@ -1,0 +1,52 @@
+{% extends "FSJ/base.html" %}
+
+{% block heading %}
+    Students
+{% endblock %}
+
+{% block content %}
+<head>
+<style>
+table {
+    border-collapse: collapse;
+    width: 50%;
+}
+
+td, th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+}
+
+tr:nth-child(even) {
+    background-color: #dddddd;
+}
+
+</style>
+</head>
+<body>
+
+
+{% if student_list %}
+    <div>
+    <table align = "center">
+     <tr>
+      <th>CCID</th>
+      <th>Username</th>
+      <th>Program</th>
+     </tr>
+    {% for student in student_list %}
+        <tr>
+         <td>{{ student.ccid }}</td>
+         <td>{{ student.username }}</td>
+         <td>{{ student.program }}</td>
+         <td><a style="color:blue;" href="/student/{{ student.ccid }}/">View</a></td>
+        </tr>
+    {% endfor %}
+    </table>
+    </div>
+{% else %}
+    <p>No students are available.</p>
+{% endif %}
+</body>
+{% endblock %}
