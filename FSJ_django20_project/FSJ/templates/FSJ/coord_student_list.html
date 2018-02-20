@@ -1,14 +1,13 @@
 {% extends "FSJ/base.html" %}
 
 {% block heading %}
-    Profile
+    Students
 {% endblock %}
 
 {% block content %}
 <head>
 <style>
 table {
-    font-family: arial, sans-serif;
     border-collapse: collapse;
     width: 50%;
 }
@@ -22,12 +21,15 @@ td, th {
 tr:nth-child(even) {
     background-color: #dddddd;
 }
+
 </style>
 </head>
 <body>
 
+
 {% if student_list %}
-    <table>
+    <div>
+    <table align = "center">
      <tr>
       <th>CCID</th>
       <th>Username</th>
@@ -37,10 +39,12 @@ tr:nth-child(even) {
         <tr>
          <td>{{ student.ccid }}</td>
          <td>{{ student.username }}</td>
-         <td?{{ student.program }}</td>
+         <td>{{ student.program }}</td>
+         <td><a style="color:blue;" href="/student/{{ student.ccid }}/">View</a></td>
         </tr>
     {% endfor %}
     </table>
+    </div>
 {% else %}
     <p>No students are available.</p>
 {% endif %}

@@ -1,7 +1,7 @@
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.core.exceptions import PermissionDenied
-from django.http import HttpResponse
-from django.template import loader
+from django.http import HttpResponse, Http404
+from django.template import loader 
 from .models import *
 from .utils import *
 from .views_student import *
@@ -31,7 +31,3 @@ def profile(request):
     template = loader.get_template("FSJ/profile.html")
     return HttpResponse(template.render(context, request))
 
-@login_required
-@user_passes_test(is_coordinator)
-def studentview(request):
-    return coordinator_studentview(request)
