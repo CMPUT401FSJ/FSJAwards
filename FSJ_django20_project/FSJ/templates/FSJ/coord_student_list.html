@@ -1,4 +1,5 @@
-{% extends "FSJ/base.html" %}
+{% extends "FSJ/base_with_banner.html" %}
+{% load i18n %}
 
 {% block heading %}
     Students
@@ -32,13 +33,13 @@ tr:nth-child(even) {
     <table align = "center">
      <tr>
       <th>CCID</th>
-      <th>Username</th>
+      <th>Year of Study</th>
       <th>Program</th>
      </tr>
     {% for student in student_list %}
         <tr>
          <td>{{ student.ccid }}</td>
-         <td>{{ student.username }}</td>
+         <td>{{ student.year }}</td>
          <td>{{ student.program }}</td>
          <td><a style="color:blue;" href="/student/{{ student.ccid }}/">View</a></td>
         </tr>

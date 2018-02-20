@@ -1,9 +1,10 @@
-{% extends "FSJ/base.html" %}
+{% extends "FSJ/base_with_banner.html" %}
+{% load i18n %}
 
 {% block heading %}
-    {{ ccid }}
+    {{ student.ccid }}
 {% endblock %}
 
 {% block content %}
-You're viewing student {{ ccid }}
+You're viewing student {{ student.ccid }}
 {% endblock %}
