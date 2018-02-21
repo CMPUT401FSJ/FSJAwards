@@ -1,0 +1,36 @@
+{% extends "FSJ/base_with_banner.html" %}
+{% load i18n %}
+
+{% block heading %}
+    {# Translators: Student page header #}
+    {% trans "Students" %}
+{% endblock %}
+
+
+{% block content %}
+<body>
+<div>
+<table align = "center">
+ <tr>
+  {# Translators: CCID header in student table #}
+  <th>{% trans "CCID" %}</th>
+  {# Translators: Year of Study header in student table #}
+  <th>{% trans "Year of Study" %}</th>
+  {# Translators: Program header in student table #}
+  <th>{% trans "Program" %}</th>
+  {# Translators: View header in student table #}
+  <th>{% trans "View" %}</th>
+ </tr>
+{% for student in student_list %}
+    <tr>
+     <td>{{ student.ccid }}</td>
+     <td>{{ student.year }}</td>
+     <td>{{ student.program }}</td>
+     {# Translators: View button in student table #}
+     <td><a href="/studentlist/{{ student.ccid }}/">{% trans "View" %}</a></td>
+    </tr>
+{% endfor %}
+</table>
+</div>
+</body>
+{% endblock %}
