@@ -2,52 +2,35 @@
 {% load i18n %}
 
 {% block heading %}
-    Students
+    {# Translators: Student page header #}
+    {% trans "Students" %}
 {% endblock %}
 
+
 {% block content %}
-<head>
-<style>
-table {
-    border-collapse: collapse;
-    width: 50%;
-}
-
-td, th {
-    border: 1px solid #dddddd;
-    text-align: left;
-    padding: 8px;
-}
-
-tr:nth-child(even) {
-    background-color: #dddddd;
-}
-
-</style>
-</head>
 <body>
-
-
-{% if student_list %}
-    <div>
-    <table align = "center">
-     <tr>
-      <th>CCID</th>
-      <th>Year of Study</th>
-      <th>Program</th>
-     </tr>
-    {% for student in student_list %}
-        <tr>
-         <td>{{ student.ccid }}</td>
-         <td>{{ student.year }}</td>
-         <td>{{ student.program }}</td>
-         <td><a style="color:blue;" href="/student/{{ student.ccid }}/">View</a></td>
-        </tr>
-    {% endfor %}
-    </table>
-    </div>
-{% else %}
-    <p>No students are available.</p>
-{% endif %}
+<div>
+<table align = "center">
+ <tr>
+  {# Translators: CCID header in student table #}
+  <th>{% trans "CCID" %}</th>
+  {# Translators: Year of Study header in student table #}
+  <th>{% trans "Year of Study" %}</th>
+  {# Translators: Program header in student table #}
+  <th>{% trans "Program" %}</th>
+  {# Translators: View header in student table #}
+  <th>{% trans "View" %}</th>
+ </tr>
+{% for student in student_list %}
+    <tr>
+     <td>{{ student.ccid }}</td>
+     <td>{{ student.year }}</td>
+     <td>{{ student.program }}</td>
+     {# Translators: View button in student table #}
+     <td><a href="/studentlist/{{ student.ccid }}/">{% trans "View" %}</a></td>
+    </tr>
+{% endfor %}
+</table>
+</div>
 </body>
 {% endblock %}
