@@ -1,0 +1,15 @@
+{% extends "FSJ/base_with_banner.html" %}
+{% load i18n %} {# NOTE YOU MUST LOAD i18n to every HTML page even though it's also loaded to base.html #}
+
+{% block heading %}
+    {# Translators: Home page home label #}
+    {% trans "Home" %}
+{% endblock %}
+
+{% block content %}
+    {# Translators: Non student home greeting #}
+    {% trans "Coordinator awards page" %}
+    <br/>
+    {{FSJ_user.first_name}}<br/>
+    {{FSJ_user.last_name}}
+{% endblock %}
