@@ -1,1 +1,1 @@
-.banner {    background-color: MediumSeaGreen;    border: 1px solid;}.banner div {    display: inline-block;    width: 10%;}a {    color: white;}
+.banner {    background-color: MediumSeaGreen;    border: 1px solid;}.banner div {    display: inline-block;    width: 10%;}a.header {    color: white;}a {    color: blue;}table {    border-collapse: collapse;    width: 50%;}td, th {    border: 1px solid #dddddd;    text-align: left;    padding: 8px;}tr:nth-child(even) {    background-color: #dddddd;}
