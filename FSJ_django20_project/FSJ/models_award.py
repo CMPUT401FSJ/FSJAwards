@@ -1,4 +1,5 @@
 #from django.db import models
+import uuid
 from django.utils.translation import gettext_lazy as _
 from .forms import AddAwardForm
 from django.forms import *
@@ -18,7 +19,7 @@ class Award(models.Model):
 		(FOURTH, _('Fourth')),
 		(FIFTH, _('Fifth'))
 	)
-	#awardid = models.PositiveIntegerField(unique = True, verbose_name = _("Award ID"), default=1)
+	awardid = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
 	award_name = models.TextField(verbose_name = _("Award Name"))
 	description = models.TextField(verbose_name = _("Description"))
 	value = models.PositiveIntegerField(verbose_name = _("Value"))
@@ -39,6 +40,9 @@ class Award(models.Model):
 		else:
 			add_award_form = CoordinatorAddAwardForm()
 		return add_award_form
+
+	def get_award_id(self):
+		return awardid
 
 class CoordinatorAddAwardForm(AddAwardForm):
 	award_id = IntegerField()
