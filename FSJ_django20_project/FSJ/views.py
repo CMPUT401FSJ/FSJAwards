@@ -29,12 +29,30 @@ def home(request):
 def profile(request):
     FSJ_user = get_FSJ_user(request.user.username)
     if request.POST:
-        profile_form = FSJ_user.get_profile_form(request)
-        FSJ_user.update_FSJUser_from_profile_form(profile_form)
+        if isinstance(FSJ_user, Student):
+            profile_form = StudentRestrictedForm(request.POST, instance=FSJ_user)
+        elif isinstance(FSJ_user, Adjudicator):
+            profile_form = AdjudicatorRestrictedForm(request.POST, instance=FSJ_user)
+        elif isinstance(FSJ_user, Coordinator):
+            profile_form = CoordinatorRestrictedForm(request.POST, instance=FSJ_user)
+        if profile_form.is_valid():
+            profile_form.save()
+            return redirect('profile')
+        else:
+            raise ValueError
+
     else:
-        profile_form = FSJ_user.get_profile_form()
+        if isinstance(FSJ_user, Student):
+            profile_form = StudentRestrictedForm(instance=FSJ_user)
+        elif isinstance(FSJ_user, Adjudicator):
+            profile_form = AdjudicatorRestrictedForm(instance=FSJ_user)
+        elif isinstance(FSJ_user, Coordinator):
+            profile_form = CoordinatorRestrictedForm(instance=FSJ_user)        
+            
     context = get_standard_context(FSJ_user)
     template = loader.get_template("FSJ/profile.html")
     context["form"] = profile_form
+    url = "/profile/"
+    context["url"] = url
     return HttpResponse(template.render(context, request))
 
