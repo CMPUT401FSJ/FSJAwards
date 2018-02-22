@@ -17,10 +17,13 @@
  <tr>
   {# Translators: Award name header in awards table #}
   <th>{% trans "Award" %}</th>
+  {# Translators: Award description header in awards table #}
+  <th>{% trans "Description" %}</th>
  </tr>
 {% for award in awards_list %}
     <tr>
-     <td>{{ award.name }}</td>
+     <td>{{award.award_name }}</td>
+     <td>{{award.description}}</td>
      {# Translators: View button in student table #}
      <td><a href="/studentlist/{{ student.ccid }}/">{% trans "View" %}</a></td>
     </tr>
