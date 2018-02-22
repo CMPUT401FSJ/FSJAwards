@@ -1,0 +1,31 @@
+{% extends "FSJ/base_with_banner.html" %}
+{% load i18n %} {# NOTE YOU MUST LOAD i18n to every HTML page even though it's also loaded to base.html #}
+
+{% block heading %}
+    {# Translators: Awards page home label #}
+    {% trans "Awards" %}
+{% endblock %}
+
+{% block content %}
+<body>
+    <div class="body">
+        {# Translators: Coordinator awards page #}
+        <a href='../add_award'>{% trans "Add Award" %}</a>
+    </div>
+<div>
+<table align = "center">
+ <tr>
+  {# Translators: Award name header in awards table #}
+  <th>{% trans "Award" %}</th>
+ </tr>
+{% for award in awards_list %}
+    <tr>
+     <td>{{ award.name }}</td>
+     {# Translators: View button in student table #}
+     <td><a href="/studentlist/{{ student.ccid }}/">{% trans "View" %}</a></td>
+    </tr>
+{% endfor %}
+</table>
+</div>
+</body>
+{% endblock %}
