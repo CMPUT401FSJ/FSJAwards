@@ -18,6 +18,10 @@
   <th>{% trans "Action" %}</th>
   {# Translators: CCID header in student table #}
   <th>{% trans "CCID" %}</th>
+  {# Translators: First Name header in student table #}
+  <th>{% trans "First Name" %}</th>
+  {# Translators: Last Name header in student table #}
+  <th>{% trans "Last Name" %}</th>
   {# Translators: Year of Study header in student table #}
   <th>{% trans "Year of Study" %}</th>
   {# Translators: Program header in student table #}
@@ -29,6 +33,8 @@
     <tr>
      <td><input type="checkbox"  name="instance" value="{{student.ccid}}" >
      <td>{{ student.ccid }}</td>
+     <td>{{ student.first_name }}</td>
+     <td>{{ student.last_name }}</td>
      <td>{{ student.year }}</td>
      <td>{{ student.program }}</td>
      {# Translators: View button in student table #}
