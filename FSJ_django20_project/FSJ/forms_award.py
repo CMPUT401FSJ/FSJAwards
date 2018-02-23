@@ -1,23 +1,31 @@
-from django.forms import *
-from django.utils.translation import gettext_lazy as _
+from .models_award import Award
+from django.forms import ModelForm, CheckboxSelectMultiple
 
-class AddAwardForm(forms.Form):
-		award_name = CharField(label = _("Award Name"))
-		description = CharField(label = _("Description"), widget = Textarea)
-		value = IntegerField(label = _("Value"))
-		programs = CharField(label = _("Programs"), widget = Textarea)
-		OPTIONS = (
-			(1, "First"),
-			(2, "Second"),
-			(3, "Third"),
-			(4, "Fourth"),
-			(5, "Fifth"),
-			)
-		years_of_study = MultipleChoiceField(label = _("Years of Study"), widget=CheckboxSelectMultiple, choices=OPTIONS)
-		deadline = DateField(label = _("Deadline"), widget=DateInput())
-		TRUE_FALSE_CHOICES = (
-			(True, 'Yes'),
-			(False, 'No')
-			)
-		documents_needed = ChoiceField(label = _("Documents Needed"), widget = Select(), choices = TRUE_FALSE_CHOICES)
-		is_active = ChoiceField(label = _("Is Active"), widget = Select(), choices = TRUE_FALSE_CHOICES)
+class AwardForm(ModelForm):
+
+    class Meta:
+        model = Award
+        exclude = ()
+        #uncomment this out when awards are ready for multiple years of study
+        # fields = ('award_name', 'description', 'value', 'programs', 'years_of_study', 'deadline', 'documents_needed', 'is_active')
+        # widgets = {
+        #     'years_of_study': CheckboxSelectMultiple(),
+        # }
+
+    def __init__(self, *args, **kwargs):
+        super(AwardForm, self).__init__(*args, **kwargs)
+        
+        
+    
+class AwardRestrictedForm(ModelForm):
+
+    class Meta:
+        model = Award
+        fields = ('award_name', 'description', 'value', 'programs', 'years_of_study', 'deadline', 'documents_needed', 'is_active')
+        widgets = {
+            'years_of_study': CheckboxSelectMultiple(),
+        }
+        
+    def __init__(self, *args, **kwargs):
+        super(AwardRestrictedForm, self).__init__(*args, **kwargs)
+        self.fields['awardid'].disabled=True

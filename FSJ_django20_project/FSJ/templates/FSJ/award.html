@@ -11,12 +11,8 @@
         {# Translators: Greeting to the user #}        
         {% trans "Hi" %}, {{user.first_name}} {{user.last_name}}
     </div>
-    <div>
-        {# Translators: Profile page statement of FSJ User type #}
-        {% trans "You are a(n)" %} {{ FSJ_user.user_class }} 
-    </div>
     <br/>
-    <form action='/add_award/' method='post'>
+    <form action='{{ context.url }}' method='post'>
         {% csrf_token %}
 	{% for field in form %}
 	    <div>
