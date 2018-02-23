@@ -10,8 +10,12 @@
 {% block content %}
 <body>
 <div>
+<form action="/studentlist/delete/" method="POST">
+{% csrf_token %}
 <table align = "center">
  <tr>
+  {# Translators: Action header in student table #}
+  <th>{% trans "Action" %}</th>
   {# Translators: CCID header in student table #}
   <th>{% trans "CCID" %}</th>
   {# Translators: Year of Study header in student table #}
@@ -23,6 +27,7 @@
  </tr>
 {% for student in student_list %}
     <tr>
+     <td><input type="checkbox"  name="instance" value="{{student.ccid}}" >
      <td>{{ student.ccid }}</td>
      <td>{{ student.year }}</td>
      <td>{{ student.program }}</td>
@@ -31,10 +36,13 @@
     </tr>
 {% endfor %}
 </table>
-</div>
-<div>
+{# Translators: Button to delete selected students #}
+<input class = "deletebutton" type="submit" name="delete" value={% trans "Delete student(s)" %} />
+</form>
+
 {# Translators: Button to add student #}
 <button class = "addbutton" onclick="window.location.href='/studentlist/add/'">{% trans "Add student" %}</button>
 </div>
+
 </body>
-{% endblock %}
+{% endblock %} 
