@@ -5,7 +5,7 @@ class AdjudicatorForm(ModelForm):
 
     class Meta:
         model = Adjudicator
-        exclude = ()
+        fields = ('ccid', 'first_name', 'last_name', 'email', 'lang_pref', 'usesrid')
         
     def __init__(self, *args, **kwargs):
         super(AdjudicatorForm, self).__init__(*args, **kwargs)               
