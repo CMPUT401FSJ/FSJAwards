@@ -38,8 +38,6 @@ def profile(request):
         if profile_form.is_valid():
             profile_form.save()
             return redirect('profile')
-        else:
-            raise ValueError
 
     else:
         if isinstance(FSJ_user, Student):

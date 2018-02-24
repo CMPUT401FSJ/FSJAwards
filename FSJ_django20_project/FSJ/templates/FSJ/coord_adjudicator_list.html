@@ -10,8 +10,12 @@
 {% block content %}
 <body>
 <div>
+<form action="/adjudicatorlist/delete/" method="POST">
+{% csrf_token %}
 <table align = "center">
  <tr>
+  {# Translators: Action header in adjudicator table #}
+  <th>{% trans "Action" %}</th>
   {# Translators: CCID header in adjudicator table #}
   <th>{% trans "CCID" %}</th>
   {# Translators: First Name header in adjudicator table #}
@@ -23,6 +27,7 @@
  </tr>
 {% for adjudicator in adjudicator_list %}
     <tr>
+     <td><input type="checkbox"  name="instance" value="{{adjudicator.ccid}}" >
      <td>{{ adjudicator.ccid }}</td>
      <td>{{ adjudicator.first_name }}</td>
      <td>{{ adjudicator.last_name }}</td>
@@ -31,8 +36,10 @@
     </tr>
 {% endfor %}
 </table>
-</div>
-<div>
+{# Translators: Button to delete selected adjudicators #}
+<input class = "deletebutton" type="submit" name="delete" value={% trans "Delete adjudicator(s)" %} />
+</form>
+
 {# Translators: Button to add adjudicator #}
 <button class = "addbutton" onclick="window.location.href='/adjudicatorlist/add/'">{% trans "Add adjudicator" %}</button>
 </div>
