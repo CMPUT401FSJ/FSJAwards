@@ -1,0 +1,47 @@
+{% extends "FSJ/base_with_banner.html" %}
+{% load i18n %}
+
+{% block heading %}
+    {# Translators: Adjudicator page header #}
+    {% trans "Adjudicators" %}
+{% endblock %}
+
+
+{% block content %}
+<body>
+<div>
+<form action="/adjudicatorlist/delete/" method="POST">
+{% csrf_token %}
+<table align = "center">
+ <tr>
+  {# Translators: Action header in adjudicator table #}
+  <th>{% trans "Action" %}</th>
+  {# Translators: CCID header in adjudicator table #}
+  <th>{% trans "CCID" %}</th>
+  {# Translators: First Name header in adjudicator table #}
+  <th>{% trans "First Name" %}</th>
+  {# Translators: Last Name header in adjudicator table #}
+  <th>{% trans "Last Name" %}</th>
+  {# Translators: View header in adjudicator table #}
+  <th>{% trans "View" %}</th>
+ </tr>
+{% for adjudicator in adjudicator_list %}
+    <tr>
+     <td><input type="checkbox"  name="instance" value="{{adjudicator.ccid}}" >
+     <td>{{ adjudicator.ccid }}</td>
+     <td>{{ adjudicator.first_name }}</td>
+     <td>{{ adjudicator.last_name }}</td>
+     {# Translators: View button in adjudicator table #}
+     <td><a href="/adjudicatorlist/{{ adjudicator.ccid }}/">{% trans "View" %}</a></td>
+    </tr>
+{% endfor %}
+</table>
+{# Translators: Button to delete selected adjudicators #}
+<input class = "deletebutton" type="submit" name="delete" value={% trans "Delete adjudicator(s)" %} />
+</form>
+
+{# Translators: Button to add adjudicator #}
+<button class = "addbutton" onclick="window.location.href='/adjudicatorlist/add/'">{% trans "Add adjudicator" %}</button>
+</div>
+</body>
+{% endblock %}
