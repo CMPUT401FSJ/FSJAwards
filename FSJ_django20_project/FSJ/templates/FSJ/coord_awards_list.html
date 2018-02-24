@@ -42,8 +42,8 @@
      <td>{{award.deadline}}</td>
      <td>{{award.documents_needed}}</td>
      <td>{{award.is_active}}</td>
-     {# Translators: View button in student table #}
-     <td><a href="/studentlist/{{ student.ccid }}/">{% trans "View" %}</a></td>
+     {# Translators: Edit button in coordinator awards list #}
+     <td><a href="/coord_awardslist/{{ award.awardid }}/">{% trans "Edit" %}</a></td>
     </tr>
 {% endfor %}
 </table>

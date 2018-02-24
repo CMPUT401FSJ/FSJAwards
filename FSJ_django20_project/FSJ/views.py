@@ -28,7 +28,7 @@ def home(request):
 @user_passes_test(is_FSJ_user)
 def profile(request):
     FSJ_user = get_FSJ_user(request.user.username)
-    if request.POST:
+    if request.method == "POST":
         if isinstance(FSJ_user, Student):
             profile_form = StudentRestrictedForm(request.POST, instance=FSJ_user)
         elif isinstance(FSJ_user, Adjudicator):
@@ -49,11 +49,11 @@ def profile(request):
         elif isinstance(FSJ_user, Coordinator):
             profile_form = CoordinatorRestrictedForm(instance=FSJ_user)        
             
-    context = get_standard_context(FSJ_user)
-    template = loader.get_template("FSJ/profile.html")
-    context["form"] = profile_form
-    url = "/profile/"
-    context["url"] = url
+            context = get_standard_context(FSJ_user)
+            template = loader.get_template("FSJ/profile.html")
+            context["form"] = profile_form
+            url = "/profile/"
+            context["url"] = url
     return HttpResponse(template.render(context, request))
 
 @login_required
@@ -65,3 +65,4 @@ def awards(request):
     #elif isinstance(FSJ_user, Student):
         #return studentawardspage
 
+    

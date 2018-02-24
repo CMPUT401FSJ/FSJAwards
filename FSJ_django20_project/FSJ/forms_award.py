@@ -28,4 +28,4 @@ class AwardRestrictedForm(ModelForm):
         
     def __init__(self, *args, **kwargs):
         super(AwardRestrictedForm, self).__init__(*args, **kwargs)
-        self.fields['awardid'].disabled=True
+        #self.fields['awardid'].disabled=True
