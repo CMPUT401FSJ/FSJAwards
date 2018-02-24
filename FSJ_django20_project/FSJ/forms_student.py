@@ -15,7 +15,7 @@ class StudentRestrictedForm(ModelForm):
 
     class Meta:
         model = Student
-        fields = ('ccid', 'first_name', 'last_name', 'email', 'lang_pref', 'program', 'year')
+        fields = ('ccid', 'first_name', 'last_name', 'email', 'lang_pref', 'program', 'year', 'userid')
         
     def __init__(self, *args, **kwargs):
         super(StudentRestrictedForm, self).__init__(*args, **kwargs)
