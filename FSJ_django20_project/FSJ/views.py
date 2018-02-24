@@ -38,8 +38,6 @@ def profile(request):
         if profile_form.is_valid():
             profile_form.save()
             return redirect('profile')
-        else:
-            raise ValueError
 
     else:
         if isinstance(FSJ_user, Student):
@@ -49,10 +47,10 @@ def profile(request):
         elif isinstance(FSJ_user, Coordinator):
             profile_form = CoordinatorRestrictedForm(instance=FSJ_user)        
             
-            context = get_standard_context(FSJ_user)
-            template = loader.get_template("FSJ/profile.html")
-            context["form"] = profile_form
-            url = "/profile/"
-            context["url"] = url
-            return HttpResponse(template.render(context, request))
+    context = get_standard_context(FSJ_user)
+    template = loader.get_template("FSJ/profile.html")
+    context["form"] = profile_form
+    url = "/profile/"
+    context["url"] = url
+    return HttpResponse(template.render(context, request))
 
