@@ -13,8 +13,12 @@
         <a href='../coord_awardslist/add'>{% trans "Add Award" %}</a>
     </div>
 <div>
+<form action="/coord_awardslist/delete/" method="POST">
+{% csrf_token %}
 <table align = "center">
  <tr>
+  {# Translators: Action header in awards table #}
+  <th>{% trans "Action" %}</th>
   {# Translators: Award name header in awards table #}
   <th>{% trans "Award" %}</th>
   {# Translators: Award description header in awards table #}
@@ -34,6 +38,7 @@
  </tr>
 {% for award in awards_list %}
     <tr>
+     <td><input type="checkbox"  name="todelete" value="{{award.awardid}}" > </td>
      <td>{{award.award_name }}</td>
      <td>{{award.description}}</td>
      <td>{{award.value}}</td>
@@ -47,6 +52,12 @@
     </tr>
 {% endfor %}
 </table>
+{# Translators: Button to delete selected awards #}
+<input class = "deletebutton" type="submit" name="delete" value={% trans "Delete award(s)" %} />
+</form>
+
+{# Translators: Button to add award #}
+<button class = "addbutton" onclick="window.location.href='../coord_awardslist/add'">{% trans "Add award" %}</button>
 </div>
 </body>
 {% endblock %}
