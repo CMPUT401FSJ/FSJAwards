@@ -7,10 +7,7 @@ class AwardForm(ModelForm):
         model = Award
         exclude = ()
         #uncomment this out when awards are ready for multiple years of study
-        # fields = ('award_name', 'description', 'value', 'programs', 'years_of_study', 'deadline', 'documents_needed', 'is_active')
-        # widgets = {
-        #     'years_of_study': CheckboxSelectMultiple(),
-        # }
+        fields = ('award_name', 'description', 'value', 'programs', 'years_of_study', 'deadline', 'documents_needed', 'is_active')
 
     def __init__(self, *args, **kwargs):
         super(AwardForm, self).__init__(*args, **kwargs)
@@ -26,6 +23,3 @@ class AwardRestrictedForm(ModelForm):
             'years_of_study': CheckboxSelectMultiple(),
         }
         
-    def __init__(self, *args, **kwargs):
-        super(AwardRestrictedForm, self).__init__(*args, **kwargs)
-        #self.fields['awardid'].disabled=True
