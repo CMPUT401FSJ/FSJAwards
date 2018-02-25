@@ -132,6 +132,9 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+# The URL to redirect users to when attempting to navigate to a view that requires login
 LOGIN_URL = '/FSJ/login/'
+# To control where a user logs into when no "next" parameter is defined.
 LOGIN_REDIRECT_URL = '/FSJ/home/'
+# Where to redirect once a user logs out.
 LOGOUT_REDIRECT_URL = '/FSJ/login/'
