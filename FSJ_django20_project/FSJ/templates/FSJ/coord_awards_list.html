@@ -8,10 +8,6 @@
 
 {% block content %}
 <body>
-    <div class="body">
-        {# Translators: Coordinator awards page #}
-        <a href='../coord_awardslist/add'>{% trans "Add Award" %}</a>
-    </div>
 <div>
 <form action="/coord_awardslist/delete/" method="POST">
 {% csrf_token %}
@@ -57,7 +53,7 @@
 </form>
 
 {# Translators: Button to add award #}
-<button class = "addbutton" onclick="window.location.href='../coord_awardslist/add'">{% trans "Add award" %}</button>
+<button class = "addbutton" onclick="window.location.href='/coord_awardslist/add'">{% trans "Add award" %}</button>
 </div>
 </body>
 {% endblock %}
