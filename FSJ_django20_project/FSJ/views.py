@@ -46,11 +46,18 @@ def profile(request):
             profile_form = AdjudicatorRestrictedForm(instance=FSJ_user)
         elif isinstance(FSJ_user, Coordinator):
             profile_form = CoordinatorRestrictedForm(instance=FSJ_user)        
-            
+
     context = get_standard_context(FSJ_user)
     template = loader.get_template("FSJ/profile.html")
     context["form"] = profile_form
     url = "/profile/"
     context["url"] = url
     return HttpResponse(template.render(context, request))
+
+@login_required
+@user_passes_test(is_coordinator)
+def awards(request):
+    FSJ_user = get_FSJ_user(request.user.username)
+    return coordinator_awards(request, FSJ_user)
+
 
