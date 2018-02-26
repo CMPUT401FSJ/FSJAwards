@@ -13,17 +13,17 @@
 		{% csrf_token %}
 	{% for field in form %}
 		<div>
-		<div>
-			{% if field.label %}
-				{{field.label_tag}}
+			<div>
+				{% if field.label %}
+					{{field.label_tag}}
+				{% endif %}
+			</div>
+			<div>
+				{{ field }}
+			</div>
+			{% if field.errors %}
+				{{ field.errors }}
 			{% endif %}
-		</div>
-		<div>
-			{{ field }}
-		</div>
-		{% if field.errors %}
-			{{ field.errors }}
-		{% endif %}
 		</div>
 	{% endfor %}
 		{# Save button on user profile#}

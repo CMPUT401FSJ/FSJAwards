@@ -23,10 +23,13 @@ class Award(models.Model):
 	value = models.TextField(verbose_name = _("Value"))
 	programs = models.TextField(verbose_name = _("Programs"))
 	years_of_study = models.IntegerField(choices = YEAR_CHOICES, verbose_name = _("Years of Study"))
-	deadline = models.DateField(auto_now = False, auto_now_add = False, verbose_name = _("Deadline"))
+	deadline = models.DateTimeField(auto_now = False, auto_now_add = False, verbose_name = _("Deadline"))
 	documents_needed = models.BooleanField(verbose_name = _("Documents Required"))
 	is_active = models.BooleanField(verbose_name = ("Is Active"))
 
 	#returns award name as a string
 	def __str__(self):
 		return self.award_name
+
+	def get_year_name(self):
+		return self.get_years_of_study_display()

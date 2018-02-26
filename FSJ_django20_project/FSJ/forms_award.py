@@ -14,12 +14,3 @@ class AwardForm(ModelForm):
         
         
     
-class AwardRestrictedForm(ModelForm):
-
-    class Meta:
-        model = Award
-        fields = ('award_name', 'description', 'value', 'programs', 'years_of_study', 'deadline', 'documents_needed', 'is_active')
-        widgets = {
-            'years_of_study': CheckboxSelectMultiple(),
-        }
-        

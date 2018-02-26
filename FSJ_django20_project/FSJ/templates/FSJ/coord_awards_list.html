@@ -36,42 +36,21 @@
                 {# Translators: Award edit header in awards table #}
                 <th>{% trans "Edit" %}</th>
             </tr>
-        {% for award in awards_list %}
-            <tr>
-                <td><input type="checkbox"  name="todelete" value="{{award.awardid}}" > </td>
-                <td>{{award.award_name }}</td>
-                <td>{{award.description}}</td>
-                <td>{{award.value}}</td>
-                <td>{{award.programs}}</td>
-                <td>{% if award.years_of_study  == 1 %}
-                        First
-                    {% elif award.years_of_study == 2 %}
-                        Second
-                    {% elif award.years_of_study == 3 %}
-                        Third
-                    {% elif award.years_of_study == 4 %}
-                        Fourth
-                    {% elif award.years_of_study == 5 %}
-                        Fifth
-                    {% endif %}
-                </td>
-                <td>{{award.deadline}}</td>
-                <td>{% if award.documents_needed %}
-                        Yes
-                    {% else %}
-                        No
-                    {% endif %}
-                </td>
-                <td>{% if award.is_active %}
-                        Yes
-                    {% else %}
-                        No
-                    {% endif %}
-                </td>
-                {# Translators: Edit button in coordinator awards list #}
-                <td><a href="/coord_awardslist/{{ award.awardid }}/">{% trans "Edit" %}</a></td>
-            </tr>
-        {% endfor %}
+            {% for award in awards_list %}
+                <tr>
+                    <td><input type="checkbox"  name="todelete" value="{{award.awardid}}" > </td>
+                    <td>{{award.award_name }}</td>
+                    <td>{{award.description}}</td>
+                    <td>{{award.value}}</td>
+                    <td>{{award.programs}}</td>
+                    <td>{{award.get_year_name}}</td>
+                    <td>{{award.deadline}}</td>
+                    <td>{{award.documents_needed|yesno}}</td>
+                    <td>{{award.is_active|yesno}}</td>
+                    {# Translators: Edit button in coordinator awards list #}
+                    <td><a href="/coord_awardslist/{{ award.awardid }}/">{% trans "Edit" %}</a></td>
+                </tr>
+            {% endfor %}
         </table>
         {# Translators: Button to delete selected awards #}
         <input class = "deletebutton" type="submit" name="delete" value={% trans "Delete award(s)" %} />
