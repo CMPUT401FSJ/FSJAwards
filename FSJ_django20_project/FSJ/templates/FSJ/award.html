@@ -1,6 +1,8 @@
 {% extends "FSJ/base_with_banner.html" %}
 {% load i18n %} {# NOTE YOU MUST LOAD i18n to every HTML page even though it's also loaded to base.html #}
 
+{# A standardized page for viewing the fields of an individual award #}
+{# This page is also used to edit awards, it is up to the form to disable/enable views #}
 {% block heading %}
 	{# Translators: Add award page heading #}
 	{% trans "Add Award" %}

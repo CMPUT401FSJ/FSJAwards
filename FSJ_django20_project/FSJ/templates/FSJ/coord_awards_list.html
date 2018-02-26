@@ -1,6 +1,8 @@
 {% extends "FSJ/base_with_banner.html" %}
 {% load i18n %} {# NOTE YOU MUST LOAD i18n to every HTML page even though it's also loaded to base.html #}
 
+{# A page for the coordinator to view a list of awards as well as providing adding, deleting, and editing functionality #}
+{# This page is separate from the template for displaying awards to sutdents due to the added functionality #}
 {% block heading %}
     {# Translators: Awards page home label #}
     {% trans "Awards" %}
@@ -8,10 +10,6 @@
 
 {% block content %}
 <body>
-    <div class="body">
-        {# Translators: Coordinator awards page #}
-        <a href='../coord_awardslist/add'>{% trans "Add Award" %}</a>
-    </div>
 <div>
     <form action="/coord_awardslist/delete/" method="POST">
         {% csrf_token %}

@@ -4,6 +4,7 @@ from django.db import models
 import datetime
 
 class Award(models.Model):
+	#All awards will have these attributes in common, will be able to select multiple years of study
 	FIRST = 1
 	SECOND = 2
 	THIRD = 3
@@ -26,6 +27,6 @@ class Award(models.Model):
 	documents_needed = models.BooleanField(verbose_name = _("Documents Required"))
 	is_active = models.BooleanField(verbose_name = ("Is Active"))
 
-
+	#returns award name as a string
 	def __str__(self):
 		return self.award_name
