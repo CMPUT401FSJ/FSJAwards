@@ -6,3 +6,4 @@ from .models_student import Student
 from .models_adjudicator import Adjudicator
 from .models_coordinator import Coordinator
 from .models_award import Award
+from .models_yearofstudy import YearOfStudy
