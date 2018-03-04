@@ -19,13 +19,3 @@ class Award(models.Model):
 	#returns award name as a string
 	def __str__(self):
 		return self.award_name
-
-	# def get_year_name(self):
-	#  	return self.get_years_of_study_display()
-
-	# def get_years(self):
-	# 	year_dict = self.years_of_study.values('year')
-	# 	year_list = []
-	# 	for item in year_dict:
-	# 		year_list.append(item['year'])
-	# 	return year_list

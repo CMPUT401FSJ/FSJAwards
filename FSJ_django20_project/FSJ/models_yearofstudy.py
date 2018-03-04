@@ -2,6 +2,7 @@ from django.utils.translation import gettext_lazy as _
 from django.db import models
 
 class YearOfStudy(models.Model):
+	#Choices of year for year of study
 	FIRST = 1
 	SECOND = 2
 	THIRD = 3
@@ -16,6 +17,7 @@ class YearOfStudy(models.Model):
 	)
 	year = models.IntegerField(choices = YEAR_CHOICES, verbose_name = _("Year of Study"))
 
+	#years appear as "First", "Second", etc instead of 1, 2, etc 
 	def __str__(self):
 		return self.get_year_display()
 
