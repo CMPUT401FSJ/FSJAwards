@@ -1,0 +1,62 @@
+{% extends "FSJ/base_with_banner.html" %}
+{% load i18n %} {# NOTE YOU MUST LOAD i18n to every HTML page even though it's also loaded to base.html #}
+
+{# A page for the coordinator to view a list of awards as well as providing adding, deleting, and editing functionality #}
+{# This page is separate from the template for displaying awards to sutdents due to the added functionality #}
+{% block heading %}
+    {# Translators: Awards page home label #}
+    {% trans "Awards" %}
+{% endblock %}
+
+{% block content %}
+<body>
+<div>
+    <form action="/coord_awardslist/delete/" method="POST">
+        {% csrf_token %}
+        <table align = "center">
+            <tr>
+                {# Translators: Action header in awards table #}
+                <th>{% trans "Action" %}</th>
+                {# Translators: Award name header in awards table #}
+                <th>{% trans "Award" %}</th>
+                {# Translators: Award description header in awards table #}
+                <th>{% trans "Description" %}</th>
+                {# Translators: Award value header in awards table #}
+                <th>{% trans "Value" %}</th>
+                {# Translators: Award programs header in awards table #}
+                <th>{% trans "Programs" %}</th>
+                {# Translators: Award years of study header in awards table #}
+                <th>{% trans "Years of Study" %}</th>
+                {# Translators: Award deadline header in awards table #}
+                <th>{% trans "Deadline" %}</th>
+                {# Translators: Award documents needed header in awards table #}
+                <th>{% trans "Documents Required?" %}</th>
+                {# Translators: Award is active header in awards table #}
+                <th>{% trans "Is Active?" %}</th>
+                {# Translators: Award edit header in awards table #}
+                <th>{% trans "Edit" %}</th>
+            </tr>
+            {% for award in awards_list %}
+                <tr>
+                    <td><input type="checkbox"  name="todelete" value="{{award.awardid}}" > </td>
+                    <td>{{award.award_name }}</td>
+                    <td>{{award.description}}</td>
+                    <td>{{award.value}}</td>
+                    <td>{{award.programs}}</td>
+                    <td>{{award.get_year_name}}</td>
+                    <td>{{award.deadline}}</td>
+                    <td>{{award.documents_needed|yesno}}</td>
+                    <td>{{award.is_active|yesno}}</td>
+                    {# Translators: Edit button in coordinator awards list #}
+                    <td><a href="/coord_awardslist/{{ award.awardid }}/">{% trans "Edit" %}</a></td>
+                </tr>
+            {% endfor %}
+        </table>
+        {# Translators: Button to delete selected awards #}
+        <input class = "deletebutton" type="submit" name="delete" value={% trans "Delete award(s)" %} />
+    </form>
+    {# Translators: Button to add award #}
+    <button class = "addbutton" onclick="window.location.href='/coord_awardslist/add'">{% trans "Add award" %}</button>
+</div>
+</body>
+{% endblock %}

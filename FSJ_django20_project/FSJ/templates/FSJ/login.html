@@ -1,0 +1,34 @@
+{% extends "FSJ/base.html" %}
+{% load i18n %} {# NOTE YOU MUST LOAD i18n to every HTML page even though it's also loaded to base.html #}
+
+{# The login page does not need hyperlinks for navigation since the user is not authenticated #}
+{# Use a form with POST to allow logging in with valid credentials #}
+{% block heading %}
+    {# Translators: Login page heading #}
+    {% trans "Login" %}
+{% endblock %}
+
+{% block content %}
+    <form method="post" action="{% url 'login' %}">
+    {% csrf_token %}
+    <table>
+    <tr>
+        <td>
+            {# Translators: Login page username label #}
+            {{ form.username.label_tag }}
+        </td>
+        <td>{{ form.username }}</td>
+    </tr>
+    <tr>
+        <td>
+            {# Translators: Login page password label #}
+            {{ form.password.label_tag }}
+        </td>
+        <td>{{ form.password }}</td>
+    </tr>
+    </table>
+    {# Translators: Login button label #}
+    <input type="submit" value="{% trans "Login" %}" />
+    <input type="hidden" name="next" value="{{ next }}" />
+    </form>
+{% endblock %}
