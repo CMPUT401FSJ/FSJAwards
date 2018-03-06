@@ -70,5 +70,3 @@ def profile(request):
 def awards(request):
     FSJ_user = get_FSJ_user(request.user.username)
     return coordinator_awards(request, FSJ_user)
-
-

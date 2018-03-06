@@ -1,1 +1,33 @@
-{% extends "FSJ/base_with_banner.html" %}{% load i18n %} {# NOTE YOU MUST LOAD i18n to every HTML page even though it's also loaded to base.html #}{# A standardized "my profile" across all user types which displays all of their form fields with some being disabled #}{# Also the same template used by the Coordinator to edit the profile of other users, but with the respective fields that were disabled being enabled #}{% block heading %}    {# Translators: Profile page heading #}    {% trans "Profile" %}{% endblock %}{% block content %}    <br/>    <form action='{{ context.url }}' method='post'>        {% csrf_token %}	{% for field in form %}	    <div>		<div>		    {% if field.label %}		        {{field.label_tag}}		    {% endif %}		</div>		<div>		    {{ field }}		</div>		{% if field.errors %}		    {{ field.errors }}		{% endif %}	    </div>	{% endfor %}        {# Save button on user profile#}        <input type='submit' value={% trans "Save" %}>    </form>{% endblock %}
+{% extends "FSJ/base_with_banner.html" %}
+{% load i18n %} {# NOTE YOU MUST LOAD i18n to every HTML page even though it's also loaded to base.html #}
+
+{# A standardized "my profile" across all user types which displays all of their form fields with some being disabled #}
+{# Also the same template used by the Coordinator to edit the profile of other users, but with the respective fields that were disabled being enabled #}
+{% block heading %}
+    {# Translators: Profile page heading #}
+    {% trans "Profile" %}
+{% endblock %}
+
+{% block content %}
+    <br/>
+    <form action='{{ context.url }}' method='post'>
+        {% csrf_token %}
+	{% for field in form %}
+	    <div>
+		<div>
+		    {% if field.label %}
+		        {{field.label_tag}}
+		    {% endif %}
+		</div>
+		<div>
+		    {{ field }}
+		</div>
+		{% if field.errors %}
+		    {{ field.errors }}
+		{% endif %}
+	    </div>
+	{% endfor %}
+        {# Save button on user profile#}
+        <input type='submit' value={% trans "Save" %}>
+    </form>
+{% endblock %}

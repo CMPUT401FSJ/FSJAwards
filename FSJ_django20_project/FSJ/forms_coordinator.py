@@ -21,4 +21,3 @@ class CoordinatorRestrictedForm(ModelForm):
         super(CoordinatorRestrictedForm, self).__init__(*args, **kwargs)
         self.fields['ccid'].disabled=True
         self.fields['email'].disabled=True
-

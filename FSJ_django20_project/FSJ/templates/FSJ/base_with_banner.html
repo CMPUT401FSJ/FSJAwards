@@ -1,1 +1,34 @@
-{% extends "FSJ/base.html" %}{% load i18n %} {# NOTE YOU MUST LOAD i18n to every HTML page even though it's also loaded to base.html #}{% block banner %}    <div class="banner">        <div>            {# Translators: Home link on the main banner #}            <a class="header" href='/home'>{% trans "Home" %}</a>        </div>        <div>            {# Translators: Profile link on the main banner #}            <a class="header" href='/profile'>{% trans "Profile" %}</a>        </div>        {% if FSJ_user.user_class == "Coordinator" %}        <div>                    {# Translators: Students link on the main banner #}            <a class="header" href='/studentlist'>{% trans "Students" %}</a>        </div>        <div>                    {# Translators: Adjudicators link on the main banner #}            <a class="header" href='/adjudicatorlist'>{% trans "Adjudicators" %}</a>        </div>        <div>                    {# Translators: Awards link on the main banner #}            <a class="header" href='/coord_awardslist'>{% trans "Awards" %}</a>        </div>        {% endif %}        <div>            {# Translators: Logout link on the main banner #}            <a class="header" href='/logout'>{% trans "Logout" %}</a>        </div>    </div>{% endblock %}
+{% extends "FSJ/base.html" %}
+{% load i18n %} {# NOTE YOU MUST LOAD i18n to every HTML page even though it's also loaded to base.html #}
+
+{% block banner %}
+    <div class="banner">
+        <div>
+            {# Translators: Home link on the main banner #}
+            <a class="header" href='/home'>{% trans "Home" %}</a>
+        </div>
+        <div>
+            {# Translators: Profile link on the main banner #}
+            <a class="header" href='/profile'>{% trans "Profile" %}</a>
+        </div>
+        {% if FSJ_user.user_class == "Coordinator" %}
+        <div>        
+            {# Translators: Students link on the main banner #}
+            <a class="header" href='/studentlist'>{% trans "Students" %}</a>
+        </div>
+        <div>        
+            {# Translators: Adjudicators link on the main banner #}
+            <a class="header" href='/adjudicatorlist'>{% trans "Adjudicators" %}</a>
+        </div>
+        <div>        
+            {# Translators: Awards link on the main banner #}
+            <a class="header" href='/coord_awardslist'>{% trans "Awards" %}</a>
+        </div>
+        {% endif %}
+        <div>
+            {# Translators: Logout link on the main banner #}
+            <a class="header" href='/logout'>{% trans "Logout" %}</a>
+        </div>
+
+    </div>
+{% endblock %}
