@@ -35,6 +35,8 @@
                 <th>{% trans "Is Active?" %}</th>
                 {# Translators: Award edit header in awards table #}
                 <th>{% trans "Edit" %}</th>
+                {# Translators: Applications header in awards table #}
+                <th>{% trans "Applications" %}</th>
             </tr>
             {% for award in awards_list %}
                 <tr>
@@ -49,6 +51,8 @@
                     <td>{{award.is_active|yesno}}</td>
                     {# Translators: Edit button in coordinator awards list #}
                     <td><a href="/coord_awardslist/{{ award.awardid }}/">{% trans "Edit" %}</a></td>
+                    {# Translators: View button in coordinator awards list #}
+                    <td><a href="/coord_awardslist/{{ award.awardid }}/applications/">{% trans "View" %}</a></td>
                 </tr>
             {% endfor %}
         </table>

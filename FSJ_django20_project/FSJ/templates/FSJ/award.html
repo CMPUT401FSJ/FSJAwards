@@ -9,6 +9,7 @@
 {% endblock %}
 
 {% block content %}
+<div>
 	<form action='{{ context.url }}' method='post'>
 		{% csrf_token %}
 	{% for field in form %}
@@ -26,7 +27,9 @@
 			{% endif %}
 		</div>
 	{% endfor %}
-		{# Save button on user profile#}
+		{# Save button on award page #}
 		<input type='submit' value={% trans "Save" %}>
 	</form>
+</div>
+
 {% endblock %}

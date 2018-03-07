@@ -3,16 +3,34 @@
 
 {# A trial Application form #}
 {% block heading %}
-    {# Translators: Profile page heading #}
-    {% trans "Profile" %}
+    {{ award.award_name }}
 {% endblock %}
 
 {% block content %}
     <br/>
+    <div>
+    Description: {{ award.description}} 
+    </div>
+    <div>
+    Value: {{ award.value }}
+    </div>
+    <div>
+    Programs: {{ award.programs }}
+    </div>
+    <div>
+    Years Of Study: {{ award.years_of_study }}
+    </div>
+    <div>
+    Deadline: {{ award.deadline }}
+    </div>
+    <div>
+    Documents Needed: {{ award.documents_needed }}
+    </div>
+    <div>
     <form action='{{ context.url }}' method='post'>
         {% csrf_token %}
-        
-        {# Save button on user profile#}
-        <input type='submit' value={% trans "Save" %}>
+        {# Submit button on application #}
+        <input type='submit' value={% trans "Submit" %}>
     </form>
+    </div>
 {% endblock %}

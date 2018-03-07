@@ -1,0 +1,24 @@
+{% extends "FSJ/base_with_banner.html" %}
+{% load i18n %}
+
+{% block heading %}
+        {{ award.award_name }}
+{% endblock %}
+
+{% block content %}
+<div>
+        <table align = "center">
+        <tr>
+                <th>{% trans "Student" %}</th>
+                {# Translators: View header in student table #}
+                <th>{% trans "Is Submitted?" %}</th>
+        </tr>
+        {% for application in application_list %}
+                <tr>
+                        <td><a href="/studentlist/{{ application.student.ccid }}/">{{ application.student.ccid }}</a></td>
+                        <td>{{ application.is_submitted|yesno }}</td>
+                </tr>
+        {% endfor %}
+        </table>
+</div>
+{% endblock %}
