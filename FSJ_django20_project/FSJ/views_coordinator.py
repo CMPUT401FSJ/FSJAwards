@@ -1,7 +1,5 @@
 from django.contrib.auth.decorators import login_required, user_passes_test
-from django.contrib.auth.models import User
 from django.core.exceptions import PermissionDenied
-from django.db import transaction
 from django.http import HttpResponse, Http404
 from django.shortcuts import redirect
 from django.template import loader
@@ -112,7 +110,6 @@ def coordinator_adjudicatordetail(request, usr_ccid):
 # This handler allows a Coordinator to add a new Student
 @login_required
 @user_passes_test(is_coordinator)
-@transaction.atomic
 def coordinator_addstudent(request):
     FSJ_user = get_FSJ_user(request.user.username)
     
@@ -121,14 +118,7 @@ def coordinator_addstudent(request):
         # Loads student form with the information given
         form = StudentForm(request.POST)
         if form.is_valid():
-            # Create the student from the student form but don't commit it until the correlated User object is created and persisted.
-            # The method is an atomic transaction so if something occurs part way through it will not persist the User.
-            student = form.save(commit=False)
-            user = User()
-            user.username = student.ccid
-            user.save()
-            student.user = user
-            student.save()
+            form.save()
             return redirect('studentlist')
     else:
         # If the coordinator hasn't entered information yet, create a blank student form
@@ -144,7 +134,6 @@ def coordinator_addstudent(request):
 # This handler allows a Coordinator to add a new Adjudicator
 @login_required
 @user_passes_test(is_coordinator)
-@transaction.atomic
 def coordinator_addadjudicator(request):
     FSJ_user = get_FSJ_user(request.user.username)
     
@@ -153,14 +142,7 @@ def coordinator_addadjudicator(request):
         # Loads adjudicator form with the new information
         form = AdjudicatorForm(request.POST)
         if form.is_valid():
-            # Create the adjudicator from the adjudicator form but don't commit it until the correlated User object is created and persisted.
-            # The method is an atomic transaction so if something occurs part way through it will not persist the User.
-            adjud = form.save(commit=False)
-            user = User()
-            user.username = adjud.ccid
-            user.save()
-            adjud.user = user
-            adjud.save()
+            form.save()
             return redirect('adjudicatorlist')
     else:
         # If the coordinator hasn't entered information yet, create a blank adjudicator

@@ -1,4 +1,4 @@
-from django.db import models
+from django.db import models, transaction
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.models import User
 
@@ -12,7 +12,7 @@ class FSJUser(models.Model):
         (ENGLISH, _('English')),
     )   
     # Link FSJUser with a User model for authentication related business
-    user = models.OneToOneField(User, on_delete=models.CASCADE)    
+    user = models.OneToOneField(User, on_delete = models.CASCADE, blank = True, null = True)    
     
     # All FSJ Users have these attributes in common
     ccid = models.CharField(max_length = 255, unique = True, verbose_name = _("CCID"))
@@ -26,6 +26,16 @@ class FSJUser(models.Model):
     def __str__(self):
         return self.ccid
     
+    @transaction.atomic # The method is an atomic transaction so if something occurs part way through it will not persist the User.
+    def save(self, *args, **kwargs):
+        if not self.user:
+            user = User()
+            user.username = self.ccid
+            user.save()
+            self.user = user
+        super(FSJUser, self).save(*args, **kwargs)   
+        
     def delete(self, *args, **kwargs):
-        # Since we defined cascade delete we don't need to explicitly call super.delete()
-        self.user.delete() 
+        super(FSJUser, self).delete(*args, **kwargs)
+        if self.user:
+            self.user.delete() 
