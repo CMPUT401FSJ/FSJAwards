@@ -1,7 +1,6 @@
 import uuid
 from django.utils.translation import gettext_lazy as _
 from django.db import models
-import datetime
 
 class Program(models.Model):
     class Meta():

@@ -260,7 +260,7 @@ def list_programs(request):
     template = loader.get_template("FSJ/list_programs.html")
     context = get_standard_context(FSJ_user)
     context["programs_list"] = programs_list
-    return HttpResponse(template.render(context,request))
+    return HttpResponse(template.render(context, request))
 
 #function for handling coordinator adding a program
 @login_required
@@ -279,7 +279,7 @@ def add_program(request):
     context["form"] = form
     url = "/programs/add/"
     context["url"] = url
-    return HttpResponse(template.render(context,request))
+    return HttpResponse(template.render(context, request))
 
 #function for handling coordinator editing a program
 @login_required
