@@ -4,7 +4,9 @@ from django.db import models
 import datetime
 
 class Program(models.Model):
-
+    class Meta():
+        ordering = ('name',)
+        
     programid = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField(max_length = 255, verbose_name = _("Name"))
     
