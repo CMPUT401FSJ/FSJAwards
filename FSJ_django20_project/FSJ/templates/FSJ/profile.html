@@ -11,43 +11,24 @@
 {% block content %}
     <form action='{{ context.url }}' method='post'>
         {% csrf_token %}
-	
-	{% if form.non_field_errors %}
-	  <ul>
-	    {% for error in form.non_field_errors %}
-	      <li>{{ error }}</li>
-	      {% endfor %}
-	    </ul>
-	{% endif %}
-	
-	{% for field in form %}
-	    <label>
-		{{field.label_tag}}
-	    </label>
-	    <div class='form-group {% if field.errors %} has-error {% endif %}'>
-		{% if field.field.widget.input_type == 'select' %}
-		    <select id="{{field.id_for_label}}" name="{{field.name}}">
-			{% for val, name in field.field.widget.choices %}
-			    <option value="{{val}}" {% if field.value == val %} selected {% endif %}>
-				{{name}}
-			    </option>
-			{% endfor %}
-		    </select>
-		{% else %}
-		    <input class="form-control" type="{{field.field.widget.input_type}}" id="{{field.id_for_label}}" 
-						name="{{field.name}}" {% if field.value %} value="{{field.value}}" {% else %} value="" {% endif %}
-						{% if field.field.disabled %} disabled {% endif %} >
-		{% endif %}
-		<div>
-		    {{ field.errors }}
-		</div>
-	    </div>
-	    {% if field.help_text %}
-		<p class='help-block'>
-		    {{ field.help_text }}
-		</p>
-	    {% endif %}
-	{% endfor %}
+        {% for field in form %}
+            <div>
+                <div>
+                    {% if field.label %}
+                        {{field.label_tag}}
+                    {% endif %}
+                </div>
+                <div {% if field.errors %}class='has-error'{% endif %}>
+                    {{ field }}
+                </div>
+                {% if field.help_text %}
+                    {{ field.help_text }}
+                {% endif %}
+                {% if field.errors %}
+                    {{ field.errors }}
+                {% endif %}
+            </div>
+        {% endfor %}
         {# Save button on user profile#}
         <input type='submit' value={% trans "Save" %}>
     </form>
