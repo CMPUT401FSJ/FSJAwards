@@ -11,8 +11,9 @@
             </title>
             {# Add CSS for styling #}
             <link rel="stylesheet" type="text/css" href="{% static 'FSJ/FSJ.css' %}">
+            <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" 
         </head>
-        {# Some generic sections to be exnteded in views #}
+        {# Some generic sections to be extended in views #}
         <body>
         <div>
             <div>
@@ -27,7 +28,11 @@
         {% endblock %}
         <div>
             <div>
-                <div>
+                <div style='display: inline-block; width: 25%'> 
+                    {% block context_panel %}
+                    {% endblock %}
+                </div>
+                <div style='display: inline-block; width: 50%'>
                     {% block content %}
                     {% endblock %}
                 </div>
