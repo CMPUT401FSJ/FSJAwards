@@ -12,6 +12,10 @@
 {% block content %}
 <body>
 <div>
+<form method="get">
+  {{filter.form.as_p}}
+  <button type "submit">Filter</button>
+</form>
 <form action="/studentlist/delete/" method="POST">
 {% csrf_token %}
 <table align = "center">
@@ -31,7 +35,7 @@
   {# Translators: View header in student table #}
   <th>{% trans "View" %}</th>
  </tr>
-{% for student in student_list %}
+{% for student in filter.qs %}
     <tr>
      <td><input type="checkbox"  name="instance" value="{{student.ccid}}" >
      <td>{{ student.ccid }}</td>
