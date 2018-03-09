@@ -10,6 +10,7 @@
 {% block content %}
 <body>
 <div>
+        <h1>New Awards</h1>
         <table align = "center">
             <tr>
                 {# Translators: Award name header in awards table #}
@@ -29,6 +30,7 @@
                 {# Translators: Apply button header in awards table #}
                 <th>{% trans "Apply" %}</th>
             </tr>
+            <tr><th>New awards</th></tr>
             {% for award in awards_list %}
                 <tr>
                     <td>{{award.award_name }}</td>
@@ -42,28 +44,7 @@
                     <td><a href="/student_awardslist/{{ award.awardid }}/apply/">{% trans "Apply" %}</a></td>
                 </tr>
             {% endfor %}
-        </table>
-</div>
-<div>
-        <table align = "center">
-            <tr>
-                {# Translators: Award name header in awards table #}
-                <th>{% trans "Award" %}</th>
-                {# Translators: Award description header in awards table #}
-                <th>{% trans "Description" %}</th>
-                {# Translators: Award value header in awards table #}
-                <th>{% trans "Value" %}</th>
-                {# Translators: Award programs header in awards table #}
-                <th>{% trans "Programs" %}</th>
-                {# Translators: Award years of study header in awards table #}
-                <th>{% trans "Years of Study" %}</th>
-                {# Translators: Award deadline header in awards table #}
-                <th>{% trans "Deadline" %}</th>
-                {# Translators: Award documents needed header in awards table #}
-                <th>{% trans "Documents Required?" %}</th>
-                {# Translators: Apply button header in awards table #}
-                <th>{% trans "Apply" %}</th>
-            </tr>
+            <tr><th>In-progress awards</th></tr>
             {% for award in in_progress_list %}
                 <tr>
                     <td>{{award.award_name }}</td>
@@ -73,11 +54,26 @@
                     <td>{{award.get_year_name}}</td>
                     <td>{{award.deadline}}</td>
                     <td>{{award.documents_needed}}</td>
-                    {# Translators: Apply button in award table #}
-                    <td><a href="/student_awardslist/{{ award.awardid }}/apply/">{% trans "Apply" %}</a></td>
+                    {# Translators: Edit application button in student award table #}
+                    <td><a href="/student_awardslist/{{ award.awardid }}/edit/">{% trans "Edit" %}</a></td>
+                </tr>
+            {% endfor %}
+            <tr><th>Submitted awards</th></tr>
+            {% for award in submitted_list %}
+                <tr>
+                    <td>{{award.award_name }}</td>
+                    <td>{{award.description}}</td>
+                    <td>{{award.value}}</td>
+                    <td>{{award.programs}}</td>
+                    <td>{{award.get_year_name}}</td>
+                    <td>{{award.deadline}}</td>
+                    <td>{{award.documents_needed}}</td>
+                    {# Translators: Edit application button in student award table #}
+                    <td><a href="/student_awardslist/{{ award.awardid }}/edit/">{% trans "Edit" %}</a></td>
                 </tr>
             {% endfor %}
         </table>
 </div>
+
 </body>
 {% endblock %}
