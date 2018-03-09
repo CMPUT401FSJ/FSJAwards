@@ -1,0 +1,40 @@
+{% extends "FSJ/base_with_banner.html" %}
+{% load i18n %} {# NOTE YOU MUST LOAD i18n to every HTML page even though it's also loaded to base.html #}
+
+{# A page for the coordinator to view a list of programs as well as providing adding, deleting, and editing functionality #}
+{% block heading %}
+    {# Translators: Programs page home label #}
+    {% trans "Programs" %}
+{% endblock %}
+
+{% block content %}
+    <body>
+        <div>
+            <form action="/programs/delete/" method="POST">
+                {% csrf_token %}
+                <table align = "center">
+                    <tr>
+                        {# Translators: Action header in program table #}
+                        <th>{% trans "Action" %}</th>
+                        {# Translators: Program name header in program table #}
+                        <th>{% trans "Program" %}</th>
+                        {# Translators: Program edit header in program table #}
+                        <th>{% trans "Edit" %}</th>
+                    </tr>
+                    {% for program in programs_list %}
+                        <tr>
+                            <td><input type="checkbox"  name="todelete" value="{{ program.programid }}" > </td>
+                            <td>{{ program.name }}</td>
+                            {# Translators: Edit button in coordinator program list #}
+                            <td><a href="/programs/edit/{{ program.programid }}/">{% trans "Edit" %}</a></td>
+                        </tr>
+                    {% endfor %}
+                </table>
+                {# Translators: Button to delete selected programs #}
+                <input class = "deletebutton" type="submit" name="delete" value={% trans "Delete program(s)" %} />
+            </form>
+            {# Translators: Button to add award #}
+            <button class = "addbutton" onclick="window.location.href='/programs/add'">{% trans "Add program" %}</button>
+        </div>
+    </body>
+{% endblock %}

@@ -2,6 +2,7 @@ from django.db import models
 from .models_FSJUser import FSJUser
 from django.utils.translation import gettext_lazy as _
 from django import forms
+from .models_program import Program
 
 # This class inherits from a standard FSJ User and extends for Student specific attributes and methods
 class Student(FSJUser):
@@ -18,7 +19,7 @@ class Student(FSJUser):
         (FIFTH, _('Fifth')),
     )
     
-    program = models.CharField(max_length = 255, verbose_name = _("Program"))
+    program = models.ForeignKey(Program, on_delete = models.SET_NULL, null = True, blank = True)
     year = models.IntegerField(blank = False, choices = YEAR_CHOICES, default = FIRST, verbose_name = _("Year of Study"))
 
     def user_class(self):
