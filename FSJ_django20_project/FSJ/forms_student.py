@@ -23,4 +23,3 @@ class StudentRestrictedForm(ModelForm):
         self.fields['ccid'].disabled=True
         self.fields['email'].disabled=True
         self.fields['year'].disabled=True
-        

@@ -21,4 +21,3 @@ class AdjudicatorRestrictedForm(ModelForm):
         super(AdjudicatorRestrictedForm, self).__init__(*args, **kwargs)
         self.fields['ccid'].disabled=True
         self.fields['email'].disabled=True
-
