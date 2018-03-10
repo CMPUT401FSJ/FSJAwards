@@ -1,5 +1,6 @@
 from .models_award import Award
-from django.forms import ModelForm, CheckboxSelectMultiple, TextInput, Textarea, Select
+from django.forms import CheckboxSelectMultiple
+from .forms_modelform import ModelForm
 
 #Modelform for an award, this restricts what fields will be enabled/disabled as well as widgets, etc
 class AwardForm(ModelForm):
@@ -14,10 +15,3 @@ class AwardForm(ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(AwardForm, self).__init__(*args, **kwargs)
-        for f in self.fields:
-            field = self.fields[f]
-            widget = field.widget
-            if isinstance(widget, TextInput) or isinstance(widget, Textarea) or isinstance(widget, Select):
-                field_class = widget.attrs.get('class', '')
-                field_class = field_class + ' form-control'
-                field.widget.attrs['class'] = field_class

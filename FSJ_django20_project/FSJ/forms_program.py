@@ -1,5 +1,5 @@
 from .models_program import Program
-from django.forms import ModelForm, CheckboxSelectMultiple
+from .forms_modelform import ModelForm
 
 #Modelform for a program, this restricts what fields will be enabled/disabled as well as widgets, etc
 class ProgramForm(ModelForm):

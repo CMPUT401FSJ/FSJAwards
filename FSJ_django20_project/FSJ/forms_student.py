@@ -1,5 +1,5 @@
 from .models_student import Student
-from .forms import ModelForm, TextInput, Textarea, Select, EmailInput, NumberInput
+from .forms_modelform import ModelForm
 
 # These are the unrestricted and restricted ModelForms used for Students, accessible by Coordinators and Students respectively.
 class StudentForm(ModelForm):
@@ -10,13 +10,7 @@ class StudentForm(ModelForm):
         
     def __init__(self, *args, **kwargs):
         super(StudentForm, self).__init__(*args, **kwargs)               
-        for f in self.fields:
-            field = self.fields[f]
-            widget = field.widget
-            if isinstance(widget, TextInput) or isinstance(widget, Textarea) or isinstance(widget, Select) or isinstance(widget, EmailInput) or isinstance(widget, NumberInput):
-                field_class = widget.attrs.get('class', '')
-                field_class = field_class + ' form-control'
-                field.widget.attrs['class'] = field_class          
+        
     
 class StudentRestrictedForm(ModelForm):
 
@@ -28,11 +22,4 @@ class StudentRestrictedForm(ModelForm):
         super(StudentRestrictedForm, self).__init__(*args, **kwargs)
         self.fields['ccid'].disabled=True
         self.fields['email'].disabled=True
-        self.fields['year'].disabled=True
-        for f in self.fields:
-            field = self.fields[f]
-            widget = field.widget
-            if isinstance(widget, TextInput) or isinstance(widget, Textarea) or isinstance(widget, Select) or isinstance(widget, EmailInput) or isinstance(widget, NumberInput):
-                field_class = widget.attrs.get('class', '')
-                field_class = field_class + ' form-control'
-                field.widget.attrs['class'] = field_class        
+        self.fields['year'].disabled=True   

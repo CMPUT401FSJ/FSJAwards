@@ -1,5 +1,5 @@
 from .models_coordinator import Coordinator
-from django.forms import ModelForm
+from .forms_modelform import ModelForm
 
 class CoordinatorForm(ModelForm):
 
