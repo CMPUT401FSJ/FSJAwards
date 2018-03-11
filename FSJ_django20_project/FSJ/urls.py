@@ -19,5 +19,9 @@ urlpatterns = [
     path('coord_awardslist/', views.awards, name='coord_awardslist'),
     path('coord_awardslist/add/', views.coordinator_add_awards, name = 'coord_addaward'),
     path('coord_awardslist/delete/', views.coordinator_awarddelete, name='coord_deleteaward'),
-    path('coord_awardslist/<str:award_idnum>/', views.coordinator_awardedit, name = 'coord_awardedit')
+    path('coord_awardslist/<str:award_idnum>/', views.coordinator_awardedit, name = 'coord_awardedit'),
+    path('coord_yearslist/', views.years, name='coord_yearslist'),
+    path('coord_yearslist/add/', views.coordinator_addyearofstudy, name = 'coord_addyear'),
+    path('coord_yearslist/delete/', views.coordinator_yeardelete, name='coord_deleteyear'),
+    path('coord_yearslist/<str:year_name>/', views.coordinator_yearedit, name = 'coord_yearedit')
 ]
