@@ -1,0 +1,40 @@
+{% extends "FSJ/base_with_banner.html" %}
+{% load i18n %} {# NOTE YOU MUST LOAD i18n to every HTML page even though it's also loaded to base.html #}
+
+{# A page for the coordinator to view a list of years of study as well as providing adding, deleting, and editing functionality #}
+{% block heading %}
+    {# Translators: Years page home label #}
+    {% trans "Years of Study" %}
+{% endblock %}
+
+{% block content %}
+<body>
+<div>
+    <form action="/coord_yearslist/delete/" method="POST">
+        {% csrf_token %}
+        <table align = "center">
+            <tr>
+                {# Translators: Action header in years table #}
+                <th>{% trans "Action" %}</th>
+                {# Translators: Year header in years table #}
+                <th>{% trans "Year" %}</th>
+                {# Translators: Award edit header in years table #}
+                <th>{% trans "Edit" %}</th>
+            </tr>
+            {% for year in years_list %}
+                <tr>
+                    <td><input type="checkbox"  name="todelete" value="{{year.year}}" > </td>
+                    <td>{{year.year }}</td>
+                    {# Translators: Edit button in coordinator years list #}
+                    <td><a href="/coord_yearslist/{{ year.year }}/">{% trans "Edit" %}</a></td>
+                </tr>
+            {% endfor %}
+        </table>
+        {# Translators: Button to delete selected yearss #}
+        <input class = "deletebutton" type="submit" name="delete" value={% trans "Delete year(s)" %} />
+    </form>
+    {# Translators: Button to add award #}
+    <button class = "addbutton" onclick="window.location.href='/coord_yearslist/add'">{% trans "Add year" %}</button>
+</div>
+</body>
+{% endblock %}
