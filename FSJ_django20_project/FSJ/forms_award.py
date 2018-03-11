@@ -10,7 +10,8 @@ class AwardForm(ModelForm):
         exclude = ()
         fields = ('award_name', 'description', 'value', 'programs', 'years_of_study', 'deadline', 'documents_needed', 'is_active')
         widgets = {
-            'programs': CheckboxSelectMultiple
+            'programs': CheckboxSelectMultiple,
+            'years_of_study': CheckboxSelectMultiple
         }
 
     def __init__(self, *args, **kwargs):
