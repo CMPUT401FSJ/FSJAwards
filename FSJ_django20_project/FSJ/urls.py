@@ -24,4 +24,7 @@ urlpatterns = [
     path('programs/add/', views.add_program, name='add_program'),
     path('programs/edit/<str:program_code>/', views.edit_program, name='edit_program'),
     path('programs/delete/', views.delete_programs, name='delete_programs')
+    path('coord_yearslist/', views.years, name='coord_yearslist'),
+    path('coord_yearslist/add/', views.coordinator_addyearofstudy, name = 'coord_addyear'),
+    path('coord_yearslist/delete/', views.coordinator_yeardelete, name='coord_deleteyear'),
 ]

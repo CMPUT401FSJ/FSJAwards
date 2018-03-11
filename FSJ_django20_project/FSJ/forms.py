@@ -8,3 +8,4 @@ from .forms_adjudicator import *
 from .forms_coordinator import *
 from .forms_award import *
 from .forms_program import ProgramForm
+from .forms_yearofstudy import *
