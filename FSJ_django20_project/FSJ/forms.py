@@ -7,3 +7,4 @@ from .forms_student import *
 from .forms_adjudicator import *
 from .forms_coordinator import *
 from .forms_award import *
+from .forms_yearofstudy import *

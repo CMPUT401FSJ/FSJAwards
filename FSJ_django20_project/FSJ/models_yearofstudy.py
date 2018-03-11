@@ -7,4 +7,3 @@ class YearOfStudy(models.Model):
 
 	def __str__(self):
 		return self.year
-
