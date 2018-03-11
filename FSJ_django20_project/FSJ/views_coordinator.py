@@ -250,3 +250,13 @@ def coordinator_awarddelete(request):
             Award.objects.get(awardid=itemid).delete()
 
     return redirect('coord_awardslist')
+
+#function for handling coordinator viewing a list of committees
+@login_required
+@user_passes_test(is_coordinator)
+def coordinator_committeeslist(request, FSJ_user):
+    committees_list = Committee.objects.all()
+    template = loader.get_template("FSJ/coord_committee_list.html")
+    context = get_standard_context(FSJ_user)
+    context["committees_list"] = committees_list
+    return HttpResponse(template.render(context,request))

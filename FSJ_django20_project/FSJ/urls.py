@@ -19,5 +19,6 @@ urlpatterns = [
     path('coord_awardslist/', views.awards, name='coord_awardslist'),
     path('coord_awardslist/add/', views.coordinator_add_awards, name = 'coord_addaward'),
     path('coord_awardslist/delete/', views.coordinator_awarddelete, name='coord_deleteaward'),
-    path('coord_awardslist/<str:award_idnum>/', views.coordinator_awardedit, name = 'coord_awardedit')
+    path('coord_awardslist/<str:award_idnum>/', views.coordinator_awardedit, name = 'coord_awardedit'),
+    path('coord_committeeslist/', views.committees, name = 'committeelist')
 ]

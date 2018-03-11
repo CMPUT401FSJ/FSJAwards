@@ -70,3 +70,9 @@ def profile(request):
 def awards(request):
     FSJ_user = get_FSJ_user(request.user.username)
     return coordinator_awards(request, FSJ_user)
+
+@login_required
+@user_passes_test(is_coordinator)
+def committees(request):
+    FSJ_user = get_FSJ_user(request.user.username)
+    return coordinator_committeeslist(request, FSJ_user)

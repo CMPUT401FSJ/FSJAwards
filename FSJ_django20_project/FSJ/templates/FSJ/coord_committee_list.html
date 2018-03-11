@@ -1,0 +1,51 @@
+{% extends "FSJ/base_with_banner.html" %}
+{% load i18n %} {# NOTE YOU MUST LOAD i18n to every HTML page even though it's also loaded to base.html #}
+
+{# A page for the coordinator to view a list of committees as well as providing adding, deleting, and editing functionality #}
+{# This page is separate from the template for displaying committees to sutdents due to the added functionality #}
+{% block heading %}
+    {# Translators: committees page home label #}
+    {% trans "Committees" %}
+{% endblock %}
+
+{% block content %}
+<body>
+<div>
+    <form action="/coord_committeeslist/delete/" method="POST">
+        {% csrf_token %}
+        <table align = "center">
+            <tr>
+                {# Translators: Action header in committees table #}
+                <th>{% trans "Action" %}</th>
+                {# Translators: Committee name header in committees table #}
+                <th>{% trans "Committee" %}</th>
+                {# Translators: Committee adjudicators header in committees table #}
+                <th>{% trans "Adjudicators" %}</th>
+                {# Translators: Committee awards header in committees table #}
+                <th>{% trans "Awards" %}</th>
+                {# Translators: Award edit header in awards table #}
+                <th>{% trans "Edit" %}</th>
+            </tr>
+            {% for committee in committees_list %}
+                <tr>
+                    <td><input type="checkbox"  name="instance" value="{{committee.committeeid}}" > </td>
+                    <td>{{committee.committee_name }}</td>
+                    <td>{% for adjudicator in committee.adjudicators.all %}
+                            {{adjudicator.get_name}} <br>
+                        {% endfor %}</td>
+                    <td>{% for award in committee.awards.all %}
+                            {{award}} <br>
+                        {% endfor %}</td>
+                    {# Translators: Edit button in coordinator committees list #}
+                    <td><a href="/coord_committeeslist/{{ committee.committeeid }}/">{% trans "Edit" %}</a></td>
+                </tr>
+            {% endfor %}
+        </table>
+        {# Translators: Button to delete selected awards #}
+        <input class = "deletebutton" type="submit" name="delete" value={% trans "Delete committee(s)" %} />
+    </form>
+    {# Translators: Button to add award #}
+    <button class = "addbutton" onclick="window.location.href='/coord_committeeslist/add'">{% trans "Add committee" %}</button>
+</div>
+</body>
+{% endblock %}

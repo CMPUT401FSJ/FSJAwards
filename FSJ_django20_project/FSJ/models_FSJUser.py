@@ -24,3 +24,6 @@ class FSJUser(models.Model):
     # The user class for a base FSJUSer is nonexistent. This method needs to be overridden by classes that inherit from it
     def user_class(self):
         return None
+
+    def get_name(self):
+        return self.first_name + ' ' + self.last_name

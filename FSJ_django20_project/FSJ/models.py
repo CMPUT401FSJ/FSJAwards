@@ -7,3 +7,4 @@ from .models_adjudicator import Adjudicator
 from .models_coordinator import Coordinator
 from .models_award import Award
 from .models_yearofstudy import YearOfStudy
+from .models_committee import Committee
