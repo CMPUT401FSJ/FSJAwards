@@ -4,6 +4,7 @@ from django.utils.translation import gettext_lazy as _
 from django import forms
 from .models_yearofstudy import *
 
+
 # This class inherits from a standard FSJ User and extends for Student specific attributes and methods
 class Student(FSJUser):
     
@@ -17,4 +18,4 @@ class Student(FSJUser):
         return self.program
     
     def student_id(self):
-        return self.userid
+        return self.ualberta_id

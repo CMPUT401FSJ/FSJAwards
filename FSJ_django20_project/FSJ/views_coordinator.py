@@ -1,9 +1,8 @@
-from django.core.exceptions import PermissionDenied
-from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required, user_passes_test
+from django.core.exceptions import PermissionDenied
 from django.http import HttpResponse, Http404
-from django.template import loader
 from django.shortcuts import redirect
+from django.template import loader
 from .models import *
 from .utils import *
 from .forms import *
