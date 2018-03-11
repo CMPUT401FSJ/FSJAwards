@@ -284,10 +284,10 @@ def add_program(request):
 #function for handling coordinator editing a program
 @login_required
 @user_passes_test(is_coordinator)
-def edit_program(request, program_idnum):
+def edit_program(request, program_code):
     FSJ_user = get_FSJ_user(request.user.username)
     try:
-        program = Program.objects.get(programid = program_idnum)
+        program = Program.objects.get(code = program_code)
     except Program.DoesNotExist:
         raise Http404("Program does not exist")
 
@@ -299,9 +299,9 @@ def edit_program(request, program_idnum):
     else:
         form = ProgramForm(instance = program)
     context = get_standard_context(FSJ_user)
-    context["program_id"] = program_idnum
+    context["program_code"] = program_code
     context["form"] = form
-    url = "/programs/edit/" + str(program.programid) + "/"
+    url = "/programs/edit/" + str(program.code) + "/"
     context["url"] = url
     template = loader.get_template("FSJ/program.html")
     return HttpResponse(template.render(context, request))
@@ -311,8 +311,8 @@ def edit_program(request, program_idnum):
 @user_passes_test(is_coordinator)
 def delete_programs(request):
     if request.method == 'POST':
-        programid_list = request.POST.getlist('todelete')
+        program_code_list = request.POST.getlist('todelete')
 
-        for itemid in programid_list:
-            Program.objects.get(programid = itemid).delete()
+        for item_code in program_code_list:
+            Program.objects.get(code = item_code).delete()
     return redirect('list_programs')

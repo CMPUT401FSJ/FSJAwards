@@ -22,6 +22,6 @@ urlpatterns = [
     path('coord_awardslist/<str:award_idnum>/', views.coordinator_awardedit, name = 'coord_awardedit'),
     path('programs/list_programs/', views.list_programs, name='list_programs'),
     path('programs/add/', views.add_program, name='add_program'),
-    path('programs/edit/<str:program_idnum>/', views.edit_program, name='edit_program'),
+    path('programs/edit/<str:program_code>/', views.edit_program, name='edit_program'),
     path('programs/delete/', views.delete_programs, name='delete_programs')
 ]
