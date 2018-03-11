@@ -249,3 +249,75 @@ def coordinator_awarddelete(request):
             Award.objects.get(awardid=itemid).delete()
 
     return redirect('coord_awardslist')
+
+#function for handling coordinator viewing a list of years of study
+@login_required
+@user_passes_test(is_coordinator)
+def coordinator_yearslist(request, FSJ_user):
+    years_list = YearOfStudy.objects.all()
+    template = loader.get_template("FSJ/coord_years_list.html")
+    context = get_standard_context(FSJ_user)
+    context["years_list"] = years_list
+    return HttpResponse(template.render(context,request))
+
+# This handler allows a Coordinator to add a new year of study
+@login_required
+@user_passes_test(is_coordinator)
+def coordinator_addyearofstudy(request):
+    FSJ_user = get_FSJ_user(request.user.username)
+    
+    # If the coordinator has just saved their new adjudicator, check for form validity before saving. Invalid forms are put back into the template to show errors.
+    if request.method == "POST":
+        # Loads adjudicator form with the new information
+        form = YearOfStudyForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('coord_yearslist')
+    else:
+        # If the coordinator hasn't entered information yet, create a blank adjudicator
+        form = YearOfStudyForm()           
+    context = get_standard_context(FSJ_user)
+    template = loader.get_template("FSJ/year_of_study.html")
+    context["form"] = form
+    url = "coord_yearslist/add/"
+    context["url"] = url
+    return HttpResponse(template.render(context, request))
+
+#function for handling coordinator editing an award
+@login_required
+@user_passes_test(is_coordinator)
+def coordinator_yearedit(request, year_name):
+    FSJ_user = get_FSJ_user(request.user.username)
+    try:
+        yearofstudy = YearOfStudy.objects.get(year = year_name)
+    except YearOfStudy.DoesNotExist:
+        raise Http404("Year does not exist")
+
+    if request.method == "POST":
+        form = YearOfStudyForm(request.POST, instance=yearofstudy)
+        if form.is_valid():
+            form.save()
+            return redirect('coord_yearslist')
+
+    else:
+        form = YearOfStudyForm(instance=yearofstudy)
+    context = get_standard_context(FSJ_user)
+    context["year"] = yearofstudy
+    context["form"] = form
+    url = "/coord_yearslist/" + str(yearofstudy.year) + "/"
+    context["url"] = url
+    template = loader.get_template("FSJ/year_of_study.html")
+    return HttpResponse(template.render(context, request))
+
+#Function for handling coordinator deleting an award
+@login_required
+@user_passes_test(is_coordinator)
+def coordinator_yeardelete(request):
+
+    if request.method == 'POST':
+        yearname_list = request.POST.getlist('todelete')
+
+        for yearname in yearname_list:
+            YearOfStudy.objects.get(year=yearname).delete()
+
+    return redirect('coord_yearslist')

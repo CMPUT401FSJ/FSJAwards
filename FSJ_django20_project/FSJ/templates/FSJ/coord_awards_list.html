@@ -43,7 +43,9 @@
                     <td>{{award.description}}</td>
                     <td>{{award.value}}</td>
                     <td>{{award.programs}}</td>
-                    <td>{{award.get_year_name}}</td>
+                    <td>{% for year in award.years_of_study.all %}
+                            {{year}} <br>
+                        {% endfor %}</td>
                     <td>{{award.deadline}}</td>
                     <td>{{award.documents_needed|yesno}}</td>
                     <td>{{award.is_active|yesno}}</td>
