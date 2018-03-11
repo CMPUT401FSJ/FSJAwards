@@ -14,24 +14,5 @@
 {% endblock %}
 
 {% block content %}
-	<form action='{{ url }}' method='post'>
-		{% csrf_token %}
-		{% for field in form %}
-			<div>
-				<div>
-					{% if field.label %}
-						{{field.label_tag}}
-					{% endif %}
-				</div>
-				<div>
-					{{ field }}
-				</div>
-				{% if field.errors %}
-					{{ field.errors }}
-				{% endif %}
-			</div>
-		{% endfor %}
-		{# Translators: Save button on program page #}
-		<input type='submit' value={% trans "Save" %}>
-	</form>
+    {% include 'FSJ/modelform.html' with form=form url=url %}
 {% endblock %}

@@ -1,0 +1,25 @@
+{% load i18n %} {# NOTE YOU MUST LOAD i18n to every HTML page even though it's also loaded to base.html #}
+
+<form action='{{ url }}' method='post'>
+    {% csrf_token %}
+    {% for field in form %}
+        <div>
+            <div>
+                {% if field.label %}
+                    {{field.label_tag}}
+                {% endif %}
+            </div>
+            <div {% if field.errors %}class='has-error'{% endif %}>
+                {{ field }}
+            </div>
+            {% if field.help_text %}
+                {{ field.help_text }}
+            {% endif %}
+            {% if field.errors %}
+                {{ field.errors }}
+            {% endif %}
+        </div>
+    {% endfor %}
+    {# Save button #}
+    <input type='submit' value={% trans "Save" %}>
+</form>
