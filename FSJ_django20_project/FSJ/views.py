@@ -71,4 +71,8 @@ def awards(request):
     FSJ_user = get_FSJ_user(request.user.username)
     return coordinator_awards(request, FSJ_user)
 
-
+@login_required
+@user_passes_test(is_coordinator)
+def years(request):
+    FSJ_user = get_FSJ_user(request.user.username)
+    return coordinator_yearslist(request, FSJ_user)

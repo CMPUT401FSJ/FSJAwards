@@ -137,6 +137,7 @@ LOGIN_URL = '/FSJ/login/'
 # To control where a user logs into when no "next" parameter is defined.
 LOGIN_REDIRECT_URL = '/FSJ/home/'
 # Where to redirect once a user logs out.
+
 LOGOUT_REDIRECT_URL = '/FSJ/login/'
 
 MEDIA_URL = '/media/'
