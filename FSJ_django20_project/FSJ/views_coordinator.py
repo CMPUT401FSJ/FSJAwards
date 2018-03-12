@@ -237,16 +237,31 @@ def coordinator_awardedit(request, award_idnum):
     template = loader.get_template("FSJ/award.html")
     return HttpResponse(template.render(context, request))
 
-#Function for handling coordinator deleting an award
+#Function for handling coordinator deleting, activating or deactivating an award
 @login_required
 @user_passes_test(is_coordinator)
-def coordinator_awarddelete(request):
+def coordinator_awardaction(request):
 
     if request.method == 'POST':
-        awardid_list = request.POST.getlist('todelete')
-
-        for itemid in awardid_list:
-            Award.objects.get(awardid=itemid).delete()
+        
+        awardid_list = request.POST.getlist('awardaction')
+        
+        if '_delete' in request.POST: 
+            
+            for itemid in awardid_list:
+                Award.objects.get(awardid=itemid).delete()
+                
+        elif '_activate' in request.POST: 
+            for itemid in awardid_list:
+                award = Award.objects.get(awardid=itemid)
+                award.is_active = True
+                award.save()
+            
+        elif '_deactivate' in request.POST:
+            for itemid in awardid_list:
+                award = Award.objects.get(awardid=itemid)
+                award.is_active = False
+                award.save()            
 
     return redirect('coord_awardslist')
 

@@ -4,6 +4,7 @@ from django.contrib import messages
 from django.http import HttpResponse
 from django.template import loader
 from django.shortcuts import redirect
+from django.db.models import Q
 from .models import *
 from .utils import *
 from .forms import *
@@ -25,10 +26,12 @@ def student_home(request, FSJ_user):
     template = loader.get_template("FSJ/student_home.html")
     return HttpResponse(template.render(context, request))
 
-
+@login_required
+@user_passes_test(is_student)
 def student_awardslist(request, award_idnum):
     FSJ_user = get_FSJ_user(request.user.username)
-    unfiltered_list = Award.objects.filter(is_active = True)
+    unfiltered_list = Award.objects.filter(Q(is_active = True), Q(programs = FSJ_user.program) | Q(programs__isnull = True))
+   
     awards_list = []
     in_progress_list = []
     submitted_list = []

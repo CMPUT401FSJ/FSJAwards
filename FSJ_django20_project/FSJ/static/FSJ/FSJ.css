@@ -58,3 +58,14 @@ input.deletebutton {
     padding: 16px;
     margin-left: 32px;
 }
+
+input.actionbutton {
+    background-color: #9AEDB0;
+    border-radius: 8px;
+    color: black;
+    text-align: center;
+    display: inline-block;
+    font-size: 16px;
+    padding: 16px;
+    margin-left: 32px;
+}

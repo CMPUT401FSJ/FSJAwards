@@ -11,7 +11,7 @@
 {% block content %}
 <body>
 <div>
-    <form action="/coord_awardslist/delete/" method="POST">
+    <form action="/coord_awardslist/action/" method="POST">
         {% csrf_token %}
         <table align = "center">
             <tr>
@@ -40,7 +40,7 @@
             </tr>
             {% for award in awards_list %}
                 <tr>
-                    <td><input type="checkbox"  name="todelete" value="{{award.awardid}}" > </td>
+                    <td><input type="checkbox"  name="awardaction" value="{{award.awardid}}" > </td>
                     <td>{{award.award_name }}</td>
                     <td>{{award.description}}</td>
                     <td>{{award.value}}</td>
@@ -68,7 +68,10 @@
             {% endfor %}
         </table>
         {# Translators: Button to delete selected awards #}
-        <input class = "deletebutton" type="submit" name="delete" value={% trans "Delete award(s)" %} />
+        <input class = "actionbutton" type="submit" name="_activate" value={% trans "Activate award(s)" %} />
+        <input class = "actionbutton" type="submit" name="_deactivate" value={% trans "Deactivate award(s)" %} />
+        <input class = "deletebutton" type="submit" name="_delete" value={% trans "Delete award(s)" %} />
+        
     </form>
     {# Translators: Button to add award #}
     <button class = "addbutton" onclick="window.location.href='/coord_awardslist/add'">{% trans "Add award" %}</button>
