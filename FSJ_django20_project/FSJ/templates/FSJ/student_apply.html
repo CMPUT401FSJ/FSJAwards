@@ -27,11 +27,22 @@
     </div>
     
     <div>
-        Programs: {{ award.programs }}
+        Programs: 
+        {% if award.programs.all %}
+            {% for program in award.programs.all %}
+                    {{ program.name }} <br/>
+                            {% endfor %}
+        {% else %}
+            {# Translators: No program chosen for an award, on the list of awards table #}
+            {% trans "N/A" %}
+        {% endif %}
     </div>
     
     <div>
-        Years Of Study: {{ award.years_of_study }}
+        Years Of Study:
+        {% for year in award.years_of_study.all %}
+            {{year}} <br>
+        {% endfor %}
     </div>
     
     <div>
