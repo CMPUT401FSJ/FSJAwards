@@ -333,3 +333,64 @@ def coordinator_committeeslist(request, FSJ_user):
     context["committees_list"] = committees_list
     return HttpResponse(template.render(context,request))
 
+# This handler allows a Coordinator to add a new committee
+@login_required
+@user_passes_test(is_coordinator)
+def coordinator_addcommittee(request):
+    FSJ_user = get_FSJ_user(request.user.username)
+    
+    # If the coordinator has just saved their new adjudicator, check for form validity before saving. Invalid forms are put back into the template to show errors.
+    if request.method == "POST":
+        # Loads adjudicator form with the new information
+        form = CommitteeForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('coord_committeeslist')
+    else:
+        # If the coordinator hasn't entered information yet, create a blank adjudicator
+        form = CommitteeForm()           
+    context = get_standard_context(FSJ_user)
+    template = loader.get_template("FSJ/committee.html")
+    context["form"] = form
+    url = "coord_committeeslist/add/"
+    context["url"] = url
+    return HttpResponse(template.render(context, request))
+
+#function for handling coordinator editing a committee
+@login_required
+@user_passes_test(is_coordinator)
+def coordinator_committeeedit(request, committee_idnum):
+    FSJ_user = get_FSJ_user(request.user.username)
+    try:
+        committee = Committee.objects.get(committeeid = committee_idnum)
+    except Committee.DoesNotExist:
+        raise Http404("Committee does not exist")
+
+    if request.method == "POST":
+        form = CommitteeForm(request.POST, instance=committee)
+        if form.is_valid():
+            form.save()
+            return redirect('coord_committeeslist')
+
+    else:
+        form = CommitteeForm(instance=committee)
+    context = get_standard_context(FSJ_user)
+    context["committee"] = committee
+    context["form"] = form
+    url = "/coord_committeeslist/" + str(committee.committeeid) + "/"
+    context["url"] = url
+    template = loader.get_template("FSJ/committee.html")
+    return HttpResponse(template.render(context, request))
+
+#Function for handling coordinator deleting a committee
+@login_required
+@user_passes_test(is_coordinator)
+def coordinator_committeedelete(request):
+
+    if request.method == 'POST':
+        committeeid_list = request.POST.getlist('instance')
+
+        for itemid in committeeid_list:
+            Committee.objects.get(committeeid=itemid).delete()
+
+    return redirect('coord_committeeslist')

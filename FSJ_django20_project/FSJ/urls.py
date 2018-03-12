@@ -24,5 +24,8 @@ urlpatterns = [
     path('coord_yearslist/add/', views.coordinator_addyearofstudy, name = 'coord_addyear'),
     path('coord_yearslist/delete/', views.coordinator_yeardelete, name='coord_deleteyear'),
     path('coord_yearslist/<str:year_name>/', views.coordinator_yearedit, name = 'coord_yearedit'),
-    path('coord_committeeslist/', views.committees, name = 'committeelist')
+    path('coord_committeeslist/', views.committees, name = 'coord_committeeslist'),
+    path('coord_committeeslist/add/', views.coordinator_addcommittee, name = 'coord_addcommittee'),
+    path('coord_committeeslist/delete/', views.coordinator_committeedelete, name='coord_deletecommittee'),
+    path('coord_committeeslist/<str:committee_idnum>/', views.coordinator_committeeedit, name = 'coord_committeeedit'),
 ]
