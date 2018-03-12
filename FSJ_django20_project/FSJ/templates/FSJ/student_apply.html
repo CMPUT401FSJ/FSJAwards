@@ -9,28 +9,49 @@
 {% block content %}
     <br/>
     <div>
-    Description: {{ award.description}} 
+        {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                    <li class="{{ message.tags }}">{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
     </div>
+    
     <div>
-    Value: {{ award.value }}
+        Description: {{ award.description}} 
     </div>
+    
     <div>
-    Programs: {{ award.programs }}
+        Value: {{ award.value }}
     </div>
+    
     <div>
-    Years Of Study: {{ award.years_of_study }}
+        Programs: {{ award.programs }}
     </div>
+    
     <div>
-    Deadline: {{ award.deadline }}
+        Years Of Study: {{ award.years_of_study }}
     </div>
+    
     <div>
-    Documents Needed: {{ award.documents_needed }}
+        Deadline: {{ award.deadline }}
     </div>
+    
     <div>
-    <form action='{{ context.url }}' method='post'>
-        {% csrf_token %}
-        {# Submit button on application #}
-        <input type='submit' value={% trans "Submit" %}>
-    </form>
+        Documents Needed: {{ award.documents_needed }}
+    </div>
+    
+    <div>
+        <form action='{{ context.url }}' method='post' enctype="multipart/form-data">
+            {% csrf_token %}
+                {% if award.documents_needed %}
+                    {{ form.as_p }}
+                {% endif %}
+            {# Save button on application #}
+            <input type='submit' name='_save' value={% trans "Save" %}>
+            {# Submit button on application #}
+            <input type='submit' name='_submit' value={% trans "Submit" %}>
+        </form>
     </div>
 {% endblock %}

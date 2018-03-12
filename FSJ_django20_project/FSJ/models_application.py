@@ -9,6 +9,7 @@ class Application(models.Model):
     award = models.ForeignKey(Award, on_delete=models.CASCADE, related_name='applications')
     student = models.ForeignKey(FSJUser, on_delete=models.CASCADE, related_name='applications', to_field='ccid')
     is_submitted = models.BooleanField(verbose_name = _("Is Submitted"))
+    application_file = models.FileField(null=True, blank=True, upload_to='documents/')
     
     def __str__(self):
         return self.student.ccid + "'s application for " + self.award.award_name    

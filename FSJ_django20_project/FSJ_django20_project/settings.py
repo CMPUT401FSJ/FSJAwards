@@ -138,3 +138,7 @@ LOGIN_URL = '/FSJ/login/'
 LOGIN_REDIRECT_URL = '/FSJ/home/'
 # Where to redirect once a user logs out.
 LOGOUT_REDIRECT_URL = '/FSJ/login/'
+
+MEDIA_URL = '/media/'
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')

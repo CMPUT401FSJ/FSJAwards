@@ -28,9 +28,9 @@
                 {# Translators: Award documents needed header in awards table #}
                 <th>{% trans "Documents Required?" %}</th>
                 {# Translators: Apply button header in awards table #}
-                <th>{% trans "Apply" %}</th>
+                <th>{% trans "Action" %}</th>
             </tr>
-            <tr><th>New awards</th></tr>
+            <tr><th colspan=8>New awards</th></tr>
             {% for award in awards_list %}
                 <tr>
                     <td>{{award.award_name }}</td>
@@ -44,7 +44,7 @@
                     <td><a href="/student_awardslist/{{ award.awardid }}/apply/">{% trans "Apply" %}</a></td>
                 </tr>
             {% endfor %}
-            <tr><th>In-progress awards</th></tr>
+            <tr><th colspan=8>In-progress awards</th></tr>
             {% for award in in_progress_list %}
                 <tr>
                     <td>{{award.award_name }}</td>
@@ -58,7 +58,7 @@
                     <td><a href="/student_awardslist/{{ award.awardid }}/edit/">{% trans "Edit" %}</a></td>
                 </tr>
             {% endfor %}
-            <tr><th>Submitted awards</th></tr>
+            <tr><th colspan=8>Submitted awards</th></tr>
             {% for award in submitted_list %}
                 <tr>
                     <td>{{award.award_name }}</td>
@@ -68,8 +68,8 @@
                     <td>{{award.get_year_name}}</td>
                     <td>{{award.deadline}}</td>
                     <td>{{award.documents_needed}}</td>
-                    {# Translators: Edit application button in student award table #}
-                    <td><a href="/student_awardslist/{{ award.awardid }}/edit/">{% trans "Edit" %}</a></td>
+                    {# Translators: Unsubmit application button in student award table #}
+                    <td><a href="/student_awardslist/{{ award.awardid }}/unsubmit/">{% trans "Unsubmit" %}</a></td>
                 </tr>
             {% endfor %}
         </table>
