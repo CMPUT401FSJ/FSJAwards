@@ -1,9 +1,27 @@
-from .models_FSJUser import FSJUser
+from .models import *
 import django_filters
 
-class UserFilter(django_filters.FilterSet):
-	#allow for filtering based on partial search
+class StudentFilter(django_filters.FilterSet):
+	ccid = django_filters.CharFilter(lookup_expr='icontains')
 	first_name = django_filters.CharFilter(lookup_expr='icontains')
+	last_name = django_filters.CharFilter(lookup_expr='icontains')
 	class Meta:
-		model = FSJUser
-		fields = ['ccid','first_name','last_name','email']
+		model = Student
+		fields = ['ccid','first_name','last_name','year','program']
+
+#TODO: add fields 'assigned awards' and 'committee'
+class AdjudicatorFilter(django_filters.FilterSet):
+	ccid = django_filters.CharFilter(lookup_expr='icontains')
+	first_name = django_filters.CharFilter(lookup_expr='icontains')
+	last_name = django_filters.CharFilter(lookup_expr='icontains')
+	class Meta:
+		model = Adjudicator
+		fields = ['ccid','first_name','last_name']
+
+class AwardFilter(django_filters.FilterSet):
+	award_name = django_filters.CharFilter(lookup_expr='icontains')
+	description = django_filters.CharFilter(lookup_expr='icontains')
+	class Meta:
+		model = Award
+		fields = ['award_name','description','value','programs','years_of_study','deadline','documents_needed','is_active']
+

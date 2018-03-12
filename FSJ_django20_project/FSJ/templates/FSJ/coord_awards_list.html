@@ -11,6 +11,10 @@
 {% block content %}
 <body>
 <div>
+    <form method="get">
+      {{filter.form.as_p}}
+      <button type "submit">Filter</button>
+    </form>
     <form action="/coord_awardslist/delete/" method="POST">
         {% csrf_token %}
         <table align = "center">
@@ -36,7 +40,7 @@
                 {# Translators: Award edit header in awards table #}
                 <th>{% trans "Edit" %}</th>
             </tr>
-            {% for award in awards_list %}
+            {% for award in filter.qs %}
                 <tr>
                     <td><input type="checkbox"  name="todelete" value="{{award.awardid}}" > </td>
                     <td>{{award.award_name }}</td>

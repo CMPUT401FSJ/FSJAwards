@@ -12,6 +12,10 @@
 {% block content %}
 <body>
 <div>
+<form method="get">
+  {{filter.form.as_p}}
+  <button type "submit">Filter</button>
+</form>
 <form action="/adjudicatorlist/delete/" method="POST">
 {% csrf_token %}
 <table align = "center">
@@ -27,7 +31,7 @@
   {# Translators: View header in adjudicator table #}
   <th>{% trans "View" %}</th>
  </tr>
-{% for adjudicator in adjudicator_list %}
+{% for adjudicator in filter.qs %}
     <tr>
      <td><input type="checkbox"  name="instance" value="{{adjudicator.ccid}}" >
      <td>{{ adjudicator.ccid }}</td>
