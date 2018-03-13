@@ -17,18 +17,16 @@
     text-align: center;
 }
 
-.banner div a {
+.banner div a.header {
     display: block;
     padding-top: 10px;
+    color: #4F4C25;
+    font-size: 15;
 }
 
 .banner #logout {
     position: absolute;
     right: 10px;
-}
-
-a.header {
-    color: grey;
 }
 
 table {
