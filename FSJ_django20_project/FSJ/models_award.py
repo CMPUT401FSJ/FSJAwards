@@ -11,7 +11,7 @@ class Award(models.Model):
 	award_name = models.TextField(verbose_name = _("Award Name"))
 	description = models.TextField(verbose_name = _("Description"))
 	value = models.TextField(verbose_name = _("Value"))
-	programs = models.ManyToManyField(Program, null = True, blank = True)
+	programs = models.ManyToManyField(Program, blank = True)
 	years_of_study = models.ManyToManyField(YearOfStudy)
 	deadline = models.DateTimeField(auto_now = False, auto_now_add = False, verbose_name = _("Deadline"))
 	documents_needed = models.BooleanField(verbose_name = _("Documents Required"))

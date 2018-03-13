@@ -16,6 +16,8 @@
                     <tr>
                         {# Translators: Action header in program table #}
                         <th>{% trans "Action" %}</th>
+                        {# Translators: Program Code header in program table #}
+                        <th>{% trans "Code" %}</th>
                         {# Translators: Program name header in program table #}
                         <th>{% trans "Program" %}</th>
                         {# Translators: Program edit header in program table #}
@@ -23,10 +25,11 @@
                     </tr>
                     {% for program in programs_list %}
                         <tr>
-                            <td><input type="checkbox"  name="todelete" value="{{ program.programid }}" > </td>
+                            <td><input type="checkbox"  name="todelete" value="{{ program.code }}" > </td>
+                            <td>{{ program.code }}</td>
                             <td>{{ program.name }}</td>
-                            {# Translators: Edit link in coordinator program list #}
-                            <td><a href="/programs/edit/{{ program.programid }}/">{% trans "Edit" %}</a></td>
+                            {# Translators: Edit button in coordinator program list #}
+                            <td><a href="/programs/edit/{{ program.code }}/">{% trans "Edit" %}</a></td>
                         </tr>
                     {% endfor %}
                 </table>

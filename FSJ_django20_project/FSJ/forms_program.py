@@ -7,4 +7,4 @@ class ProgramForm(ModelForm):
     class Meta:
         model = Program
         exclude = ()
-        fields = ('name',)
+        fields = ('code', 'name',)
