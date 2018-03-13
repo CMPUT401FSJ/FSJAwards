@@ -20,6 +20,10 @@ urlpatterns = [
     path('coord_awardslist/add/', views.coordinator_add_awards, name = 'coord_addaward'),
     path('coord_awardslist/delete/', views.coordinator_awarddelete, name='coord_deleteaward'),
     path('coord_awardslist/<str:award_idnum>/', views.coordinator_awardedit, name = 'coord_awardedit'),
+    path('programs/list_programs/', views.list_programs, name='list_programs'),
+    path('programs/add/', views.add_program, name='add_program'),
+    path('programs/edit/<str:program_code>/', views.edit_program, name='edit_program'),
+    path('programs/delete/', views.delete_programs, name='delete_programs'),
     path('coord_yearslist/', views.years, name='coord_yearslist'),
     path('coord_yearslist/add/', views.coordinator_addyearofstudy, name = 'coord_addyear'),
     path('coord_yearslist/delete/', views.coordinator_yeardelete, name='coord_deleteyear'),
@@ -27,5 +31,5 @@ urlpatterns = [
     path('coord_committeeslist/', views.committees, name = 'coord_committeeslist'),
     path('coord_committeeslist/add/', views.coordinator_addcommittee, name = 'coord_addcommittee'),
     path('coord_committeeslist/delete/', views.coordinator_committeedelete, name='coord_deletecommittee'),
-    path('coord_committeeslist/<str:committee_idnum>/', views.coordinator_committeeedit, name = 'coord_committeeedit'),
+    path('coord_committeeslist/<str:committee_idnum>/', views.coordinator_committeeedit, name = 'coord_committeeedit')
 ]

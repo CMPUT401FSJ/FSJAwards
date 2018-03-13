@@ -1,0 +1,37 @@
+{% extends "FSJ/base_with_banner.html" %}
+{% load i18n %} {# NOTE YOU MUST LOAD i18n to every HTML page even though it's also loaded to base.html #}
+
+{# A standardized page for viewing the fields of an individual program #}
+{# This page is also used to edit programs, it is up to the form to disable/enable views #}
+{% block heading %}
+	{% if program_code %}
+		{# Translators: Edit program page heading #}
+		{% trans "Edit Program" %}
+	{% else %}
+		{# Translators: Add program page heading #}
+		{% trans "Add Program" %}
+	{% endif %}
+{% endblock %}
+
+{% block content %}
+	<form action='{{ url }}' method='post'>
+		{% csrf_token %}
+		{% for field in form %}
+			<div>
+				<div>
+					{% if field.label %}
+						{{field.label_tag}}
+					{% endif %}
+				</div>
+				<div>
+					{{ field }}
+				</div>
+				{% if field.errors %}
+					{{ field.errors }}
+				{% endif %}
+			</div>
+		{% endfor %}
+		{# Translators: Save button on program page #}
+		<input type='submit' value={% trans "Save" %}>
+	</form>
+{% endblock %}

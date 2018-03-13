@@ -8,3 +8,4 @@ from .models_coordinator import Coordinator
 from .models_award import Award
 from .models_yearofstudy import YearOfStudy
 from .models_committee import Committee
+from .models_program import Program
