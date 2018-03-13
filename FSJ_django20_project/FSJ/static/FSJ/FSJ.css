@@ -1,24 +1,44 @@
+.center-content {
+    padding-top: 1%;
+    display: inline-block;
+    width: 80%;
+    padding-left: 10%;
+}
+
 .banner {
-    background-color: MediumSeaGreen;
-    border: 1px solid;
+    min-height: 10px;
+    margin-bottom: -15px;
 }
 
 .banner div {
     display: inline-block;
-    width: 10%;
+    min-width: 120px;
+    width: 120px;
+    text-align: center;
+}
+
+.banner div a {
+    display: block;
+    padding-top: 10px;
+}
+
+.banner #logout {
+    position: absolute;
+    right: 10px;
 }
 
 a.header {
-    color: white;
-}
-
-a {
-    color: blue;
+    color: grey;
 }
 
 table {
     border-collapse: collapse;
-    margin: 32px;
+    margin-top: 12px;
+}
+
+th {
+    background-color: #007C41;
+    color: white;
 }
 
 td, th {
@@ -27,28 +47,32 @@ td, th {
     padding: 8px;
 }
 
-tr:nth-child(even) {
-    background-color: #dddddd;
+div.ualberta-themed-header div.ualberta-themed {
+    background-color: #007C41;
+    height: 90%;
+    min-height: 60px;
+    color: white;
 }
 
-button.addbutton {
-    background-color: #4CAF50;
-    border-radius: 8px;
-    color: white;
-    text-align: center;
-    display: inline-block;
-    font-size: 16px;
-    padding: 16px;
-    margin-left: 32px;
+div.ualberta-themed-header div.ualberta-themed h1 {
+    padding: 1.1%;
 }
 
-input.deletebutton {
-    background-color: #FF0000;
-    border-radius: 8px;
-    color: white;
-    text-align: center;
-    display: inline-block;
-    font-size: 16px;
-    padding: 16px;
-    margin-left: 32px;
+div.ualberta-themed-header div.ualberta-themed-gold-bar {
+    background-color: #FFDB05;
+    min-height: 5px;
+    height: 5%;
+}
+
+div.ualberta-themed-header {
+    height: 35px;
+    margin-bottom: 30px;
+}
+
+.btn {
+    width: 182px;
+}
+
+.btn-success {
+    background-color: #007C41 !important;
 }

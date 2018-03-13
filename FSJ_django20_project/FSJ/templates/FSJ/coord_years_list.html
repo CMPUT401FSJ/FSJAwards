@@ -8,33 +8,33 @@
 {% endblock %}
 
 {% block content %}
-<body>
-<div>
-    <form action="/coord_yearslist/delete/" method="POST">
-        {% csrf_token %}
-        <table align = "center">
-            <tr>
-                {# Translators: Action header in years table #}
-                <th>{% trans "Action" %}</th>
-                {# Translators: Year header in years table #}
-                <th>{% trans "Year" %}</th>
-                {# Translators: Award edit header in years table #}
-                <th>{% trans "Edit" %}</th>
-            </tr>
-            {% for year in years_list %}
-                <tr>
-                    <td><input type="checkbox"  name="todelete" value="{{year.year}}" > </td>
-                    <td>{{year.year }}</td>
-                    {# Translators: Edit button in coordinator years list #}
-                    <td><a href="/coord_yearslist/{{ year.year }}/">{% trans "Edit" %}</a></td>
-                </tr>
-            {% endfor %}
-        </table>
-        {# Translators: Button to delete selected yearss #}
-        <input class = "deletebutton" type="submit" name="delete" value={% trans "Delete year(s)" %} />
-    </form>
-    {# Translators: Button to add award #}
-    <button class = "addbutton" onclick="window.location.href='/coord_yearslist/add'">{% trans "Add year" %}</button>
-</div>
-</body>
+    <body>
+        <div class='center-content'>
+            <form action="/coord_yearslist/delete/" method="POST">
+                {% csrf_token %}
+                <table class="table table-bordered table-striped table-hover" align="center">
+                    <tr>
+                        {# Translators: Action header in years table #}
+                        <th>{% trans "Action" %}</th>
+                        {# Translators: Year header in years table #}
+                        <th>{% trans "Year" %}</th>
+                        {# Translators: Award edit header in years table #}
+                        <th>{% trans "Edit" %}</th>
+                    </tr>
+                    {% for year in years_list %}
+                        <tr>
+                            <td><input type="checkbox"  name="todelete" value="{{year.year}}" > </td>
+                            <td>{{year.year }}</td>
+                            {# Translators: Edit link in coordinator years list #}
+                            <td><a href="/coord_yearslist/{{ year.year }}/">{% trans "Edit" %}</a></td>
+                        </tr>
+                    {% endfor %}
+                </table>
+                {# Translators: Button to add award #}
+                <a role="button" class="btn btn-success" href='/coord_yearslist/add'>{% trans "Add year" %}</a>
+                {# Translators: Button to delete selected yearss #}
+                <button class="btn btn-danger" type="submit" name="delete">{% trans "Delete year(s)" %}</button>
+            </form>
+        </div>
+    </body>
 {% endblock %}
