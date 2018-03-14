@@ -204,7 +204,7 @@ class ApplicationTestModels(TestCase):
         self.award.years_of_study.add(self.year_of_study)
         self.student = Student.objects.create(ccid = self.ccid, first_name = self.first_name, last_name = self.last_name,
                                               email = self.email, ualberta_id = self.ualberta_id, year = self.year_of_study, program = self.program)
-        self.application_is_submitted = True
+        self.application_is_submitted = False
         self.application = Application.objects.create(award = self.award, student = self.student, is_submitted = self.application_is_submitted)
 
     def test_application_creation(self):
@@ -228,4 +228,14 @@ class ApplicationTestModels(TestCase):
         Student.objects.get(ccid = self.ccid).delete()
         with self.assertRaises(Application.DoesNotExist):
             application = Application.objects.get(application_id = self.application.application_id)
+            
+    def test_submit_application(self):
+        self.application.is_submitted = True
+        self.application.save()
+        application = Application.objects.get(application_id = self.application.application_id)
+        self.assertTrue(application.is_submitted)
+        self.application.is_submitted = False
+        self.application.save()
+        application = Application.objects.get(application_id = self.application.application_id)
+        self.assertFalse(application.is_submitted)
             
