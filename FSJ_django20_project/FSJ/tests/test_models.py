@@ -280,10 +280,10 @@ class ProgramModelTests(TestCase):
         student = Student.objects.get(ccid = self.ccid)
         program = Program.objects.get(code = self.program_code)
         self.assertEqual(student.program, program)
-        self.assertTrue(program in award.programs)
+        self.assertTrue(program in award.programs.all())
         program.delete()
         award = Award.objects.get(awardid = self.award.awardid)
         student = Student.objects.get(ccid = self.ccid)
         self.assertIsNone(student.program)
-        self.assertIsFalse(program in award.programs)
+        self.assertFalse(program in award.programs.all())
         
