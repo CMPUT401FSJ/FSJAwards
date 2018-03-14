@@ -5,6 +5,7 @@ from django import forms
 from .models_program import Program
 from .models_yearofstudy import *
 
+
 # This class inherits from a standard FSJ User and extends for Student specific attributes and methods
 class Student(FSJUser):
     program = models.ForeignKey(Program, on_delete = models.SET_NULL, null = True, blank = True)
@@ -18,3 +19,4 @@ class Student(FSJUser):
     
     def student_id(self):
         return self.ualberta_id
+    

@@ -19,7 +19,7 @@ def redirect_to_home(request):
 def home(request):
     FSJ_user = get_FSJ_user(request.user.username)
     if isinstance(FSJ_user, Student):
-        return student_home(request, FSJ_user)
+        return student_awardslist(request, FSJ_user)
     elif isinstance(FSJ_user, Coordinator):
         return coordinator_home(request, FSJ_user)
     elif isinstance(FSJ_user, Adjudicator):

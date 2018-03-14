@@ -1,0 +1,79 @@
+{% extends "FSJ/base_with_banner.html" %}
+{% load i18n %} {# NOTE YOU MUST LOAD i18n to every HTML page even though it's also loaded to base.html #}
+
+{# A trial Application form #}
+{% block heading %}
+    {{ award.award_name }}
+{% endblock %}
+
+{% block content %}
+    <br/>
+    <div>
+        {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                    <li class="{{ message.tags }}">{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    </div>
+    
+    <div>
+        {# Translators: Description for award on student application page #}
+        {% trans "Description:" %} {{ award.description}} 
+    </div>
+    
+    <div>
+        {# Translators: Value for award on student application page #}
+        {% trans "Value:" %} {{ award.value }}
+    </div>
+    
+    <div>
+        {# Translators: Programs for award on student application page #}
+        {% trans "Programs:" %} 
+        {% if award.programs.all %}
+            <ul>
+                {% for program in award.programs.all %}
+                    <li>{{ program.name }} </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            {# Translators: No program chosen for an award, on the list of awards table #}
+            {% trans "N/A" %}
+        {% endif %}
+    </div>
+    
+    <div>
+    {# Translators: Years of Study for award on student application page #}
+        {% trans "Years Of Study:" %}
+        <ul>
+            {% for year in award.years_of_study.all %}
+                <li>{{year}}</li>
+            {% endfor %}
+        </ul>
+    </div>
+    
+    <div>
+    {# Translators: Deadline for award on student application page #}
+        {% trans "Deadline:" %} {{ award.deadline }}
+    </div>
+    
+    <div>
+        {# Translators: Documents needed indicator on student application page #}
+        {% trans "Documents Needed:" %} <input type="checkbox" disabled {% if award.documents_needed %}checked{% endif %}>
+    </div>
+    
+    <div>
+        <form action='{{ context.url }}' method='post' enctype="multipart/form-data">
+            {% csrf_token %}
+                {% if award.documents_needed %}
+                    {{ form.as_p }}
+                {% endif %}
+            
+            {# Save button on application #}
+            <button class = "btn btn-success" type="submit" name="_save">{% trans "Save application" %}</button>
+            {# Submit button on application #}
+            <button class = "btn btn-success" type="submit" name="_submit">{% trans "Submit application" %}</button>
+        </form>
+    </div>
+{% endblock %}

@@ -1,6 +1,8 @@
 from django.contrib.auth import views as auth_views
 from django.urls import path
 from . import views
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('', views.redirect_to_home, name='redirect_to_home'),
@@ -18,7 +20,7 @@ urlpatterns = [
     path('adjudicatorlist/<str:usr_ccid>/', views.coordinator_adjudicatordetail, name = 'adjudicatordetail'),
     path('coord_awardslist/', views.awards, name='coord_awardslist'),
     path('coord_awardslist/add/', views.coordinator_add_awards, name = 'coord_addaward'),
-    path('coord_awardslist/delete/', views.coordinator_awarddelete, name='coord_deleteaward'),
+    path('coord_awardslist/action/', views.coordinator_awardaction, name='coord_awardaction'),
     path('coord_awardslist/<str:award_idnum>/', views.coordinator_awardedit, name = 'coord_awardedit'),
     path('programs/list_programs/', views.list_programs, name='list_programs'),
     path('programs/add/', views.add_program, name='add_program'),
@@ -31,5 +33,13 @@ urlpatterns = [
     path('coord_committeeslist/', views.committees, name = 'coord_committeeslist'),
     path('coord_committeeslist/add/', views.coordinator_addcommittee, name = 'coord_addcommittee'),
     path('coord_committeeslist/delete/', views.coordinator_committeedelete, name='coord_deletecommittee'),
-    path('coord_committeeslist/<str:committee_idnum>/', views.coordinator_committeeedit, name = 'coord_committeeedit')
+    path('coord_committeeslist/<str:committee_idnum>/', views.coordinator_committeeedit, name = 'coord_committeeedit'),
+    path('coord_awardslist/<str:award_idnum>/applications/', views.coordinator_application_list, name = 'coord_applicationlist'),
+    path('student_awardslist/', views.student_awardslist, name = 'student_awardslist'),
+    path('student_awardslist/<str:award_idnum>/apply/', views.student_addapplication, name = 'student_addapplication'),
+    path('student_awardslist/<str:award_idnum>/edit/', views.student_editapplication, name = 'student_editapplication'),
+    path('student_awardslist/<str:award_idnum>/unsubmit/', views.student_unsubmitapplication, name = 'student_unsubmitapplication')    
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
