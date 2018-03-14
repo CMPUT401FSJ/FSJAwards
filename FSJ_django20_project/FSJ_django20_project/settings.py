@@ -139,3 +139,7 @@ LOGIN_URL = '/FSJ/login/'
 LOGIN_REDIRECT_URL = '/FSJ/home/'
 # Where to redirect once a user logs out.
 LOGOUT_REDIRECT_URL = '/FSJ/login/'
+
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
