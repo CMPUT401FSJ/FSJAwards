@@ -39,6 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_filters',
+    'widget_tweaks'
 ]
 
 MIDDLEWARE = [
@@ -137,8 +139,11 @@ LOGIN_URL = '/FSJ/login/'
 # To control where a user logs into when no "next" parameter is defined.
 LOGIN_REDIRECT_URL = '/FSJ/home/'
 # Where to redirect once a user logs out.
-
 LOGOUT_REDIRECT_URL = '/FSJ/login/'
+
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
 
 MEDIA_URL = '/media/'
 

@@ -26,6 +26,14 @@ class FSJUser(models.Model):
     def __str__(self):
         return self.ccid
     
+
+    # The user class for a base FSJUSer is nonexistent. This method needs to be overridden by classes that inherit from it
+    def user_class(self):
+        return None
+
+    def get_name(self):
+        return self.first_name + ' ' + self.last_name
+
     @transaction.atomic # The method is an atomic transaction so if something occurs part way through it will not persist the User.
     def save(self, *args, **kwargs):
         if not self.user:
@@ -39,3 +47,4 @@ class FSJUser(models.Model):
         super(FSJUser, self).delete(*args, **kwargs)
         if self.user:
             self.user.delete() 
+

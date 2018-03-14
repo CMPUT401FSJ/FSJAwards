@@ -1,8 +1,10 @@
-from django.contrib.auth.decorators import login_required, user_passes_test
 from django.core.exceptions import PermissionDenied
+from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.http import HttpResponse, Http404
-from django.shortcuts import redirect
 from django.template import loader
+from django.shortcuts import redirect
+from .filters import *
 from .models import *
 from .utils import *
 from .forms import *
@@ -30,10 +32,12 @@ def coordinator_home(request, FSJ_user):
 def coordinator_studentlist(request):
     FSJ_user = get_FSJ_user(request.user.username)
     student_list = Student.objects.all()
+    filtered_list = StudentFilter(request.GET, queryset=student_list)
     template = loader.get_template("FSJ/coord_student_list.html")
     context = get_standard_context(FSJ_user)
     context["student_list"] = student_list
-    return HttpResponse(template.render(context, request)) 
+    context["filter"] = filtered_list
+    return HttpResponse(template.render(context, request))
 
 # The handler used by the Coordinator class to produce a list of all adjudicators in the database, using the adjudicator_student_list template.
 @login_required
@@ -41,9 +45,11 @@ def coordinator_studentlist(request):
 def coordinator_adjudicatorlist(request):
     FSJ_user = get_FSJ_user(request.user.username)
     adjudicator_list = Adjudicator.objects.all()
+    filtered_list = AdjudicatorFilter(request.GET, queryset=adjudicator_list)
     template = loader.get_template("FSJ/coord_adjudicator_list.html")
     context = get_standard_context(FSJ_user)
     context["adjudicator_list"] = adjudicator_list
+    context["filter"] = filtered_list
     return HttpResponse(template.render(context, request)) 
 
 
@@ -132,7 +138,7 @@ def coordinator_addstudent(request):
 
 
 # This handler allows a Coordinator to add a new Adjudicator
-@login_required
+@login_required 
 @user_passes_test(is_coordinator)
 def coordinator_addadjudicator(request):
     FSJ_user = get_FSJ_user(request.user.username)
@@ -186,9 +192,11 @@ def coordinator_deleteadjudicator(request):
 @user_passes_test(is_coordinator)
 def coordinator_awards(request, FSJ_user):
     awards_list = Award.objects.all()
+    filtered_list = AwardFilter(request.GET, queryset=awards_list)
     template = loader.get_template("FSJ/coord_awards_list.html")
     context = get_standard_context(FSJ_user)
     context["awards_list"] = awards_list
+    context["filter"] = filtered_list
     return HttpResponse(template.render(context,request))
 
 #function for handling coordinator adding an award
@@ -403,6 +411,78 @@ def coordinator_yeardelete(request):
 
     return redirect('coord_yearslist')
 
+#function for handling coordinator viewing a list of committees
+@login_required
+@user_passes_test(is_coordinator)
+def coordinator_committeeslist(request, FSJ_user):
+    committees_list = Committee.objects.all()
+    template = loader.get_template("FSJ/coord_committee_list.html")
+    context = get_standard_context(FSJ_user)
+    context["committees_list"] = committees_list
+    return HttpResponse(template.render(context,request))
+
+# This handler allows a Coordinator to add a new committee
+@login_required
+@user_passes_test(is_coordinator)
+def coordinator_addcommittee(request):
+    FSJ_user = get_FSJ_user(request.user.username)
+    
+    # If the coordinator has just saved their new comittee, check for form validity before saving. Invalid forms are put back into the template to show errors.
+    if request.method == "POST":
+        # Loads adjudicator form with the new information
+        form = CommitteeForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('coord_committeeslist')
+    else:
+        # If the coordinator hasn't entered information yet, create a blank committee
+        form = CommitteeForm()           
+    context = get_standard_context(FSJ_user)
+    template = loader.get_template("FSJ/committee.html")
+    context["form"] = form
+    url = "/coord_committeeslist/add/"
+    context["url"] = url
+    return HttpResponse(template.render(context, request))
+
+#function for handling coordinator editing a committee
+@login_required
+@user_passes_test(is_coordinator)
+def coordinator_committeeedit(request, committee_idnum):
+    FSJ_user = get_FSJ_user(request.user.username)
+    try:
+        committee = Committee.objects.get(committeeid = committee_idnum)
+    except Committee.DoesNotExist:
+        raise Http404("Committee does not exist")
+
+    if request.method == "POST":
+        form = CommitteeForm(request.POST, instance=committee)
+        if form.is_valid():
+            form.save()
+            return redirect('coord_committeeslist')
+
+    else:
+        form = CommitteeForm(instance=committee)
+    context = get_standard_context(FSJ_user)
+    context["committee"] = committee
+    context["form"] = form
+    url = "/coord_committeeslist/" + str(committee.committeeid) + "/"
+    context["url"] = url
+    template = loader.get_template("FSJ/committee.html")
+    return HttpResponse(template.render(context, request))
+
+#Function for handling coordinator deleting a committee
+@login_required
+@user_passes_test(is_coordinator)
+def coordinator_committeedelete(request):
+
+    if request.method == 'POST':
+        committeeid_list = request.POST.getlist('instance')
+
+        for itemid in committeeid_list:
+            Committee.objects.get(committeeid=itemid).delete()
+
+    return redirect('coord_committeeslist')
+
 # Handler for coordinator to see applications
 @login_required
 @user_passes_test(is_coordinator)
@@ -422,4 +502,3 @@ def coordinator_application_list(request, award_idnum):
 
     template = loader.get_template("FSJ/application_list.html")
     return HttpResponse(template.render(context, request))
-

@@ -30,6 +30,10 @@ urlpatterns = [
     path('coord_yearslist/add/', views.coordinator_addyearofstudy, name = 'coord_addyear'),
     path('coord_yearslist/delete/', views.coordinator_yeardelete, name='coord_deleteyear'),
     path('coord_yearslist/<str:year_name>/', views.coordinator_yearedit, name = 'coord_yearedit'),
+    path('coord_committeeslist/', views.committees, name = 'coord_committeeslist'),
+    path('coord_committeeslist/add/', views.coordinator_addcommittee, name = 'coord_addcommittee'),
+    path('coord_committeeslist/delete/', views.coordinator_committeedelete, name='coord_deletecommittee'),
+    path('coord_committeeslist/<str:committee_idnum>/', views.coordinator_committeeedit, name = 'coord_committeeedit'),
     path('coord_awardslist/<str:award_idnum>/applications/', views.coordinator_application_list, name = 'coord_applicationlist'),
     path('student_awardslist/', views.student_awardslist, name = 'student_awardslist'),
     path('student_awardslist/<str:award_idnum>/apply/', views.student_addapplication, name = 'student_addapplication'),
@@ -39,4 +43,3 @@ urlpatterns = [
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-
