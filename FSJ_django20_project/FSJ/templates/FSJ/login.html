@@ -9,26 +9,31 @@
 {% endblock %}
 
 {% block content %}
-    <form method="post" action="{% url 'login' %}">
-    {% csrf_token %}
-    <table>
-    <tr>
-        <td>
-            {# Translators: Login page username label #}
-            {{ form.username.label_tag }}
-        </td>
-        <td>{{ form.username }}</td>
-    </tr>
-    <tr>
-        <td>
-            {# Translators: Login page password label #}
-            {{ form.password.label_tag }}
-        </td>
-        <td>{{ form.password }}</td>
-    </tr>
-    </table>
-    {# Translators: Login button label #}
-    <input type="submit" value="{% trans "Login" %}" />
-    <input type="hidden" name="next" value="{{ next }}" />
-    </form>
+    <div class="center-content">
+        <form method="post" action="{% url 'login' %}">
+            {% csrf_token %}
+            {% for field in form %}
+                <div>
+                    <div>
+                        {% if field.label %}
+                            {{field.label_tag}}
+                        {% endif %}
+                    </div>
+                    <div {% if field.errors %}class='has-error'{% endif %}>
+                        {{ field }}
+                    </div>
+                    {% if field.help_text %}
+                        {{ field.help_text }}
+                    {% endif %}
+                    {% if field.errors %}
+                        {{ field.errors }}
+                    {% endif %}
+                </div>
+            {% endfor %}
+            <br/>
+            {# Translators: Login button label #}
+            <button class="btn btn-success" type="submit">{% trans "Login" %}</button>
+            <input type="hidden" name="next" value="{{ next }}" />
+        </form>
+    </div>
 {% endblock %}

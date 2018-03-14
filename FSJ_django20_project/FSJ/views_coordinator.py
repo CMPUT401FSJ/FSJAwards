@@ -215,7 +215,7 @@ def coordinator_add_awards(request):
     context = get_standard_context(FSJ_user)
     template = loader.get_template("FSJ/award.html")
     context["form"] = form
-    url = "/coord_awardslist/add"
+    url = "/coord_awardslist/add/"
     context["url"] = url
     return HttpResponse(template.render(context,request))
 
@@ -258,6 +258,72 @@ def coordinator_awarddelete(request):
 
     return redirect('coord_awardslist')
 
+#function for handling coordinator viewing a list of programs
+@login_required
+@user_passes_test(is_coordinator)
+def list_programs(request):
+    FSJ_user = get_FSJ_user(request.user.username)
+    programs_list = Program.objects.all()
+    template = loader.get_template("FSJ/list_programs.html")
+    context = get_standard_context(FSJ_user)
+    context["programs_list"] = programs_list
+    return HttpResponse(template.render(context, request))
+
+#function for handling coordinator adding a program
+@login_required
+@user_passes_test(is_coordinator)
+def add_program(request):
+    FSJ_user = get_FSJ_user(request.user.username)
+    if request.method == "POST":
+        form = ProgramForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('list_programs')
+    else:
+        form = ProgramForm()
+    context = get_standard_context(FSJ_user)
+    template = loader.get_template("FSJ/program.html")
+    context["form"] = form
+    url = "/programs/add/"
+    context["url"] = url
+    return HttpResponse(template.render(context, request))
+
+#function for handling coordinator editing a program
+@login_required
+@user_passes_test(is_coordinator)
+def edit_program(request, program_code):
+    FSJ_user = get_FSJ_user(request.user.username)
+    try:
+        program = Program.objects.get(code = program_code)
+    except Program.DoesNotExist:
+        raise Http404("Program does not exist")
+
+    if request.method == "POST":
+        form = ProgramForm(request.POST, instance = program)
+        if form.is_valid():
+            form.save()
+            return redirect('list_programs')
+    else:
+        form = ProgramForm(instance = program)
+    context = get_standard_context(FSJ_user)
+    context["program_code"] = program_code
+    context["form"] = form
+    url = "/programs/edit/" + str(program.code) + "/"
+    context["url"] = url
+    template = loader.get_template("FSJ/program.html")
+    return HttpResponse(template.render(context, request))
+
+#Function for handling coordinator deleting one or more programs
+@login_required
+@user_passes_test(is_coordinator)
+def delete_programs(request):
+    if request.method == 'POST':
+        program_code_list = request.POST.getlist('todelete')
+
+        for item_code in program_code_list:
+            Program.objects.get(code = item_code).delete()
+    return redirect('list_programs')
+
 #function for handling coordinator viewing a list of years of study
 @login_required
 @user_passes_test(is_coordinator)
@@ -287,7 +353,7 @@ def coordinator_addyearofstudy(request):
     context = get_standard_context(FSJ_user)
     template = loader.get_template("FSJ/year_of_study.html")
     context["form"] = form
-    url = "coord_yearslist/add/"
+    url = "/coord_yearslist/add/"
     context["url"] = url
     return HttpResponse(template.render(context, request))
 
