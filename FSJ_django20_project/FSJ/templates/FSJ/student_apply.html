@@ -65,10 +65,11 @@
                 {% if award.documents_needed %}
                     {{ form.as_p }}
                 {% endif %}
+            
             {# Save button on application #}
-            <input type='submit' name='_save' value={% trans "Save" %}>
+            <button class = "btn btn-success" type="submit" name="_save">{% trans "Save application" %}</button>
             {# Submit button on application #}
-            <input type='submit' name='_submit' value={% trans "Submit" %}>
+            <button class = "btn btn-success" type="submit" name="_submit">{% trans "Submit application" %}</button>
         </form>
     </div>
 {% endblock %}
