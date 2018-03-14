@@ -1,5 +1,5 @@
 from .models_application import Application
-from django.forms import ModelForm
+from .forms_modelform import ModelForm
 
 class ApplicationForm(ModelForm):
 
