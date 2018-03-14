@@ -1,8 +1,10 @@
-from django.contrib.auth.decorators import login_required, user_passes_test
 from django.core.exceptions import PermissionDenied
+from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.http import HttpResponse, Http404
-from django.shortcuts import redirect
 from django.template import loader
+from django.shortcuts import redirect
+from .filters import *
 from .models import *
 from .utils import *
 from .forms import *
@@ -30,10 +32,12 @@ def coordinator_home(request, FSJ_user):
 def coordinator_studentlist(request):
     FSJ_user = get_FSJ_user(request.user.username)
     student_list = Student.objects.all()
+    filtered_list = StudentFilter(request.GET, queryset=student_list)
     template = loader.get_template("FSJ/coord_student_list.html")
     context = get_standard_context(FSJ_user)
     context["student_list"] = student_list
-    return HttpResponse(template.render(context, request)) 
+    context["filter"] = filtered_list
+    return HttpResponse(template.render(context, request))
 
 # The handler used by the Coordinator class to produce a list of all adjudicators in the database, using the adjudicator_student_list template.
 @login_required
@@ -41,9 +45,11 @@ def coordinator_studentlist(request):
 def coordinator_adjudicatorlist(request):
     FSJ_user = get_FSJ_user(request.user.username)
     adjudicator_list = Adjudicator.objects.all()
+    filtered_list = AdjudicatorFilter(request.GET, queryset=adjudicator_list)
     template = loader.get_template("FSJ/coord_adjudicator_list.html")
     context = get_standard_context(FSJ_user)
     context["adjudicator_list"] = adjudicator_list
+    context["filter"] = filtered_list
     return HttpResponse(template.render(context, request)) 
 
 
@@ -132,7 +138,7 @@ def coordinator_addstudent(request):
 
 
 # This handler allows a Coordinator to add a new Adjudicator
-@login_required
+@login_required 
 @user_passes_test(is_coordinator)
 def coordinator_addadjudicator(request):
     FSJ_user = get_FSJ_user(request.user.username)
@@ -186,9 +192,11 @@ def coordinator_deleteadjudicator(request):
 @user_passes_test(is_coordinator)
 def coordinator_awards(request, FSJ_user):
     awards_list = Award.objects.all()
+    filtered_list = AwardFilter(request.GET, queryset=awards_list)
     template = loader.get_template("FSJ/coord_awards_list.html")
     context = get_standard_context(FSJ_user)
     context["awards_list"] = awards_list
+    context["filter"] = filtered_list
     return HttpResponse(template.render(context,request))
 
 #function for handling coordinator adding an award
