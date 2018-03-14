@@ -238,4 +238,52 @@ class ApplicationTestModels(TestCase):
         self.application.save()
         application = Application.objects.get(application_id = self.application.application_id)
         self.assertFalse(application.is_submitted)
+     
+        
+class ProgramModelTests(TestCase):
+    
+    def setUp(self):
+        self.ccid = "Student"
+        self.first_name = "A"
+        self.last_name = "Student"
+        self.email = "aStudent@test.com"
+        self.ualberta_id = 1
+        self.year = "First"
+        self.year_of_study = YearOfStudy.objects.create(year = self.year)
+        self.program_code = "PRFG"
+        self.program_name = "Science"
+        self.program = Program.objects.create(code = self.program_code, name = self.program_name)
+        self.award_name = "This award"
+        self.award_description = "For students"
+        self.award_value = "One gold pen"
+        self.award_deadline = str(datetime.datetime.now(pytz.timezone('America/Edmonton')))
+        self.award_documents_needed = False
+        self.award_is_active = True
+        self.award = Award.objects.create(award_name = self.award_name, description = self.award_description, value = self.award_value,
+                                          deadline = self.award_deadline,
+                                          documents_needed = self.award_documents_needed, is_active = self.award_is_active)
+        self.award.programs.add(self.program)
+        self.award.years_of_study.add(self.year_of_study)        
+        self.student = Student.objects.create(ccid = self.ccid, first_name = self.first_name, last_name = self.last_name,
+                                              email = self.email, ualberta_id = self.ualberta_id, year = self.year_of_study, program = self.program)        
+    
+    def test_program_creation(self):
+        program = Program.objects.get(code = self.program_code)
+        self.assertIsNotNone(program)
+        
+    def test_program_duplicate(self):
+        with self.assertRaises(IntegrityError):
+            new_program = Program.objects.create(code = self.program_code)
             
+    def test_program_deletion_cascade(self):
+        award = Award.objects.get(awardid = self.award.awardid)
+        student = Student.objects.get(ccid = self.ccid)
+        program = Program.objects.get(code = self.program_code)
+        self.assertEqual(student.program, program)
+        self.assertTrue(program in award.programs)
+        program.delete()
+        award = Award.objects.get(awardid = self.award.awardid)
+        student = Student.objects.get(ccid = self.ccid)
+        self.assertIsNone(student.program)
+        self.assertIsFalse(program in award.programs)
+        
