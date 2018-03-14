@@ -39,9 +39,9 @@ def student_awardslist(request, award_idnum):
     for award in unfiltered_list:
         try:
             application = Application.objects.get(award = award, student = FSJ_user.ccid)
-            if application.is_submitted == True:
+            if application.is_submitted:
                 submitted_list.append(award)
-            elif application.is_submitted == False:
+            elif not application.is_submitted:
                 in_progress_list.append(award)
         except Application.DoesNotExist:
             awards_list.append(award)       
@@ -60,7 +60,7 @@ def student_addapplication(request, award_idnum):
     FSJ_user = get_FSJ_user(request.user.username)
     award = Award.objects.get(awardid = award_idnum)
     
-    if award.is_active == False:
+    if not award.is_active:
         return redirect('home')
     
     try:
