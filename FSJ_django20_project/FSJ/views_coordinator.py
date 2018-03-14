@@ -404,7 +404,7 @@ def coordinator_committeeslist(request, FSJ_user):
 def coordinator_addcommittee(request):
     FSJ_user = get_FSJ_user(request.user.username)
     
-    # If the coordinator has just saved their new adjudicator, check for form validity before saving. Invalid forms are put back into the template to show errors.
+    # If the coordinator has just saved their new comittee, check for form validity before saving. Invalid forms are put back into the template to show errors.
     if request.method == "POST":
         # Loads adjudicator form with the new information
         form = CommitteeForm(request.POST)
@@ -412,12 +412,12 @@ def coordinator_addcommittee(request):
             form.save()
             return redirect('coord_committeeslist')
     else:
-        # If the coordinator hasn't entered information yet, create a blank adjudicator
+        # If the coordinator hasn't entered information yet, create a blank committee
         form = CommitteeForm()           
     context = get_standard_context(FSJ_user)
     template = loader.get_template("FSJ/committee.html")
     context["form"] = form
-    url = "coord_committeeslist/add/"
+    url = "/coord_committeeslist/add/"
     context["url"] = url
     return HttpResponse(template.render(context, request))
 
