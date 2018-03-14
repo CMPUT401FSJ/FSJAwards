@@ -27,4 +27,5 @@ urlpatterns = [
     path('coord_yearslist/', views.years, name='coord_yearslist'),
     path('coord_yearslist/add/', views.coordinator_addyearofstudy, name = 'coord_addyear'),
     path('coord_yearslist/delete/', views.coordinator_yeardelete, name='coord_deleteyear'),
+    path('coord_yearslist/<str:year_name>/', views.coordinator_yearedit, name = 'coord_yearedit')
 ]

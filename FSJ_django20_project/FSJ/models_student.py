@@ -9,7 +9,7 @@ from .models_yearofstudy import *
 class Student(FSJUser):
     program = models.ForeignKey(Program, on_delete = models.SET_NULL, null = True, blank = True)
     year = models.ForeignKey(YearOfStudy, on_delete=models.PROTECT)
-    
+
     def user_class(self):
         return "Student"
             

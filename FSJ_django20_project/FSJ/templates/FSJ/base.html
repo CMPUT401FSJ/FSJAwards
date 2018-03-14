@@ -5,34 +5,37 @@
 {% language FSJ_user.lang_pref %}
     <html>
         <head>
+            <meta name="viewport" content="width=device-width, initial-scale=1">
             <title>
                 {# Translators: Main title #}
                 {% trans "FSJ Awards" %}
             </title>
             {# Add CSS for styling #}
             <link rel="stylesheet" type="text/css" href="{% static 'FSJ/FSJ.css' %}">
+            <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
         </head>
-        {# Some generic sections to be exnteded in views #}
+        {# Some generic sections to be extended in views #}
         <body>
-        <div>
-            <div>
-                <h1>
-                    {% block heading %}
-                    {% endblock %}
-                </h1>
-            </div>
-        </div>
-        <div>
-        {% block banner %}
-        {% endblock %}
-        <div>
-            <div>
+            <div class="container-fluid">
+                {% block banner %}
+                {% endblock %}
+                <div class="ualberta-themed-header">
+                    <div class="ualberta-themed">
+                        <h1>
+                            {% block heading %}
+                            {% endblock %}
+                        </h1>
+                    </div>
+                    <div class="ualberta-themed-gold-bar">
+                    </div>
+                </div>
                 <div>
-                    {% block content %}
-                    {% endblock %}
+                    <div>
+                        {% block content %}
+                        {% endblock %}
+                    </div>
                 </div>
             </div>
-        </div>
         </body>
     </html>
 {% endlanguage %}

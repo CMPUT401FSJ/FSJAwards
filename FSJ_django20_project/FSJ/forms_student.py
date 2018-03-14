@@ -1,5 +1,5 @@
 from .models_student import Student
-from django.forms import ModelForm
+from .forms_modelform import ModelForm
 
 # These are the unrestricted and restricted ModelForms used for Students, accessible by Coordinators and Students respectively.
 class StudentForm(ModelForm):
@@ -22,4 +22,4 @@ class StudentRestrictedForm(ModelForm):
         super(StudentRestrictedForm, self).__init__(*args, **kwargs)
         self.fields['ccid'].disabled=True
         self.fields['email'].disabled=True
-        self.fields['year'].disabled=True
+        self.fields['year'].disabled=True   
