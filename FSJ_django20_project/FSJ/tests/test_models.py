@@ -1,7 +1,7 @@
 from django.test import TestCase
 from django.db.utils import IntegrityError
 from django.contrib.auth.models import User
-from .models import Adjudicator, Coordinator, Student, Program, YearOfStudy
+from ..models import Adjudicator, Coordinator, Student, Program, YearOfStudy
 from django.test import Client
 from django.db.models.deletion import ProtectedError
 
@@ -169,8 +169,7 @@ class StudentModelTests(TestCase):
         with self.assertRaises(ProtectedError):
             YearOfStudy.objects.get(year = "StudentYear").delete()
             
-            
-    def test_delete_coordinator(self):
+    def test_delete_student(self):
         obj = Student.objects.get(ccid = self.ccid)
         ccid = obj.ccid
         self.assertIsNotNone(obj)
