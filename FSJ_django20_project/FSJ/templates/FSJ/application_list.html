@@ -6,19 +6,19 @@
 {% endblock %}
 
 {% block content %}
-<div>
-        <table align = "center">
-        <tr>
-                <th>{% trans "Student" %}</th>
-                {# Translators: View header in student table #}
-                <th>{% trans "Is Submitted?" %}</th>
-        </tr>
-        {% for application in application_list %}
+        <div>
+                <table class="table table-bordered table-striped table-hover" align="center">
                 <tr>
-                        <td><a href="/studentlist/{{ application.student.ccid }}/">{{ application.student.ccid }}</a></td>
-                        <td>{{ application.is_submitted|yesno }}</td>
+                        <th>{% trans "Student" %}</th>
+                        {# Translators: View header in student table #}
+                        <th>{% trans "Is Submitted?" %}</th>
                 </tr>
-        {% endfor %}
-        </table>
-</div>
+                {% for application in application_list %}
+                        <tr>
+                                <td><a href="/studentlist/{{ application.student.ccid }}/">{{ application.student.ccid }}</a></td>
+                                <td>{{ application.is_submitted|yesno }}</td>
+                        </tr>
+                {% endfor %}
+                </table>
+        </div>
 {% endblock %}

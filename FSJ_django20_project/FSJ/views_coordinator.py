@@ -208,7 +208,7 @@ def coordinator_add_awards(request):
     context = get_standard_context(FSJ_user)
     template = loader.get_template("FSJ/award.html")
     context["form"] = form
-    url = "/coord_awardslist/add"
+    url = "/coord_awardslist/add/"
     context["url"] = url
     return HttpResponse(template.render(context,request))
 
@@ -361,7 +361,7 @@ def coordinator_addyearofstudy(request):
     context = get_standard_context(FSJ_user)
     template = loader.get_template("FSJ/year_of_study.html")
     context["form"] = form
-    url = "coord_yearslist/add/"
+    url = "/coord_yearslist/add/"
     context["url"] = url
     return HttpResponse(template.render(context, request))
 

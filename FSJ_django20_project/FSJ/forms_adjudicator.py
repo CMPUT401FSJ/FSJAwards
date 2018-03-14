@@ -1,5 +1,5 @@
 from .models_adjudicator import Adjudicator
-from django.forms import ModelForm
+from .forms_modelform import ModelForm
 
 class AdjudicatorForm(ModelForm):
 

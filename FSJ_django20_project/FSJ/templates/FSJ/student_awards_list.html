@@ -9,8 +9,8 @@
 
 {% block content %}
 <body>
-<div>
-        <table align = "center">
+    <div>
+        <table class="table table-bordered table-striped table-hover" align = "center">
             <tr>
                 {# Translators: Award name header in awards table #}
                 <th>{% trans "Award" %}</th>
@@ -111,7 +111,7 @@
                 </tr>
             {% endfor %}
         </table>
-</div>
+    </div>
 
 </body>
 {% endblock %}

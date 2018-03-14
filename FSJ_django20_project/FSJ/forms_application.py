@@ -15,11 +15,7 @@ class ApplicationRestrictedForm(ModelForm):
     
     class Meta:
         model = Application
-        #fields = ('award', 'student', 'is_submitted')
         fields = ('application_file',)
             
     def __init__(self, *args, **kwargs):
         super(ApplicationRestrictedForm, self).__init__(*args, **kwargs)
-        #self.fields['award'].disabled=True
-        #self.fields['student'].disabled=True 
-        #self.fields['is_submitted'].disabled=True

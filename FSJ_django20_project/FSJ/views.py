@@ -25,7 +25,7 @@ def home(request):
     elif isinstance(FSJ_user, Adjudicator):
         return adjudicator_home(request, FSJ_user)
     else:
-        raise PermissionDenied
+        return non_FSJ_home(request)
 
 # The profile view for the user accessing their own profile (with restricted field editting)
 # Includes a POST handler for saving based on the results from the form, and adds the form back to the same template if validation fails
@@ -76,3 +76,14 @@ def awards(request):
 def years(request):
     FSJ_user = get_FSJ_user(request.user.username)
     return coordinator_yearslist(request, FSJ_user)
+
+# A generic template that allows non FSJ Users who manage to log in to see a system message to see the coordinator to be set up properly
+# Also allows the admin to access the admin page.
+@login_required
+def non_FSJ_home(request):
+    # The FSJ User class does not have many of the features of its children classes and can act as a stand-alone model with default language preference.
+    # The FSJ User in this case is not saved so behaves transiently
+    FSJ_user = FSJUser()
+    context = get_standard_context(FSJ_user)   
+    template = loader.get_template("FSJ/non_FSJ_home.html")
+    return HttpResponse(template.render(context, request))

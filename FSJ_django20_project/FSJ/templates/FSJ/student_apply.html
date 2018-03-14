@@ -19,15 +19,18 @@
     </div>
     
     <div>
-        Description: {{ award.description}} 
+        {# Translators: Description for award on student application page #}
+        {% trans "Description:" %} {{ award.description}} 
     </div>
     
     <div>
-        Value: {{ award.value }}
+        {# Translators: Value for award on student application page #}
+        {% trans "Value:" %} {{ award.value }}
     </div>
     
     <div>
-        Programs: 
+        {# Translators: Programs for award on student application page #}
+        {% trans "Programs:" %} 
         {% if award.programs.all %}
             {% for program in award.programs.all %}
                     {{ program.name }} <br/>
@@ -39,18 +42,21 @@
     </div>
     
     <div>
-        Years Of Study:
+    {# Translators: Years of Study for award on student application page #}
+        {% trans "Years Of Study:" %}
         {% for year in award.years_of_study.all %}
             {{year}} <br>
         {% endfor %}
     </div>
     
     <div>
-        Deadline: {{ award.deadline }}
+    {# Translators: Deadline for award on student application page #}
+        {% trans "Deadline:" %} {{ award.deadline }}
     </div>
     
     <div>
-        Documents Needed: {{ award.documents_needed }}
+        {# Translators: Documents needed indicator on student application page #}
+        {% trans "Documents Needed:" %} {{ award.documents_needed }}
     </div>
     
     <div>
