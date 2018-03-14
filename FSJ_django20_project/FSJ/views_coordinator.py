@@ -28,7 +28,6 @@ def coordinator_home(request, FSJ_user):
 @login_required
 @user_passes_test(is_coordinator)
 def coordinator_studentlist(request):
-    csv_student_list = StudentCsv.import_data(data = open("students.csv"))
     FSJ_user = get_FSJ_user(request.user.username)
     student_list = Student.objects.all()
     template = loader.get_template("FSJ/coord_student_list.html")
