@@ -37,13 +37,15 @@ table {
 th {
     background-color: #007C41;
     color: white;
+    text-align: center;
 }
 
-td, th {
+td {
     border: 1px solid #dddddd;
     text-align: left;
     padding: 8px;
 }
+
 
 div.ualberta-themed-header div.ualberta-themed {
     background-color: #007C41;
@@ -55,6 +57,7 @@ div.ualberta-themed-header div.ualberta-themed {
 div.ualberta-themed-header div.ualberta-themed h1 {
     padding: 1.1%;
 }
+
 
 div.ualberta-themed-header div.ualberta-themed-gold-bar {
     background-color: #FFDB05;
@@ -73,4 +76,10 @@ div.ualberta-themed-header {
 
 .btn-success {
     background-color: #007C41 !important;
+
+}
+
+.btn-action {
+    background-color: #FFDB05 !important;
+
 }
