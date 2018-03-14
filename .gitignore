@@ -3,4 +3,4 @@ env
 *.pyc
 __pycache__
 fsj.db
-migrations/
+FSJ_django20_project/FSJ/migrations/
