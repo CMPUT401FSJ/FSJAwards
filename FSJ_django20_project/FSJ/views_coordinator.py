@@ -237,16 +237,31 @@ def coordinator_awardedit(request, award_idnum):
     template = loader.get_template("FSJ/award.html")
     return HttpResponse(template.render(context, request))
 
-#Function for handling coordinator deleting an award
+#Function for handling coordinator deleting, activating or deactivating an award
 @login_required
 @user_passes_test(is_coordinator)
-def coordinator_awarddelete(request):
+def coordinator_awardaction(request):
 
     if request.method == 'POST':
-        awardid_list = request.POST.getlist('todelete')
-
-        for itemid in awardid_list:
-            Award.objects.get(awardid=itemid).delete()
+        
+        awardid_list = request.POST.getlist('awardaction')
+        
+        if '_delete' in request.POST: 
+            
+            for itemid in awardid_list:
+                Award.objects.get(awardid=itemid).delete()
+                
+        elif '_activate' in request.POST: 
+            for itemid in awardid_list:
+                award = Award.objects.get(awardid=itemid)
+                award.is_active = True
+                award.save()
+            
+        elif '_deactivate' in request.POST:
+            for itemid in awardid_list:
+                award = Award.objects.get(awardid=itemid)
+                award.is_active = False
+                award.save()            
 
     return redirect('coord_awardslist')
 
@@ -387,3 +402,24 @@ def coordinator_yeardelete(request):
             YearOfStudy.objects.get(year=yearname).delete()
 
     return redirect('coord_yearslist')
+
+# Handler for coordinator to see applications
+@login_required
+@user_passes_test(is_coordinator)
+def coordinator_application_list(request, award_idnum):
+    FSJ_user = get_FSJ_user(request.user.username)
+    
+    try:
+        award = Award.objects.get(awardid = award_idnum)
+    except Award.DoesNotExist:
+        raise Http404("Award does not exist")
+
+    application_list = award.applications.all()
+
+    context = get_standard_context(FSJ_user)
+    context["application_list"] = application_list
+    context["award"] = award
+
+    template = loader.get_template("FSJ/application_list.html")
+    return HttpResponse(template.render(context, request))
+
