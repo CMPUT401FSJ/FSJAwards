@@ -1,7 +1,7 @@
 from django.test import TestCase
 from django.db.utils import IntegrityError
 from django.contrib.auth.models import User
-from .models import Adjudicator, Coordinator
+from ..models import Adjudicator, Coordinator
 
 
 class AdjudicatorModelTests(TestCase):
