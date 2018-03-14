@@ -1,0 +1,20 @@
+{% extends "FSJ/base_with_banner.html" %}
+{% load i18n %} {# NOTE YOU MUST LOAD i18n to every HTML page even though it's also loaded to base.html #}
+
+{# A standardized page for viewing the fields of an individual committee #}
+{# This page is also used to edit committees, it is up to the form to disable/enable views #}
+{% block heading %}
+    {% if committee %}
+	{# Translators: Edit committee page heading #}
+	{% trans "Edit Committee" %}
+    {% else %}
+	{# Translators: Add committee page heading #}
+	{% trans "Add Committee" %}
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+	<div class='center-content'>
+	{% include 'FSJ/modelform.html' with form=form url=url %}
+    </div>
+{% endblock %}
