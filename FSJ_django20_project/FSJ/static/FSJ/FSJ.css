@@ -59,28 +59,6 @@ div.ualberta-themed-header div.ualberta-themed h1 {
 }
 
 
-input.deletebutton {
-    background-color: #FF0000;
-    border-radius: 8px;
-    color: white;
-    text-align: center;
-    display: inline-block;
-    font-size: 16px;
-    padding: 16px;
-    margin-left: 32px;
-}
-
-input.actionbutton {
-    background-color: #9AEDB0;
-    border-radius: 8px;
-    color: black;
-    text-align: center;
-    display: inline-block;
-    font-size: 16px;
-    padding: 16px;
-    margin-left: 32px;
-}
-
 div.ualberta-themed-header div.ualberta-themed-gold-bar {
     background-color: #FFDB05;
     min-height: 5px;
@@ -98,5 +76,10 @@ div.ualberta-themed-header {
 
 .btn-success {
     background-color: #007C41 !important;
+
+}
+
+.btn-action {
+    background-color: #FFDB05 !important;
 
 }

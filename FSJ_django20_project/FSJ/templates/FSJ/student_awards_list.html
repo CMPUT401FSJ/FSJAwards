@@ -9,7 +9,7 @@
 
 {% block content %}
 <body>
-    <div>
+    <div class='center-content'>
         <table class="table table-bordered table-striped table-hover" align = "center">
             <tr>
                 {# Translators: Award name header in awards table #}
@@ -51,7 +51,7 @@
                         {% endfor %}
                     </td>
                     <td>{{award.deadline}}</td>
-                    <td>{{award.documents_needed}}</td>
+                    <td><input type="checkbox" disabled {% if award.documents_needed %}checked{% endif %}></td>
                     {# Translators: Apply button in award table #}
                     <td><a href="/student_awardslist/{{ award.awardid }}/apply/">{% trans "Apply" %}</a></td>
                 </tr>
@@ -78,7 +78,7 @@
                         {% endfor %}
                     </td>
                     <td>{{award.deadline}}</td>
-                    <td>{{award.documents_needed}}</td>
+                    <td><input type="checkbox" disabled {% if award.documents_needed %}checked{% endif %}></td>
                     {# Translators: Edit application button in student award table #}
                     <td><a href="/student_awardslist/{{ award.awardid }}/edit/">{% trans "Edit" %}</a></td>
                 </tr>
@@ -105,7 +105,7 @@
                         {% endfor %}
                     </td>
                     <td>{{award.deadline}}</td>
-                    <td>{{award.documents_needed}}</td>
+                    <td><input type="checkbox" disabled {% if award.documents_needed %}checked{% endif %}></td>
                     {# Translators: Unsubmit application button in student award table #}
                     <td><a href="/student_awardslist/{{ award.awardid }}/unsubmit/">{% trans "Unsubmit" %}</a></td>
                 </tr>

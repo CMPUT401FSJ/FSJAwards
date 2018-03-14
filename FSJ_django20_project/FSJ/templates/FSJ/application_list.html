@@ -6,7 +6,7 @@
 {% endblock %}
 
 {% block content %}
-        <div>
+        <div class='center-content'>
                 <table class="table table-bordered table-striped table-hover" align="center">
                 <tr>
                         <th>{% trans "Student" %}</th>
@@ -16,7 +16,7 @@
                 {% for application in application_list %}
                         <tr>
                                 <td><a href="/studentlist/{{ application.student.ccid }}/">{{ application.student.ccid }}</a></td>
-                                <td>{{ application.is_submitted|yesno }}</td>
+                                <td><input type="checkbox" disabled {% if application.is_submitted %}checked{% endif %}></td>
                         </tr>
                 {% endfor %}
                 </table>

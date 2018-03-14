@@ -4,3 +4,4 @@ env
 __pycache__
 fsj.db
 FSJ_django20_project/FSJ/migrations/
+FSJ_django20_project/media/
