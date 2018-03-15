@@ -1,5 +1,4 @@
 from django.core.exceptions import PermissionDenied
-from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.http import HttpResponse, Http404
 from django.template import loader
