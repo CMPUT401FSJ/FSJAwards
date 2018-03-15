@@ -1,7 +1,7 @@
 from django.test import TestCase
 from django.db.utils import IntegrityError
 from django.contrib.auth.models import User
-from ..models import Adjudicator, Coordinator, Student, Program, YearOfStudy, Award, Application
+from ..models import Adjudicator, Coordinator, Student, Program, YearOfStudy, Award, Application, Committee
 from django.db.models.deletion import ProtectedError
 import datetime
 import pytz
@@ -287,3 +287,69 @@ class ProgramModelTests(TestCase):
         self.assertIsNone(student.program)
         self.assertFalse(program in award.programs.all())
         
+
+class AwardModelTests(TestCase):
+    def setUp(self):
+        self.award_name = "Award Name 1"
+        self.description = "Award Description 1"
+        self.value = "Award Value 1"
+        self.deadline = str(datetime.datetime.now(pytz.timezone('America/Edmonton')))
+        self.programcode = "AP"
+        self.programname = "AwardProgram"
+        self.yearname = "AwardYear"
+        self.documents_needed = False
+        self.is_active = True 
+        self.year = YearOfStudy.objects.create(year = self.yearname)
+        self.program = Program.objects.create(code = self.programcode, name = self.programname)
+        self.award = Award.objects.create(award_name = self.award_name, description = self.description, value = self.value,
+                                    deadline = self.deadline,
+                                    documents_needed = self.documents_needed, is_active = self.is_active)
+        self.award.programs.add(self.program)
+        self.award.years_of_study.add(self.year)
+
+    def test_award_creation(self):
+        award = Award.objects.get(awardid = self.award.awardid)
+        self.assertIsNotNone(award)
+
+    def test_award_duplicate(self):
+        with self.assertRaises(IntegrityError):
+            new_award = Award.objects.create(awardid = self.award.awardid)
+
+class CommitteeModelTests(TestCase):
+    def setUp(self):
+        self.committee_name = "Committee Name 1"
+        self.adjudicator_ccid = "Committee Adjudicator 1"
+        self.adjudicator_first_name = "Adjudicator 1 First"
+        self.adjudicator_last_name = "Adjudicator 1 Last"
+        self.adjudicator_email = "Adjudicator1@test.com"
+        self.adjudicator_ualberta_id = 1
+        self.adjudicator = Adjudicator.objects.create(ccid = self.adjudicator_ccid, first_name = self.adjudicator_first_name,
+                                   last_name = self.adjudicator_last_name, email = self.adjudicator_email, ualberta_id = self.adjudicator_ualberta_id)
+        self.award_name = "Award Name 1"
+        self.description = "Award Description 1"
+        self.value = "Award Value 1"
+        self.deadline = str(datetime.datetime.now(pytz.timezone('America/Edmonton')))
+        self.programcode = "AP"
+        self.programname = "AwardProgram"
+        self.yearname = "AwardYear"
+        self.documents_needed = False
+        self.is_active = True 
+        self.year = YearOfStudy.objects.create(year = self.yearname)
+        self.program = Program.objects.create(code = self.programcode, name = self.programname)
+
+        self.award = Award.objects.create(award_name = self.award_name, description = self.description, value = self.value,
+                                    deadline = self.deadline,
+                                    documents_needed = self.documents_needed, is_active = self.is_active)
+        self.award.programs.add(self.program)
+        self.award.years_of_study.add(self.year)
+        self.committee = Committee.objects.create(committee_name = self.committee_name)
+        self.committee.adjudicators.add(self.adjudicator)
+        self.committee.awards.add(self.award)
+
+    def test_committee_creation(self):
+        committee = Committee.objects.get(committeeid = self.committee.committeeid)
+        self.assertIsNotNone(committee)
+
+    def test_committee_duplicate(self):
+        with self.assertRaises(IntegrityError):
+            new_committee = Committee.objects.create(committeeid = self.committee.committeeid)
