@@ -11,11 +11,11 @@ class Award(models.Model):
 	award_name = models.TextField(verbose_name = _("Award Name"))
 	description = models.TextField(verbose_name = _("Description"))
 	value = models.TextField(verbose_name = _("Value"))
-	programs = models.ManyToManyField(Program, blank = True)
-	years_of_study = models.ManyToManyField(YearOfStudy)
+	programs = models.ManyToManyField(Program, blank = True, verbose_name = _("Programs"))
+	years_of_study = models.ManyToManyField(YearOfStudy, verbose_name = _("Years"))
 	deadline = models.DateTimeField(auto_now = False, auto_now_add = False, verbose_name = _("Deadline"))
 	documents_needed = models.BooleanField(verbose_name = _("Documents Required"))
-	is_active = models.BooleanField(verbose_name = ("Is Active"))
+	is_active = models.BooleanField(verbose_name = _("Is Active"))
 
 	#returns award name as a string
 	def __str__(self):
