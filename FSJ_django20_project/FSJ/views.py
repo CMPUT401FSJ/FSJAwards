@@ -1,7 +1,9 @@
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.core.exceptions import PermissionDenied
 from django.http import HttpResponse
+from django.template.response import TemplateResponse
 from django.template import loader 
+from django.contrib.auth.models import User
 from .forms import *
 from .models import *
 from .utils import *
@@ -12,6 +14,18 @@ from .views_coordinator import *
 # A method used to redirect users who have no path to bring them to their home page
 def redirect_to_home(request):
     return home(request)
+
+def registration(request):
+    if request.method == "POST":
+        form = SignupForm(request.POST)
+    else:
+        form = SignupForm()
+    context = get_standard_context(User)
+    template_name = 'registration/register_form.html'
+    context["form"] = form
+    url = "/register/"
+    context["url"] = url
+    return TemplateResponse(request, template_name)
 
 # The home page, split out depending on what class of user is requested.
 # Contains the decordator to ensure the user is logged into the system.

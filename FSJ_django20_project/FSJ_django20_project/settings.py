@@ -32,10 +32,10 @@ ALLOWED_HOSTS = ['204.209.76.160', '127.0.0.1']
 # Application definition
 
 INSTALLED_APPS = [
-    'django.contrib.admin',
-    'django.contrib.auth',
     'django.contrib.contenttypes',
     'FSJ.apps.FsjConfig',
+    'django.contrib.admin',
+    'django.contrib.auth',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
@@ -141,9 +141,8 @@ LOGIN_REDIRECT_URL = '/FSJ/home/'
 # Where to redirect once a user logs out.
 LOGOUT_REDIRECT_URL = '/FSJ/login/'
 
-EMAIL_USE_TLS = True
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 587
+EMAIL_HOST = 'localhost'
+EMAIL_PORT = 1025
 
 MEDIA_URL = '/media/'
 

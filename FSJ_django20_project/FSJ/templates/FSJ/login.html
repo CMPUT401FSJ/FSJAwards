@@ -35,5 +35,13 @@
             <button class="btn btn-success" type="submit">{% trans "Login" %}</button>
             <input type="hidden" name="next" value="{{ next }}" />
         </form>
+        {# Translators: Register button label #}
+        <form method="link" action="{% url 'reset_password' %}">
+            <button class="btn btn-success" type="submit"> {% trans "Register" %} </button>
+        </form>
+        {# Translators: Forgot_Password button label #}
+        <form method="link" action="{% url 'reset_password' %}">
+            <button class="btn btn-danger" type="submit"> {% trans "Forgot Password" %} </button>
+        </form>
     </div>
 {% endblock %}
