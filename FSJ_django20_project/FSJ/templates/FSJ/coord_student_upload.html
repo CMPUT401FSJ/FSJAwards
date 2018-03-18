@@ -17,12 +17,14 @@
                     {{field.label_tag}}
                 {% endif %}
             </div>
+            <div>
+                {% if field.help_text %}
+                    {{ field.help_text }}
+                {% endif %}
+            </div>
             <div {% if field.errors %}class='has-error'{% endif %}>
                 {{ field }}
             </div>
-            {% if field.help_text %}
-                {{ field.help_text }}
-            {% endif %}
             {% if field.errors %}
                 {{ field.errors }}
             {% endif %}
