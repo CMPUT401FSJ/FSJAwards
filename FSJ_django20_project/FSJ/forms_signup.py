@@ -1,11 +1,12 @@
+from django.contrib.auth.forms import SetPasswordForm
 from django import forms
-from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth.models import User
 
-class SignupForm(UserCreationForm):
+class SignupForm(forms.Form):
+	email = forms.EmailField(max_length=200)
 
-	class Meta:
-		model = User
-		fields = ('username', 'password1', 'password2')
-
+	def clean(self):
+		cleaned_data = super(SignupForm, self).clean()
+		email = cleaned_data.get('email')
+		if not email:
+			raise forms.ValidationError('An email is required')
 
