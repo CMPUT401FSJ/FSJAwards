@@ -12,6 +12,7 @@ urlpatterns = [
     path('profile/', views.profile, name='profile'),
     path('studentlist/', views.coordinator_studentlist, name = 'studentlist'),
     path('studentlist/add/', views.coordinator_addstudent, name = 'addstudent'),
+    path('studentlist/addmulti/', views.coordinator_upload_students, name = 'uploadstudent'),
     path('studentlist/delete/', views.coordinator_deletestudent, name = 'deletestudent'),
     path('studentlist/<str:usr_ccid>/', views.coordinator_studentdetail, name = 'studentdetail'),
     path('adjudicatorlist/', views.coordinator_adjudicatorlist, name = 'adjudicatorlist'),

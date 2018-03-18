@@ -7,6 +7,8 @@ from .filters import *
 from .models import *
 from .utils import *
 from .forms import *
+import csv
+import io
 
 # A test method to ensure a user is a Coordinator to control access of certain views dependent on the user's class
 def is_coordinator(usr):
@@ -501,3 +503,37 @@ def coordinator_application_list(request, award_idnum):
 
     template = loader.get_template("FSJ/application_list.html")
     return HttpResponse(template.render(context, request))
+
+
+def coordinator_upload_students(request):
+    FSJ_user = get_FSJ_user(request.user.username)
+
+    if request.method == "POST":
+        form = FileUploadForm(request.POST, request.FILES)
+        if form.is_valid():
+            #upload_file = open(request.FILES['file'], 'rt')
+            #studentreader = csv.reader(upload_file, delimiter=',')
+            #for row in studentreader:
+                #print(', '.join(row))
+            
+            csv_file = request.FILES['file']
+            csv_file.seek(0)
+            studentreader = csv.DictReader(io.StringIO(csv_file.read().decode('utf-8-sig')))    
+            for row in studentreader:
+                program = Program.objects.get(code = row['Prog'])
+                year = YearOfStudy.objects.get(year = row['Year'])
+                obj, created = Student.objects.update_or_create(
+                    ccid = row['CCID'],
+                    defaults={'ualberta_id': row['ID'], 'first_name': row['First Name'], 'last_name': row['Last Name'], 'email' : row['Email (Univ)'],
+                              'program' : program, 'year' : year,},
+                )                
+            return redirect('studentlist')
+    else:
+        form = FileUploadForm()
+    
+    context = get_standard_context(FSJ_user)
+    template = loader.get_template("FSJ/coord_student_upload.html")
+    context["form"] = form
+    url = "/studentlist/addmulti/"
+    context["url"] = url
+    return HttpResponse(template.render(context, request))    
