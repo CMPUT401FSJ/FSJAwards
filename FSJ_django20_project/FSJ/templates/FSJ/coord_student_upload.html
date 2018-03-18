@@ -8,6 +8,15 @@
 
 {% block content %}
     <div class='center-content'>
+    <div>
+        {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                    <li class="{{ message.tags }}">{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    </div>
     <form action='{{ url }}' method='post' enctype="multipart/form-data">
     {% csrf_token %}
     {% for field in form %}
