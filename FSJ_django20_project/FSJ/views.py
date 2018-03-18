@@ -1,12 +1,11 @@
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.core.exceptions import PermissionDenied, ObjectDoesNotExist
 from django.http import HttpResponse
-from django.template.response import TemplateResponse
 from django.template import loader 
 from django.contrib.auth.models import User
 from django.contrib.sites.shortcuts import get_current_site
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
-from django.utils.encoding import force_bytes, force_text
+from django.utils.encoding import force_bytes
 from django.core.mail import EmailMessage
 from django.shortcuts import render, redirect
 from django.contrib.auth import update_session_auth_hash

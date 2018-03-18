@@ -1,5 +1,10 @@
 from .models import *
 import django_filters
+from django.utils.translation import gettext_lazy as _
+
+LOOKUP_TYPES = [
+        ('icontains', _("contains"))
+]
 
 class StudentFilter(django_filters.FilterSet):
 	ccid = django_filters.CharFilter(lookup_expr='icontains')
