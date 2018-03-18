@@ -66,6 +66,8 @@
                     <th>{% trans "Year of Study" %}</th>
                     {# Translators: Program header in student table #}
                     <th>{% trans "Program" %}</th>
+                    {# Translators: GPA header in student table #}
+                    <th>{% trans "GPA" %}</th>
                     {# Translators: View header in student table #}
                     <th>{% trans "View" %}</th>
                 </tr>
@@ -77,6 +79,13 @@
                         <td>{{ student.last_name }}</td>
                         <td>{{ student.year }}</td>
                         <td>{{ student.program }}</td>
+                        <td>
+                            {% if student.gpa %}
+                              {{ student.gpa }}  
+                            {% else %}
+                              {{ "" }}
+                            {% endif %}
+                         </td> 
                         {# Translators: Edit link in student table #}
                         <td><a href="/studentlist/{{ student.ccid }}/">{% trans "Edit" %}</a></td>
                     </tr>

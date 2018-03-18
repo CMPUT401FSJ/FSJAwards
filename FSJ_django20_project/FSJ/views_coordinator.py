@@ -516,17 +516,29 @@ def coordinator_upload_students(request):
             #for row in studentreader:
                 #print(', '.join(row))
             
-            csv_file = request.FILES['file']
-            csv_file.seek(0)
-            studentreader = csv.DictReader(io.StringIO(csv_file.read().decode('utf-8-sig')))    
-            for row in studentreader:
-                program = Program.objects.get(code = row['Prog'])
-                year = YearOfStudy.objects.get(year = row['Year'])
-                obj, created = Student.objects.update_or_create(
-                    ccid = row['CCID'],
-                    defaults={'ualberta_id': row['ID'], 'first_name': row['First Name'], 'last_name': row['Last Name'], 'email' : row['Email (Univ)'],
-                              'program' : program, 'year' : year,},
-                )                
+            if 'student_file' in request.FILES:
+                csv_file = request.FILES['student_file']
+                csv_file.seek(0)
+                studentreader = csv.DictReader(io.StringIO(csv_file.read().decode('utf-8-sig')))    
+                for row in studentreader:
+                    program = Program.objects.get(code = row['Prog'])
+                    year = YearOfStudy.objects.get(year = row['Year'])
+                    obj, created = Student.objects.update_or_create(
+                        ccid = row['CCID'],
+                        defaults={'ualberta_id': row['ID'], 'first_name': row['First Name'], 'last_name': row['Last Name'], 'email' : row['Email (Univ)'],
+                                  'program' : program, 'year' : year,},
+                    ) 
+                    
+            if 'gpa_file' in request.FILES:
+                csv_file = request.FILES['gpa_file']
+                csv_file.seek(0)
+                gpareader = csv.DictReader(io.StringIO(csv_file.read().decode('utf-8-sig')))    
+                for row in gpareader:
+                    student = Student.objects.get(ccid = row['CCID'])
+                    if row['GPA']:
+                        student.gpa = row['GPA']
+                        student.save()
+                                    
             return redirect('studentlist')
     else:
         form = FileUploadForm()
