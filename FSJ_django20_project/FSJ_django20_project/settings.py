@@ -141,7 +141,7 @@ LOGIN_REDIRECT_URL = '/FSJ/home/'
 # Where to redirect once a user logs out.
 LOGOUT_REDIRECT_URL = '/FSJ/login/'
 
-#python -m smtpd -n -c DebuggingService localhost:1025
+#python -m smtpd -n -c DebuggingServer localhost:1025
 EMAIL_HOST = 'localhost'
 EMAIL_PORT = 1025
 

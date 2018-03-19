@@ -9,7 +9,7 @@ urlpatterns = [
     path('login/', auth_views.LoginView.as_view(template_name="FSJ/login.html", redirect_authenticated_user=True), name='login'),
     path('logout/', auth_views.LogoutView.as_view(), name='logout'),
     path('register/', views.registration, name='register'),
-    path('register/password_set/(P<uidb64>[0-9A-Za-z]+)-(P<token>.+)<username>/', views.register_activation, name='register_activation'),
+    path('register/password_set/(P<uidb64>[0-9A-Za-z]+)-(P<token>.+)/', views.register_activation, name='register_activation'),
     path('reset_password/', auth_views.password_reset, name='reset_password'),
     path('reset_password/done/', auth_views.password_reset_done, name='password_reset_done'),
     path('reset_password/confirm/(P<uidb64>[0-9A-Za-z]+)-(P<token>.+)/', auth_views.password_reset_confirm, name='password_reset_confirm'),
