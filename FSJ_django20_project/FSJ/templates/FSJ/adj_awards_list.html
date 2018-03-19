@@ -1,0 +1,122 @@
+{% extends "FSJ/base_with_banner.html" %}
+{% load i18n %} {# NOTE YOU MUST LOAD i18n to every HTML page even though it's also loaded to base.html #}
+{% load widget_tweaks %}
+
+{# A page for the coordinator to view a list of awards as well as providing adding, deleting, and editing functionality #}
+{# This page is separate from the template for displaying awards to sutdents due to the added functionality #}
+{% block heading %}
+    {# Translators: Awards page home label #}
+    {% trans "Awards" %}
+{% endblock %}
+
+{% block content %}
+    <body>
+        <div class='center-content'>
+            <form method="get">
+            <button class = "btn btn-success" type="button" data-toggle="collapse" data-target="#filterCollapse" aria-expanded=false aria-controls="filterCollapse">
+                {# Translators: Filters table collapse button #}
+                {% trans "Filters" %}            
+            </button>
+            <div class="collapse.show" id="filterCollapse">
+              <form method="get">
+                <div class = "well">
+                  <div class="row">
+                    <div class = "form-group col-sm-4 col-md-3">
+                      {{ filter.form.award_name.label_tag }}
+                      {% render_field filter.form.award_name class="form-control" %}
+                    </div>
+                    <div class = "form-group col-sm-4 col-md-3">
+                      {{ filter.form.description.label_tag }}
+                      {% render_field filter.form.description class="form-control" %}
+                    </div>
+                    <div class = "form-group col-sm-4 col-md-3">
+                      {{ filter.form.value.label_tag }}
+                      {% render_field filter.form.value class="form-control" %}
+                    </div>
+                    <div class = "form-group col-sm-4 col-md-3">
+                      {{ filter.form.programs.label_tag }}
+                      {% render_field filter.form.programs class="form-control" %}
+                    </div>
+                    <div class = "form-group col-sm-4 col-md-3">
+                      {{ filter.form.years_of_study.label_tag }}
+                      {% render_field filter.form.years_of_study class="form-control" %}
+                    </div>
+                    <div class = "form-group col-sm-4 col-md-3">
+                      {{ filter.form.deadline.label_tag }}
+                      {% render_field filter.form.deadline class="form-control" %}
+                    </div>
+                    <div class = "form-group col-sm-4 col-md-3">
+                      {{ filter.form.documents_needed.label_tag }}
+                      {% render_field filter.form.documents_needed class="form-control" %}
+                    </div>
+                    <div class = "form-group col-sm-4 col-md-3">
+                      {{ filter.form.is_active.label_tag }}
+                      {% render_field filter.form.is_active class="form-control" %}
+                    </div>
+                  </div>
+                  <button type="submit" class="btn btn-success">
+                        <span class="glyphicon glyphicon-search"></span> 
+                        {# Translators: Search button for filtering #}
+                        {% trans "Search" %}    
+                </button> 
+                </div>
+              </form>
+            </div>
+            <table class="table table-bordered table-striped table-hover" align="center">
+                <tr>
+                    {# Translators: Action header in awards table #}
+                    <th>{% trans "Action" %}</th>
+                    {# Translators: Award name header in awards table #}
+                    <th>{% trans "Award" %}</th>
+                    {# Translators: Award description header in awards table #}
+                    <th>{% trans "Description" %}</th>
+                    {# Translators: Award value header in awards table #}
+                    <th>{% trans "Value" %}</th>
+                    {# Translators: Award programs header in awards table #}
+                    <th>{% trans "Programs" %}</th>
+                    {# Translators: Award years of study header in awards table #}
+                    <th>{% trans "Years of Study" %}</th>
+                    {# Translators: Award deadline header in awards table #}
+                    <th>{% trans "Deadline" %}</th>
+                    {# Translators: Award documents needed header in awards table #}
+                    <th>{% trans "Documents Required?" %}</th>
+                    {# Translators: Award is active header in awards table #}
+                    <th>{% trans "Is Active?" %}</th>
+                    {# Translators: Awards application header in awards table #}
+                    <th>{% trans "Applications" %}</th>
+                </tr>
+                {% for award in filter.qs %}
+                    <tr>
+                        <td><input type="checkbox"  name="awardaction" value="{{award.awardid}}" > </td>
+                        <td>{{award.award_name }}</td>
+                        <td>{{award.description}}</td>
+                        <td>{{award.value}}</td>
+                        <td>
+                            {% if award.programs.all %}
+                                {% for program in award.programs.all %}
+                                    {{ program.name }} <br/>
+                                {% endfor %}
+                            {% else %}
+                                {# Translators: No program chosen for an award, on the list of awards table #}
+                                {% trans "N/A" %}
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% for year in award.years_of_study.all %}
+                                {{year}} <br>
+                            {% endfor %}
+                        </td>
+                        <td>{{award.deadline}}</td>
+                        <td>
+                            <input type="checkbox" disabled {% if award.documents_needed %}checked{% endif %}>
+                        </td>
+                        <td>
+                            <input type="checkbox" disabled {% if award.is_active %}checked{% endif %}>
+                        </td>
+                        <td><a href="/adj_awardslist/{{ award.awardid }}/applications/">{% trans "View" %}</a></td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </body>
+{% endblock %}

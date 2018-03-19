@@ -23,7 +23,7 @@ def home(request):
     elif isinstance(FSJ_user, Coordinator):
         return coordinator_home(request, FSJ_user)
     elif isinstance(FSJ_user, Adjudicator):
-        return adjudicator_home(request, FSJ_user)
+        return adjudicator_awards(request, FSJ_user)
     else:
         return non_FSJ_home(request)
 
