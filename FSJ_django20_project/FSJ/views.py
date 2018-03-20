@@ -2,6 +2,7 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 from django.core.exceptions import PermissionDenied, ObjectDoesNotExist
 from django.http import HttpResponse
 from django.template import loader 
+from django.contrib import messages
 from django.contrib.auth.models import User
 from django.contrib.sites.shortcuts import get_current_site
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
@@ -9,6 +10,7 @@ from django.utils.encoding import force_bytes
 from django.core.mail import EmailMessage
 from django.shortcuts import render, redirect
 from django.contrib.auth import update_session_auth_hash
+from django.utils.translation import gettext_lazy as _
 from .models_FSJUser import FSJUser
 from .tokens import account_activation_token
 from .forms import *
@@ -33,7 +35,7 @@ def registration(request):
                 user = User.objects.get(email = data['email'])
                 if user.last_login is None:
                     current_site=get_current_site(request)
-                    mail_subject = '[DO NOT REPLY] Activate Campus Saint Jean Awards Account'
+                    mail_subject = _('[DO NOT REPLY] Activate Campus Saint Jean Awards Account')
                     message = loader.render_to_string('registration/register_email.html', {
                         'domain': current_site.domain,
                         'uid': urlsafe_base64_encode(force_bytes(user.pk)).decode(),
@@ -47,6 +49,8 @@ def registration(request):
                 else:
                     template = loader.get_template("registration/already_active.html")
                     return HttpResponse(template.render())
+            else:
+                messages.error(request, 'placeholder')
     else:
         form = SignupForm()
     return render(request,'registration/register_form.html', {'form':form})
@@ -61,7 +65,6 @@ def register_activation(request, uidb64, token):
         if form.is_valid():
             user=form.save()
             update_session_auth_hash(request,user)
-            messages.success(request, 'Your password was successfully updated!')
             return redirect('login')
     else:
         form = SetPasswordForm(user)

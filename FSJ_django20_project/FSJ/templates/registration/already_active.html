@@ -10,7 +10,11 @@
 
 {% block content %}
 	<div class="center-content">
-        <p> This Account is already active.</p>
-        <p> If have lost your password, press the Forgot Password button on the <a href="/login"> login page</a>.</p>
+        <p> 
+        	{% trans "This Account is already active." %}
+        </p>
+        <p> 
+        	{% trans "If you have lost your password, press the Forgot Password button on the" %} <a href="/login"> {% trans "login page" %}</a>.
+        </p>
 	</div>  
 {% endblock%}

@@ -1,4 +1,5 @@
 from django.contrib.auth.forms import SetPasswordForm
+from django.utils.translation import gettext_lazy as _
 from django import forms
 
 class SignupForm(forms.Form):
@@ -6,7 +7,7 @@ class SignupForm(forms.Form):
 
 	def clean(self):
 		cleaned_data = super(SignupForm, self).clean()
-		email = cleaned_data.get('email')
+		email = cleaned_data.get(_('email'))
 		if not email:
-			raise forms.ValidationError('An email is required')
+			raise forms.ValidationError(_('An email is required'))
 
