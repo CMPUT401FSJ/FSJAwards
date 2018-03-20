@@ -25,7 +25,6 @@ def adjudicator_home(request, FSJ_user):
 @login_required
 @user_passes_test(is_adjudicator)
 def adjudicator_awards(request, FSJ_user):
-
     awards_list = Award.objects.filter(committees__adjudicators = FSJ_user)
     filtered_list = AwardFilter(request.GET, queryset=awards_list)
     template = loader.get_template("FSJ/adj_awards_list.html")

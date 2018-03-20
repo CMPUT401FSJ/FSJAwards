@@ -1,4 +1,4 @@
-from .models_award import Award
+from .models import Award
 from django.forms import CheckboxSelectMultiple
 from .forms_modelform import ModelForm
 
