@@ -8,3 +8,4 @@ from .models_yearofstudy import YearOfStudy
 from .models_application import Application
 from .models_committee import Committee
 from .models_FSJUser import FSJUser
+from .models_comment import Comment

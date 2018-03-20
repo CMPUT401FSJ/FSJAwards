@@ -12,3 +12,4 @@ from .models.models_yearofstudy import YearOfStudy
 from .models.models_application import Application
 from .models.models_committee import Committee
 from .models.models_FSJUser import FSJUser
+from .models.models_comment import Comment
