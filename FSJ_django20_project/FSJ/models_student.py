@@ -10,7 +10,7 @@ from .models_yearofstudy import *
 class Student(FSJUser):
     program = models.ForeignKey(Program, on_delete = models.SET_NULL, null = True, blank = True, verbose_name = _("Program"))
     year = models.ForeignKey(YearOfStudy, on_delete=models.PROTECT, verbose_name = _("Year"))
-    gpa = models.CharField(max_length = 255, null = True, blank = True, verbose_name = _("GPA"))
+    gpa = models.CharField(max_length = 10, null = True, blank = True, verbose_name = _("GPA"))
 
     def user_class(self):
         return "Student"
