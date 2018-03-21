@@ -501,3 +501,63 @@ def coordinator_application_list(request, award_idnum):
 
     template = loader.get_template("FSJ/application_list.html")
     return HttpResponse(template.render(context, request))
+
+@login_required
+@user_passes_test(is_coordinator)
+def coordinator_application_archive_list(request, award_idnum):
+    FSJ_user = get_FSJ_user(request.user.username)
+
+    try:
+        award = Award.objects.get(awardid = award_idnum)
+    except Award.DoesNotExist:
+        raise Http404("Award does not exist")
+
+    archived_application_list = award.archived_applications.all()
+
+
+    context = get_standard_context(FSJ_user)
+    context["application_list"] = archived_application_list
+    context["award"] = award
+
+    template = loader.get_template("FSJ/coord_application_archive.html") 
+    return HttpResponse(template.render(context, request))
+
+@login_required
+@user_passes_test(is_coordinator)
+def coordinator_application_view(request, award_idnum, application_idnum):
+    FSJ_user = get_FSJ_user(request.user.username)
+    try:
+        award = Award.objects.get(awardid = award_idnum)
+    except Award.DoesNotExist:
+        raise Http404("Award does not exist")
+    try:
+        application = Application.objects.get(application_id = application_idnum)
+    except Award.DoesNotExist:
+        raise Http404("application does not exist")
+
+    context = get_standard_context(FSJ_user)
+    context["award"] = award
+
+    template = loader.get_template("FSJ/coord_application_view.html")
+    return HttpResponse(template.render(context, request))
+
+@login_required
+@user_passes_test(is_coordinator)
+def coordinator_application_archive(request, award_idnum):
+    try:
+        award = Award.objects.get(awardid = award_idnum)
+    except Award.DoesNotExist:
+        raise Http404("Award does not exist")
+
+    application_list = award.applications.all()
+
+    for application in application_list:
+        if not ArchivedApplication.objects.filter(application_id = application.application_id).exists():
+            archivedapp = ArchivedApplication()
+            archivedapp.application_id = application.application_id
+            archivedapp.award = application.award
+            archivedapp.student = application.student
+            archivedapp.application_file = application.application_file
+            archivedapp.save()
+
+    return redirect('/coord_awardslist/'+ str(award_idnum) +'/applications/')

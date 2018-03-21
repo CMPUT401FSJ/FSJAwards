@@ -10,3 +10,4 @@ from .models_committee import Committee
 from .models_program import Program
 from .models_yearofstudy import YearOfStudy
 from .models_application import Application
+from .models_archived_application import ArchivedApplication
