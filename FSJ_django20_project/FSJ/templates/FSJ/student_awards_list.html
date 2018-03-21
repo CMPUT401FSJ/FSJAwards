@@ -30,86 +30,98 @@
                 <th>{% trans "Action" %}</th>
             </tr>
             <tr><th class="alternate-table-heading" colspan=8>{% trans "New awards" %}</th></tr>
-            {% for award in awards_list %}
-                <tr>
-                    <td>{{award.award_name }}</td>
-                    <td>{{award.description}}</td>
-                    <td>{{award.value}}</td>
-                    <td>
-                        {% if award.programs.all %}
-                            {% for program in award.programs.all %}
-                                {{ program.name }} <br/>
+            {% if awards_list %}
+                {% for award in awards_list %}
+                    <tr>
+                        <td>{{award.award_name }}</td>
+                        <td>{{award.description}}</td>
+                        <td>{{award.value}}</td>
+                        <td>
+                            {% if award.programs.all %}
+                                {% for program in award.programs.all %}
+                                    {{ program.name }} <br/>
+                                {% endfor %}
+                            {% else %}
+                                    {# Translators: No program chosen for an award, on the list of awards table #}
+                                    {% trans "N/A" %}
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% for year in award.years_of_study.all %}
+                                {{year}} <br>
                             {% endfor %}
-                        {% else %}
-                                {# Translators: No program chosen for an award, on the list of awards table #}
-                                {% trans "N/A" %}
-                        {% endif %}
-                    </td>
-                    <td>
-                        {% for year in award.years_of_study.all %}
-                            {{year}} <br>
-                        {% endfor %}
-                    </td>
-                    <td>{{award.deadline}}</td>
-                    <td><input type="checkbox" disabled {% if award.documents_needed %}checked{% endif %}></td>
-                    {# Translators: Apply button in award table #}
-                    <td><a href="/student_awardslist/{{ award.awardid }}/apply/">{% trans "Apply" %}</a></td>
-                </tr>
-            {% endfor %}
+                        </td>
+                        <td>{{award.deadline}}</td>
+                        <td><input type="checkbox" disabled {% if award.documents_needed %}checked{% endif %}></td>
+                        {# Translators: Apply button in award table #}
+                        <td><a href="/student_awardslist/{{ award.awardid }}/apply/">{% trans "Apply" %}</a></td>
+                    </tr>
+                {% endfor %}
+            {% else %}
+                <tr><td colspan=8>{% trans "No new awards" %}</td></tr>
+            {% endif %}
             <tr><th class="alternate-table-heading" colspan=8>{% trans "In-progress awards" %}</th></tr>
-            {% for award in in_progress_list %}
-                <tr>
-                    <td>{{award.award_name }}</td>
-                    <td>{{award.description}}</td>
-                    <td>{{award.value}}</td>
-                    <td>
-                        {% if award.programs.all %}
-                            {% for program in award.programs.all %}
-                                {{ program.name }} <br/>
+            {% if in_progress_list %}
+                {% for award in in_progress_list %}
+                    <tr>
+                        <td>{{award.award_name }}</td>
+                        <td>{{award.description}}</td>
+                        <td>{{award.value}}</td>
+                        <td>
+                            {% if award.programs.all %}
+                                {% for program in award.programs.all %}
+                                    {{ program.name }} <br/>
+                                {% endfor %}
+                            {% else %}
+                                    {# Translators: No program chosen for an award, on the list of awards table #}
+                                    {% trans "N/A" %}
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% for year in award.years_of_study.all %}
+                                {{year}} <br>
                             {% endfor %}
-                        {% else %}
-                                {# Translators: No program chosen for an award, on the list of awards table #}
-                                {% trans "N/A" %}
-                        {% endif %}
-                    </td>
-                    <td>
-                        {% for year in award.years_of_study.all %}
-                            {{year}} <br>
-                        {% endfor %}
-                    </td>
-                    <td>{{award.deadline}}</td>
-                    <td><input type="checkbox" disabled {% if award.documents_needed %}checked{% endif %}></td>
-                    {# Translators: Edit application button in student award table #}
-                    <td><a href="/student_awardslist/{{ award.awardid }}/edit/">{% trans "Edit" %}</a></td>
-                </tr>
-            {% endfor %}
+                        </td>
+                        <td>{{award.deadline}}</td>
+                        <td><input type="checkbox" disabled {% if award.documents_needed %}checked{% endif %}></td>
+                        {# Translators: Edit application button in student award table #}
+                        <td><a href="/student_awardslist/{{ award.awardid }}/edit/">{% trans "Edit" %}</a></td>
+                    </tr>
+                {% endfor %}
+            {% else %}
+                <tr><td colspan=8>{% trans "No in-progress awards" %}</td></tr>
+            {% endif %}
             <tr><th class="alternate-table-heading" colspan=8>{% trans "Submitted awards" %}</th></tr>
-            {% for award in submitted_list %}
-                <tr>
-                    <td>{{award.award_name }}</td>
-                    <td>{{award.description}}</td>
-                    <td>{{award.value}}</td>
-                    <td>
-                        {% if award.programs.all %}
-                            {% for program in award.programs.all %}
-                                {{ program.name }} <br/>
-                            {% endfor %}
-                        {% else %}
+            {% if submitted_list %}
+                {% for award in submitted_list %}
+                    <tr>
+                        <td>{{award.award_name }}</td>
+                        <td>{{award.description}}</td>
+                        <td>{{award.value}}</td>
+                        <td>
+                            {% if award.programs.all %}
+                                {% for program in award.programs.all %}
+                                    {{ program.name }} <br/>
+                                {% endfor %}
+                            {% else %}
                                 {# Translators: No program chosen for an award, on the list of awards table #}
                                 {% trans "N/A" %}
-                        {% endif %}
-                    </td>
-                    <td>
-                        {% for year in award.years_of_study.all %}
-                            {{year}} <br>
-                        {% endfor %}
-                    </td>
-                    <td>{{award.deadline}}</td>
-                    <td><input type="checkbox" disabled {% if award.documents_needed %}checked{% endif %}></td>
-                    {# Translators: Unsubmit application button in student award table #}
-                    <td><a href="/student_awardslist/{{ award.awardid }}/unsubmit/">{% trans "Unsubmit" %}</a></td>
-                </tr>
-            {% endfor %}
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% for year in award.years_of_study.all %}
+                                {{year}} <br>
+                            {% endfor %}
+                        </td>
+                        <td>{{award.deadline}}</td>
+                        <td><input type="checkbox" disabled {% if award.documents_needed %}checked{% endif %}></td>
+                        {# Translators: Unsubmit application button in student award table #}
+                        <td><a href="/student_awardslist/{{ award.awardid }}/unsubmit/">{% trans "Unsubmit" %}</a></td>
+                    </tr>
+                {% endfor %}
+            {% else %}
+                <tr><td colspan=8>{% trans "No submitted awards" %}</td></tr>
+            {% endif %}
         </table>
     </div>
 
