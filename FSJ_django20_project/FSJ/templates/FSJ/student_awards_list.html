@@ -29,7 +29,7 @@
                 {# Translators: Apply button header in awards table #}
                 <th>{% trans "Action" %}</th>
             </tr>
-            <tr><th colspan=8>{% trans "New awards" %}</th></tr>
+            <tr><th class="alternate-table-heading" colspan=8>{% trans "New awards" %}</th></tr>
             {% for award in awards_list %}
                 <tr>
                     <td>{{award.award_name }}</td>
@@ -56,7 +56,7 @@
                     <td><a href="/student_awardslist/{{ award.awardid }}/apply/">{% trans "Apply" %}</a></td>
                 </tr>
             {% endfor %}
-            <tr><th colspan=8>{% trans "In-progress awards" %}</th></tr>
+            <tr><th class="alternate-table-heading" colspan=8>{% trans "In-progress awards" %}</th></tr>
             {% for award in in_progress_list %}
                 <tr>
                     <td>{{award.award_name }}</td>
@@ -83,7 +83,7 @@
                     <td><a href="/student_awardslist/{{ award.awardid }}/edit/">{% trans "Edit" %}</a></td>
                 </tr>
             {% endfor %}
-            <tr><th colspan=8>{% trans "Submitted awards" %}</th></tr>
+            <tr><th class="alternate-table-heading" colspan=8>{% trans "Submitted awards" %}</th></tr>
             {% for award in submitted_list %}
                 <tr>
                     <td>{{award.award_name }}</td>
