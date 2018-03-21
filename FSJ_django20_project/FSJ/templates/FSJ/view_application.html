@@ -1,0 +1,70 @@
+{% extends "FSJ/base_with_banner.html" %}
+{% load i18n %} {# NOTE YOU MUST LOAD i18n to every HTML page even though it's also loaded to base.html #}
+
+{% block heading %}
+    {# Translators: View Application page heading #}
+    {% trans "View Application for " %}{{award.award_name}}
+{% endblock %}
+
+{% block content %}
+    <div class='center-content'>
+        <div>
+            {% trans "Award Name:" %} {{ award.award_name }}
+        </div>
+        <div>
+            {% trans "Award Description:" %} {{ award.description }}
+        </div>
+        <div>
+            {% trans "Award Value:" %} {{ award.value }}
+        </div>
+        <div>
+            {% trans "Award Program(s):" %}
+            {% if award.programs.all %}
+                <ul>
+                    {% for p in award.programs.all %}
+                        <li>{{ p }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+        <div>
+            {% trans "Award Year(s):" %}
+            {% if award.years_of_study.all %}
+                <ul>
+                    {% for y in award.years_of_study.all %}
+                        <li>{{ y }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+        <div>
+            {% trans "Student Name:" %} {{ student.get_name }}
+        </div>
+        <div>
+            {% trans "Program:" %} {{ student.program }}
+        </div>
+        <div>
+            {% trans "Year:" %} {{ student.year }}
+        </div>
+        {% if award.documents_needed %}
+            <div>
+                {% trans "Document:" %} 
+                {% if document %}
+                    <object> <embed src="{{ document }}" width="100%" height="500px"> </object>
+                {% else %}
+                    {% trans "No document has been uploaded yet, but one is expected." %}
+                {% endif %}
+            </div>
+        {% endif %}
+        <br/>
+        <form action='{{ url }}' method='post'>
+            {% csrf_token %}
+            {# Save button on application #}
+            {% if FSJ_user.user_class == "Coordinator" %}
+                <button class = "btn btn-success" type="submit" name="_review">{% trans "Review application" %}</button>
+                <button class = "btn btn-success" type="submit" name="_unreview">{% trans "Mark unreviewed" %}</button>
+            {% endif %}
+            <a class="btn btn-success" role="button" href="{{ return_url }}">{% trans "Return to Applications" %}</a> 
+        </form>     
+    </div>
+{% endblock %}

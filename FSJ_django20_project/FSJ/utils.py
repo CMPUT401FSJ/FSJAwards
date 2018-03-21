@@ -8,6 +8,12 @@ def is_FSJ_user(usr):
         raise PermissionDenied
     return True
 
+def is_coordinator_or_adjudicator(usr):
+    user = get_FSJ_user(usr)
+    if not isinstance(user, Coordinator) and not isinstance(user, Adjudicator):
+        raise PermissionDenied
+    return True
+
 # Generic utility method to obtain the FSJUser model give a specific username from the User model (which matches the FSJUser's CCID)
 # Returns None if there are no Students, Coordinators, or Adjudicators with that CCID
 def get_FSJ_user(usr):

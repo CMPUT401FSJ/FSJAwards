@@ -3,17 +3,17 @@
 
 {% block banner %}
     <div class="banner">
-        <div>
-            {# Translators: Home link on the main banner #}
-            <a class="header" href='/home'>{% trans "Home" %}</a>
-        </div>
-        {% if FSJ_user.user_class == "Coordinator" or FSJ_user.user_class == "Adjudicator" or FSJ_user.user_class == "Student" %}
+        {% if FSJ_user.user_class == "Student" %}
             <div>
-                {# Translators: Profile link on the main banner #}
-                <a class="header" href='/profile'>{% trans "Profile" %}</a>
+                {# Translators: Home link on the main banner #}
+                <a class="header" href='/home'>{% trans "Home" %}</a>
             </div>
         {% endif %}
         {% if FSJ_user.user_class == "Coordinator" %}
+            <div>        
+                {# Translators: Awards link on the main banner #}
+                <a class="header" href='/coord_awardslist'>{% trans "Awards" %}</a>
+            </div>
             <div>        
                 {# Translators: Students link on the main banner #}
                 <a class="header" href='/studentlist'>{% trans "Students" %}</a>
@@ -21,10 +21,6 @@
             <div>        
                 {# Translators: Adjudicators link on the main banner #}
                 <a class="header" href='/adjudicatorlist'>{% trans "Adjudicators" %}</a>
-            </div>
-            <div>        
-                {# Translators: Awards link on the main banner #}
-                <a class="header" href='/coord_awardslist'>{% trans "Awards" %}</a>
             </div>
             <div>        
                 {# Translators: Committees link on the main banner #}
@@ -43,6 +39,12 @@
             <div>
                 {# Translators: Link on the main banner for the admin site #}
                 <a class="header" href='../../admin'>{% trans "Admin" %}</a>
+            </div>
+        {% endif %}
+        {% if FSJ_user.user_class == "Coordinator" or FSJ_user.user_class == "Adjudicator" or FSJ_user.user_class == "Student" %}
+            <div>
+                {# Translators: Profile link on the main banner #}
+                <a class="header" href='/profile'>{% trans "Profile" %}</a>
             </div>
         {% endif %}
         <div id='logout'>
