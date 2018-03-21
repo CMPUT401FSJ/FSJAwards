@@ -5,6 +5,7 @@ from django.http import HttpResponse
 from django.template import loader
 from django.shortcuts import redirect
 from django.db.models import Q
+from datetime import datetime, timezone
 from .models import *
 from .utils import *
 from .forms import *
@@ -82,6 +83,8 @@ def student_addapplication(request, award_idnum):
                     return redirect('home')                    
                         
                 elif '_submit' in request.POST:
+                    if datetime.now(timezone.utc) > award.deadline:
+                        return redirect('home')
                     application.is_submitted = True            
                     if award.documents_needed == True and not application.application_file:
                         messages.warning(request, 'Please upload a document.')

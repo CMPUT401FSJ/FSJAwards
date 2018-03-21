@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 from django.http import HttpResponse, Http404
 from django.template import loader
 from django.shortcuts import redirect
+from datetime import datetime, timezone
 from .filters import *
 from .models import *
 from .utils import *
@@ -268,7 +269,20 @@ def coordinator_awardaction(request):
             for itemid in awardid_list:
                 award = Award.objects.get(awardid=itemid)
                 award.is_active = False
-                award.save()            
+                award.save()
+
+        # Function for deactivating all expired awards (past deadline) and deleting all
+        # in-progress applications
+        elif '_expire' in request.POST:
+            award_list = Award.objects.all()
+            for award in award_list:
+                if datetime.now(timezone.utc) > award.deadline:
+                    award.is_active = False
+                    award.save()
+                    application_list = award.applications.all()
+                    for application in application_list:
+                        if application.is_submitted == False:
+                            application.delete()            
 
     return redirect('coord_awardslist')
 
@@ -501,3 +515,4 @@ def coordinator_application_list(request, award_idnum):
 
     template = loader.get_template("FSJ/application_list.html")
     return HttpResponse(template.render(context, request))
+
