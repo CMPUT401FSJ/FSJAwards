@@ -1,4 +1,4 @@
-from django.forms import ModelForm as DjangoModelForm, TextInput, Textarea, Select, EmailInput, NumberInput, PasswordInput
+from django.forms import ModelForm as DjangoModelForm, TextInput, Textarea, Select, EmailInput, NumberInput
 
 class ModelForm(DjangoModelForm):
     
@@ -14,8 +14,6 @@ class ModelForm(DjangoModelForm):
                 return True
             if isinstance(widget, NumberInput):
                 return True      
-            if isinstance(widget, PasswordInput):
-                return True
             return False
         
         super(ModelForm, self).__init__(*args, **kwargs)

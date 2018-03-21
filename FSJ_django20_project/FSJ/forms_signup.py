@@ -7,7 +7,7 @@ class SignupForm(forms.Form):
 
 	def clean(self):
 		cleaned_data = super(SignupForm, self).clean()
-		email = cleaned_data.get(_('email'))
+		email = cleaned_data.get('email')
 		if not email:
 			raise forms.ValidationError(_('An email is required'))
 
