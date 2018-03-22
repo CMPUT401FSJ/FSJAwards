@@ -503,10 +503,9 @@ def coordinator_application_list(request, award_idnum):
             if application.is_submitted == False:
                 application.delete()
         award.refresh_from_db()
-
-    #refresh application list after any deletes, if this isn't here, application list will
-    #not update correctly after deletion
-    application_list = award.applications.all()
+        #refresh application list after any deletes, if this isn't here, application list will
+        #not update correctly after deletion
+        application_list = award.applications.all()
 
     context = get_standard_context(FSJ_user)
     context["application_list"] = application_list
