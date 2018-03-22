@@ -1,0 +1,12 @@
+{% extends "FSJ/base_with_banner.html" %}
+{% load i18n %} {# NOTE YOU MUST LOAD i18n to every HTML page even though it's also loaded to base.html #}
+
+{% block heading %}
+    {{ application.student.ccid }}
+{% endblock %}
+
+{% block content %}
+    <div class='center-content'>
+        {% include 'FSJ/modelform.html' with form=form url=url %}
+    </div>
+{% endblock %}

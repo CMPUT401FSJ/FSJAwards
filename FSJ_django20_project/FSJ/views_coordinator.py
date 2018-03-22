@@ -500,6 +500,7 @@ def coordinator_application_list(request, award_idnum):
     context = get_standard_context(FSJ_user)
     context["application_list"] = application_list
     context["award"] = award
+    context["is_adj"] = False
 
     template = loader.get_template("FSJ/application_list.html")
     return HttpResponse(template.render(context, request))

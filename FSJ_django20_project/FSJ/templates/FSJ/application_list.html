@@ -12,11 +12,13 @@
                         <th>{% trans "Student" %}</th>
                         {# Translators: View header in student table #}
                         <th>{% trans "Is Submitted?" %}</th>
+                        {% if is_adj %}<th>{% trans "Comment" %}</th>{% endif %}
                 </tr>
                 {% for application in application_list %}
                         <tr>
                                 <td><a href="/studentlist/{{ application.student.ccid }}/">{{ application.student.ccid }}</a></td>
                                 <td><input type="checkbox" disabled {% if application.is_submitted %}checked{% endif %}></td>
+                                {% if is_adj %}<td><a href="/adj_awardslist/{{ award.awardid }}/{{ application.application_id }}/add/">{% trans "Add" %}</a></td>{% endif %}
                         </tr>
                 {% endfor %}
                 </table>
