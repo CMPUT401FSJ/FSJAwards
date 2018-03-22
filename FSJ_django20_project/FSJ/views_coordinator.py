@@ -504,14 +504,20 @@ def coordinator_application_list(request, award_idnum):
     
     try:
         award = Award.objects.get(awardid = award_idnum)
+
     except Award.DoesNotExist:
         raise Http404("Award does not exist")
 
     application_list = award.applications.all()
 
-    for application in application_list:
-        if application.is_submitted == False:
-            application.delete()
+    #delete in-progress applications if deadline is past
+    if datetime.now(timezone.utc) > award.end_date: 
+        for application in application_list:
+            if application.is_submitted == False:
+                application.delete()
+                award.refresh_from_db()
+
+    application_list = award.applications.all()
 
     context = get_standard_context(FSJ_user)
     context["application_list"] = application_list
