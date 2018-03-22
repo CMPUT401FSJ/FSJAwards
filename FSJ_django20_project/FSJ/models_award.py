@@ -25,7 +25,7 @@ class Award(models.Model):
 	#returns a bool stating whether the award is open or not due to start/end date
 	def is_open(self):
 		now = datetime.now(timezone.utc)
-		if self.start_date >= now or self.end_date <= now:
+		if self.start_date > now or self.end_date < now:
 			return False
 		else:
 			return True
