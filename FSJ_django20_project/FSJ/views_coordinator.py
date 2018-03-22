@@ -273,16 +273,16 @@ def coordinator_awardaction(request):
 
         # Function for deactivating all expired awards (past deadline) and deleting all
         # in-progress applications
-        elif '_expire' in request.POST:
-            award_list = Award.objects.all()
-            for award in award_list:
-                if datetime.now(timezone.utc) > award.deadline:
-                    award.is_active = False
-                    award.save()
-                    application_list = award.applications.all()
-                    for application in application_list:
-                        if application.is_submitted == False:
-                            application.delete()            
+        # elif '_expire' in request.POST:
+        #     award_list = Award.objects.all()
+        #     for award in award_list:
+        #         if datetime.now(timezone.utc) > award.deadline:
+        #             award.is_active = False
+        #             award.save()
+        #             application_list = award.applications.all()
+        #             for application in application_list:
+        #                 if application.is_submitted == False:
+        #                     application.delete()            
 
     return redirect('coord_awardslist')
 
@@ -508,6 +508,10 @@ def coordinator_application_list(request, award_idnum):
         raise Http404("Award does not exist")
 
     application_list = award.applications.all()
+
+    for application in application_list:
+        if application.is_submitted == False:
+            application.delete()
 
     context = get_standard_context(FSJ_user)
     context["application_list"] = application_list

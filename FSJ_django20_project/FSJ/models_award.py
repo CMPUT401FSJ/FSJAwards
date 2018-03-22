@@ -2,7 +2,7 @@ import uuid
 from django.utils.translation import gettext_lazy as _
 from django.db import models
 from .models_yearofstudy import *
-import datetime
+from datetime import datetime, timezone
 from .models_program import Program
 
 class Award(models.Model):
@@ -13,10 +13,19 @@ class Award(models.Model):
 	value = models.TextField(verbose_name = _("Value"))
 	programs = models.ManyToManyField(Program, blank = True, verbose_name = _("Programs"))
 	years_of_study = models.ManyToManyField(YearOfStudy, verbose_name = _("Years"))
-	deadline = models.DateTimeField(auto_now = False, auto_now_add = False, verbose_name = _("Deadline"))
+	start_date = models.DateTimeField(auto_now = False, auto_now_add = False, verbose_name = _("Start date"))
+	end_date = models.DateTimeField(auto_now = False, auto_now_add = False, verbose_name = _("End Date"))
 	documents_needed = models.BooleanField(verbose_name = _("Documents Required"))
 	is_active = models.BooleanField(verbose_name = _("Is Active"))
 
 	#returns award name as a string
 	def __str__(self):
 		return self.award_name
+
+	#returns a bool stating whether the award is open or not due to start/end date
+	def is_open(self):
+		now = datetime.now(timezone.utc)
+		if self.start_date >= now or self.end_date <= now:
+			return False
+		else:
+			return True

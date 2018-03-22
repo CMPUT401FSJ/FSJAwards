@@ -22,8 +22,10 @@
                 <th>{% trans "Programs" %}</th>
                 {# Translators: Award years of study header in awards table #}
                 <th>{% trans "Years of Study" %}</th>
-                {# Translators: Award deadline header in awards table #}
-                <th>{% trans "Deadline" %}</th>
+                {# Translators: Award start date header in awards table #}
+                <th>{% trans "Start date" %}</th>
+                {# Translators: Award end date header in awards table #}
+                <th>{% trans "End date" %}</th>
                 {# Translators: Award documents needed header in awards table #}
                 <th>{% trans "Documents Required?" %}</th>
                 {# Translators: Apply button header in awards table #}
@@ -50,7 +52,8 @@
                             {{year}} <br>
                         {% endfor %}
                     </td>
-                    <td>{{award.deadline}}</td>
+                    <td>{{award.start_date}}</td>
+                    <td>{{award.end_date}}</td>
                     <td><input type="checkbox" disabled {% if award.documents_needed %}checked{% endif %}></td>
                     {# Translators: Apply button in award table #}
                     <td><a href="/student_awardslist/{{ award.awardid }}/apply/">{% trans "Apply" %}</a></td>
@@ -77,7 +80,8 @@
                             {{year}} <br>
                         {% endfor %}
                     </td>
-                    <td>{{award.deadline}}</td>
+                    <td>{{award.start_date}}</td>
+                    <td>{{award.end_date}}</td>
                     <td><input type="checkbox" disabled {% if award.documents_needed %}checked{% endif %}></td>
                     {# Translators: Edit application button in student award table #}
                     <td><a href="/student_awardslist/{{ award.awardid }}/edit/">{% trans "Edit" %}</a></td>
@@ -104,7 +108,8 @@
                             {{year}} <br>
                         {% endfor %}
                     </td>
-                    <td>{{award.deadline}}</td>
+                    <td>{{award.start_date}}</td>
+                    <td>{{award.end_date}}</td>
                     <td><input type="checkbox" disabled {% if award.documents_needed %}checked{% endif %}></td>
                     {# Translators: Unsubmit application button in student award table #}
                     <td><a href="/student_awardslist/{{ award.awardid }}/unsubmit/">{% trans "Unsubmit" %}</a></td>
