@@ -48,7 +48,6 @@ def student_awardslist(request, award_idnum):
             except Application.DoesNotExist:
                 awards_list.append(award)
             
-
     template = loader.get_template("FSJ/student_awards_list.html")
     context = get_standard_context(FSJ_user)
     context["awards_list"] = awards_list
@@ -67,7 +66,7 @@ def student_addapplication(request, award_idnum):
         return redirect('home')
     
     try:
-        application = Application.objects.get(award = award, student = FSJ_user.ccid)
+        application = Application.objects.get(award = award, student = FSJ_user)
         return redirect('home')
     
     except Application.DoesNotExist:    
@@ -119,7 +118,7 @@ def student_editapplication(request, award_idnum):
         return redirect('home')
     
     try:
-        application = Application.objects.get(award = award, student = FSJ_user.ccid)
+        application = Application.objects.get(award = award, student = FSJ_user)
         
         if application.is_submitted == True:
             return redirect('home')
@@ -167,7 +166,7 @@ def student_editapplication(request, award_idnum):
 def student_unsubmitapplication(request, award_idnum):
     FSJ_user = get_FSJ_user(request.user.username)
     award = Award.objects.get(awardid = award_idnum)    
-    application = Application.objects.get(award = award, student = FSJ_user.ccid)
+    application = Application.objects.get(award = award, student = FSJ_user)
     application.is_submitted = False
     application.save()
     return redirect('home')
