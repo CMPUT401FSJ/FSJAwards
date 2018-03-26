@@ -12,3 +12,4 @@ from .forms_committee import *
 from .forms_program import ProgramForm
 from .forms_application import *
 from .forms_fileupload import *
+from .forms_signup import *
