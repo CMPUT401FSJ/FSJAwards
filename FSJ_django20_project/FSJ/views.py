@@ -11,7 +11,6 @@ from django.core.mail import EmailMessage
 from django.shortcuts import render, redirect
 from django.contrib.auth import update_session_auth_hash
 from django.utils.translation import gettext_lazy as _
-from .models_FSJUser import FSJUser
 from .tokens import account_activation_token
 from .forms import *
 from .models import *
@@ -79,11 +78,11 @@ def register_activation(request, uidb64, token):
 def home(request):
     FSJ_user = get_FSJ_user(request.user.username)
     if isinstance(FSJ_user, Student):
-        return student_awardslist(request, FSJ_user)
+        return redirect('student_awardslist')
     elif isinstance(FSJ_user, Coordinator):
         return redirect('coord_awardslist')
     elif isinstance(FSJ_user, Adjudicator):
-        return adjudicator_awards(request, FSJ_user)
+        return redirect('adj_awardslist')
     else:
         return non_FSJ_home(request)
 
