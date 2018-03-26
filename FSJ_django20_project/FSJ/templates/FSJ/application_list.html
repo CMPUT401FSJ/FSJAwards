@@ -2,23 +2,34 @@
 {% load i18n %}
 
 {% block heading %}
-        {{ award.award_name }}
+    {{ award.award_name }}
 {% endblock %}
 
 {% block content %}
-        <div class='center-content'>
-                <table class="table table-bordered table-striped table-hover" align="center">
+    <div class='center-content'>
+        <table class="table table-bordered table-striped table-hover" align="center">
+            <tr>
+                <th>{% trans "Student" %}</th>
+                <th>{% trans "CCID" %}</th>
+                <th>{% trans "Program" %}</th>
+                <th>{% trans "Year" %}</th>
+                <th>{% trans "GPA" %}</th>
+                <th>{% trans "Is Submitted?" %}</th>
+                <th>{% trans "Status" %}</th>
+            </tr>
+            {% for application in application_list %}
                 <tr>
-                        <th>{% trans "Student" %}</th>
-                        {# Translators: View header in student table #}
-                        <th>{% trans "Is Submitted?" %}</th>
+                    <td><a href="/view_student?ccid={{ application.student.ccid }}&awardid={{application.award.awardid}}">{{ application.student.get_name }}</a></td>
+                    <td>{{ application.student.ccid }}</td>
+                    <td>{{ application.student.program }}</td>
+                    <td>{{ application.student.year }}</td>
+                    <td>{{ application.student.gpa }}</td>
+                    <td><input type="checkbox" disabled {% if application.is_submitted %}checked{% endif %}></td>
+                    <td><a href="/view_application?application_id={{ application.application_id }}">{{ application.get_status }}</a></td>
                 </tr>
-                {% for application in application_list %}
-                        <tr>
-                                <td><a href="/studentlist/{{ application.student.ccid }}/">{{ application.student.ccid }}</a></td>
-                                <td><input type="checkbox" disabled {% if application.is_submitted %}checked{% endif %}></td>
-                        </tr>
-                {% endfor %}
-                </table>
-        </div>
+            {% endfor %}
+        </table>
+        <br/>
+        <a class="btn btn-success" role="button" href="/coord_awardslist/">{% trans "Return to Awards" %}</a>
+    </div>
 {% endblock %}

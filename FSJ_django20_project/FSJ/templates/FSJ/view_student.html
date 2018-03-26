@@ -1,0 +1,29 @@
+{% extends "FSJ/base_with_banner.html" %}
+{% load i18n %} {# NOTE YOU MUST LOAD i18n to every HTML page even though it's also loaded to base.html #}
+
+{% block heading %}
+    {# Translators: View Student (read only) page heading #}
+    {% trans "View Student" %}
+{% endblock %}
+
+{% block content %}
+    <div class='center-content'>
+        {% for field in form %}
+            <div>
+                <div>
+                    {% if field.label %}
+                        {{field.label_tag}}
+                    {% endif %}
+                </div>
+                <div>
+                    {{ field }}
+                </div>
+                {% if field.help_text %}
+                    {{ field.help_text }}
+                {% endif %}
+            </div>
+        {% endfor %}
+        <br/>
+        <a class="btn btn-success" role="button" href="{{ return_url }}">{% trans "Return to Applications" %}</a>        
+    </div>
+{% endblock %}
