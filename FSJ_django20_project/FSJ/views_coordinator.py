@@ -1,5 +1,7 @@
 from django.core.exceptions import PermissionDenied
 from django.contrib.auth.decorators import login_required, user_passes_test
+from django.contrib.auth.models import User
+from django.utils.crypto import get_random_string
 from django.http import HttpResponse, Http404
 from django.template import loader
 from django.shortcuts import redirect
@@ -126,6 +128,13 @@ def coordinator_addstudent(request):
         form = StudentForm(request.POST)
         if form.is_valid():
             form.save()
+            data= form.cleaned_data
+            #set the user's email to that of the adjudicator
+            user = User.objects.get(username=data['ccid'])
+            user.email = data['email']
+            #generate a random 32 character password that will be reset on registration
+            user.set_password(get_random_string(length=32))
+            user.save()
             return redirect('studentlist')
     else:
         # If the coordinator hasn't entered information yet, create a blank student form
@@ -150,6 +159,11 @@ def coordinator_addadjudicator(request):
         form = AdjudicatorForm(request.POST)
         if form.is_valid():
             form.save()
+            data= form.cleaned_data
+            user = User.objects.get(username=data['ccid'])
+            user.email = data['email']
+            user.set_password(get_random_string(length=32))
+            user.save()
             return redirect('adjudicatorlist')
     else:
         # If the coordinator hasn't entered information yet, create a blank adjudicator
