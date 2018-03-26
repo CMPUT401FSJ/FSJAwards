@@ -12,11 +12,6 @@
 {% block content %}
     <body>
         <div class='center-content'>
-        <button class = "btn btn-success" type="button" data-toggle="collapse" data-target="#filterCollapse" aria-expanded=false aria-controls="filterCollapse">
-          {# Translators: Filters table collapse button #}
-          {% trans "Filters" %}        
-        </button>
-        <div class="collapse.show" id="filterCollapse">
           <form method="get">
             <div class = "well">
               <div class="row">
@@ -46,9 +41,9 @@
                 {# Translators: Search button for filtering #}
                 {% trans "Search" %}
               </button>          
+              <a role="button" class="btn btn-success" href='/studentlist'>{% trans "Clear Filters" %}</a>
             </div>
           </form>
-        </div>
 
         <form action="/studentlist/delete/" method="POST">
             {% csrf_token %}
