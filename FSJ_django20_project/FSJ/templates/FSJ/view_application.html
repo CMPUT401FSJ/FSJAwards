@@ -64,8 +64,43 @@
             {% csrf_token %}
             {# Save button on application #}
             {% if FSJ_user.user_class == "Coordinator" %}
+                <table class="table table-bordered table-striped table-hover" align="center">
+                    <tr>
+                        <th>{% trans "Adjudicator" %}</th>
+                        <th>{% trans "Comment" %}</th>
+                    </tr>
+                    {% for comm in comment_list %}
+                        <tr>
+                            <td>{{ comm.adjudicator.ccid }}</td>
+                            <td>{{ comm.comment_text }}</td>
+                        </tr>
+                    {% endfor %}
+                </table>
                 <button class = "btn btn-success" type="submit" name="_review">{% trans "Review application" %}</button>
                 <button class = "btn btn-success" type="submit" name="_unreview">{% trans "Mark unreviewed" %}</button>
+            {% endif %}
+            {% if FSJ_user.user_class == "Adjudicator" %}
+                {% for field in form %}
+                    <div>
+                        <div>
+                            {% if field.label %}
+                                {{field.label_tag}}
+                            {% endif %}
+                        </div>
+                        <div {% if field.errors %}class='has-error'{% endif %}>
+                            {{ field }}
+                        </div>
+                        {% if field.help_text %}
+                            {{ field.help_text }}
+                        {% endif %}
+                        {% if field.errors %}
+                            {{ field.errors }}
+                        {% endif %}
+                    </div>
+                {% endfor %}
+                <br/>
+                {# Save button #}
+                <button class='btn btn-success' type='submit'>{% trans "Save" %}</button>
             {% endif %}
             <a class="btn btn-success" role="button" href="{{ return_url }}">{% trans "Return to Applications" %}</a> 
         </form>     

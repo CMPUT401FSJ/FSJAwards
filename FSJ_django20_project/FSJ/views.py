@@ -204,18 +204,34 @@ def view_application(request):
         return redirect('coord_awardslist/' + str(application.award.awardid) + '/applications/')
     
     return_url = None
+    
+    context = get_standard_context(FSJ_user)
+    
     if isinstance(FSJ_user, Coordinator):
         return_url = "/coord_awardslist/" + str(application.award.awardid) + "/applications"
+        url = "/view_application?application_id=" + str(application.application_id)
+        comment_list = Comment.objects.filter(application = application)
+        context["comment_list"] = comment_list
     # TODO The return url will be whereever the adjudicator accessed the application view from, once implemented
     elif isinstance(FSJ_user, Adjudicator):
-        return_url = "/home/"
         
-    context = get_standard_context(FSJ_user)
+        try:
+            comment = Comment.objects.get(application = application, adjudicator = FSJ_user)
+            form = CommentRestrictedForm(instance = comment)
+            url = "/adj_awardslist/" + str(application.award.awardid) + "/" + str(application.application_id) + "/edit/"
+            
+        except Comment.DoesNotExist:
+            form = CommentRestrictedForm()
+            url = "/adj_awardslist/" + str(application.award.awardid) + "/" + str(application.application_id) + "/add/"
+        
+        return_url = "/adj_awardslist/" + str(application.award.awardid) + "/applications"
+        context["form"] = form
+        
     context["student"] = application.student
     if application.application_file:
         context["document"] = settings.MEDIA_URL + str(application.application_file)
     context["award"] = application.award
-    context["url"] = "/view_application?application_id=" + str(application.application_id)
+    context["url"] = url
     context["return_url"] = return_url
     template = loader.get_template("FSJ/view_application.html")
     return HttpResponse(template.render(context, request))
