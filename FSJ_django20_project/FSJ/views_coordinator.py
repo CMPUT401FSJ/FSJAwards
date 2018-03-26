@@ -502,6 +502,7 @@ def coordinator_application_list(request, award_idnum):
     template = loader.get_template("FSJ/application_list.html")
     return HttpResponse(template.render(context, request))
 
+#Handler used to produce the list of archived applications for an award using coord_application_archive template
 @login_required
 @user_passes_test(is_coordinator)
 def coordinator_application_archive_list(request, award_idnum):
@@ -541,23 +542,32 @@ def coordinator_application_view(request, award_idnum, application_idnum):
     template = loader.get_template("FSJ/coord_application_view.html")
     return HttpResponse(template.render(context, request))
 
+#Function used to archive an application by createing a new archivedapp object and deleteing the old application.
 @login_required
 @user_passes_test(is_coordinator)
-def coordinator_application_archive(request, award_idnum):
+def coordinator_application_action(request, award_idnum):
     try:
         award = Award.objects.get(awardid = award_idnum)
     except Award.DoesNotExist:
         raise Http404("Award does not exist")
 
-    application_list = award.applications.all()
+    if request.method == 'POST':
+        application_list = request.POST.getlist('applicationaction')
 
-    for application in application_list:
-        if not ArchivedApplication.objects.filter(application_id = application.application_id).exists():
-            archivedapp = ArchivedApplication()
-            archivedapp.application_id = application.application_id
-            archivedapp.award = application.award
-            archivedapp.student = application.student
-            archivedapp.application_file = application.application_file
-            archivedapp.save()
+        if "_archive" in request.POST:  
+            for applicationid in application_list:
+                if not ArchivedApplication.objects.filter(application_id = applicationid).exists():
+                    application = Application.objects.get(application_id=applicationid)
+                    archivedapp = ArchivedApplication()
+                    archivedapp.application_id = application.application_id
+                    archivedapp.award = application.award
+                    archivedapp.student = application.student
+                    archivedapp.application_file = application.application_file
+                    archivedapp.save()
+                    application.delete()
+        elif "_delete" in request.POST:
+            for applicationid in application_list:
+                Application.objects.get(application_id=applicationid).delete()
+
 
     return redirect('/coord_awardslist/'+ str(award_idnum) +'/applications/')

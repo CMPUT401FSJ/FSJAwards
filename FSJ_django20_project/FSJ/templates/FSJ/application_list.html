@@ -1,5 +1,6 @@
 {% extends "FSJ/base_with_banner.html" %}
 {% load i18n %}
+{% load widget_tweaks %}
 
 {% block heading %}
         {{ award.award_name }}
@@ -7,23 +8,32 @@
 
 {% block content %}
         <div class='center-content'>
-                <table class="table table-bordered table-striped table-hover" align="center">
-                <tr>
-                        <th>{% trans "Student" %}</th>
-                        {# Translators: View header in student table #}
-                        <th>{% trans "Is Submitted?" %}</th>
-                        <th>{% trans "View" %}</th>
-                </tr>
-                {% for application in application_list %}
+                <form action ="/coord_awardslist/{{ award.awardid }}/applications/action/" method="POST" >
+                        {% csrf_token %}
+                        <a role="button" class="btn btn-action" href='archive/'>{% trans "View Archive" %}</a>
+                        </br></br>
+                        <button class="btn btn-success" type="submit", name="_archive">{% trans "Archive Application(s)" %}</button>
+                        <button class="btn btn-danger" type="submit" name="_delete">{% trans "Delete Application(s)" %}</button>
+                        <table class="table table-bordered table-striped table-hover" align="center">
                         <tr>
-                                <td><a href="/studentlist/{{ application.student.ccid }}/">{{ application.student.ccid }}</a></td>
-                                <td><input type="checkbox" disabled {% if application.is_submitted %}checked{% endif %}></td>
-                                <td><a href="/coord_awardslist/{{ award.awardid }}/applications/view/{{application.application_id}}/">{% trans "View"%}</a></td>
+                                <th>{% trans "Action" %}</th>
+                                <th>{% trans "Student" %}</th>
+                                <th>{% trans "Is Submitted?" %}</th>
+                                <th>{% trans "View" %}</th>
                         </tr>
-                {% endfor %}
-                </table>
-                <a role="button" class="btn btn-success" href='archive/'>{% trans "View Archive" %}</a>
-                </br></br>
-                <a role="button" class="btn btn-danger" href='send_to_archive/'>{% trans "Archive Applications" %}</a>
+                        {% for application in application_list %}
+                                <tr>
+                                        <td><input type="checkbox"  name="applicationaction" value="{{application.application_id}}" ></td>
+                                        <td><a href="/studentlist/{{ application.student.ccid }}/">{{ application.student.ccid }}</a></td>
+                                        <td><input type="checkbox" disabled {% if application.is_submitted %}checked{% endif %}></td>
+                                        <td><a href="/coord_awardslist/{{ award.awardid }}/applications/view/{{application.application_id}}/">{% trans "View"%}</a></td>
+                                </tr>
+                        {% endfor %}
+                        </table>
+                        <a role="button" class="btn btn-action" href='archive/'>{% trans "View Archive" %}</a>
+                        </br></br>
+                        <button class="btn btn-success" type="submit", name="_archive">{% trans "Archive Application(s)" %}</button>
+                        <button class="btn btn-danger" type="submit" name="_delete">{% trans "Delete Application(s)" %}</button>
+                </form>
         </div>
 {% endblock %}
