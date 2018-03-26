@@ -49,7 +49,9 @@ urlpatterns = [
     path('adj_awardslist/', views.adjudicator_awards, name = 'adj_awardslist'),
     path('adj_awardslist/<str:award_idnum>/applications/', views.adjudicator_application_list, name = 'adj_applicationlist'),
     path('adj_awardslist/<str:award_idnum>/<str:application_idnum>/add/', views.adjudicator_add_comment, name = 'adj_addcomment'),
-    path('adj_awardslist/<str:award_idnum>/<str:application_idnum>/edit/', views.adjudicator_edit_comment, name = 'adj_editcomment')
+    path('adj_awardslist/<str:award_idnum>/<str:application_idnum>/edit/', views.adjudicator_edit_comment, name = 'adj_editcomment'),
+    path('view_student', views.view_student, name = 'view_student'),
+    path('view_application', views.view_application, name = 'view_application')
 ]
 
 if settings.DEBUG:

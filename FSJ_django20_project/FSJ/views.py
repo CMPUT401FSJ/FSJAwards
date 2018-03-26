@@ -19,6 +19,9 @@ from .utils import *
 from .views_student import *
 from .views_adjudicator import *
 from .views_coordinator import *
+from django.conf import settings
+from django.shortcuts import redirect
+from django.utils.translation import gettext_lazy as _
 
 # A method used to redirect users who have no path to bring them to their home page
 def redirect_to_home(request):
@@ -78,7 +81,7 @@ def home(request):
     if isinstance(FSJ_user, Student):
         return student_awardslist(request, FSJ_user)
     elif isinstance(FSJ_user, Coordinator):
-        return coordinator_home(request, FSJ_user)
+        return redirect('coord_awardslist')
     elif isinstance(FSJ_user, Adjudicator):
         return adjudicator_awards(request, FSJ_user)
     else:
@@ -151,3 +154,70 @@ def non_FSJ_home(request):
     template = loader.get_template("FSJ/non_FSJ_home.html")
     return HttpResponse(template.render(context, request))
 
+@login_required
+@user_passes_test(is_coordinator_or_adjudicator)
+def view_student(request):
+    student_ccid = request.GET.get("ccid","")
+    awardid = request.GET.get("awardid","")
+    FSJ_user = get_FSJ_user(request.user.username)
+    try:
+        student = Student.objects.get(ccid = student_ccid)
+    except Student.DoesNotExist:
+        raise Http404(_("Student does not exist"))
+    
+    # load a form with the student's info
+    form = StudentReadOnlyForm(instance=student)
+    
+    return_url = None
+    if isinstance(FSJ_user, Coordinator):
+        return_url = "/coord_awardslist/" + str(awardid) + "/applications"
+    # TODO The return url will be whereever the adjudicator accessed the application view from, once implemented
+    elif isinstance(FSJ_user, Adjudicator):
+        return_url = "/home/"
+        
+    context = get_standard_context(FSJ_user)
+    context["student"] = student
+    context["form"] = form
+    context["return_url"] = return_url
+    template = loader.get_template("FSJ/view_student.html")
+    return HttpResponse(template.render(context, request))    
+
+@login_required
+@user_passes_test(is_coordinator_or_adjudicator)
+def view_application(request):
+    application_id = request.GET.get("application_id","")
+    FSJ_user = get_FSJ_user(request.user.username)
+    try:
+        application = Application.objects.get(application_id = application_id)
+    except Application.DoesNotExist:
+        raise Http404(_("Application does not exist"))
+    
+    if request.method == 'POST':
+        if not isinstance(FSJ_user, Coordinator):
+            raise PermissionDenied
+        if '_review' in request.POST:
+            if application.award.documents_needed and not application.application_file:
+                raise ValueError(_("Documents are required for this award"))
+            application.is_reviewed = True
+        if '_unreview' in request.POST:
+            application.is_reviewed = False
+        application.save()
+        return redirect('coord_awardslist/' + str(application.award.awardid) + '/applications/')
+    
+    return_url = None
+    if isinstance(FSJ_user, Coordinator):
+        return_url = "/coord_awardslist/" + str(application.award.awardid) + "/applications"
+    # TODO The return url will be whereever the adjudicator accessed the application view from, once implemented
+    elif isinstance(FSJ_user, Adjudicator):
+        return_url = "/home/"
+        
+    context = get_standard_context(FSJ_user)
+    context["student"] = application.student
+    if application.application_file:
+        context["document"] = settings.MEDIA_URL + str(application.application_file)
+    context["award"] = application.award
+    context["url"] = "/view_application?application_id=" + str(application.application_id)
+    context["return_url"] = return_url
+    template = loader.get_template("FSJ/view_application.html")
+    return HttpResponse(template.render(context, request))
+    

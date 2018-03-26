@@ -8,9 +8,9 @@ from .models_program import Program
 class Award(models.Model):
 	#All awards will have these attributes in common, will be able to select multiple years of study
 	awardid = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-	award_name = models.TextField(verbose_name = _("Award Name"))
+	award_name = models.CharField(max_length = 255, verbose_name = _("Award Name"))
 	description = models.TextField(verbose_name = _("Description"))
-	value = models.TextField(verbose_name = _("Value"))
+	value = models.CharField(max_length = 100, verbose_name = _("Value"))
 	programs = models.ManyToManyField(Program, blank = True, verbose_name = _("Programs"))
 	years_of_study = models.ManyToManyField(YearOfStudy, verbose_name = _("Years"))
 	deadline = models.DateTimeField(auto_now = False, auto_now_add = False, verbose_name = _("Deadline"))
