@@ -1,0 +1,20 @@
+{% extends "FSJ/base.html" %}
+{% load i18n %}
+
+{% block heading %}
+    {# Translators: Register page header #}
+    {% trans "Register" %}
+{% endblock %}
+
+{# This page is displayed when an already active account attempts to register again. #}
+
+{% block content %}
+	<div class="center-content">
+        <p> 
+        	{% trans "This Account is already active." %}
+        </p>
+        <p> 
+        	{% trans "If you have lost your password, press the Forgot Password button on the" %} <a href="/login"> {% trans "login page" %}</a>.
+        </p>
+	</div>  
+{% endblock%}
