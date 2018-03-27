@@ -23,3 +23,11 @@ class StudentRestrictedForm(ModelForm):
         self.fields['ccid'].disabled=True
         self.fields['email'].disabled=True
         self.fields['year'].disabled=True   
+        
+class StudentReadOnlyForm(StudentForm):
+    
+    def __init__(self, *args, **kwargs):
+        super(StudentReadOnlyForm, self).__init__(*args, **kwargs)
+        for field in self.fields:
+            self.fields[field].disabled = True
+            
