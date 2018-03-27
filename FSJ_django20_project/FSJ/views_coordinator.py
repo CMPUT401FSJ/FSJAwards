@@ -566,7 +566,7 @@ def coordinator_upload_students(request):
                 messages.warning(request, "Please ensure year " + row['Year'] + " has been added to years of study.")   
                 
             except:
-                messages.warning(request, "Please confirm file is in a valid format, and has all required columns/programs/years.")
+                messages.warning(request, "Unexpected error. Please confirm file is in a valid format, and has all required columns/programs/years.")
                 
             
     else:
