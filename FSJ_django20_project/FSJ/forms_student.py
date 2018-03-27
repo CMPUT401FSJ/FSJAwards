@@ -6,7 +6,7 @@ class StudentForm(ModelForm):
 
     class Meta:
         model = Student
-        fields = ('ccid', 'first_name', 'last_name', 'email', 'lang_pref', 'program', 'year', 'ualberta_id')
+        fields = ('ccid', 'first_name', 'last_name', 'email', 'lang_pref', 'program', 'year', 'ualberta_id', 'gpa')
         
     def __init__(self, *args, **kwargs):
         super(StudentForm, self).__init__(*args, **kwargs)               

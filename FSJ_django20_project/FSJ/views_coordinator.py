@@ -2,13 +2,17 @@ from django.core.exceptions import PermissionDenied
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.models import User
 from django.utils.crypto import get_random_string
+from django.utils.translation import gettext_lazy as _
 from django.http import HttpResponse, Http404
 from django.template import loader
 from django.shortcuts import redirect
+from django.contrib import messages
 from .filters import *
 from .models import *
 from .utils import *
 from .forms import *
+import csv
+import io
 
 # A test method to ensure a user is a Coordinator to control access of certain views dependent on the user's class
 def is_coordinator(usr):
@@ -515,3 +519,66 @@ def coordinator_application_list(request, award_idnum):
 
     template = loader.get_template("FSJ/application_list.html")
     return HttpResponse(template.render(context, request))
+
+
+def coordinator_upload_students(request):
+    FSJ_user = get_FSJ_user(request.user.username)
+
+    if request.method == "POST":
+        form = FileUploadForm(request.POST, request.FILES)
+        if form.is_valid():
+
+            try:
+                if 'student_file' in request.FILES:
+                    csv_file = request.FILES['student_file']
+                    csv_file.seek(0)
+                    studentreader = csv.DictReader(io.StringIO(csv_file.read().decode('utf-8-sig')))    
+                    for row in studentreader:
+                        program = Program.objects.get(code = row['Prog'])
+                        year = YearOfStudy.objects.get(year = row['Year'])
+                        obj, created = Student.objects.update_or_create(
+                            ccid = row['CCID'],
+                            defaults={'ualberta_id': row['ID'], 'first_name': row['First Name'], 'last_name': row['Last Name'], 'email' : row['Email (Univ)'],
+                                      'program' : program, 'year' : year,},
+                        ) 
+                        
+                if 'gpa_file' in request.FILES:
+                    csv_file = request.FILES['gpa_file']
+                    csv_file.seek(0)
+                    gpareader = csv.DictReader(io.StringIO(csv_file.read().decode('utf-8-sig')))    
+                    for row in gpareader:
+                        student = Student.objects.get(ccid = row['CCID'])
+                        if row['GPA']:
+                            student.gpa = row['GPA']
+                            student.save()
+                                    
+                return redirect('studentlist')
+            
+            except UnicodeDecodeError:
+                messages.warning(request, _('Please upload a UTF-8 encoded CSV file.'))
+                
+            except KeyError:
+                messages.warning(request, _('Please make sure all column names match specified column names.'))     
+                
+            except Program.DoesNotExist:
+                messages.warning(request, _("Please ensure all required programs have been added."))
+                
+            except YearOfStudy.DoesNotExist:
+                messages.warning(request, _("Please ensure all required years of study have been added.")) 
+                
+            except Student.DoesNotExist:
+                messages.warning(request, _("The student you are attempting to upload a GPA for does not exist."))
+                
+            except:
+                messages.warning(request, _("Unexpected error. Please confirm file is in a valid format, and has all required columns/programs/years."))
+                
+            
+    else:
+        form = FileUploadForm()
+    
+    context = get_standard_context(FSJ_user)
+    template = loader.get_template("FSJ/coord_student_upload.html")
+    context["form"] = form
+    url = "/studentlist/addmulti/"
+    context["url"] = url
+    return HttpResponse(template.render(context, request))    
