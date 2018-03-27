@@ -2,6 +2,7 @@ from django.core.exceptions import PermissionDenied
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.models import User
 from django.utils.crypto import get_random_string
+from django.utils.translation import gettext_lazy as _
 from django.http import HttpResponse, Http404
 from django.template import loader
 from django.shortcuts import redirect
@@ -554,19 +555,19 @@ def coordinator_upload_students(request):
                 return redirect('studentlist')
             
             except UnicodeDecodeError:
-                messages.warning(request, 'Please upload a UTF-8 encoded CSV file.')
+                messages.warning(request, _('Please upload a UTF-8 encoded CSV file.'))
                 
             except KeyError:
-                messages.warning(request, 'Please make sure all column names match specified column names.')     
+                messages.warning(request, _('Please make sure all column names match specified column names.'))     
                 
             except Program.DoesNotExist:
-                messages.warning(request, "Please ensure program " + row['Prog'] + " has been added to programs.")
+                messages.warning(request, _("Please ensure program " + row['Prog'] + " has been added to programs."))
                 
             except YearOfStudy.DoesNotExist:
-                messages.warning(request, "Please ensure year " + row['Year'] + " has been added to years of study.")   
+                messages.warning(request, _("Please ensure year " + row['Year'] + " has been added to years of study."))   
                 
             except:
-                messages.warning(request, "Unexpected error. Please confirm file is in a valid format, and has all required columns/programs/years.")
+                messages.warning(request, _("Unexpected error. Please confirm file is in a valid format, and has all required columns/programs/years."))
                 
             
     else:
