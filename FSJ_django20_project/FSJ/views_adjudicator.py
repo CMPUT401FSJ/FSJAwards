@@ -80,16 +80,7 @@ def adjudicator_add_comment(request, award_idnum, application_idnum):
                 comment.save()
                 return redirect('adj_applicationlist', award_idnum = award_idnum)
         else:
-            form = CommentRestrictedForm()
-        context = get_standard_context(FSJ_user)
-        template = loader.get_template("FSJ/comment.html")
-        
-        context["form"] = form
-        context["application"] = application
-        url = "/adj_awardslist/" + award_idnum + "/" + application_idnum + "/add/"
-        context["url"] = url
-        return HttpResponse(template.render(context, request))
-    
+            return redirect('adj_applicationlist', award_idnum = award_idnum)
     
     
 @login_required
@@ -111,16 +102,20 @@ def adjudicator_edit_comment(request, award_idnum, application_idnum):
                 comment.save()
                 return redirect('adj_applicationlist', award_idnum = award_idnum)
         else:
-            form = CommentRestrictedForm(instance = comment)
-        context = get_standard_context(FSJ_user)
-        template = loader.get_template("FSJ/comment.html")
-        
-        context["form"] = form
-        context["application"] = application
-        url = "/adj_awardslist/" + award_idnum + "/" + application_idnum + "/edit/"
-        context["url"] = url
-        return HttpResponse(template.render(context, request))        
+            return redirect('adj_applicationlist', award_idnum = award_idnum)
         
     except Comment.DoesNotExist:
-        redirect('adj_addcomment', award_idnum = award_idnum, application_idnum = application_idnum)    
+        
+        return redirect('adj_applicationlist', award_idnum = award_idnum)    
+        
+        
+@login_required
+@user_passes_test(is_adjudicator)
+def adjudicator_delete_comment(request, award_idnum, application_idnum):
+    FSJ_user = get_FSJ_user(request.user.username)
+    
+    application = Application.objects.get(application_id = application_idnum)
+    
+    comment = Comment.objects.get(application = application, adjudicator = FSJ_user).delete()
+    return redirect('adj_applicationlist', award_idnum = award_idnum)
         

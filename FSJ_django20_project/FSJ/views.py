@@ -219,6 +219,8 @@ def view_application(request):
             comment = Comment.objects.get(application = application, adjudicator = FSJ_user)
             form = CommentRestrictedForm(instance = comment)
             url = "/adj_awardslist/" + str(application.award.awardid) + "/" + str(application.application_id) + "/edit/"
+            delete_url = "/adj_awardslist/" + str(application.award.awardid) + "/" + str(application.application_id) + "/delete/"
+            context["delete_url"] = delete_url            
             
         except Comment.DoesNotExist:
             form = CommentRestrictedForm()
