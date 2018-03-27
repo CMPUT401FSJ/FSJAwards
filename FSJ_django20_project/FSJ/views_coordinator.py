@@ -561,10 +561,13 @@ def coordinator_upload_students(request):
                 messages.warning(request, _('Please make sure all column names match specified column names.'))     
                 
             except Program.DoesNotExist:
-                messages.warning(request, _("Please ensure program " + row['Prog'] + " has been added to programs."))
+                messages.warning(request, _("Please ensure all required programs have been added."))
                 
             except YearOfStudy.DoesNotExist:
-                messages.warning(request, _("Please ensure year " + row['Year'] + " has been added to years of study."))   
+                messages.warning(request, _("Please ensure all required years of study have been added.")) 
+                
+            except Student.DoesNotExist:
+                messages.warning(request, _("The student you are attempting to upload a GPA for does not exist."))
                 
             except:
                 messages.warning(request, _("Unexpected error. Please confirm file is in a valid format, and has all required columns/programs/years."))
