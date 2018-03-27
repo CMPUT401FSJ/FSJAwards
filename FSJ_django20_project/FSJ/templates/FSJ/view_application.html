@@ -76,7 +76,8 @@
                         </tr>
                     {% endfor %}
                 </table>
-                <button class = "btn btn-success" type="submit" name="_review">{% trans "Review application" %}</button>
+                
+                <button class = "btn btn-success" type="submit" name="_review">{% trans "Mark reviewed" %}</button>
                 <button class = "btn btn-success" type="submit" name="_unreview">{% trans "Mark unreviewed" %}</button>
             {% endif %}
             {% if FSJ_user.user_class == "Adjudicator" %}
