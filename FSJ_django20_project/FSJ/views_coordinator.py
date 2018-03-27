@@ -559,8 +559,16 @@ def coordinator_upload_students(request):
             except KeyError:
                 messages.warning(request, 'Please make sure all column names match specified column names.')     
                 
+            except Program.DoesNotExist:
+                messages.warning(request, "Please ensure program " + row['Prog'] + " has been added to programs.")
+                
+            except YearOfStudy.DoesNotExist:
+                messages.warning(request, "Please ensure year " + row['Year'] + " has been added to years of study.")   
+                
             except:
-                messages.warning(request, "I don't know how you even got this error.")
+                messages.warning(request, "Please confirm file is in a valid format, and has all required columns/programs/years.")
+                
+            
     else:
         form = FileUploadForm()
     
