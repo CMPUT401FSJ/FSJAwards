@@ -8,10 +8,17 @@ urlpatterns = [
     path('', views.redirect_to_home, name='redirect_to_home'),
     path('login/', auth_views.LoginView.as_view(template_name="FSJ/login.html", redirect_authenticated_user=True), name='login'),
     path('logout/', auth_views.LogoutView.as_view(), name='logout'),
+    path('register/', views.registration, name='register'),
+    path('register/password_set/(P<uidb64>[0-9A-Za-z]+)-(P<token>.+)/', views.register_activation, name='register_activation'),
+    path('reset_password/', auth_views.password_reset, name='reset_password'),
+    path('reset_password/done/', auth_views.password_reset_done, name='password_reset_done'),
+    path('reset_password/confirm/(P<uidb64>[0-9A-Za-z]+)-(P<token>.+)/', auth_views.password_reset_confirm, name='password_reset_confirm'),
+    path('reset_password/complete/', auth_views.password_reset_complete, name='password_reset_complete'),
     path('home/', views.home, name='home'),
     path('profile/', views.profile, name='profile'),
     path('studentlist/', views.coordinator_studentlist, name = 'studentlist'),
     path('studentlist/add/', views.coordinator_addstudent, name = 'addstudent'),
+    path('studentlist/addmulti/', views.coordinator_upload_students, name = 'uploadstudent'),
     path('studentlist/delete/', views.coordinator_deletestudent, name = 'deletestudent'),
     path('studentlist/<str:usr_ccid>/', views.coordinator_studentdetail, name = 'studentdetail'),
     path('adjudicatorlist/', views.coordinator_adjudicatorlist, name = 'adjudicatorlist'),
@@ -35,13 +42,15 @@ urlpatterns = [
     path('coord_committeeslist/delete/', views.coordinator_committeedelete, name='coord_deletecommittee'),
     path('coord_committeeslist/<str:committee_idnum>/', views.coordinator_committeeedit, name = 'coord_committeeedit'),
     path('coord_awardslist/<str:award_idnum>/applications/', views.coordinator_application_list, name = 'coord_applicationlist'),
-    path('coord_awardslist/<str:award_idnum>/applications/view/<str:application_idnum>/', views.coordinator_application_view, name = 'coord_applicationview'),
+    path('coord_awardslist/<str:award_idnum>/applications/archive/view/<str:application_idnum>/', views.coordinator_archived_application_view, name = 'coord_applicationview'),
     path('coord_awardslist/<str:award_idnum>/applications/archive/', views.coordinator_application_archive_list, name = 'coord_application_archive'),
     path('coord_awardslist/<str:award_idnum>/applications/action/', views.coordinator_application_action, name = 'coord_application_action'),
     path('student_awardslist/', views.student_awardslist, name = 'student_awardslist'),
     path('student_awardslist/<str:award_idnum>/apply/', views.student_addapplication, name = 'student_addapplication'),
     path('student_awardslist/<str:award_idnum>/edit/', views.student_editapplication, name = 'student_editapplication'),
-    path('student_awardslist/<str:award_idnum>/unsubmit/', views.student_unsubmitapplication, name = 'student_unsubmitapplication')    
+    path('student_awardslist/<str:award_idnum>/unsubmit/', views.student_unsubmitapplication, name = 'student_unsubmitapplication'),
+    path('view_student', views.view_student, name = 'view_student'),
+    path('view_application', views.view_application, name = 'view_application')
 ]
 
 if settings.DEBUG:

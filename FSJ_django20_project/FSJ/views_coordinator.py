@@ -1,12 +1,18 @@
 from django.core.exceptions import PermissionDenied
 from django.contrib.auth.decorators import login_required, user_passes_test
+from django.contrib.auth.models import User
+from django.utils.crypto import get_random_string
+from django.utils.translation import gettext_lazy as _
 from django.http import HttpResponse, Http404
 from django.template import loader
 from django.shortcuts import redirect
+from django.contrib import messages
 from .filters import *
 from .models import *
 from .utils import *
 from .forms import *
+import csv
+import io
 
 # A test method to ensure a user is a Coordinator to control access of certain views dependent on the user's class
 def is_coordinator(usr):
@@ -124,6 +130,13 @@ def coordinator_addstudent(request):
         form = StudentForm(request.POST)
         if form.is_valid():
             form.save()
+            data= form.cleaned_data
+            #set the user's email to that of the adjudicator
+            user = User.objects.get(username=data['ccid'])
+            user.email = data['email']
+            #generate a random 32 character password that will be reset on registration
+            user.set_password(get_random_string(length=32))
+            user.save()
             return redirect('studentlist')
     else:
         # If the coordinator hasn't entered information yet, create a blank student form
@@ -148,6 +161,11 @@ def coordinator_addadjudicator(request):
         form = AdjudicatorForm(request.POST)
         if form.is_valid():
             form.save()
+            data= form.cleaned_data
+            user = User.objects.get(username=data['ccid'])
+            user.email = data['email']
+            user.set_password(get_random_string(length=32))
+            user.save()
             return redirect('adjudicatorlist')
     else:
         # If the coordinator hasn't entered information yet, create a blank adjudicator
@@ -517,29 +535,33 @@ def coordinator_application_archive_list(request, award_idnum):
 
 
     context = get_standard_context(FSJ_user)
-    context["application_list"] = archived_application_list
+    context["archived_list"] = archived_application_list
     context["award"] = award
+    context["return_url"] = "/coord_awardslist/" + str(award_idnum) + "/applications/"
 
     template = loader.get_template("FSJ/coord_application_archive.html") 
     return HttpResponse(template.render(context, request))
 
 @login_required
 @user_passes_test(is_coordinator)
-def coordinator_application_view(request, award_idnum, application_idnum):
+def coordinator_archived_application_view(request, award_idnum, application_idnum):
     FSJ_user = get_FSJ_user(request.user.username)
     try:
         award = Award.objects.get(awardid = award_idnum)
     except Award.DoesNotExist:
         raise Http404("Award does not exist")
     try:
-        application = Application.objects.get(application_id = application_idnum)
+        application = ArchivedApplication.objects.get(application_id = application_idnum)
     except Award.DoesNotExist:
         raise Http404("application does not exist")
 
     context = get_standard_context(FSJ_user)
+    context["student"] = application.student
     context["award"] = award
+    context["archived"] = True
+    context["return_url"] = "/coord_awardslist/" + str(award_idnum) + "/applications/archive/"
 
-    template = loader.get_template("FSJ/coord_application_view.html")
+    template = loader.get_template("FSJ/view_application.html")
     return HttpResponse(template.render(context, request))
 
 #Function used to archive an application by createing a new archivedapp object and deleteing the old application.
@@ -571,3 +593,65 @@ def coordinator_application_action(request, award_idnum):
 
 
     return redirect('/coord_awardslist/'+ str(award_idnum) +'/applications/')
+
+def coordinator_upload_students(request):
+    FSJ_user = get_FSJ_user(request.user.username)
+
+    if request.method == "POST":
+        form = FileUploadForm(request.POST, request.FILES)
+        if form.is_valid():
+
+            try:
+                if 'student_file' in request.FILES:
+                    csv_file = request.FILES['student_file']
+                    csv_file.seek(0)
+                    studentreader = csv.DictReader(io.StringIO(csv_file.read().decode('utf-8-sig')))    
+                    for row in studentreader:
+                        program = Program.objects.get(code = row['Prog'])
+                        year = YearOfStudy.objects.get(year = row['Year'])
+                        obj, created = Student.objects.update_or_create(
+                            ccid = row['CCID'],
+                            defaults={'ualberta_id': row['ID'], 'first_name': row['First Name'], 'last_name': row['Last Name'], 'email' : row['Email (Univ)'],
+                                      'program' : program, 'year' : year,},
+                        ) 
+                        
+                if 'gpa_file' in request.FILES:
+                    csv_file = request.FILES['gpa_file']
+                    csv_file.seek(0)
+                    gpareader = csv.DictReader(io.StringIO(csv_file.read().decode('utf-8-sig')))    
+                    for row in gpareader:
+                        student = Student.objects.get(ccid = row['CCID'])
+                        if row['GPA']:
+                            student.gpa = row['GPA']
+                            student.save()
+                                    
+                return redirect('studentlist')
+            
+            except UnicodeDecodeError:
+                messages.warning(request, _('Please upload a UTF-8 encoded CSV file.'))
+                
+            except KeyError:
+                messages.warning(request, _('Please make sure all column names match specified column names.'))     
+                
+            except Program.DoesNotExist:
+                messages.warning(request, _("Please ensure all required programs have been added."))
+                
+            except YearOfStudy.DoesNotExist:
+                messages.warning(request, _("Please ensure all required years of study have been added.")) 
+                
+            except Student.DoesNotExist:
+                messages.warning(request, _("The student you are attempting to upload a GPA for does not exist."))
+                
+            except:
+                messages.warning(request, _("Unexpected error. Please confirm file is in a valid format, and has all required columns/programs/years."))
+                
+            
+    else:
+        form = FileUploadForm()
+    
+    context = get_standard_context(FSJ_user)
+    template = loader.get_template("FSJ/coord_student_upload.html")
+    context["form"] = form
+    url = "/studentlist/addmulti/"
+    context["url"] = url
+    return HttpResponse(template.render(context, request))    

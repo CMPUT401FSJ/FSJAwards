@@ -6,7 +6,7 @@ class StudentForm(ModelForm):
 
     class Meta:
         model = Student
-        fields = ('ccid', 'first_name', 'last_name', 'email', 'lang_pref', 'program', 'year', 'ualberta_id')
+        fields = ('ccid', 'first_name', 'last_name', 'email', 'lang_pref', 'program', 'year', 'ualberta_id', 'gpa')
         
     def __init__(self, *args, **kwargs):
         super(StudentForm, self).__init__(*args, **kwargs)               
@@ -23,3 +23,11 @@ class StudentRestrictedForm(ModelForm):
         self.fields['ccid'].disabled=True
         self.fields['email'].disabled=True
         self.fields['year'].disabled=True   
+        
+class StudentReadOnlyForm(StudentForm):
+    
+    def __init__(self, *args, **kwargs):
+        super(StudentReadOnlyForm, self).__init__(*args, **kwargs)
+        for field in self.fields:
+            self.fields[field].disabled = True
+            
