@@ -1,4 +1,5 @@
 from django.db import models
+from .models_award import Award
 from .models_application import Application
 from .models_adjudicator import Adjudicator
 from django.utils.translation import gettext_lazy as _
