@@ -1,6 +1,6 @@
 from django.db import models
-from models_application import Application
-from models_adjudicator import Adjudicator
+from .models_application import Application
+from .models_adjudicator import Adjudicator
 from django.utils.translation import gettext_lazy as _
 
 class Ranking(models.Model):

@@ -64,6 +64,7 @@
             {% csrf_token %}
             {# Save button on application #}
             {% if FSJ_user.user_class == "Coordinator" %}
+
                 <table class="table table-bordered table-striped table-hover" align="center">
                     <tr>
                         <th>{% trans "Adjudicator" %}</th>
@@ -76,7 +77,8 @@
                         </tr>
                     {% endfor %}
                 </table>
-                <button class = "btn btn-success" type="submit" name="_review">{% trans "Review application" %}</button>
+                <button class = "btn btn-success" type="submit" name="_review">{% trans "Mark reviewed" %}</button>
+
                 <button class = "btn btn-success" type="submit" name="_unreview">{% trans "Mark unreviewed" %}</button>
             {% endif %}
             {% if FSJ_user.user_class == "Adjudicator" %}
