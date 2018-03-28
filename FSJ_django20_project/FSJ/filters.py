@@ -26,6 +26,7 @@ class AdjudicatorFilter(django_filters.FilterSet):
 class AwardFilter(django_filters.FilterSet):
 	award_name = django_filters.CharFilter(lookup_expr='icontains')
 	description = django_filters.CharFilter(lookup_expr='icontains')
+	deadline = django_filters.CharFilter(lookup_expr='icontains')
 	class Meta:
 		model = Award
 		fields = ['award_name','description','value','programs','years_of_study','deadline','documents_needed','is_active']
