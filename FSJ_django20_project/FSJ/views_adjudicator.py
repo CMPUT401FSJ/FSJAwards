@@ -152,5 +152,12 @@ def adjudicator_delete_comment(request, award_idnum, application_idnum):
     application = Application.objects.get(application_id = application_idnum)
     
     comment = Comment.objects.get(application = application, adjudicator = FSJ_user).delete()
+    try:
+        ranking = Ranking.objects.get(application = application, adjudicator = FSJ_user)
+        ranking.delete()   
+        
+    except:
+        pass
+    
     return redirect('adj_applicationlist', award_idnum = award_idnum)
         
