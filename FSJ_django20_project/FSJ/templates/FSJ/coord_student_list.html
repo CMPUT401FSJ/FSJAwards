@@ -12,11 +12,6 @@
 {% block content %}
     <body>
         <div class='center-content'>
-        <button class = "btn btn-success" type="button" data-toggle="collapse" data-target="#filterCollapse" aria-expanded=false aria-controls="filterCollapse">
-          {# Translators: Filters table collapse button #}
-          {% trans "Filters" %}        
-        </button>
-        <div class="collapse.show" id="filterCollapse">
           <form method="get">
             <div class = "well">
               <div class="row">
@@ -46,9 +41,9 @@
                 {# Translators: Search button for filtering #}
                 {% trans "Search" %}
               </button>          
+              <a role="button" class="btn btn-success" href='/studentlist'>{% trans "Clear Filters" %}</a>
             </div>
           </form>
-        </div>
 
         <form action="/studentlist/delete/" method="POST">
             {% csrf_token %}
@@ -66,6 +61,8 @@
                     <th>{% trans "Year of Study" %}</th>
                     {# Translators: Program header in student table #}
                     <th>{% trans "Program" %}</th>
+                    {# Translators: GPA header in student table #}
+                    <th>{% trans "GPA" %}</th>
                     {# Translators: View header in student table #}
                     <th>{% trans "View" %}</th>
                 </tr>
@@ -77,6 +74,13 @@
                         <td>{{ student.last_name }}</td>
                         <td>{{ student.year }}</td>
                         <td>{{ student.program }}</td>
+                        <td>
+                            {% if student.gpa %}
+                              {{ student.gpa }}  
+                            {% else %}
+                              {{ "" }}
+                            {% endif %}
+                         </td> 
                         {# Translators: Edit link in student table #}
                         <td><a href="/studentlist/{{ student.ccid }}/">{% trans "Edit" %}</a></td>
                     </tr>
@@ -84,6 +88,8 @@
             </table>
             {# Translators: Button to add student #}
             <a role="button" class="btn btn-success" href='/studentlist/add/'>{% trans "Add student" %}</a>
+            {# Translators: Button to upload files #}
+            <a role="button" class="btn btn-success" href='/studentlist/addmulti/'>{% trans "Upload files" %}</a>
             {# Translators: Button to delete selected students #}
             <button class="btn btn-danger" type="submit" name="delete">{% trans "Delete student(s)" %}</button>
         </form>

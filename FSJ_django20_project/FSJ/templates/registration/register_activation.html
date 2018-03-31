@@ -1,0 +1,17 @@
+{% extends "FSJ/base.html" %}
+{% load i18n %}
+
+{% block heading %}
+    {# Translators: Register page header #}
+    {% trans "Register" %}
+{% endblock %}
+
+{% block content %}
+	</br>
+	<form method="post">
+		{% csrf_token %}
+		{{ form }}
+		</br>
+		<button class="btn btn-success" type="submit"> {% trans "Activate Account" %}</button>
+	</form>
+{% endblock %}

@@ -1,0 +1,32 @@
+{% extends "FSJ/base.html" %}
+{% load i18n %}
+
+{% block heading %}
+    {# Translators: Register page header #}
+    {% trans "Register" %}
+{% endblock %}
+
+{% block content %}
+	<div class="center-content">
+        <p> 
+        	{% trans "Please enter your Ualberta Email" %}
+        </p>
+        <p> 
+        	{% trans "If you are a Campus Saint Jean student, you will be sent an email to register on this website."%}
+        </p>
+
+		<form method='post'>
+			{% csrf_token %}
+            {{ form }}
+			<button class="btn btn-success" type="submit">{% trans "Send Registration" %}</button>
+		</form>
+
+        {% for message in messages %}
+            <p {% if message.tags %} class="{{ message.tags }}" {% endif %}>
+                <font color="red">{% trans "This email is not associated with Campus Saint Jean's award system."%}</font>
+             </p>
+        {% endfor%}
+
+	</div>  
+{% endblock%}
+
