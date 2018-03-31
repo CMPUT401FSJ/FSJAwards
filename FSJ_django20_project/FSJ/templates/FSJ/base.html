@@ -8,7 +8,7 @@
             <meta name="viewport" content="width=device-width, initial-scale=1">
             <title>
                 {# Translators: Main title #}
-                {% trans "FSJ Awards" %}
+                {% trans "CSJ Awards" %}
             </title>
             {# Add CSS for styling #}
             <link rel="stylesheet" type="text/css" href="{% static 'FSJ/FSJ.css' %}">
@@ -22,6 +22,7 @@
                 <div class="ualberta-themed-header">
                     <div class="ualberta-themed">
                         <h1>
+                            <img id="ualberta-logo" src="{% static "FSJ/CSJ_logo.png" %}" alt={% trans "CSJ Logo" %} />
                             {% block heading %}
                             {% endblock %}
                         </h1>
