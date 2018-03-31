@@ -211,23 +211,45 @@ def view_application(request):
         return_url = "/coord_awardslist/" + str(application.award.awardid) + "/applications"
         url = "/view_application?application_id=" + str(application.application_id)
         comment_list = Comment.objects.filter(application = application)
+        
+        ranking_list = []
+        for comment in comment_list:
+            try:
+                ranking = Ranking.objects.get(application = application, adjudicator = comment.adjudicator)
+                ranking_list.append(ranking.score)
+                
+            except Ranking.DoesNotExist:
+                ranking_list.append("--")
+                
+        comment_list = zip(comment_list, ranking_list)
         context["comment_list"] = comment_list
+            
     # TODO The return url will be whereever the adjudicator accessed the application view from, once implemented
     elif isinstance(FSJ_user, Adjudicator):
         
         try:
             comment = Comment.objects.get(application = application, adjudicator = FSJ_user)
-            form = CommentRestrictedForm(instance = comment)
-            url = "/adj_awardslist/" + str(application.award.awardid) + "/" + str(application.application_id) + "/edit/"
+            form = CommentRestrictedForm(instance = comment, prefix = "form")
+            
             delete_url = "/adj_awardslist/" + str(application.award.awardid) + "/" + str(application.application_id) + "/delete/"
             context["delete_url"] = delete_url            
             
         except Comment.DoesNotExist:
-            form = CommentRestrictedForm()
-            url = "/adj_awardslist/" + str(application.award.awardid) + "/" + str(application.application_id) + "/add/"
+            form = CommentRestrictedForm(prefix = "form")
+            
+        try:
+            ranking = Ranking.objects.get(application = application, adjudicator = FSJ_user)
+            form2 = RankingRestrictedForm(FSJ_user, application.award, instance = ranking, prefix = "form2")
+            context["ranking"] = ranking
+            
+        except Ranking.DoesNotExist:
+            form2 = RankingRestrictedForm(FSJ_user, application.award, prefix = "form2")
         
+        url = "/adj_awardslist/" + str(application.award.awardid) + "/" + str(application.application_id) + "/edit/"
         return_url = "/adj_awardslist/" + str(application.award.awardid) + "/applications"
         context["form"] = form
+        context["form2"] = form2
+        context["adjudicator"] = FSJ_user
         
     context["student"] = application.student
     if application.application_file:

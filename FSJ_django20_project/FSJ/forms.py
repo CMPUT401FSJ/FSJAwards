@@ -14,3 +14,4 @@ from .forms_application import *
 from .forms_fileupload import *
 from .forms_comment import *
 from .forms_signup import *
+from .forms_ranking import *
