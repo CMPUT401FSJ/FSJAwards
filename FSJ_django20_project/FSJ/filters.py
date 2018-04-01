@@ -28,5 +28,5 @@ class AwardFilter(django_filters.FilterSet):
 	description = django_filters.CharFilter(lookup_expr='icontains')
 	class Meta:
 		model = Award
-		fields = ['award_name','description','value','programs','years_of_study','deadline','documents_needed','is_active']
+		fields = ['award_name','description','value','programs','years_of_study','start_date', 'end_date', 'documents_needed','is_active']
 

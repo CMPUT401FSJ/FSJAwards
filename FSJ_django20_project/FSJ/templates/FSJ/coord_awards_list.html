@@ -37,8 +37,12 @@
                       {% render_field filter.form.years_of_study class="form-control" %}
                     </div>
                     <div class = "form-group col-sm-4 col-md-3">
-                      {{ filter.form.deadline.label_tag }}
-                      {% render_field filter.form.deadline class="form-control" %}
+                      {{ filter.form.start_date.label_tag }}
+                      {% render_field filter.form.start_date class="form-control" %}
+                    </div>
+                    <div class = "form-group col-sm-4 col-md-3">
+                      {{ filter.form.end_date.label_tag }}
+                      {% render_field filter.form.end_date class="form-control" %}
                     </div>
                     <div class = "form-group col-sm-4 col-md-3">
                       {{ filter.form.documents_needed.label_tag }}
@@ -74,8 +78,10 @@
                         <th>{% trans "Programs" %}</th>
                         {# Translators: Award years of study header in awards table #}
                         <th>{% trans "Years of Study" %}</th>
-                        {# Translators: Award deadline header in awards table #}
-                        <th>{% trans "Deadline" %}</th>
+                        {# Translators: Award start date header in awards table #}
+                        <th>{% trans "Start Date" %}</th>
+                        {# Translators: Award end date header in awards table #}
+                        <th>{% trans "End Date" %}</th>
                         {# Translators: Award documents needed header in awards table #}
                         <th>{% trans "Documents Required?" %}</th>
                         {# Translators: Award is active header in awards table #}
@@ -106,7 +112,8 @@
                                     {{year}} <br>
                                 {% endfor %}
                             </td>
-                            <td>{{award.deadline}}</td>
+                            <td>{{award.start_date}}</td>
+                            <td>{{award.end_date}}</td>
                             <td>
                                 <input type="checkbox" disabled {% if award.documents_needed %}checked{% endif %}>
                             </td>
