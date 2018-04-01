@@ -518,7 +518,7 @@ def coordinator_application_list(request, award_idnum):
     #delete in-progress applications if deadline is past
     if datetime.now(timezone.utc) > award.end_date: 
         for application in application_list:
-            if application.is_submitted == False:
+            if not application.is_submitted:
                 application.delete()
         award.refresh_from_db()
         #refresh application list after any deletes, if this isn't here, application list will
