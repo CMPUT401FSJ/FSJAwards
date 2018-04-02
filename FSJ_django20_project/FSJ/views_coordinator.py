@@ -6,6 +6,7 @@ from django.utils.translation import gettext_lazy as _
 from django.http import HttpResponse, Http404
 from django.template import loader
 from django.shortcuts import redirect
+from datetime import datetime, timezone
 from django.contrib import messages
 from .filters import *
 from .models import *
@@ -286,7 +287,7 @@ def coordinator_awardaction(request):
             for itemid in awardid_list:
                 award = Award.objects.get(awardid=itemid)
                 award.is_active = False
-                award.save()            
+                award.save()       
 
     return redirect('coord_awardslist')
 
@@ -508,10 +509,21 @@ def coordinator_application_list(request, award_idnum):
     
     try:
         award = Award.objects.get(awardid = award_idnum)
+
     except Award.DoesNotExist:
         raise Http404("Award does not exist")
 
     application_list = award.applications.all()
+
+    #delete in-progress applications if deadline is past
+    if datetime.now(timezone.utc) > award.end_date: 
+        for application in application_list:
+            if not application.is_submitted:
+                application.delete()
+        award.refresh_from_db()
+        #refresh application list after any deletes, if this isn't here, application list will
+        #not update correctly after deletion
+        application_list = award.applications.all()
 
     context = get_standard_context(FSJ_user)
     context["application_list"] = application_list
@@ -519,7 +531,7 @@ def coordinator_application_list(request, award_idnum):
 
     template = loader.get_template("FSJ/application_list.html")
     return HttpResponse(template.render(context, request))
-
+    
 #Handler used to produce the list of archived applications for an award using coord_application_archive template
 @login_required
 @user_passes_test(is_coordinator)

@@ -5,6 +5,7 @@ from django.http import HttpResponse
 from django.template import loader
 from django.shortcuts import redirect
 from django.db.models import Q
+from datetime import datetime, timezone
 from .models import *
 from .utils import *
 from .forms import *
@@ -37,15 +38,16 @@ def student_awardslist(request, award_idnum):
     submitted_list = []
     
     for award in unfiltered_list:
-        try:
-            application = Application.objects.get(award = award, student = FSJ_user)
-            if application.is_submitted:
-                submitted_list.append(award)
-            elif not application.is_submitted:
-                in_progress_list.append(award)
-        except Application.DoesNotExist:
-            awards_list.append(award)       
-    
+        if award.is_open():
+            try:
+                application = Application.objects.get(award = award, student = FSJ_user)
+                if application.is_submitted:
+                    submitted_list.append(award)
+                elif not application.is_submitted:
+                    in_progress_list.append(award)
+            except Application.DoesNotExist:
+                awards_list.append(award)
+            
     template = loader.get_template("FSJ/student_awards_list.html")
     context = get_standard_context(FSJ_user)
     context["awards_list"] = awards_list
@@ -82,6 +84,8 @@ def student_addapplication(request, award_idnum):
                     return redirect('home')                    
                         
                 elif '_submit' in request.POST:
+                    if not award.is_open():
+                        return redirect('home')
                     application.is_submitted = True            
                     if award.documents_needed == True and not application.application_file:
                         messages.warning(request, 'Please upload a document.')
@@ -131,6 +135,8 @@ def student_editapplication(request, award_idnum):
                     return redirect('home')                    
                         
                 elif '_submit' in request.POST:
+                    if not award.is_open():
+                        return redirect('home')
                     application.is_submitted = True            
                     if award.documents_needed == True and not application.application_file:
                         messages.warning(request, 'Please upload a document.')
