@@ -1,0 +1,43 @@
+{% extends "FSJ/base_with_banner.html" %}
+{% load i18n %}
+{% load widget_tweaks %}
+
+{% block heading %}
+        {{ award.award_name }}
+        {% trans "Archive" %}
+{% endblock %}
+
+{% block content %}
+    <div class='center-content'>
+        <form action ="/coord_awardslist/{{ award.awardid }}/applications/archive/action/" method="POST" >
+            {% csrf_token %}
+            <table class="table table-bordered table-striped table-hover" align="center">
+                <tr>
+                    <th>{% trans "Action" %}</th>
+                    <th>{% trans "Student" %}</th>
+                    <th>{% trans "CCID" %}</th>
+                    <th>{% trans "Program" %}</th>
+                    <th>{% trans "Year" %}</th>
+                    <th>{% trans "GPA" %}</th>
+                    <th>{% trans "View" %}</th>
+                </tr>
+                {% for application in archived_list %}
+                    <tr>
+                        <td><input type="checkbox"  name="archiveaction" value="{{application.application_id}}" ></td>
+                        <td><a href="/view_student?ccid={{ application.student.ccid }}&awardid={{application.award.awardid}}">{{ application.student.get_name }}</a></td>
+                        <td>{{application.student.ccid}}</td>
+                        <td>{{application.student.program}}</td>
+                        <td>{{application.student.year}}</td>
+                        <td>{{application.student.gpa}}</td>
+                        <td><a href="/coord_awardslist/{{ award.awardid }}/applications/archive/view/{{application.application_id}}/">{% trans "View" %}</a></td>
+                    </tr>
+                {% endfor %}
+            </table>
+            </br>
+            <button class="btn btn-success" type="submit", name="_removeFromArchive">{% trans "Reactivate Application(s)" %}</button>
+            <button class="btn btn-danger" type="submit" name="_delete">{% trans "Delete Application(s)" %}</button>
+            </br></br>
+            <a class="btn btn-success" role="button" href="{{ return_url }}">{% trans "Return to " %}{{award.award_name}}</a>
+        </form>
+    </div>
+{% endblock %}
