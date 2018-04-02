@@ -15,8 +15,8 @@
                 {% csrf_token %}
                 <table class="table table-bordered table-striped table-hover" align="center">
                     <tr>
-                        {# Translators: Action header in committees table #}
-                        <th>{% trans "Action" %}</th>
+                        {# Translators: Select header in committees table #}
+                        <th class="select-column"><input type="checkbox" onClick="toggle(this);"/> {% trans "Select" %}</th>
                         {# Translators: Committee name header in committees table #}
                         <th>{% trans "Committee" %}</th>
                         {# Translators: Committee adjudicators header in committees table #}
@@ -48,4 +48,14 @@
             </form>
         </div>
     </body>
+    <script type="text/javascript">
+        function toggle(source) {
+            var checkboxes = document.querySelectorAll('input[type="checkbox"]');
+            for (var i = 0; i < checkboxes.length; i++) {
+                if ( !checkboxes[i].disabled ) {
+                    checkboxes[i].checked = source.checked;
+                }
+            }
+        }
+    </script>
 {% endblock %}
