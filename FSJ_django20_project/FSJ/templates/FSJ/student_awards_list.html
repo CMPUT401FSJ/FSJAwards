@@ -31,7 +31,7 @@
                 {# Translators: Apply button header in awards table #}
                 <th>{% trans "Action" %}</th>
             </tr>
-            <tr><th class="alternate-table-heading" colspan=8>{% trans "New awards" %}</th></tr>
+            <tr><th class="alternate-table-heading" colspan=9>{% trans "New awards" %}</th></tr>
             {% if awards_list %}
                 {% for award in awards_list %}
                     <tr>
@@ -61,9 +61,9 @@
                     </tr>
                 {% endfor %}
             {% else %}
-                <tr><td colspan=8>{% trans "No new awards" %}</td></tr>
+                <tr><td colspan=9>{% trans "No new awards" %}</td></tr>
             {% endif %}
-            <tr><th class="alternate-table-heading" colspan=8>{% trans "In-progress awards" %}</th></tr>
+            <tr><th class="alternate-table-heading" colspan=9>{% trans "In-progress awards" %}</th></tr>
             {% if in_progress_list %}
                 {% for award in in_progress_list %}
                     <tr>
@@ -83,19 +83,19 @@
                         <td>
                             {% for year in award.years_of_study.all %}
                                 {{year}} <br>
->>>>>>> 30d10a49a45ffbaf620e8c01d980ff6c11dd671a
                             {% endfor %}
                         </td>
-                        <td>{{award.deadline}}</td>
+                        <td>{{award.start_date}}</td>
+                        <td>{{award.end_date}}</td>
                         <td><input type="checkbox" disabled {% if award.documents_needed %}checked{% endif %}></td>
                         {# Translators: Edit application button in student award table #}
                         <td><a href="/student_awardslist/{{ award.awardid }}/edit/">{% trans "Edit" %}</a></td>
                     </tr>
                 {% endfor %}
             {% else %}
-                <tr><td colspan=8>{% trans "No in-progress awards" %}</td></tr>
+                <tr><td colspan=9>{% trans "No in-progress awards" %}</td></tr>
             {% endif %}
-            <tr><th class="alternate-table-heading" colspan=8>{% trans "Submitted awards" %}</th></tr>
+            <tr><th class="alternate-table-heading" colspan=9>{% trans "Submitted awards" %}</th></tr>
             {% if submitted_list %}
                 {% for award in submitted_list %}
                     <tr>
@@ -125,7 +125,7 @@
                     </tr>
                 {% endfor %}
             {% else %}
-                <tr><td colspan=8>{% trans "No submitted awards" %}</td></tr>
+                <tr><td colspan=9>{% trans "No submitted awards" %}</td></tr>
             {% endif %}
         </table>
     </div>

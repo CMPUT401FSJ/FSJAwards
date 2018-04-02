@@ -40,7 +40,7 @@ def student_awardslist(request, award_idnum):
     for award in unfiltered_list:
         if award.is_open():
             try:
-                application = Application.objects.get(award = award, student = FSJ_user.ccid)
+                application = Application.objects.get(award = award, student = FSJ_user)
                 if application.is_submitted:
                     submitted_list.append(award)
                 elif not application.is_submitted:
@@ -84,7 +84,7 @@ def student_addapplication(request, award_idnum):
                     return redirect('home')                    
                         
                 elif '_submit' in request.POST:
-                    if datetime.now(timezone.utc) > award.end_date:
+                    if not award.is_open():
                         return redirect('home')
                     application.is_submitted = True            
                     if award.documents_needed == True and not application.application_file:
@@ -135,7 +135,7 @@ def student_editapplication(request, award_idnum):
                     return redirect('home')                    
                         
                 elif '_submit' in request.POST:
-                    if datetime.now(timezone.utc) > award.end_date:
+                    if not award.is_open():
                         return redirect('home')
                     application.is_submitted = True            
                     if award.documents_needed == True and not application.application_file:
