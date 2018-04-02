@@ -63,7 +63,8 @@
         <form action='{{ url }}' method='post'>
             {% csrf_token %}
             {# Save button on application #}
-            {% if FSJ_user.user_class == "Coordinator" %}
+
+            {% if FSJ_user.user_class == "Coordinator" and not archived %}
                 <table class="table table-bordered table-striped table-hover" align="center">
                     <tr>
                         <th>{% trans "Adjudicator" %}</th>

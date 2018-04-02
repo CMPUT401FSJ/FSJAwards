@@ -235,6 +235,7 @@ def view_application(request):
     context["award"] = application.award
     context["url"] = url
     context["return_url"] = return_url
+    context["archived"] = False
     template = loader.get_template("FSJ/view_application.html")
     return HttpResponse(template.render(context, request))
     
