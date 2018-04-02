@@ -618,7 +618,7 @@ def coordinator_archive_action(request, award_idnum):
                     application.student = archivedapp.student
                     application.application_file = archivedapp.application_file
                     application.is_submitted = True
-                    application.is_reviewed = True
+                    application.is_reviewed = False
                     application.save()
                     archivedapp.delete()
         elif "_delete" in request.POST:
