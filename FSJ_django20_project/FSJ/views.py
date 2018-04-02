@@ -84,6 +84,8 @@ def home(request):
         return redirect('coord_awardslist')
     elif isinstance(FSJ_user, Adjudicator):
         return redirect('profile')
+    elif request.user.is_superuser:
+        return redirect('/admin/')
     else:
         return non_FSJ_home(request)
 
