@@ -341,7 +341,7 @@ def edit_program(request, program_code):
     context = get_standard_context(FSJ_user)
     context["program_code"] = program_code
     context["form"] = form
-    url = "/programs/edit/" + str(program.code) + "/"
+    url = "/programs/" + str(program.code) + "/"
     context["url"] = url
     template = loader.get_template("FSJ/program.html")
     return HttpResponse(template.render(context, request))
