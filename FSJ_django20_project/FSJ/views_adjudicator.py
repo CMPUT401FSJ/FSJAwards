@@ -53,7 +53,6 @@ def adjudicator_application_list(request, award_idnum):
     context["application_list"] = application_list
     context["return_url"] = "/adj_awardslist/"
     context["award"] = award
-    context["is_adj"] = True
 
     template = loader.get_template("FSJ/application_list.html")
     return HttpResponse(template.render(context, request))
