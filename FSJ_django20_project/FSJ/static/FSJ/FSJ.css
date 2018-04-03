@@ -87,3 +87,8 @@ div.ualberta-themed-header {
 .alternate-table-heading {
     color: #FFDB05;
 }
+
+.select-column {
+    width: 90px;
+    min-width: 90px;
+}

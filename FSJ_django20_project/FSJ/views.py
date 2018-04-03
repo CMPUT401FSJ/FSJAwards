@@ -84,6 +84,8 @@ def home(request):
         return redirect('coord_awardslist')
     elif isinstance(FSJ_user, Adjudicator):
         return redirect('profile')
+    elif request.user.is_superuser:
+        return redirect('/admin/')
     else:
         return non_FSJ_home(request)
 
@@ -123,6 +125,7 @@ def profile(request):
     context["form"] = profile_form
     url = "/profile/"
     context["url"] = url
+    context["return_url"] = "/FSJ/"
     return HttpResponse(template.render(context, request))
 
 @login_required

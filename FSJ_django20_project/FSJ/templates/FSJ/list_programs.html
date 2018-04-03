@@ -14,8 +14,8 @@
                 {% csrf_token %}
                 <table class="table table-bordered table-striped table-hover" align="center">
                     <tr>
-                        {# Translators: Action header in program table #}
-                        <th>{% trans "Action" %}</th>
+                        {# Translators: Select header in program table #}
+                        <th class="select-column"><input type="checkbox" onClick="toggle(this);"/> {% trans "Select" %}</th>
                         {# Translators: Program Code header in program table #}
                         <th>{% trans "Code" %}</th>
                         {# Translators: Program name header in program table #}
