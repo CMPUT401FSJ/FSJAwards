@@ -47,10 +47,11 @@ def adjudicator_application_list(request, award_idnum):
     except Award.DoesNotExist:
         raise Http404("Award does not exist")
 
-    application_list = award.applications.all()
+    application_list = award.applications.filter(is_reviewed = True)
 
     context = get_standard_context(FSJ_user)
     context["application_list"] = application_list
+    context["return_url"] = "/adj_awardslist/"
     context["award"] = award
     context["is_adj"] = True
 

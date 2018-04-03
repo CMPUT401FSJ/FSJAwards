@@ -212,8 +212,12 @@ def view_application(request):
         url = "/view_application?application_id=" + str(application.application_id)
         comment_list = Comment.objects.filter(application = application)
         context["comment_list"] = comment_list
-    # TODO The return url will be whereever the adjudicator accessed the application view from, once implemented
+
+        
     elif isinstance(FSJ_user, Adjudicator):
+        
+        if not application.is_reviewed:
+            return redirect('adj_awardslist')
         
         try:
             comment = Comment.objects.get(application = application, adjudicator = FSJ_user)
