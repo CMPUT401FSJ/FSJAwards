@@ -1,6 +1,9 @@
 from .models_award import Award
-from django.forms import CheckboxSelectMultiple
+from django.forms import CheckboxSelectMultiple, DateInput
 from .forms_modelform import ModelForm
+
+class DateInput(DateInput):
+    input_type = 'date'
 
 #Modelform for an award, this restricts what fields will be enabled/disabled as well as widgets, etc
 class AwardForm(ModelForm):
@@ -11,7 +14,9 @@ class AwardForm(ModelForm):
         fields = ('award_name', 'description', 'value', 'programs', 'years_of_study', 'start_date','end_date', 'documents_needed', 'is_active')
         widgets = {
             'programs': CheckboxSelectMultiple,
-            'years_of_study': CheckboxSelectMultiple
+            'years_of_study': CheckboxSelectMultiple,
+            'start_date': DateInput(),
+            'end_date': DateInput()
         }
 
     def __init__(self, *args, **kwargs):
