@@ -30,7 +30,7 @@ def adjudicator_awards(request):
     FSJ_user = get_FSJ_user(request.user.username)
     awards_list = Award.objects.filter(committees__adjudicators = FSJ_user)
     filtered_list = AwardFilter(request.GET, queryset=awards_list)
-    template = loader.get_template("FSJ/adj_awards_list.html")
+    template = loader.get_template("FSJ/awards_list.html")
     context = get_standard_context(FSJ_user)
     context["awards_list"] = awards_list
     context["filter"] = filtered_list
