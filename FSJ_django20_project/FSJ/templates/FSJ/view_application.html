@@ -44,13 +44,13 @@
             {% trans "Student ID:" %} {{ student.student_id }}
         </div>
         <div>
-            {% trans "Program:" %} {{ student.program }}
+            {% trans "Program:" %} {% if student.program %}{{ student.program }}{% endif %}
         </div>
         <div>
             {% trans "Year:" %} {{ student.year }}
         </div>
         <div>
-            {% trans "GPA:" %} {{ student.gpa }}
+            {% trans "GPA:" %} {%if student.gpa %}{{ student.gpa }}{% endif %}
         </div>
         {% if award.documents_needed %}
             <div>

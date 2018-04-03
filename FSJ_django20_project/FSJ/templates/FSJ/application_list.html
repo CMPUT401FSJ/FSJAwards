@@ -30,7 +30,11 @@
                         <td>{{ application.student.student_id }}</td>
                         <td>{{ application.student.program }}</td>
                         <td>{{ application.student.year }}</td>
-                        <td>{{ application.student.gpa }}</td>
+                        <td>
+                            {% if application.student.gpa %} 
+                                {{ application.student.gpa }}
+                            {% endif %}
+                        </td>
                         <td><input type="checkbox" disabled {% if application.is_submitted %}checked{% endif %}></td>
                         <td><a href="/view_application?application_id={{ application.application_id }}">{{ application.get_status }}</a></td>
                     </tr>
