@@ -12,9 +12,11 @@
             {% csrf_token %}
             <table class="table table-bordered table-striped table-hover" align="center">
                 <tr>
+
                     {% if FSJ_user.user_class == "Coordinator" %}
-                        <th>{% trans "Action" %}</th>
+                        <th class="select-column"><input type="checkbox" onClick="toggle(this);"/> {% trans "Select" %}</th>
                     {% endif %}
+
                     <th>{% trans "Student" %}</th>
                     <th>{% trans "CCID" %}</th>
                     <th>{% trans "Program" %}</th>
