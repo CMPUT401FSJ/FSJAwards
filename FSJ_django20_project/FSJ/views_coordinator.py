@@ -86,6 +86,7 @@ def coordinator_studentdetail(request, usr_ccid):
     context["form"] = form
     url = "/studentlist/" + student.ccid + "/"
     context["url"] = url
+    context["return_url"] = "/studentlist/"
     template = loader.get_template("FSJ/profile.html")
     return HttpResponse(template.render(context, request))
 
@@ -116,6 +117,7 @@ def coordinator_adjudicatordetail(request, usr_ccid):
     context["form"] = form
     url = "/adjudicatorlist/" + adjudicator.ccid + "/"
     context["url"] = url
+    context["return_url"] = "/adjudicatorlist/"
     template = loader.get_template("FSJ/profile.html")
     return HttpResponse(template.render(context, request))
 
@@ -147,6 +149,7 @@ def coordinator_addstudent(request):
     context["form"] = form
     url = "/studentlist/add/"
     context["url"] = url
+    context["return_url"] = "/studentlist/"
     return HttpResponse(template.render(context, request))
 
 
@@ -176,6 +179,7 @@ def coordinator_addadjudicator(request):
     context["form"] = form
     url = "/adjudicatorlist/add/"
     context["url"] = url
+    context["return_url"] = "/adjudicatorlist/"
     return HttpResponse(template.render(context, request))
 
 
@@ -235,6 +239,7 @@ def coordinator_add_awards(request):
     context["form"] = form
     url = "/coord_awardslist/add/"
     context["url"] = url
+    context["return_url"] = "/coord_awardslist/"
     return HttpResponse(template.render(context,request))
 
 #function for handling coordinator editing an award
@@ -260,6 +265,7 @@ def coordinator_awardedit(request, award_idnum):
     context["form"] = form
     url = "/coord_awardslist/" + str(award.awardid) + "/"
     context["url"] = url
+    context["return_url"] = "/coord_awardslist/"
     template = loader.get_template("FSJ/award.html")
     return HttpResponse(template.render(context, request))
 
@@ -319,6 +325,7 @@ def add_program(request):
     context["form"] = form
     url = "/programs/add/"
     context["url"] = url
+    context["return_url"] = "/programs/list_programs"
     return HttpResponse(template.render(context, request))
 
 #function for handling coordinator editing a program
@@ -343,6 +350,7 @@ def edit_program(request, program_code):
     context["form"] = form
     url = "/programs/edit/" + str(program.code) + "/"
     context["url"] = url
+    context["return_url"] = "/programs/list_programs/"
     template = loader.get_template("FSJ/program.html")
     return HttpResponse(template.render(context, request))
 
@@ -388,6 +396,7 @@ def coordinator_addyearofstudy(request):
     context["form"] = form
     url = "/coord_yearslist/add/"
     context["url"] = url
+    context["return_url"] = "/coord_yearslist/"
     return HttpResponse(template.render(context, request))
 
 #function for handling coordinator editing an award
@@ -413,6 +422,7 @@ def coordinator_yearedit(request, year_name):
     context["form"] = form
     url = "/coord_yearslist/" + str(yearofstudy.year) + "/"
     context["url"] = url
+    context["return_url"] = "/coord_yearslist/"
     template = loader.get_template("FSJ/year_of_study.html")
     return HttpResponse(template.render(context, request))
 
@@ -460,6 +470,7 @@ def coordinator_addcommittee(request):
     context["form"] = form
     url = "/coord_committeeslist/add/"
     context["url"] = url
+    context["return_url"] = "/coord_committeeslist/"
     return HttpResponse(template.render(context, request))
 
 #function for handling coordinator editing a committee
@@ -485,6 +496,7 @@ def coordinator_committeeedit(request, committee_idnum):
     context["form"] = form
     url = "/coord_committeeslist/" + str(committee.committeeid) + "/"
     context["url"] = url
+    context["return_url"] = "/coord_committeeslist/"
     template = loader.get_template("FSJ/committee.html")
     return HttpResponse(template.render(context, request))
 
