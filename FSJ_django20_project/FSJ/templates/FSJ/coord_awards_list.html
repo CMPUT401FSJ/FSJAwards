@@ -66,8 +66,8 @@
                 {% csrf_token %}
                 <table class="table table-bordered table-striped table-hover" align="center">
                     <tr>
-                        {# Translators: Action header in awards table #}
-                        <th>{% trans "Action" %}</th>
+                        {# Translators: Select header in awards table #}
+                        <th class="select-column"><input type='checkbox' onClick="toggle(this);"/> {% trans "Select" %}</th>
                         {# Translators: Award name header in awards table #}
                         <th>{% trans "Award" %}</th>
                         {# Translators: Award description header in awards table #}
