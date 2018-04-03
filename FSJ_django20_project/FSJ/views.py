@@ -125,6 +125,7 @@ def profile(request):
     context["form"] = profile_form
     url = "/profile/"
     context["url"] = url
+    context["return_url"] = "/FSJ/"
     return HttpResponse(template.render(context, request))
 
 @login_required
