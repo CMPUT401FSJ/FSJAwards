@@ -1,4 +1,4 @@
-from .models_student import Student
+from .models import Student
 from .forms_modelform import ModelForm
 
 # These are the unrestricted and restricted ModelForms used for Students, accessible by Coordinators and Students respectively.

@@ -29,7 +29,7 @@ def student_home(request, FSJ_user):
 
 @login_required
 @user_passes_test(is_student)
-def student_awardslist(request, award_idnum):
+def student_awardslist(request):
     FSJ_user = get_FSJ_user(request.user.username)
     unfiltered_list = Award.objects.filter(Q(is_active = True), Q(programs = FSJ_user.program) | Q(programs__isnull = True))
    

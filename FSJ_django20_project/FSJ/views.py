@@ -11,7 +11,6 @@ from django.core.mail import EmailMessage
 from django.shortcuts import render, redirect
 from django.contrib.auth import update_session_auth_hash
 from django.utils.translation import gettext_lazy as _
-from .models_FSJUser import FSJUser
 from .tokens import account_activation_token
 from .forms import *
 from .models import *
@@ -79,11 +78,11 @@ def register_activation(request, uidb64, token):
 def home(request):
     FSJ_user = get_FSJ_user(request.user.username)
     if isinstance(FSJ_user, Student):
-        return student_awardslist(request, FSJ_user)
+        return redirect('student_awardslist')
     elif isinstance(FSJ_user, Coordinator):
         return redirect('coord_awardslist')
     elif isinstance(FSJ_user, Adjudicator):
-        return redirect('profile')
+        return redirect('adj_awardslist')
     elif request.user.is_superuser:
         return redirect('/admin/')
     else:
@@ -208,18 +207,40 @@ def view_application(request):
         return redirect('coord_awardslist/' + str(application.award.awardid) + '/applications/')
     
     return_url = None
+    
+    context = get_standard_context(FSJ_user)
+    
     if isinstance(FSJ_user, Coordinator):
         return_url = "/coord_awardslist/" + str(application.award.awardid) + "/applications"
-    # TODO The return url will be whereever the adjudicator accessed the application view from, once implemented
-    elif isinstance(FSJ_user, Adjudicator):
-        return_url = "/home/"
+        url = "/view_application?application_id=" + str(application.application_id)
+        comment_list = Comment.objects.filter(application = application)
+        context["comment_list"] = comment_list
+
         
-    context = get_standard_context(FSJ_user)
+    elif isinstance(FSJ_user, Adjudicator):
+        
+        if not application.is_reviewed:
+            return redirect('adj_awardslist')
+        
+        try:
+            comment = Comment.objects.get(application = application, adjudicator = FSJ_user)
+            form = CommentRestrictedForm(instance = comment)
+            url = "/adj_awardslist/" + str(application.award.awardid) + "/" + str(application.application_id) + "/edit/"
+            delete_url = "/adj_awardslist/" + str(application.award.awardid) + "/" + str(application.application_id) + "/delete/"
+            context["delete_url"] = delete_url            
+            
+        except Comment.DoesNotExist:
+            form = CommentRestrictedForm()
+            url = "/adj_awardslist/" + str(application.award.awardid) + "/" + str(application.application_id) + "/add/"
+        
+        return_url = "/adj_awardslist/" + str(application.award.awardid) + "/applications"
+        context["form"] = form
+        
     context["student"] = application.student
     if application.application_file:
         context["document"] = settings.MEDIA_URL + str(application.application_file)
     context["award"] = application.award
-    context["url"] = "/view_application?application_id=" + str(application.application_id)
+    context["url"] = url
     context["return_url"] = return_url
     context["archived"] = False
     template = loader.get_template("FSJ/view_application.html")
