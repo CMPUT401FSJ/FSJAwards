@@ -6,6 +6,7 @@ from django.utils.translation import gettext_lazy as _
 from django.http import HttpResponse, Http404
 from django.template import loader
 from django.shortcuts import redirect
+from datetime import datetime, timezone
 from django.contrib import messages
 from .filters import *
 from .models import *
@@ -85,6 +86,7 @@ def coordinator_studentdetail(request, usr_ccid):
     context["form"] = form
     url = "/studentlist/" + student.ccid + "/"
     context["url"] = url
+    context["return_url"] = "/studentlist/"
     template = loader.get_template("FSJ/profile.html")
     return HttpResponse(template.render(context, request))
 
@@ -115,6 +117,7 @@ def coordinator_adjudicatordetail(request, usr_ccid):
     context["form"] = form
     url = "/adjudicatorlist/" + adjudicator.ccid + "/"
     context["url"] = url
+    context["return_url"] = "/adjudicatorlist/"
     template = loader.get_template("FSJ/profile.html")
     return HttpResponse(template.render(context, request))
 
@@ -146,6 +149,7 @@ def coordinator_addstudent(request):
     context["form"] = form
     url = "/studentlist/add/"
     context["url"] = url
+    context["return_url"] = "/studentlist/"
     return HttpResponse(template.render(context, request))
 
 
@@ -175,6 +179,7 @@ def coordinator_addadjudicator(request):
     context["form"] = form
     url = "/adjudicatorlist/add/"
     context["url"] = url
+    context["return_url"] = "/adjudicatorlist/"
     return HttpResponse(template.render(context, request))
 
 
@@ -210,7 +215,7 @@ def coordinator_deleteadjudicator(request):
 def coordinator_awards(request, FSJ_user):
     awards_list = Award.objects.all()
     filtered_list = AwardFilter(request.GET, queryset=awards_list)
-    template = loader.get_template("FSJ/coord_awards_list.html")
+    template = loader.get_template("FSJ/awards_list.html")
     context = get_standard_context(FSJ_user)
     context["awards_list"] = awards_list
     context["filter"] = filtered_list
@@ -234,6 +239,7 @@ def coordinator_add_awards(request):
     context["form"] = form
     url = "/coord_awardslist/add/"
     context["url"] = url
+    context["return_url"] = "/coord_awardslist/"
     return HttpResponse(template.render(context,request))
 
 #function for handling coordinator editing an award
@@ -259,6 +265,7 @@ def coordinator_awardedit(request, award_idnum):
     context["form"] = form
     url = "/coord_awardslist/" + str(award.awardid) + "/"
     context["url"] = url
+    context["return_url"] = "/coord_awardslist/"
     template = loader.get_template("FSJ/award.html")
     return HttpResponse(template.render(context, request))
 
@@ -286,7 +293,7 @@ def coordinator_awardaction(request):
             for itemid in awardid_list:
                 award = Award.objects.get(awardid=itemid)
                 award.is_active = False
-                award.save()            
+                award.save()       
 
     return redirect('coord_awardslist')
 
@@ -318,6 +325,7 @@ def add_program(request):
     context["form"] = form
     url = "/programs/add/"
     context["url"] = url
+    context["return_url"] = "/programs/list_programs"
     return HttpResponse(template.render(context, request))
 
 #function for handling coordinator editing a program
@@ -342,6 +350,7 @@ def edit_program(request, program_code):
     context["form"] = form
     url = "/programs/edit/" + str(program.code) + "/"
     context["url"] = url
+    context["return_url"] = "/programs/list_programs/"
     template = loader.get_template("FSJ/program.html")
     return HttpResponse(template.render(context, request))
 
@@ -387,6 +396,7 @@ def coordinator_addyearofstudy(request):
     context["form"] = form
     url = "/coord_yearslist/add/"
     context["url"] = url
+    context["return_url"] = "/coord_yearslist/"
     return HttpResponse(template.render(context, request))
 
 #function for handling coordinator editing an award
@@ -412,6 +422,7 @@ def coordinator_yearedit(request, year_name):
     context["form"] = form
     url = "/coord_yearslist/" + str(yearofstudy.year) + "/"
     context["url"] = url
+    context["return_url"] = "/coord_yearslist/"
     template = loader.get_template("FSJ/year_of_study.html")
     return HttpResponse(template.render(context, request))
 
@@ -459,6 +470,7 @@ def coordinator_addcommittee(request):
     context["form"] = form
     url = "/coord_committeeslist/add/"
     context["url"] = url
+    context["return_url"] = "/coord_committeeslist/"
     return HttpResponse(template.render(context, request))
 
 #function for handling coordinator editing a committee
@@ -484,6 +496,7 @@ def coordinator_committeeedit(request, committee_idnum):
     context["form"] = form
     url = "/coord_committeeslist/" + str(committee.committeeid) + "/"
     context["url"] = url
+    context["return_url"] = "/coord_committeeslist/"
     template = loader.get_template("FSJ/committee.html")
     return HttpResponse(template.render(context, request))
 
@@ -508,19 +521,138 @@ def coordinator_application_list(request, award_idnum):
     
     try:
         award = Award.objects.get(awardid = award_idnum)
+
     except Award.DoesNotExist:
         raise Http404("Award does not exist")
 
     application_list = award.applications.all()
 
+    #delete in-progress applications if deadline is past
+    if datetime.now(timezone.utc) > award.end_date: 
+        for application in application_list:
+            if not application.is_submitted:
+                application.delete()
+        award.refresh_from_db()
+        #refresh application list after any deletes, if this isn't here, application list will
+        #not update correctly after deletion
+        application_list = award.applications.all()
+
     context = get_standard_context(FSJ_user)
     context["application_list"] = application_list
+    context["return_url"] = "/coord_awardslist/"
     context["award"] = award
     context["is_adj"] = False
 
     template = loader.get_template("FSJ/application_list.html")
     return HttpResponse(template.render(context, request))
+    
+#Handler used to produce the list of archived applications for an award using coord_application_archive template
+@login_required
+@user_passes_test(is_coordinator)
+def coordinator_application_archive_list(request, award_idnum):
+    FSJ_user = get_FSJ_user(request.user.username)
 
+    try:
+        award = Award.objects.get(awardid = award_idnum)
+    except Award.DoesNotExist:
+        raise Http404("Award does not exist")
+
+    archived_application_list = award.archived_applications.all()
+
+
+    context = get_standard_context(FSJ_user)
+    context["archived_list"] = archived_application_list
+    context["award"] = award
+    context["return_url"] = "/coord_awardslist/" + str(award_idnum) + "/applications/"
+
+    template = loader.get_template("FSJ/coord_application_archive.html") 
+    return HttpResponse(template.render(context, request))
+
+@login_required
+@user_passes_test(is_coordinator)
+def coordinator_archived_application_view(request, award_idnum, application_idnum):
+    FSJ_user = get_FSJ_user(request.user.username)
+    try:
+        award = Award.objects.get(awardid = award_idnum)
+    except Award.DoesNotExist:
+        raise Http404("Award does not exist")
+    try:
+        application = ArchivedApplication.objects.get(application_id = application_idnum)
+    except Award.DoesNotExist:
+        raise Http404("application does not exist")
+
+    context = get_standard_context(FSJ_user)
+    context["student"] = application.student
+    context["award"] = award
+    context["archived"] = True
+    context["return_url"] = "/coord_awardslist/" + str(award_idnum) + "/applications/archive/"
+
+    template = loader.get_template("FSJ/view_application.html")
+    return HttpResponse(template.render(context, request))
+
+#Function used to archive an application by createing a new archivedapp object and deleteing the old application.
+#Also used to delete applications
+@login_required
+@user_passes_test(is_coordinator)
+def coordinator_application_action(request, award_idnum):
+    try:
+        award = Award.objects.get(awardid = award_idnum)
+    except Award.DoesNotExist:
+        raise Http404("Award does not exist")
+
+    if request.method == 'POST':
+        application_list = request.POST.getlist('applicationaction')
+
+        if "_archive" in request.POST:  
+            for applicationid in application_list:
+                if not ArchivedApplication.objects.filter(application_id = applicationid).exists():
+                    application = Application.objects.get(application_id=applicationid)
+                    archivedapp = ArchivedApplication()
+                    archivedapp.application_id = application.application_id
+                    archivedapp.award = application.award
+                    archivedapp.student = application.student
+                    archivedapp.application_file = application.application_file
+                    archivedapp.save()
+                    application.delete()
+        elif "_delete" in request.POST:
+            for applicationid in application_list:
+                Application.objects.get(application_id=applicationid).delete()
+
+
+    return redirect('/coord_awardslist/'+ str(award_idnum) +'/applications/')
+
+#Function used to dearchive an archived application by createing a new application object and deleteing the old archived application.
+#Also used to delete archived applications
+@login_required
+@user_passes_test(is_coordinator)
+def coordinator_archive_action(request, award_idnum):
+    try:
+        award = Award.objects.get(awardid = award_idnum)
+    except Award.DoesNotExist:
+        raise Http404("Award does not exist")
+
+    if request.method == 'POST':
+        archived_application_list = request.POST.getlist('archiveaction')
+
+        if "_removeFromArchive" in request.POST:  
+            for applicationid in archived_application_list:
+                if not Application.objects.filter(application_id = applicationid).exists():
+                    archivedapp = ArchivedApplication.objects.get(application_id=applicationid)
+                    application = Application()
+                    application.application_id = archivedapp.application_id
+                    application.award = archivedapp.award
+                    application.student = archivedapp.student
+                    application.application_file = archivedapp.application_file
+                    application.is_submitted = True
+                    application.is_reviewed = False
+                    application.save()
+                    archivedapp.delete()
+        elif "_delete" in request.POST:
+            for applicationid in archived_application_list:
+                ArchivedApplication.objects.get(application_id=applicationid).delete()
+
+
+    return redirect('/coord_awardslist/'+ str(award_idnum) +'/applications/archive/')
 
 def coordinator_upload_students(request):
     FSJ_user = get_FSJ_user(request.user.username)

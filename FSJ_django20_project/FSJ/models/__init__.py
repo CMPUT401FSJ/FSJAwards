@@ -10,3 +10,4 @@ from .models_committee import Committee
 from .models_FSJUser import FSJUser
 from .models_comment import Comment
 from .models_ranking import Ranking
+from .models_archived_application import ArchivedApplication

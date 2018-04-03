@@ -1,10 +1,15 @@
 from .models import *
 import django_filters
+from django.forms import CheckboxSelectMultiple, DateInput
 from django.utils.translation import gettext_lazy as _
 
 LOOKUP_TYPES = [
         ('icontains', _("contains"))
 ]
+
+class DateInput(DateInput):
+    input_type = 'date'
+
 
 class StudentFilter(django_filters.FilterSet):
 	ccid = django_filters.CharFilter(lookup_expr='icontains')
@@ -26,7 +31,9 @@ class AdjudicatorFilter(django_filters.FilterSet):
 class AwardFilter(django_filters.FilterSet):
 	award_name = django_filters.CharFilter(lookup_expr='icontains')
 	description = django_filters.CharFilter(lookup_expr='icontains')
+	start_date = django_filters.DateFilter(widget = DateInput())
+	end_date = django_filters.DateFilter(widget = DateInput())
+
 	class Meta:
 		model = Award
-		fields = ['award_name','description','value','programs','years_of_study','deadline','documents_needed','is_active']
-
+		fields = ['award_name','description','value','programs','years_of_study','start_date', 'end_date', 'documents_needed','is_active']

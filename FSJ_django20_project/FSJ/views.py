@@ -83,6 +83,8 @@ def home(request):
         return redirect('coord_awardslist')
     elif isinstance(FSJ_user, Adjudicator):
         return redirect('adj_awardslist')
+    elif request.user.is_superuser:
+        return redirect('/admin/')
     else:
         return non_FSJ_home(request)
 
@@ -122,6 +124,7 @@ def profile(request):
     context["form"] = profile_form
     url = "/profile/"
     context["url"] = url
+    context["return_url"] = "/FSJ/"
     return HttpResponse(template.render(context, request))
 
 @login_required
@@ -223,9 +226,11 @@ def view_application(request):
                 
         comment_list = zip(comment_list, ranking_list)
         context["comment_list"] = comment_list
-            
-    # TODO The return url will be whereever the adjudicator accessed the application view from, once implemented
+
     elif isinstance(FSJ_user, Adjudicator):
+        
+        if not application.is_reviewed:
+            return redirect('adj_awardslist')
         
         try:
             comment = Comment.objects.get(application = application, adjudicator = FSJ_user)
@@ -257,6 +262,7 @@ def view_application(request):
     context["award"] = application.award
     context["url"] = url
     context["return_url"] = return_url
+    context["archived"] = False
     template = loader.get_template("FSJ/view_application.html")
     return HttpResponse(template.render(context, request))
     
