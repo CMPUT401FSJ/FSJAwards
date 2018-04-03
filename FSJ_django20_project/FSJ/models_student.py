@@ -21,3 +21,6 @@ class Student(FSJUser):
     def get_program(self):
         return self.program
     
+    def get_name(self):
+        return self.first_name + ' ' + self.middle_name + ' ' + self.last_name    
+    
