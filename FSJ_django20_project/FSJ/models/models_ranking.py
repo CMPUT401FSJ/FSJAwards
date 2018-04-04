@@ -11,4 +11,4 @@ class Ranking(models.Model):
     rank = models.IntegerField(null = True, blank = True, verbose_name = _("Rank"))
 
     class Meta:
-        unique_together = ('award', 'adjudicator', 'score',)
+        unique_together = ('award', 'adjudicator', 'rank',)

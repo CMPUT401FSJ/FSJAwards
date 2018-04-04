@@ -105,7 +105,7 @@
                     </div>
                 {% endfor %}
                 <div>
-                    {% trans "Current Rank: " %}{% if ranking %}{{ ranking.score }}{% else %}{{"--"}}{% endif %}
+                    {% trans "Current Rank: " %}{% if ranking %}{{ ranking.rank }}{% else %}{{"--"}}{% endif %}
                 </div>
                 {% for field in form2 %}
                     <div>

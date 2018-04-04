@@ -219,7 +219,7 @@ def view_application(request):
         for comment in comment_list:
             try:
                 ranking = Ranking.objects.get(application = application, adjudicator = comment.adjudicator)
-                ranking_list.append(ranking.score)
+                ranking_list.append(ranking.rank)
                 
             except Ranking.DoesNotExist:
                 ranking_list.append("--")
