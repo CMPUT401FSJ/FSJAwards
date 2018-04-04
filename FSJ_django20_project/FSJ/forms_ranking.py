@@ -2,6 +2,7 @@ from .models import Ranking
 from .forms_modelform import ModelForm
 from django import forms
 from django.core.exceptions import ObjectDoesNotExist, ValidationError
+from django.utils.translation import gettext_lazy as _
 
 class RankingForm(ModelForm):
 
@@ -22,7 +23,7 @@ class RankingForm(ModelForm):
             typename, value = data.split('_')
             score = int(value)
         except ValueError:
-            raise ValidationError('cannot understand %s' % data)
+            raise ValidationError(_('Cannot understand %s' % data))
         return score  
         
 class RankingRestrictedForm(ModelForm):
@@ -44,6 +45,6 @@ class RankingRestrictedForm(ModelForm):
             typename, value = data.split('_')
             score = int(value)
         except ValueError:
-            raise ValidationError('cannot understand %s' % data)
+            raise ValidationError(_('Cannot understand %s' % data))
         return score    
         
