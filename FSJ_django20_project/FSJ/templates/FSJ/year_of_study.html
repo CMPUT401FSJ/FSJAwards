@@ -4,8 +4,13 @@
 {# A standardized page for viewing the fields of an individual award #}
 {# This page is also used to edit years, it is up to the form to disable/enable views #}
 {% block heading %}
-    {# Translators: Add year of study page heading #}
-    {% trans "Add Year Of Study" %}
+	{% if year %}
+        {# Translators: Edit year of study page heading #}
+        {% trans "Edit Year" %}
+    {% else %}
+        {# Translators: Add year of study page heading #}
+        {% trans "Add Year" %}
+    {% endif %}
 {% endblock %}
 
 {% block content %}

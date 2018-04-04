@@ -244,5 +244,4 @@ def view_application(request):
     context["return_url"] = return_url
     context["archived"] = False
     template = loader.get_template("FSJ/view_application.html")
-    return HttpResponse(template.render(context, request))
-    
+    return HttpResponse(template.render(context, request))  

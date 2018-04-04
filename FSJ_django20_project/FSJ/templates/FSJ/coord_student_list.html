@@ -82,7 +82,7 @@
                             {% endif %}
                          </td> 
                         {# Translators: Edit link in student table #}
-                        <td><a href="/studentlist/{{ student.ccid }}/">{% trans "Edit" %}</a></td>
+                        <td><a href="/edit_student?ccid={{ student.ccid }}">{% trans "Edit" %}</a></td>
                     </tr>
                 {% endfor %}
             </table>

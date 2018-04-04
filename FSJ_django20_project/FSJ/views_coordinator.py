@@ -62,31 +62,28 @@ def coordinator_adjudicatorlist(request):
 # The handler used by the Coordinator class to show a specific student's profile in detail, using the generic profile temmplate and the unrestricted student model (with all fields editable).
 @login_required
 @user_passes_test(is_coordinator)
-def coordinator_studentdetail(request, usr_ccid):
+def edit_student(request):
+    student_ccid = request.GET.get("ccid","")
     FSJ_user = get_FSJ_user(request.user.username)
     try:
-        student = Student.objects.get(ccid = usr_ccid)
+        student = Student.objects.get(ccid = student_ccid)
     except Student.DoesNotExist:
-        raise Http404("Student does not exist")
-
-    # This is only true if the coordinator has just made edits to the student's profile.
-    if request.method == "POST":
-        # Load a form with the old instance and override relevant fields with the new info in the request
+        raise Http404(_("Student does not exist"))
+    
+    # load a form with the year info with editable fields
+    if request.method == 'POST':
         form = StudentForm(request.POST, instance=student)
-        # Check for validity of all fields before saving, invalid forms are rendered back into the template to show errors and allow correction.
         if form.is_valid():
             form.save()
-            return redirect('studentlist')        
+            return redirect('studentlist')
     else:
-        # If no edits have been performed, load a form with the student's info
         form = StudentForm(instance=student)
+    return_url = "/studentlist/"
         
     context = get_standard_context(FSJ_user)
     context["student"] = student
     context["form"] = form
-    url = "/studentlist/" + student.ccid + "/"
-    context["url"] = url
-    context["return_url"] = "/studentlist/"
+    context["return_url"] = return_url
     template = loader.get_template("FSJ/profile.html")
     return HttpResponse(template.render(context, request))
 
@@ -94,30 +91,28 @@ def coordinator_studentdetail(request, usr_ccid):
 # The handler used by the Coordinator class to show a specific adjudicator's profile in detail, using the generic profile temmplate and the unrestricted adjudicator model (with all fields editable).
 @login_required
 @user_passes_test(is_coordinator)
-def coordinator_adjudicatordetail(request, usr_ccid):
+def edit_adjudicator(request):
+    adjudicator_ccid = request.GET.get("ccid","")
     FSJ_user = get_FSJ_user(request.user.username)
     try:
-        adjudicator = Adjudicator.objects.get(ccid = usr_ccid)
+        adjudicator = Adjudicator.objects.get(ccid = adjudicator_ccid)
     except Adjudicator.DoesNotExist:
-        raise Http404("Adjudicator does not exist")
+        raise Http404(_("Adjudicator does not exist"))
     
-    # This is only true if the coordinator has just made edits to the adjudicator's profile.
-    if request.method == "POST":
-        # Load a form with the old instance and override relevant fields with the new info in the request
+    # load a form with the year info with editable fields
+    if request.method == 'POST':
         form = AdjudicatorForm(request.POST, instance=adjudicator)
-        # Check for validity of all fields before saving, invalid forms are rendered back into the template to show errors and allow correction.
         if form.is_valid():
             form.save()
             return redirect('adjudicatorlist')
     else:
-        # If no edits have been performed, load a form with the adjudicator's info
         form = AdjudicatorForm(instance=adjudicator)
+    return_url = "/adjudicatorlist/"
+        
     context = get_standard_context(FSJ_user)
     context["adjudicator"] = adjudicator
     context["form"] = form
-    url = "/adjudicatorlist/" + adjudicator.ccid + "/"
-    context["url"] = url
-    context["return_url"] = "/adjudicatorlist/"
+    context["return_url"] = return_url
     template = loader.get_template("FSJ/profile.html")
     return HttpResponse(template.render(context, request))
 
@@ -402,29 +397,30 @@ def coordinator_addyearofstudy(request):
 #function for handling coordinator editing an award
 @login_required
 @user_passes_test(is_coordinator)
-def coordinator_yearedit(request, year_name):
+def edit_year(request):
+    year_name = request.GET.get("year","")
     FSJ_user = get_FSJ_user(request.user.username)
     try:
         yearofstudy = YearOfStudy.objects.get(year = year_name)
     except YearOfStudy.DoesNotExist:
-        raise Http404("Year does not exist")
-
-    if request.method == "POST":
+        raise Http404(_("Year does not exist"))
+    
+    # load a form with the year info with editable fields
+    if request.method == 'POST':
         form = YearOfStudyForm(request.POST, instance=yearofstudy)
         if form.is_valid():
             form.save()
             return redirect('coord_yearslist')
-
     else:
         form = YearOfStudyForm(instance=yearofstudy)
+    return_url = "/coord_yearslist/"
+        
     context = get_standard_context(FSJ_user)
     context["year"] = yearofstudy
     context["form"] = form
-    url = "/coord_yearslist/" + str(yearofstudy.year) + "/"
-    context["url"] = url
-    context["return_url"] = "/coord_yearslist/"
+    context["return_url"] = return_url
     template = loader.get_template("FSJ/year_of_study.html")
-    return HttpResponse(template.render(context, request))
+    return HttpResponse(template.render(context, request)) 
 
 #Function for handling coordinator deleting an award
 @login_required
