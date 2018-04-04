@@ -1,4 +1,4 @@
-from .models_application import Application
+from .models import Application
 from .forms_modelform import ModelForm
 
 class ApplicationForm(ModelForm):

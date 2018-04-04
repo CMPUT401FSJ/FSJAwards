@@ -3,7 +3,7 @@
 
 {% block banner %}
     <div class="banner">
-        {% if FSJ_user.user_class == "Student" %}
+        {% if FSJ_user.user_class == "Student" or FSJ_user.user_class == "Adjudicator" %}
             <div>
                 {# Translators: Home link on the main banner #}
                 <a class="header" href='/home'>{% trans "Home" %}</a>

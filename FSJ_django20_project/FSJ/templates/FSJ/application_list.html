@@ -12,7 +12,11 @@
             {% csrf_token %}
             <table class="table table-bordered table-striped table-hover" align="center">
                 <tr>
-                    <th>{% trans "Action" %}</th>
+
+                    {% if FSJ_user.user_class == "Coordinator" %}
+                        <th class="select-column"><input type="checkbox" onClick="toggle(this);"/> {% trans "Select" %}</th>
+                    {% endif %}
+
                     <th>{% trans "Student" %}</th>
                     <th>{% trans "CCID" %}</th>
                     <th>{% trans "Program" %}</th>
@@ -23,7 +27,9 @@
                 </tr>
                 {% for application in application_list %}
                     <tr>
-                        <td><input type="checkbox"  name="applicationaction" value="{{application.application_id}}" ></td>
+                        {% if FSJ_user.user_class == "Coordinator" %}
+                            <td><input type="checkbox"  name="applicationaction" value="{{application.application_id}}" ></td>
+                        {% endif %}
                         <td><a href="/view_student?ccid={{ application.student.ccid }}&awardid={{application.award.awardid}}">{{ application.student.get_name }}</a></td>
                         <td>{{ application.student.ccid }}</td>
                         <td>{{ application.student.program }}</td>
@@ -35,11 +41,14 @@
                 {% endfor %}
             </table>
             <br/>
-            <a class="btn btn-success" role="button" href="/coord_awardslist/">{% trans "Return to Awards" %}</a>
-            <a role="button" class="btn btn-action" href='archive/'>{% trans "View Archive" %}</a>
-            </br></br>
-            <button class="btn btn-success" type="submit", name="_archive">{% trans "Archive Application(s)" %}</button>
-            <button class="btn btn-danger" type="submit" name="_delete">{% trans "Delete Application(s)" %}</button>
+            <a class="btn btn-success" role="button" href="{{ return_url }}">{% trans "Return to Awards" %}</a>
+            {% if FSJ_user.user_class == "Coordinator" %}
+                <a role="button" class="btn btn-action" href='archive/'>{% trans "View Archive" %}</a>
+                </br></br>
+                <button class="btn btn-success" type="submit", name="_archive">{% trans "Archive Application(s)" %}</button>
+                <button class="btn btn-danger" type="submit" name="_delete">{% trans "Delete Application(s)" %}</button>
+            {% endif %}
         </form>
     </div>
+
 {% endblock %}
