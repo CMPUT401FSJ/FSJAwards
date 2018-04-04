@@ -10,6 +10,14 @@
     <div class='center-content'>
         <form action ="/coord_awardslist/{{ award.awardid }}/applications/action/" method="POST" >
             {% csrf_token %}
+            
+            {% if FSJ_user.user_class == "Coordinator" %}
+                <a role="button" class="btn btn-action" href='archive/'>{% trans "View Archive" %}</a>
+                </br></br>
+                <button class="btn btn-success" type="submit", name="_archive">{% trans "Archive Application(s)" %}</button>
+                <button class="btn btn-danger" type="submit" name="_delete">{% trans "Delete Application(s)" %}</button>
+            {% endif %}
+            
             <table class="table table-bordered table-striped table-hover" align="center">
                 <tr>
 
