@@ -221,4 +221,30 @@ def view_application(request):
     context["archived"] = False
     template = loader.get_template("FSJ/view_application.html")
     return HttpResponse(template.render(context, request))
+
+@login_required
+@user_passes_test(is_coordinator)
+def edit_year(request):
+    year_name = request.GET.get("year","")
+    FSJ_user = get_FSJ_user(request.user.username)
+    try:
+        yearofstudy = YearOfStudy.objects.get(year = year_name)
+    except YearOfStudy.DoesNotExist:
+        raise Http404(_("Year does not exist"))
     
+    # load a form with the year info with editable fields
+    if request.method == 'POST':
+        form = YearOfStudyForm(request.POST, instance=yearofstudy)
+        if form.is_valid():
+            form.save()
+            return redirect('coord_yearslist')
+    else:
+        form = YearOfStudyForm(instance=yearofstudy)
+    return_url = "/coord_yearslist/"
+        
+    context = get_standard_context(FSJ_user)
+    context["year"] = yearofstudy
+    context["form"] = form
+    context["return_url"] = return_url
+    template = loader.get_template("FSJ/year_of_study.html")
+    return HttpResponse(template.render(context, request)) 
