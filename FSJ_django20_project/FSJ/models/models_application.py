@@ -2,7 +2,7 @@ import uuid
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from .models_award import Award
-from .validators import validate_file_extension
+from ..validators import validate_file_extension
 from .models_student import Student
 
 class Application(models.Model):

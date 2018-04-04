@@ -215,7 +215,7 @@ def coordinator_deleteadjudicator(request):
 def coordinator_awards(request, FSJ_user):
     awards_list = Award.objects.all()
     filtered_list = AwardFilter(request.GET, queryset=awards_list)
-    template = loader.get_template("FSJ/coord_awards_list.html")
+    template = loader.get_template("FSJ/awards_list.html")
     context = get_standard_context(FSJ_user)
     context["awards_list"] = awards_list
     context["filter"] = filtered_list
@@ -539,6 +539,7 @@ def coordinator_application_list(request, award_idnum):
 
     context = get_standard_context(FSJ_user)
     context["application_list"] = application_list
+    context["return_url"] = "/coord_awardslist/"
     context["award"] = award
 
     template = loader.get_template("FSJ/application_list.html")

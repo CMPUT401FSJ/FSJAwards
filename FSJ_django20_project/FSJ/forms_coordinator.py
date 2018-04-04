@@ -1,4 +1,4 @@
-from .models_coordinator import Coordinator
+from .models import Coordinator
 from .forms_modelform import ModelForm
 
 class CoordinatorForm(ModelForm):
