@@ -57,7 +57,7 @@
                             <td>{{ adjudicator.first_name }}</td>
                             <td>{{ adjudicator.last_name }}</td>
                             {# Translators: Edit link in adjudicator table #}
-                            <td><a href="/adjudicatorlist/{{ adjudicator.ccid }}/">{% trans "Edit" %}</a></td>
+                            <td><a href="/edit_adjudicator?ccid={{ adjudicator.ccid }}">{% trans "Edit" %}</a></td>
                         </tr>
                     {% endfor %}
                 </table>
