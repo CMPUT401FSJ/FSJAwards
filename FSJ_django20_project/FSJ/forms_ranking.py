@@ -14,14 +14,13 @@ class RankingForm(ModelForm):
         super(RankingForm, self).__init__(*args, **kwargs) 
         rankings = Ranking.objects.filter(adjudicator = user, award = award).values_list('rank', flat=True)
         choices = ['--', 1, 2, 3, 4, 5]
-        available_rankings = [(("Choice_%s" % str(x)), x) for x in choices if x not in rankings]
+        available_rankings = [(str(x), x) for x in choices if x not in rankings]
         self.fields['rank'] = forms.ChoiceField(choices=available_rankings)
         
     def clean_rank(self):
         data = self.cleaned_data['rank']
         try:
-            typename, value = data.split('_')
-            rank = int(value)
+            rank = int(data)
         except ValueError:
             raise ValidationError(_('Cannot understand %s' % data))
         return rank  
@@ -36,14 +35,13 @@ class RankingRestrictedForm(ModelForm):
         super(RankingRestrictedForm, self).__init__(*args, **kwargs)
         rankings = Ranking.objects.filter(adjudicator = user, award = award).values_list('rank', flat=True)
         choices = ['--', 1, 2, 3, 4, 5]
-        available_rankings = [(("Choice_%s" % str(x)), x) for x in choices if x not in rankings]
+        available_rankings = [(str(x), x) for x in choices if x not in rankings]
         self.fields['rank'] = forms.ChoiceField(choices=available_rankings)
         
     def clean_rank(self):
         data = self.cleaned_data['rank']
         try:
-            typename, value = data.split('_')
-            rank = int(value)
+            rank = int(data)
         except ValueError:
             raise ValidationError(_('Cannot understand %s' % data))
         return rank    
