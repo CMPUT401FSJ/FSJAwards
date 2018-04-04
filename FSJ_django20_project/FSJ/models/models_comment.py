@@ -12,5 +12,5 @@ class Comment(models.Model):
     
     
     def __str__(self):
-        return comment_text   
+        return str(self.comment_text)
     

@@ -60,27 +60,62 @@ def adjudicator_application_list(request, award_idnum):
 
 @login_required
 @user_passes_test(is_adjudicator)
-def adjudicator_add_comment(request, award_idnum, application_idnum):
+def adjudicator_add_edit_comment_ranking(request, award_idnum, application_idnum):
     FSJ_user = get_FSJ_user(request.user.username)
     
     application = Application.objects.get(application_id = application_idnum)
     
     try:
         comment = Comment.objects.get(application = application, adjudicator = FSJ_user)
-        return redirect('adj_editcomment', award_idnum = award_idnum, application_idnum = application_idnum)
         
-    except Comment.DoesNotExist:
-    
         if request.method == "POST":
-            form = CommentRestrictedForm(request.POST)
+            form = CommentRestrictedForm(request.POST,  prefix = "form", instance = comment)
             if form.is_valid():
                 comment = form.save(commit = False)
                 comment.application = application
                 comment.adjudicator = FSJ_user
                 comment.save()
-                return redirect('adj_applicationlist', award_idnum = award_idnum)
-        else:
-            return redirect('adj_applicationlist', award_idnum = award_idnum)
+        
+    except Comment.DoesNotExist:
+    
+        if request.method == "POST":
+            form = CommentRestrictedForm(request.POST,  prefix = "form")
+            if form.is_valid():
+                comment = form.save(commit = False)
+                comment.application = application
+                comment.adjudicator = FSJ_user
+                comment.save()
+        
+    try:
+        
+        ranking = Ranking.objects.get(application = application, adjudicator = FSJ_user)
+        
+        if request.method == "POST":
+            form2 = RankingRestrictedForm(FSJ_user, application.award, request.POST, instance = ranking, prefix = "form2")
+            if form2.is_valid():
+                ranking = form2.save(commit = False)
+                ranking.application = application
+                ranking.adjudicator = FSJ_user
+                ranking.award = application.award
+                ranking.save()
+                
+            else:
+                ranking.delete()
+                
+            
+    except Ranking.DoesNotExist:
+    
+        if request.method == "POST":
+            form2 = RankingRestrictedForm(FSJ_user, application.award, request.POST, prefix = "form2")
+            if form2.is_valid():
+                ranking = form2.save(commit = False)
+                ranking.application = application
+                ranking.adjudicator = FSJ_user
+                ranking.award = application.award
+                ranking.save()
+                 
+            
+    return redirect('adj_applicationlist', award_idnum = award_idnum)
     
     
 @login_required
@@ -117,5 +152,12 @@ def adjudicator_delete_comment(request, award_idnum, application_idnum):
     application = Application.objects.get(application_id = application_idnum)
     
     comment = Comment.objects.get(application = application, adjudicator = FSJ_user).delete()
+    try:
+        ranking = Ranking.objects.get(application = application, adjudicator = FSJ_user)
+        ranking.delete()   
+        
+    except:
+        pass
+    
     return redirect('adj_applicationlist', award_idnum = award_idnum)
         

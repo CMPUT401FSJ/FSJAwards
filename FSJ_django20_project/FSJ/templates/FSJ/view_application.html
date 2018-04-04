@@ -62,25 +62,27 @@
         <br/>
         <form action='{{ url }}' method='post'>
             {% csrf_token %}
-            {# Save button on application #}
-
+    
             {% if FSJ_user.user_class == "Coordinator" and not archived %}
+
                 {% if comment_list %}
                     <table class="table table-bordered table-striped table-hover" align="center">
                         <tr>
                             <th>{% trans "Adjudicator" %}</th>
                             <th>{% trans "Comment" %}</th>
+                            <th>{% trans "Ranking" %}</th>
                         </tr>
                         {% for comm in comment_list %}
                             <tr>
-                                <td>{{ comm.adjudicator.ccid }}</td>
-                                <td>{{ comm.comment_text }}</td>
+                                <td>{{ comm.0.adjudicator.ccid }}</td>
+                                <td>{{ comm.0.comment_text }}</td>
+                                <td>{{ comm.1 }}</td>
                             </tr>
                         {% endfor %}
                     </table>
                 {% endif %}
-                
                 <button class = "btn btn-success" type="submit" name="_review">{% trans "Mark reviewed" %}</button>
+
                 <button class = "btn btn-success" type="submit" name="_unreview">{% trans "Mark unreviewed" %}</button>
             {% endif %}
             {% if FSJ_user.user_class == "Adjudicator" %}
@@ -102,11 +104,32 @@
                         {% endif %}
                     </div>
                 {% endfor %}
+                <div>
+                    {% trans "Current Rank: " %}{% if ranking %}{{ ranking.rank }}{% else %}{{"--"}}{% endif %}
+                </div>
+                {% for field in form2 %}
+                    <div>
+                        <div>
+                            {% if field.label %}
+                                {{field.label_tag}}
+                            {% endif %}
+                        </div>
+                        <div {% if field.errors %}class='has-error'{% endif %}>
+                            {{ field }}
+                        </div>
+                        {% if field.help_text %}
+                            {{ field.help_text }}
+                        {% endif %}
+                        {% if field.errors %}
+                            {{ field.errors }}
+                        {% endif %}
+                    </div>
+                {% endfor %}
                 <br/>
                 {# Save button #}
-                <button class='btn btn-success' type='submit'>{% trans "Save comment" %}</button>
+                <button class='btn btn-success' type='submit'>{% trans "Save comment & ranking" %}</button>
                 {% if delete_url %}
-                    <a class="btn btn-danger" role="button" href="{{ delete_url }}">{% trans "Delete comment" %}</a> 
+                    <a class="btn btn-danger" role="button" href="{{ delete_url }}">{% trans "Delete comment & ranking" %}</a> 
                 {% endif %}
             {% endif %}
             <a class="btn btn-success" role="button" href="{{ return_url }}">{% trans "Return to Applications" %}</a> 

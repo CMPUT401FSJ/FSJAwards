@@ -28,4 +28,4 @@ class Application(models.Model):
             return _("Review Completed")
         else:
             return _("Review Pending")
-
+        
