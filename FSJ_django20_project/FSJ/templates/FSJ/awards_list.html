@@ -63,6 +63,7 @@
               </form>
             </form>
             <form action="/coord_awardslist/action/" method="POST">
+            {% csrf_token %}
             
                 {% if FSJ_user.user_class == "Coordinator"%}
                     {# Translators: Button to activate selected awards #}
@@ -77,7 +78,7 @@
                     <button class="btn btn-danger" type="submit" name="_delete">{% trans "Delete award(s)" %}</button>    
                 {% endif %}
                 
-                {% csrf_token %}
+                
                 <table class="table table-bordered table-striped table-hover" align="center">
                     <tr>
                     
