@@ -85,12 +85,12 @@ def student_addapplication(request, award_idnum):
                         
                 elif '_submit' in request.POST:
                     if not award.is_open():
-                        return redirect('home')
-                    application.is_submitted = True            
+                        return redirect('home')            
                     if award.documents_needed == True and not application.application_file:
                         messages.warning(request, 'Please upload a document.')
                     
                     else:
+                        application.is_submitted = True
                         application.student = FSJ_user
                         application.award = award
                         application.save()
