@@ -4,7 +4,7 @@ from django.utils.translation import gettext_lazy as _
 from django import forms
 from .models_program import Program
 from .models_yearofstudy import *
-from .validators import validate_student_id
+from ..validators import validate_student_id
 
 
 # This class inherits from a standard FSJ User and extends for Student specific attributes and methods
