@@ -12,7 +12,7 @@
             {% trans "Award Name:" %} {{ award.award_name }}
         </div>
         <div>
-            {% trans "Award Description:" %} {{ award.description }}
+            {% trans "Award Description:" %} {{ award.description|linebreaks }}
         </div>
         <div>
             {% trans "Award Value:" %} {{ award.value }}

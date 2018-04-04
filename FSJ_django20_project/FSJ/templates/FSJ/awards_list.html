@@ -105,7 +105,7 @@
                             {% endif %}
                             
                             <td>{{award.award_name }}</td>
-                            <td>{{award.description}}</td>
+                            <td>{{award.description|linebreaks }}</td>
                             <td>{{award.value}}</td>
                             <td>
                                 {% if award.programs.all %}
