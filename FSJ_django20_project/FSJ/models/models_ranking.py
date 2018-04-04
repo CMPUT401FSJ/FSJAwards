@@ -8,7 +8,7 @@ class Ranking(models.Model):
     award = models.ForeignKey(Award, on_delete=models.CASCADE, related_name='rankings', verbose_name = _("Award"))
     application = models.ForeignKey(Application, on_delete=models.CASCADE, related_name='rankings', verbose_name = _("Application"))
     adjudicator = models.ForeignKey(Adjudicator, on_delete=models.CASCADE, related_name='rankings', verbose_name = _("Adjudicator"))
-    score = models.IntegerField(null = True, blank = True, verbose_name = _("Rank"))
+    rank = models.IntegerField(null = True, blank = True, verbose_name = _("Rank"))
 
     class Meta:
         unique_together = ('award', 'adjudicator', 'score',)

@@ -8,43 +8,43 @@ class RankingForm(ModelForm):
 
     class Meta:
         model = Ranking
-        fields = ('adjudicator', 'application', 'award', 'score',)
+        fields = ('adjudicator', 'application', 'award', 'rank',)
         
     def __init__(self, *args, **kwargs):
         super(RankingForm, self).__init__(*args, **kwargs) 
-        rankings = Ranking.objects.filter(adjudicator = user, award = award).values_list('score', flat=True)
+        rankings = Ranking.objects.filter(adjudicator = user, award = award).values_list('rank', flat=True)
         choices = ['--', 1, 2, 3, 4, 5]
         available_rankings = [(("Choice_%s" % str(x)), x) for x in choices if x not in rankings]
-        self.fields['score'] = forms.ChoiceField(choices=available_rankings)
+        self.fields['rank'] = forms.ChoiceField(choices=available_rankings)
         
-    def clean_score(self):
-        data = self.cleaned_data['score']
+    def clean_rank(self):
+        data = self.cleaned_data['rank']
         try:
             typename, value = data.split('_')
-            score = int(value)
+            rank = int(value)
         except ValueError:
             raise ValidationError(_('Cannot understand %s' % data))
-        return score  
+        return rank  
         
 class RankingRestrictedForm(ModelForm):
     
     class Meta:
         model = Ranking
-        fields = ('score',)
+        fields = ('rank',)
             
     def __init__(self, user, award, *args, **kwargs):
         super(RankingRestrictedForm, self).__init__(*args, **kwargs)
-        rankings = Ranking.objects.filter(adjudicator = user, award = award).values_list('score', flat=True)
+        rankings = Ranking.objects.filter(adjudicator = user, award = award).values_list('rank', flat=True)
         choices = ['--', 1, 2, 3, 4, 5]
         available_rankings = [(("Choice_%s" % str(x)), x) for x in choices if x not in rankings]
-        self.fields['score'] = forms.ChoiceField(choices=available_rankings)
+        self.fields['rank'] = forms.ChoiceField(choices=available_rankings)
         
-    def clean_score(self):
-        data = self.cleaned_data['score']
+    def clean_rank(self):
+        data = self.cleaned_data['rank']
         try:
             typename, value = data.split('_')
-            score = int(value)
+            rank = int(value)
         except ValueError:
             raise ValidationError(_('Cannot understand %s' % data))
-        return score    
+        return rank    
         
