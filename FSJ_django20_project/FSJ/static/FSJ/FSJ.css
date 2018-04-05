@@ -94,3 +94,12 @@ div.ualberta-themed-header {
     width: 90px;
     min-width: 90px;
 }
+
+.tab-text{
+    padding-left:30px;
+    font-size: 18px;
+}
+
+.li-font18{
+    font-size: 18px;
+}
