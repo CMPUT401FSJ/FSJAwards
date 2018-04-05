@@ -24,8 +24,16 @@
                   {% render_field filter.form.first_name class="form-control" %}
                 </div>
                 <div class = "form-group col-sm-4 col-md-3">
+                  {{ filter.form.middle_name.label_tag }}
+                  {% render_field filter.form.middle_name class="form-control" %}
+                </div>
+                <div class = "form-group col-sm-4 col-md-3">
                   {{ filter.form.last_name.label_tag }}
                   {% render_field filter.form.last_name class="form-control" %}
+                </div>
+                <div class = "form-group col-sm-4 col-md-3">
+                  {{ filter.form.student_id.label_tag }}
+                  {% render_field filter.form.student_id class="form-control" %}
                 </div>
                 <div class = "form-group col-sm-4 col-md-3">
                   {{ filter.form.year.label_tag }}
@@ -63,8 +71,12 @@
                     <th>{% trans "CCID" %}</th>
                     {# Translators: First Name header in student table #}
                     <th>{% trans "First Name" %}</th>
+                    {# Translators: Middle Name header in student table #}
+                    <th>{% trans "Middle Name" %}</th>
                     {# Translators: Last Name header in student table #}
                     <th>{% trans "Last Name" %}</th>
+                    {# Translators: Student ID header in student table #}
+                    <th>{% trans "Student ID" %}</th>
                     {# Translators: Year of Study header in student table #}
                     <th>{% trans "Year of Study" %}</th>
                     {# Translators: Program header in student table #}
@@ -79,7 +91,9 @@
                         <td><input type="checkbox"  name="instance" value="{{student.ccid}}">
                         <td>{{ student.ccid }}</td>
                         <td>{{ student.first_name }}</td>
+                        <td>{{ student.middle_name }}</td>
                         <td>{{ student.last_name }}</td>
+                        <td>{{ student.student_id }}</td>
                         <td>{{ student.year }}</td>
                         <td>{{ student.program }}</td>
                         <td>

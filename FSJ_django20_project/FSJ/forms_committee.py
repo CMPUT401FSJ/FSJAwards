@@ -13,6 +13,7 @@ class CommitteeForm(ModelForm):
             'awards': CheckboxSelectMultiple
         }
 
-    def __init__(self, *args, **kwargs):
-
+    def __init__(self, available_awards, *args, **kwargs):
         super(CommitteeForm, self).__init__(*args, **kwargs)
+        self.fields['awards'].widget.instance = self.instance
+        self.fields['awards'].choices = available_awards

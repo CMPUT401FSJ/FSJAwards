@@ -29,3 +29,28 @@ class Award(models.Model):
 			return False
 		else:
 			return True
+		
+	
+	def get_review_status(self):
+		
+		if self.applications.count() == 0:
+			return "No Applications"
+		elif self.applications.count() >= 1:
+			applications = self.applications.all()
+			need_review = 0
+			reviewed = 0
+			for application in applications:
+				
+				if application.is_reviewed:
+					reviewed += 1
+				else:
+					need_review += 1
+					
+			if reviewed == 0 and need_review >= 1:
+				return _("Review Required")
+			
+			elif reviewed >= 1 and need_review >= 1:
+				return _("Review In Progress")
+			
+			elif reviewed >= 1 and need_review == 0:
+				return _("Review Completed")

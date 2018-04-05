@@ -215,17 +215,19 @@ def view_application(request):
         url = "/view_application?application_id=" + str(application.application_id)
         comment_list = Comment.objects.filter(application = application)
         
-        ranking_list = []
-        for comment in comment_list:
-            try:
-                ranking = Ranking.objects.get(application = application, adjudicator = comment.adjudicator)
-                ranking_list.append(ranking.rank)
-                
-            except Ranking.DoesNotExist:
-                ranking_list.append("--")
-                
-        comment_list = zip(comment_list, ranking_list)
-        context["comment_list"] = comment_list
+        if comment_list.count() > 0:
+            ranking_list = []
+            for comment in comment_list:
+                try:
+                    ranking = Ranking.objects.get(application = application, adjudicator = comment.adjudicator)
+                    ranking_list.append(ranking.rank)
+                    
+                except Ranking.DoesNotExist:
+                    ranking_list.append("--")
+                    
+            comment_list = zip(comment_list, ranking_list)
+            
+            context["comment_list"] = comment_list
 
     elif isinstance(FSJ_user, Adjudicator):
         

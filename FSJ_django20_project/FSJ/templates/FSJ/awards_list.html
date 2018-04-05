@@ -120,7 +120,7 @@
                             {% endif %}
                             
                             <td>{{award.award_name }}</td>
-                            <td>{{award.description}}</td>
+                            <td>{{award.description|linebreaks }}</td>
                             <td>{{award.value}}</td>
                             <td>
                                 {% if award.programs.all %}
@@ -148,12 +148,21 @@
                             {% if FSJ_user.user_class == "Coordinator"%}
                                 {# Translators: Edit link in coordinator awards list #}
                                 <td><a href="/coord_awardslist/{{ award.awardid }}/">{% trans "Edit" %}</a></td>
-                                {# Translators: View button in coordinator awards list #}
-                                <td><a href="/coord_awardslist/{{ award.awardid }}/applications/">{% trans "View" %}</a></td>
+                                {% if award.get_review_status == "No Applications" %}
+                                    {# Translators: No applications message in coordinator awards list #}
+                                    <td>{% trans "No Applications" %}</td>
+                                {% else %}
+                                    <td><a href="/coord_awardslist/{{ award.awardid }}/applications/">{{ award.get_review_status }}</a></td>
+                                {% endif %} 
                             {% endif %}
                             
                             {% if FSJ_user.user_class == "Adjudicator" %}
-                                <td><a href="/adj_awardslist/{{ award.awardid }}/applications/">{% trans "View" %}</a></td>
+                                {% if award.get_review_status == "No Applications" %}
+                                    {# Translators: No applications message in adjudicator awards list #}
+                                    <td>{% trans "No Applications" %}</td>
+                                {% else %}    
+                                    <td><a href="/adj_awardslist/{{ award.awardid }}/applications/">{% trans "View" %}</a></td>
+                                {% endif %}
                             {% endif %}
                             
                         </tr>

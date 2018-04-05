@@ -12,7 +12,7 @@
         {% if messages %}
             <ul class="messages">
                 {% for message in messages %}
-                    <li class="{{ message.tags }}">{{ message }}</li>
+                    <div class="alert alert-{{ message.tags }}"><b>{{ message }}</b></div>
                 {% endfor %}
             </ul>
         {% endif %}
@@ -20,7 +20,7 @@
     
     <div>
         {# Translators: Description for award on student application page #}
-        {% trans "Description:" %} {{ award.description}} 
+        {% trans "Description:" %} {{ award.description|linebreaks }} 
     </div>
     
     <div>
