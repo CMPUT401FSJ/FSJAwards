@@ -14,10 +14,12 @@ class DateInput(DateInput):
 class StudentFilter(django_filters.FilterSet):
 	ccid = django_filters.CharFilter(lookup_expr='icontains')
 	first_name = django_filters.CharFilter(lookup_expr='icontains')
+	middle_name = django_filters.CharFilter(lookup_expr='icontains')
 	last_name = django_filters.CharFilter(lookup_expr='icontains')
+	student_id = django_filters.CharFilter(lookup_expr='icontains')
 	class Meta:
 		model = Student
-		fields = ['ccid','first_name','last_name','year','program']
+		fields = ['ccid','first_name','middle_name','last_name','student_id','year','program']
 
 #TODO: add fields 'assigned awards' and 'committee'
 class AdjudicatorFilter(django_filters.FilterSet):

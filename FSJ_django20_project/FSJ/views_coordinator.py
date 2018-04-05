@@ -666,8 +666,8 @@ def coordinator_upload_students(request):
                         year = YearOfStudy.objects.get(year = row['Year'])
                         obj, created = Student.objects.update_or_create(
                             ccid = row['CCID'],
-                            defaults={'ualberta_id': row['ID'], 'first_name': row['First Name'], 'last_name': row['Last Name'], 'email' : row['Email (Univ)'],
-                                      'program' : program, 'year' : year,},
+                            defaults={'student_id': row['ID'], 'first_name': row['First Name'], 'last_name': row['Last Name'], 'email' : row['Email (Univ)'],
+                                      'program' : program, 'year' : year, 'middle_name' : row['Middle Name'],},
                         ) 
                         
                 if 'gpa_file' in request.FILES:
