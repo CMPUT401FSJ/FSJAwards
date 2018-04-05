@@ -16,8 +16,8 @@ class AwardForm(ModelForm):
         widgets = {
             'programs': CheckboxSelectMultiple,
             'years_of_study': CheckboxSelectMultiple,
-            'start_date': DateInput(),
-            'end_date': DateInput()
+            'start_date': DateInput(format = '%Y-%m-%d'),
+            'end_date': DateInput(format = '%Y-%m-%d')
         }
 
     def __init__(self, *args, **kwargs):
