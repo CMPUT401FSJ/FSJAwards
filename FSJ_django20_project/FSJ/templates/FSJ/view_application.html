@@ -75,7 +75,7 @@
         <form action='{{ url }}' method='post'>
             {% csrf_token %}
     
-            {% if FSJ_user.user_class == "Coordinator" and not archived %}
+            {% if FSJ_user.user_class == "Coordinator" %}
 
                 {% if comment_list %}
                     <table class="table table-bordered table-striped table-hover" align="center">
@@ -93,9 +93,11 @@
                         {% endfor %}
                     </table>
                 {% endif %}
-                <button class = "btn btn-success" type="submit" name="_review">{% trans "Mark reviewed" %}</button>
-
-                <button class = "btn btn-success" type="submit" name="_unreview">{% trans "Mark unreviewed" %}</button>
+                {% if not archived %}
+                    <button class = "btn btn-success" type="submit" name="_review">{% trans "Mark reviewed" %}</button>
+    
+                    <button class = "btn btn-success" type="submit" name="_unreview">{% trans "Mark unreviewed" %}</button> 
+                {% endif %}
             {% endif %}
             {% if FSJ_user.user_class == "Adjudicator" %}
                 {% for field in form %}
