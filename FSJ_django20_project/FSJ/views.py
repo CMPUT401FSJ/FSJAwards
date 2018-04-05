@@ -191,6 +191,8 @@ def view_application(request):
     FSJ_user = get_FSJ_user(request.user.username)
     try:
         application = Application.objects.get(application_id = application_id)
+        if isinstance(FSJ_user, Adjudicator) and application.is_archived:
+            return redirect('home')
     except Application.DoesNotExist:
         raise Http404(_("Application does not exist"))
     

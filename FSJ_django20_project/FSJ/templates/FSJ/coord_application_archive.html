@@ -22,6 +22,7 @@
                     <th class="select-column"><input type="checkbox" onClick="toggle(this);"/> {% trans "Select" %}</th>
                     <th>{% trans "Student" %}</th>
                     <th>{% trans "CCID" %}</th>
+                    <th>{% trans "Student ID" %}</th>
                     <th>{% trans "Program" %}</th>
                     <th>{% trans "Year" %}</th>
                     <th>{% trans "GPA" %}</th>
@@ -32,9 +33,18 @@
                         <td><input type="checkbox"  name="archiveaction" value="{{application.application_id}}" ></td>
                         <td><a href="/view_student?ccid={{ application.student.ccid }}&awardid={{application.award.awardid}}">{{ application.student.get_name }}</a></td>
                         <td>{{application.student.ccid}}</td>
-                        <td>{{application.student.program}}</td>
-                        <td>{{application.student.year}}</td>
-                        <td>{{application.student.gpa}}</td>
+                        <td>{{ application.student.student_id }}</td>
+                        <td>
+                            {% if application.student.program %}
+                                {{ application.student.program }}
+                            {% endif %}
+                        </td>
+                        <td>{{ application.student.year }}</td>
+                        <td>
+                            {% if application.student.gpa %} 
+                                {{ application.student.gpa }}
+                            {% endif %}
+                        </td>
                         <td><a href="/coord_awardslist/{{ award.awardid }}/applications/archive/view/{{application.application_id}}/">{% trans "View" %}</a></td>
                     </tr>
                 {% endfor %}
