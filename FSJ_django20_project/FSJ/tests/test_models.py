@@ -1,7 +1,7 @@
 from django.test import TestCase
 from django.db.utils import IntegrityError
 from django.contrib.auth.models import User
-from ..models import Adjudicator, Coordinator, Student, Program, YearOfStudy, Award, Application, Committee
+from ..models import Adjudicator, Coordinator, Student, Program, YearOfStudy, Award, Application, Committee, ArchivedApplication, Comment, Ranking
 from django.db.models.deletion import ProtectedError
 import datetime
 import pytz
@@ -348,3 +348,151 @@ class CommitteeModelTests(TestCase):
     def test_committee_duplicate(self):
         with self.assertRaises(IntegrityError):
             new_committee = Committee.objects.create(committeeid = self.committee.committeeid)
+
+class ArchivedApplicationTestModels(TestCase):
+    
+    def setUp(self):
+        self.ccid = "Student"
+        self.first_name = "A"
+        self.last_name = "Student"
+        self.email = "aStudent@test.com"
+        self.student_id = '1'
+        self.year = "First"
+        self.year_of_study = YearOfStudy.objects.create(year = self.year)
+        self.program_code = "PRFG"
+        self.program_name = "Science"
+        self.program = Program.objects.create(code = self.program_code, name = self.program_name)
+        self.award_name = "This award"
+        self.award_description = "For students"
+        self.award_value = "One gold pen"
+        self.award_start_date = str(datetime.datetime.now(pytz.timezone('America/Vancouver')))
+        self.award_end_date = str(datetime.datetime.now(pytz.timezone('America/Edmonton')))
+        self.award_documents_needed = False
+        self.award_is_active = True
+        self.award = Award.objects.create(award_name = self.award_name, description = self.award_description, value = self.award_value,
+                                          start_date = self.award_start_date, end_date = self.award_end_date, 
+                                          documents_needed = self.award_documents_needed, is_active = self.award_is_active)
+        self.award.programs.add(self.program)
+        self.award.years_of_study.add(self.year_of_study)
+        self.student = Student.objects.create(ccid = self.ccid, first_name = self.first_name, last_name = self.last_name,
+                                              email = self.email, student_id = self.student_id, year = self.year_of_study, program = self.program)
+        self.archived_application = ArchivedApplication.objects.create(award = self.award, student = self.student)
+
+    def test_archived_application_creation(self):
+        archived_application = ArchivedApplication.objects.get(application_id = self.archived_application.application_id)
+        self.assertEqual(archived_application, self.archived_application)
+        self.assertEqual(archived_application.application_id, self.archived_application.application_id)
+        self.assertEqual(archived_application.award, self.archived_application.award)
+        self.assertEqual(archived_application.student.ccid, self.archived_application.student.ccid)
+        
+    def test_application_duplicate(self):
+        with self.assertRaises(IntegrityError):
+            ArchivedApplication.objects.create(application_id = self.archived_application.application_id)
+            
+    def test_application_delete_award(self):
+        Award.objects.get(awardid = self.award.awardid).delete()
+        with self.assertRaises(ArchivedApplication.DoesNotExist):
+            archived_application = ArchivedApplication.objects.get(application_id = self.archived_application.application_id)
+            
+    def test_application_delete_student(self):
+        Student.objects.get(ccid = self.ccid).delete()
+        with self.assertRaises(ArchivedApplication.DoesNotExist):
+            archived_application = ArchivedApplication.objects.get(application_id = self.archived_application.application_id)
+
+
+class CommentTestModels(TestCase):
+    
+    def setUp(self):
+        self.ccid = "Student"
+        self.first_name = "A"
+        self.last_name = "Student"
+        self.email = "aStudent@test.com"
+        self.student_id = '1'
+        self.year = "First"
+        self.year_of_study = YearOfStudy.objects.create(year = self.year)
+        self.program_code = "PRFG"
+        self.program_name = "Science"
+        self.program = Program.objects.create(code = self.program_code, name = self.program_name)
+        self.award_name = "This award"
+        self.award_description = "For students"
+        self.award_value = "One gold pen"
+        self.award_start_date = str(datetime.datetime.now(pytz.timezone('America/Vancouver')))
+        self.award_end_date = str(datetime.datetime.now(pytz.timezone('America/Edmonton')))
+        self.award_documents_needed = False
+        self.award_is_active = True
+        self.award = Award.objects.create(award_name = self.award_name, description = self.award_description, value = self.award_value,
+                                          start_date = self.award_start_date, end_date = self.award_end_date, 
+                                          documents_needed = self.award_documents_needed, is_active = self.award_is_active)
+        self.award.programs.add(self.program)
+        self.award.years_of_study.add(self.year_of_study)
+        self.student = Student.objects.create(ccid = self.ccid, first_name = self.first_name, last_name = self.last_name,
+                                              email = self.email, student_id = self.student_id, year = self.year_of_study, program = self.program)
+        self.application_is_submitted = False
+        self.application = Application.objects.create(award = self.award, student = self.student, is_submitted = self.application_is_submitted)
+        self.adjudicator_ccid = "Committee Adjudicator 1"
+        self.adjudicator_first_name = "Adjudicator 1 First"
+        self.adjudicator_last_name = "Adjudicator 1 Last"
+        self.adjudicator_email = "Adjudicator1@test.com"
+        self.adjudicator = Adjudicator.objects.create(ccid = self.adjudicator_ccid, first_name = self.adjudicator_first_name,
+                                   last_name = self.adjudicator_last_name, email = self.adjudicator_email)
+        self.comment_text = "Hello World"
+        self.comment = Comment.objects.create(application = self.application, adjudicator = self.adjudicator, comment_text = self.comment_text)
+
+    def test_get_comment(self):
+        obj = Comment.objects.get(comment_text = self.comment_text)
+        application = Application.objects.get(application_id = self.application.application_id)
+        adjudicator = Adjudicator.objects.get(ccid = self.adjudicator_ccid)
+        
+        self.assertEqual(obj.comment_text, self.comment_text)
+        self.assertEqual(obj.application, self.application)
+        self.assertEqual(obj.adjudicator, self.adjudicator)
+
+class RankingTestModels(TestCase):
+    
+    def setUp(self):
+        self.ccid = "Student"
+        self.first_name = "A"
+        self.last_name = "Student"
+        self.email = "aStudent@test.com"
+        self.student_id = '1'
+        self.year = "First"
+        self.year_of_study = YearOfStudy.objects.create(year = self.year)
+        self.program_code = "PRFG"
+        self.program_name = "Science"
+        self.program = Program.objects.create(code = self.program_code, name = self.program_name)
+        self.award_name = "This award"
+        self.award_description = "For students"
+        self.award_value = "One gold pen"
+        self.award_start_date = str(datetime.datetime.now(pytz.timezone('America/Vancouver')))
+        self.award_end_date = str(datetime.datetime.now(pytz.timezone('America/Edmonton')))
+        self.award_documents_needed = False
+        self.award_is_active = True
+        self.award = Award.objects.create(award_name = self.award_name, description = self.award_description, value = self.award_value,
+                                          start_date = self.award_start_date, end_date = self.award_end_date, 
+                                          documents_needed = self.award_documents_needed, is_active = self.award_is_active)
+        self.award.programs.add(self.program)
+        self.award.years_of_study.add(self.year_of_study)
+        self.student = Student.objects.create(ccid = self.ccid, first_name = self.first_name, last_name = self.last_name,
+                                              email = self.email, student_id = self.student_id, year = self.year_of_study, program = self.program)
+        self.application_is_submitted = False
+        self.application = Application.objects.create(award = self.award, student = self.student, is_submitted = self.application_is_submitted)
+        self.adjudicator_ccid = "Committee Adjudicator 1"
+        self.adjudicator_first_name = "Adjudicator 1 First"
+        self.adjudicator_last_name = "Adjudicator 1 Last"
+        self.adjudicator_email = "Adjudicator1@test.com"
+        self.adjudicator = Adjudicator.objects.create(ccid = self.adjudicator_ccid, first_name = self.adjudicator_first_name,
+                                   last_name = self.adjudicator_last_name, email = self.adjudicator_email)
+        self.rank = 2
+        self.ranking = Ranking.objects.create(award = self.award, application = self.application, adjudicator = self.adjudicator, rank = self.rank)
+
+
+    def test_get_ranking(self):
+        obj = Ranking.objects.get(award = self.award)
+        application = Application.objects.get(application_id = self.application.application_id)
+        adjudicator = Adjudicator.objects.get(ccid = self.adjudicator_ccid)
+        award = Award.objects.get(awardid = self.award.awardid)
+        
+        self.assertEqual(obj.rank, self.rank)
+        self.assertEqual(obj.application, self.application)
+        self.assertEqual(obj.adjudicator, self.adjudicator)
+        self.assertEqual(obj.award, self.award)
