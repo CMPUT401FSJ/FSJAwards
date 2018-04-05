@@ -69,27 +69,19 @@
                     
                         {% if FSJ_user.user_class == "Coordinator"%}
                             {# Translators: Select header in awards table #}
-                            <th class="select-column"><input type='checkbox' onClick="toggle(this);"/> {% trans "Select" %}</th>
+                            <th class="select-column"><input type='checkbox' onClick="toggle(this);"/></th>
                         {% endif %}
 
                         {# Translators: Award name header in awards table #}
                         <th>{% trans "Award" %}</th>
                         {# Translators: Award description header in awards table #}
-                        <th>{% trans "Description" %}</th>
-                        {# Translators: Award value header in awards table #}
-                        <th>{% trans "Value" %}</th>
-                        {# Translators: Award programs header in awards table #}
-                        <th>{% trans "Programs" %}</th>
-                        {# Translators: Award years of study header in awards table #}
-                        <th>{% trans "Years of Study" %}</th>
+                        <th class="desc-column">{% trans "Description" %}</th>
                         {# Translators: Award start date header in awards table #}
                         <th>{% trans "Start Date" %}</th>
                         {# Translators: Award end date header in awards table #}
                         <th>{% trans "End Date" %}</th>
-                        {# Translators: Award documents needed header in awards table #}
-                        <th>{% trans "Documents Required?" %}</th>
                         {# Translators: Award is active header in awards table #}
-                        <th>{% trans "Is Active?" %}</th>
+                        <th>{% trans "Active?" %}</th>
                         
                         {% if FSJ_user.user_class == "Coordinator"%}
                             {# Translators: Award edit header in awards table #}
@@ -106,27 +98,8 @@
                             
                             <td>{{award.award_name }}</td>
                             <td>{{award.description|linebreaks }}</td>
-                            <td>{{award.value}}</td>
-                            <td>
-                                {% if award.programs.all %}
-                                    {% for program in award.programs.all %}
-                                        {{ program.name }} <br/>
-                                    {% endfor %}
-                                {% else %}
-                                    {# Translators: No program chosen for an award, on the list of awards table #}
-                                    {% trans "N/A" %}
-                                {% endif %}
-                            </td>
-                            <td>
-                                {% for year in award.years_of_study.all %}
-                                    {{year}} <br>
-                                {% endfor %}
-                            </td>
                             <td>{{award.start_date}}</td>
                             <td>{{award.end_date}}</td>
-                            <td>
-                                <input type="checkbox" disabled {% if award.documents_needed %}checked{% endif %}>
-                            </td>
                             <td>
                                 <input type="checkbox" disabled {% if award.is_active %}checked{% endif %}>
                             </td>
