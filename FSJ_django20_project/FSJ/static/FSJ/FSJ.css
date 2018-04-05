@@ -98,4 +98,12 @@ div.ualberta-themed-header {
 .desc-column {
     width:300px;
     min-width:300px;
+
+.tab-text{
+    padding-left:30px;
+    font-size: 18px;
+}
+
+.li-font18{
+    font-size: 18px;
 }

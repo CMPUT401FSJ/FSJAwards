@@ -11,6 +11,12 @@
     <div class='center-content'>
         <form action ="/coord_awardslist/{{ award.awardid }}/applications/archive/action/" method="POST" >
             {% csrf_token %}
+            
+            <button class="btn btn-success" type="submit", name="_removeFromArchive">{% trans "Reactivate Application(s)" %}</button>
+            <button class="btn btn-danger" type="submit" name="_delete">{% trans "Delete Application(s)" %}</button>
+            </br></br>
+            <a class="btn btn-success" role="button" href="{{ return_url }}">{% trans "Return to " %}{{award.award_name}}</a>
+            
             <table class="table table-bordered table-striped table-hover" align="center">
                 <tr>
                     <th class="select-column"><input type="checkbox" onClick="toggle(this);"/></th>
