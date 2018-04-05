@@ -1,0 +1,990 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2018-04-05 15:03-0600\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: .\FSJ\filters.py:7
+msgid "contains"
+msgstr ""
+
+#: .\FSJ\forms_fileupload.py:6
+msgid ""
+"Upload a CSV with fields CCID, ID, First Name, Middle Name, Last Name, Email "
+"(Univ), Prog & Year"
+msgstr ""
+
+#: .\FSJ\forms_fileupload.py:7
+msgid "Student File"
+msgstr ""
+
+#: .\FSJ\forms_fileupload.py:8
+msgid "Upload a CSV with fields CCID & GPA"
+msgstr ""
+
+#: .\FSJ\forms_fileupload.py:8
+msgid "GPA File"
+msgstr ""
+
+#: .\FSJ\forms_ranking.py:25 .\FSJ\forms_ranking.py:46
+#, python-format
+msgid "Cannot understand %s"
+msgstr ""
+
+#: .\FSJ\forms_signup.py:12
+msgid "An email is required"
+msgstr ""
+
+#. Translators: CCID header in adjudicator table
+#. Translators: CCID header in student table
+#: .\FSJ\models\models_FSJUser.py:18
+#: .\FSJ\templates\FSJ\application_list.html:30
+#: .\FSJ\templates\FSJ\coord_adjudicator_list.html:51
+#: .\FSJ\templates\FSJ\coord_application_archive.html:24
+#: .\FSJ\templates\FSJ\coord_student_list.html:71
+msgid "CCID"
+msgstr ""
+
+#. Translators: First Name header in adjudicator table
+#. Translators: First Name header in student table
+#: .\FSJ\models\models_FSJUser.py:19
+#: .\FSJ\templates\FSJ\coord_adjudicator_list.html:53
+#: .\FSJ\templates\FSJ\coord_student_list.html:73
+msgid "First Name"
+msgstr ""
+
+#. Translators: Last Name header in adjudicator table
+#. Translators: Last Name header in student table
+#: .\FSJ\models\models_FSJUser.py:20
+#: .\FSJ\templates\FSJ\coord_adjudicator_list.html:55
+#: .\FSJ\templates\FSJ\coord_student_list.html:77
+msgid "Last Name"
+msgstr ""
+
+#: .\FSJ\models\models_FSJUser.py:21
+msgid "Email"
+msgstr ""
+
+#: .\FSJ\models\models_FSJUser.py:22
+msgid "Language Preference"
+msgstr ""
+
+#. Translators: Award name header in awards table
+#: .\FSJ\models\models_application.py:10 .\FSJ\models\models_ranking.py:8
+#: .\FSJ\templates\FSJ\awards_list.html:91
+#: .\FSJ\templates\FSJ\student_awards_list.html:16
+msgid "Award"
+msgstr ""
+
+#: .\FSJ\models\models_application.py:11
+#: .\FSJ\templates\FSJ\application_list.html:29
+#: .\FSJ\templates\FSJ\coord_application_archive.html:23
+msgid "Student"
+msgstr ""
+
+#: .\FSJ\models\models_application.py:12
+msgid "Is Submitted"
+msgstr ""
+
+#: .\FSJ\models\models_application.py:13
+msgid "Is Reviewed"
+msgstr ""
+
+#: .\FSJ\models\models_application.py:14
+msgid "Is Archived"
+msgstr ""
+
+#: .\FSJ\models\models_application.py:16
+msgid "Application Document"
+msgstr ""
+
+#: .\FSJ\models\models_application.py:29 .\FSJ\models\models_award.py:56
+msgid "Review Completed"
+msgstr ""
+
+#: .\FSJ\models\models_application.py:31
+msgid "Review Pending"
+msgstr ""
+
+#: .\FSJ\models\models_award.py:11
+msgid "Award Name"
+msgstr ""
+
+#. Translators: Award description header in awards table
+#: .\FSJ\models\models_award.py:12 .\FSJ\templates\FSJ\awards_list.html:93
+#: .\FSJ\templates\FSJ\student_awards_list.html:18
+msgid "Description"
+msgstr ""
+
+#. Translators: Award value header in awards table
+#: .\FSJ\models\models_award.py:13
+#: .\FSJ\templates\FSJ\student_awards_list.html:20
+msgid "Value"
+msgstr ""
+
+#. Translators: Programs link on the main banner
+#. Translators: Programs page home label
+#: .\FSJ\models\models_award.py:14 .\FSJ\templates\FSJ\base_with_banner.html:31
+#: .\FSJ\templates\FSJ\list_programs.html:7
+msgid "Programs"
+msgstr ""
+
+#: .\FSJ\models\models_award.py:15
+msgid "Years"
+msgstr ""
+
+#. Translators: Award start date header in awards table
+#: .\FSJ\models\models_award.py:16
+#: .\FSJ\templates\FSJ\student_awards_list.html:24
+msgid "Start date"
+msgstr ""
+
+#. Translators: Award end date header in awards table
+#: .\FSJ\models\models_award.py:17 .\FSJ\templates\FSJ\awards_list.html:97
+msgid "End Date"
+msgstr ""
+
+#: .\FSJ\models\models_award.py:18
+msgid "Documents Required"
+msgstr ""
+
+#: .\FSJ\models\models_award.py:19
+msgid "Is Active"
+msgstr ""
+
+#: .\FSJ\models\models_award.py:50
+msgid "Review Required"
+msgstr ""
+
+#: .\FSJ\models\models_award.py:53
+msgid "Review In Progress"
+msgstr ""
+
+#: .\FSJ\models\models_comment.py:9 .\FSJ\models\models_ranking.py:9
+msgid "Application"
+msgstr ""
+
+#: .\FSJ\models\models_comment.py:10 .\FSJ\models\models_ranking.py:10
+#: .\FSJ\templates\FSJ\view_application.html:83
+msgid "Adjudicator"
+msgstr ""
+
+#: .\FSJ\models\models_comment.py:11
+msgid "Comment Text"
+msgstr ""
+
+#: .\FSJ\models\models_committee.py:10
+msgid "Committee Name"
+msgstr ""
+
+#. Translators: Adjudicators link on the main banner
+#. Translators: Adjudicator page header
+#. Translators: Committee adjudicators header in committees table
+#: .\FSJ\models\models_committee.py:11
+#: .\FSJ\templates\FSJ\base_with_banner.html:23
+#: .\FSJ\templates\FSJ\coord_adjudicator_list.html:9
+#: .\FSJ\templates\FSJ\coord_committee_list.html:30
+msgid "Adjudicators"
+msgstr ""
+
+#. Translators: Awards page home label
+#. Translators: Awards link on the main banner
+#. Translators: Committee awards header in committees table
+#. Translators: Awards page home label
+#: .\FSJ\models\models_committee.py:12 .\FSJ\templates\FSJ\awards_list.html:9
+#: .\FSJ\templates\FSJ\base_with_banner.html:15
+#: .\FSJ\templates\FSJ\coord_committee_list.html:32
+#: .\FSJ\templates\FSJ\student_awards_list.html:7
+msgid "Awards"
+msgstr ""
+
+#. Translators: Program Code header in program table
+#: .\FSJ\models\models_program.py:8 .\FSJ\templates\FSJ\list_programs.html:26
+msgid "Code"
+msgstr ""
+
+#: .\FSJ\models\models_program.py:9
+msgid "Name"
+msgstr ""
+
+#: .\FSJ\models\models_ranking.py:11
+msgid "Rank"
+msgstr ""
+
+#. Translators: Program header in student table
+#. Translators: Program name header in program table
+#: .\FSJ\models\models_student.py:12
+#: .\FSJ\templates\FSJ\application_list.html:32
+#: .\FSJ\templates\FSJ\coord_application_archive.html:26
+#: .\FSJ\templates\FSJ\coord_student_list.html:83
+#: .\FSJ\templates\FSJ\list_programs.html:28
+msgid "Program"
+msgstr ""
+
+#. Translators: Year header in years table
+#: .\FSJ\models\models_student.py:13
+#: .\FSJ\templates\FSJ\application_list.html:33
+#: .\FSJ\templates\FSJ\coord_application_archive.html:27
+#: .\FSJ\templates\FSJ\coord_years_list.html:26
+msgid "Year"
+msgstr ""
+
+#. Translators: GPA header in student table
+#: .\FSJ\models\models_student.py:14
+#: .\FSJ\templates\FSJ\application_list.html:34
+#: .\FSJ\templates\FSJ\coord_application_archive.html:28
+#: .\FSJ\templates\FSJ\coord_student_list.html:85
+msgid "GPA"
+msgstr ""
+
+#. Translators: Middle Name header in student table
+#: .\FSJ\models\models_student.py:15
+#: .\FSJ\templates\FSJ\coord_student_list.html:75
+msgid "Middle Name"
+msgstr ""
+
+#: .\FSJ\models\models_student.py:16
+msgid "U of A Student ID"
+msgstr ""
+
+#. Translators: Year of Study header in student table
+#: .\FSJ\models\models_yearofstudy.py:6
+#: .\FSJ\templates\FSJ\coord_student_list.html:81
+msgid "Year of Study"
+msgstr ""
+
+#: .\FSJ\templates\FSJ\application_list.html:14
+#: .\FSJ\templates\FSJ\application_list.html:63
+msgid "Return to Awards"
+msgstr ""
+
+#: .\FSJ\templates\FSJ\application_list.html:16
+#: .\FSJ\templates\FSJ\application_list.html:65
+msgid "View Archive"
+msgstr ""
+
+#: .\FSJ\templates\FSJ\application_list.html:18
+#: .\FSJ\templates\FSJ\application_list.html:67
+msgid "Archive Application(s)"
+msgstr ""
+
+#: .\FSJ\templates\FSJ\application_list.html:19
+#: .\FSJ\templates\FSJ\application_list.html:68
+#: .\FSJ\templates\FSJ\coord_application_archive.html:16
+#: .\FSJ\templates\FSJ\coord_application_archive.html:54
+msgid "Delete Application(s)"
+msgstr ""
+
+#. Translators: Student ID header in student table
+#: .\FSJ\templates\FSJ\application_list.html:31
+#: .\FSJ\templates\FSJ\coord_application_archive.html:25
+#: .\FSJ\templates\FSJ\coord_student_list.html:79
+msgid "Student ID"
+msgstr ""
+
+#: .\FSJ\templates\FSJ\application_list.html:35
+msgid "Is Submitted?"
+msgstr ""
+
+#: .\FSJ\templates\FSJ\application_list.html:36
+msgid "Status"
+msgstr ""
+
+#. Translators: Edit award page heading
+#: .\FSJ\templates\FSJ\award.html:9
+msgid "Edit Award"
+msgstr ""
+
+#. Translators: Add award page heading
+#: .\FSJ\templates\FSJ\award.html:12
+msgid "Add Award"
+msgstr ""
+
+#. Translators: Search button for filtering
+#: .\FSJ\templates\FSJ\awards_list.html:59
+#: .\FSJ\templates\FSJ\coord_adjudicator_list.html:33
+#: .\FSJ\templates\FSJ\coord_student_list.html:50
+msgid "Search"
+msgstr ""
+
+#: .\FSJ\templates\FSJ\awards_list.html:61
+#: .\FSJ\templates\FSJ\coord_adjudicator_list.html:35
+#: .\FSJ\templates\FSJ\coord_student_list.html:52
+msgid "Clear Filters"
+msgstr ""
+
+#. Translators: Button to activate selected awards
+#: .\FSJ\templates\FSJ\awards_list.html:70
+#: .\FSJ\templates\FSJ\awards_list.html:147
+msgid "Activate award(s)"
+msgstr ""
+
+#. Translators: Button to deactivate selected awards
+#: .\FSJ\templates\FSJ\awards_list.html:72
+#: .\FSJ\templates\FSJ\awards_list.html:149
+msgid "Deactivate award(s)"
+msgstr ""
+
+#. Translators: Button to add award
+#: .\FSJ\templates\FSJ\awards_list.html:76
+#: .\FSJ\templates\FSJ\awards_list.html:153
+msgid "Add award"
+msgstr ""
+
+#. Translators: Button to delete selected awards
+#: .\FSJ\templates\FSJ\awards_list.html:78
+#: .\FSJ\templates\FSJ\awards_list.html:155
+msgid "Delete award(s)"
+msgstr ""
+
+#. Translators: Award start date header in awards table
+#: .\FSJ\templates\FSJ\awards_list.html:95
+msgid "Start Date"
+msgstr ""
+
+#. Translators: Award is active header in awards table
+#: .\FSJ\templates\FSJ\awards_list.html:99
+msgid "Active?"
+msgstr ""
+
+#. Translators: Award edit header in awards table
+#. Translators: Edit link in coordinator awards list
+#. Translators: Edit link in adjudicator table
+#. Translators: Award edit header in awards table
+#. Translators: Edit button in coordinator committees list
+#. Translators: Edit link in student table
+#. Translators: Award edit header in years table
+#. Translators: Edit link in coordinator years list
+#. Translators: Program edit header in program table
+#. Translators: Edit button in coordinator program list
+#. Translators: Edit application button in student award table
+#: .\FSJ\templates\FSJ\awards_list.html:103
+#: .\FSJ\templates\FSJ\awards_list.html:123
+#: .\FSJ\templates\FSJ\coord_adjudicator_list.html:66
+#: .\FSJ\templates\FSJ\coord_committee_list.html:34
+#: .\FSJ\templates\FSJ\coord_committee_list.html:47
+#: .\FSJ\templates\FSJ\coord_student_list.html:107
+#: .\FSJ\templates\FSJ\coord_years_list.html:28
+#: .\FSJ\templates\FSJ\coord_years_list.html:35
+#: .\FSJ\templates\FSJ\list_programs.html:30
+#: .\FSJ\templates\FSJ\list_programs.html:38
+#: .\FSJ\templates\FSJ\student_awards_list.html:66
+msgid "Edit"
+msgstr ""
+
+#. Translators: Awards application header in awards table
+#: .\FSJ\templates\FSJ\awards_list.html:106
+msgid "Applications"
+msgstr ""
+
+#. Translators: No applications message in coordinator awards list
+#. Translators: No applications message in adjudicator awards list
+#: .\FSJ\templates\FSJ\awards_list.html:126
+#: .\FSJ\templates\FSJ\awards_list.html:135
+msgid "No Applications"
+msgstr ""
+
+#. Translators: View header in adjudicator table
+#. Translators: View header in student table
+#: .\FSJ\templates\FSJ\awards_list.html:137
+#: .\FSJ\templates\FSJ\coord_adjudicator_list.html:57
+#: .\FSJ\templates\FSJ\coord_application_archive.html:29
+#: .\FSJ\templates\FSJ\coord_application_archive.html:48
+#: .\FSJ\templates\FSJ\coord_student_list.html:87
+msgid "View"
+msgstr ""
+
+#. Translators: Main title
+#: .\FSJ\templates\FSJ\base.html:11
+msgid "CSJ Awards"
+msgstr ""
+
+#: .\FSJ\templates\FSJ\base.html:26
+msgid "CSJ Logo"
+msgstr ""
+
+#. Translators: Home link on the main banner
+#. Translators: Home page home label
+#. Translators: Home page (student) heading
+#: .\FSJ\templates\FSJ\base_with_banner.html:9 .\FSJ\templates\FSJ\home.html:8
+#: .\FSJ\templates\FSJ\non_FSJ_home.html:8
+#: .\FSJ\templates\FSJ\student_home.html:8
+msgid "Home"
+msgstr ""
+
+#. Translators: Students link on the main banner
+#. Translators: Student page header
+#: .\FSJ\templates\FSJ\base_with_banner.html:19
+#: .\FSJ\templates\FSJ\coord_student_list.html:9
+msgid "Students"
+msgstr ""
+
+#. Translators: Committees link on the main banner
+#. Translators: committees page home label
+#: .\FSJ\templates\FSJ\base_with_banner.html:27
+#: .\FSJ\templates\FSJ\coord_committee_list.html:8
+msgid "Committees"
+msgstr ""
+
+#. Translators: Years of study link on the main banner
+#: .\FSJ\templates\FSJ\base_with_banner.html:35
+msgid "Years of study"
+msgstr ""
+
+#. Translators: Link on the main banner for the admin site
+#: .\FSJ\templates\FSJ\base_with_banner.html:41
+msgid "Admin"
+msgstr ""
+
+#. Translators: Profile link on the main banner
+#. Translators: Profile page heading
+#: .\FSJ\templates\FSJ\base_with_banner.html:47
+#: .\FSJ\templates\FSJ\profile.html:8
+msgid "Profile"
+msgstr ""
+
+#. Translators: Logout link on the main banner
+#: .\FSJ\templates\FSJ\base_with_banner.html:52
+msgid "Logout"
+msgstr ""
+
+#. Translators: Edit committee page heading
+#: .\FSJ\templates\FSJ\committee.html:9
+msgid "Edit Committee"
+msgstr ""
+
+#. Translators: Add committee page heading
+#. Translators: Button to add committees
+#: .\FSJ\templates\FSJ\committee.html:12
+#: .\FSJ\templates\FSJ\coord_committee_list.html:18
+#: .\FSJ\templates\FSJ\coord_committee_list.html:52
+msgid "Add Committee"
+msgstr ""
+
+#. Translators: Button to add adjudicator
+#: .\FSJ\templates\FSJ\coord_adjudicator_list.html:42
+#: .\FSJ\templates\FSJ\coord_adjudicator_list.html:71
+msgid "Add adjudicator"
+msgstr ""
+
+#. Translators: Button to delete selected adjudicators
+#: .\FSJ\templates\FSJ\coord_adjudicator_list.html:44
+#: .\FSJ\templates\FSJ\coord_adjudicator_list.html:73
+msgid "Delete adjudicator(s)"
+msgstr ""
+
+#: .\FSJ\templates\FSJ\coord_application_archive.html:7
+msgid "Archive"
+msgstr ""
+
+#: .\FSJ\templates\FSJ\coord_application_archive.html:15
+#: .\FSJ\templates\FSJ\coord_application_archive.html:53
+msgid "Reactivate Application(s)"
+msgstr ""
+
+#: .\FSJ\templates\FSJ\coord_application_archive.html:18
+#: .\FSJ\templates\FSJ\coord_application_archive.html:56
+#: .\FSJ\templates\FSJ\view_application.html:149
+#: .\FSJ\templates\FSJ\view_student.html:27
+msgid "Return to Applications"
+msgstr ""
+
+#. Translators: Button to delete selected committees
+#: .\FSJ\templates\FSJ\coord_committee_list.html:20
+#: .\FSJ\templates\FSJ\coord_committee_list.html:54
+msgid "Delete committee(s)"
+msgstr ""
+
+#. Translators: Committee name header in committees table
+#: .\FSJ\templates\FSJ\coord_committee_list.html:28
+msgid "Committee"
+msgstr ""
+
+#. Translators: Button to add student
+#: .\FSJ\templates\FSJ\coord_student_list.html:60
+#: .\FSJ\templates\FSJ\coord_student_list.html:112
+msgid "Add student"
+msgstr ""
+
+#. Translators: Button to upload files
+#: .\FSJ\templates\FSJ\coord_student_list.html:62
+#: .\FSJ\templates\FSJ\coord_student_list.html:114
+msgid "Upload files"
+msgstr ""
+
+#. Translators: Button to delete selected students
+#: .\FSJ\templates\FSJ\coord_student_list.html:64
+#: .\FSJ\templates\FSJ\coord_student_list.html:116
+msgid "Delete student(s)"
+msgstr ""
+
+#. Translators: Student upload page heading
+#: .\FSJ\templates\FSJ\coord_student_upload.html:6
+msgid "Upload"
+msgstr ""
+
+#: .\FSJ\templates\FSJ\coord_student_upload.html:44
+#: .\FSJ\templates\FSJ\modelform.html:25
+msgid "Save"
+msgstr ""
+
+#. Translators: Years page home label
+#. Translators: Award years of study header in awards table
+#: .\FSJ\templates\FSJ\coord_years_list.html:7
+#: .\FSJ\templates\FSJ\student_awards_list.html:22
+msgid "Years of Study"
+msgstr ""
+
+#. Translators: Button to add year
+#: .\FSJ\templates\FSJ\coord_years_list.html:17
+#: .\FSJ\templates\FSJ\coord_years_list.html:40
+msgid "Add year"
+msgstr ""
+
+#. Translators: Button to delete selected years
+#: .\FSJ\templates\FSJ\coord_years_list.html:19
+#: .\FSJ\templates\FSJ\coord_years_list.html:42
+msgid "Delete year(s)"
+msgstr ""
+
+#. Translators: Non student home greeting
+#: .\FSJ\templates\FSJ\home.html:13
+msgid "Hi non student"
+msgstr ""
+
+#. Translators: Button to add award
+#: .\FSJ\templates\FSJ\list_programs.html:17
+#: .\FSJ\templates\FSJ\list_programs.html:43
+msgid "Add program"
+msgstr ""
+
+#. Translators: Button to delete selected programs
+#: .\FSJ\templates\FSJ\list_programs.html:19
+#: .\FSJ\templates\FSJ\list_programs.html:45
+msgid "Delete program(s)"
+msgstr ""
+
+#. Translators: Login page heading
+#: .\FSJ\templates\FSJ\login.html:8
+msgid "Login - Campus Saint-Jean Awards System"
+msgstr ""
+
+#. Translators: Login button label
+#: .\FSJ\templates\FSJ\login.html:35
+#: .\FSJ\templates\registration\password_reset_complete.html:10
+msgid "Login"
+msgstr ""
+
+#. Translators: Register page header
+#: .\FSJ\templates\FSJ\login.html:40
+#: .\FSJ\templates\registration\already_active.html:6
+#: .\FSJ\templates\registration\register_activation.html:6
+#: .\FSJ\templates\registration\register_email_sent.html:5
+#: .\FSJ\templates\registration\register_form.html:6
+msgid "Register"
+msgstr ""
+
+#: .\FSJ\templates\FSJ\login.html:44
+msgid "Forgot Password"
+msgstr ""
+
+#: .\FSJ\templates\FSJ\modelform.html:26
+msgid "Cancel"
+msgstr ""
+
+#. Translators: Non FSJ User home greeting
+#: .\FSJ\templates\FSJ\non_FSJ_home.html:14
+msgid ""
+"Your account has not been set up as a Student, Coordinator, or Adjudicator."
+msgstr ""
+
+#: .\FSJ\templates\FSJ\non_FSJ_home.html:15
+msgid "Please contact the Coordinator or system administrator to be set up."
+msgstr ""
+
+#. Translators: Edit program page heading
+#: .\FSJ\templates\FSJ\program.html:9
+msgid "Edit Program"
+msgstr ""
+
+#. Translators: Add program page heading
+#: .\FSJ\templates\FSJ\program.html:12
+msgid "Add Program"
+msgstr ""
+
+#. Translators: Description for award on student application page
+#: .\FSJ\templates\FSJ\student_apply.html:23
+msgid "Description:"
+msgstr ""
+
+#. Translators: Value for award on student application page
+#: .\FSJ\templates\FSJ\student_apply.html:29
+msgid "Value:"
+msgstr ""
+
+#. Translators: Programs for award on student application page
+#: .\FSJ\templates\FSJ\student_apply.html:35
+msgid "Eligible Programs:"
+msgstr ""
+
+#. Translators: No program chosen for an award, on the list of awards table
+#: .\FSJ\templates\FSJ\student_apply.html:44
+msgid "N/A"
+msgstr ""
+
+#. Translators: Years of Study for award on student application page
+#: .\FSJ\templates\FSJ\student_apply.html:50
+msgid "Eligible Years Of Study:"
+msgstr ""
+
+#. Translators: Start date for award on student application page
+#: .\FSJ\templates\FSJ\student_apply.html:60
+msgid "Start date:"
+msgstr ""
+
+#. Translators: End date for award on student application page
+#: .\FSJ\templates\FSJ\student_apply.html:66
+msgid "End date:"
+msgstr ""
+
+#. Translators: Documents needed indicator on student application page
+#: .\FSJ\templates\FSJ\student_apply.html:72
+msgid "Documents Needed:"
+msgstr ""
+
+#: .\FSJ\templates\FSJ\student_apply.html:83
+msgid "Save application"
+msgstr ""
+
+#: .\FSJ\templates\FSJ\student_apply.html:85
+msgid "Submit application"
+msgstr ""
+
+#. Translators: Award end date header in awards table
+#: .\FSJ\templates\FSJ\student_awards_list.html:26
+msgid "End date"
+msgstr ""
+
+#. Translators: Apply button header in awards table
+#: .\FSJ\templates\FSJ\student_awards_list.html:28
+msgid "Action"
+msgstr ""
+
+#: .\FSJ\templates\FSJ\student_awards_list.html:30
+msgid "New awards"
+msgstr ""
+
+#. Translators: Apply button in award table
+#: .\FSJ\templates\FSJ\student_awards_list.html:45
+msgid "Apply"
+msgstr ""
+
+#: .\FSJ\templates\FSJ\student_awards_list.html:49
+msgid "No new awards"
+msgstr ""
+
+#: .\FSJ\templates\FSJ\student_awards_list.html:51
+msgid "In-progress awards"
+msgstr ""
+
+#: .\FSJ\templates\FSJ\student_awards_list.html:70
+msgid "No in-progress awards"
+msgstr ""
+
+#: .\FSJ\templates\FSJ\student_awards_list.html:72
+msgid "Submitted awards"
+msgstr ""
+
+#. Translators: Unsubmit application button in student award table
+#: .\FSJ\templates\FSJ\student_awards_list.html:87
+msgid "Unsubmit"
+msgstr ""
+
+#: .\FSJ\templates\FSJ\student_awards_list.html:91
+msgid "No submitted awards"
+msgstr ""
+
+#. Translators: Student home page greeting
+#: .\FSJ\templates\FSJ\student_home.html:13
+msgid "Hi student"
+msgstr ""
+
+#. Translators: View Application page heading
+#: .\FSJ\templates\FSJ\view_application.html:6
+msgid "View Application for "
+msgstr ""
+
+#: .\FSJ\templates\FSJ\view_application.html:12
+msgid "Award Name:"
+msgstr ""
+
+#: .\FSJ\templates\FSJ\view_application.html:16
+msgid "Award Description:"
+msgstr ""
+
+#: .\FSJ\templates\FSJ\view_application.html:20
+msgid "Award Value:"
+msgstr ""
+
+#: .\FSJ\templates\FSJ\view_application.html:24
+msgid "Award Program(s):"
+msgstr ""
+
+#: .\FSJ\templates\FSJ\view_application.html:34
+msgid "Award Year(s):"
+msgstr ""
+
+#: .\FSJ\templates\FSJ\view_application.html:45
+msgid "Student Name:"
+msgstr ""
+
+#: .\FSJ\templates\FSJ\view_application.html:49
+msgid "Program:"
+msgstr ""
+
+#: .\FSJ\templates\FSJ\view_application.html:53
+msgid "Student ID:"
+msgstr ""
+
+#: .\FSJ\templates\FSJ\view_application.html:57
+msgid "Year:"
+msgstr ""
+
+#: .\FSJ\templates\FSJ\view_application.html:61
+msgid "GPA:"
+msgstr ""
+
+#: .\FSJ\templates\FSJ\view_application.html:66
+msgid "Document:"
+msgstr ""
+
+#: .\FSJ\templates\FSJ\view_application.html:70
+msgid "No document has been uploaded yet, but one is expected."
+msgstr ""
+
+#: .\FSJ\templates\FSJ\view_application.html:84
+msgid "Comment"
+msgstr ""
+
+#: .\FSJ\templates\FSJ\view_application.html:85
+msgid "Ranking"
+msgstr ""
+
+#: .\FSJ\templates\FSJ\view_application.html:97
+msgid "Mark reviewed"
+msgstr ""
+
+#: .\FSJ\templates\FSJ\view_application.html:99
+msgid "Mark unreviewed"
+msgstr ""
+
+#: .\FSJ\templates\FSJ\view_application.html:122
+msgid "Current Rank: "
+msgstr ""
+
+#: .\FSJ\templates\FSJ\view_application.html:144
+msgid "Save comment & ranking"
+msgstr ""
+
+#: .\FSJ\templates\FSJ\view_application.html:146
+msgid "Delete comment & ranking"
+msgstr ""
+
+#. Translators: View Student (read only) page heading
+#: .\FSJ\templates\FSJ\view_student.html:6
+msgid "View Student"
+msgstr ""
+
+#. Translators: Edit year of study page heading
+#: .\FSJ\templates\FSJ\year_of_study.html:9
+msgid "Edit Year"
+msgstr ""
+
+#. Translators: Add year of study page heading
+#: .\FSJ\templates\FSJ\year_of_study.html:12
+msgid "Add Year"
+msgstr ""
+
+#: .\FSJ\templates\registration\already_active.html:14
+msgid "This Account is already active."
+msgstr ""
+
+#: .\FSJ\templates\registration\already_active.html:17
+msgid "If you have lost your password, press the Forgot Password button on the"
+msgstr ""
+
+#: .\FSJ\templates\registration\already_active.html:17
+msgid "login page"
+msgstr ""
+
+#: .\FSJ\templates\registration\password_reset_complete.html:8
+msgid "Your password has been set."
+msgstr ""
+
+#: .\FSJ\templates\registration\password_reset_confirm.html:5
+msgid "New Password"
+msgstr ""
+
+#: .\FSJ\templates\registration\password_reset_confirm.html:15
+msgid "Change password"
+msgstr ""
+
+#: .\FSJ\templates\registration\password_reset_confirm.html:19
+msgid "The password set link is invalid. Please request a new password link"
+msgstr ""
+
+#: .\FSJ\templates\registration\password_reset_confirm.html:19
+#: .\FSJ\templates\registration\password_reset_done.html:19
+#: .\FSJ\templates\registration\register_email_sent.html:17
+msgid "here"
+msgstr ""
+
+#: .\FSJ\templates\registration\password_reset_done.html:5
+#: .\FSJ\templates\registration\password_reset_form.html:5
+msgid "Set Password"
+msgstr ""
+
+#: .\FSJ\templates\registration\password_reset_done.html:13
+#: .\FSJ\templates\registration\register_email_sent.html:11
+msgid ""
+"An e-mail has been sent to the University of Alberta e-mail that you have "
+"entered."
+msgstr ""
+
+#: .\FSJ\templates\registration\password_reset_done.html:16
+#: .\FSJ\templates\registration\register_email_sent.html:14
+msgid ""
+"If you have not recieved the e-mail, please assure that the e-mail you have "
+"entered is in fact yours, otherwise check your spam folder."
+msgstr ""
+
+#: .\FSJ\templates\registration\password_reset_done.html:19
+#: .\FSJ\templates\registration\register_email_sent.html:17
+msgid "Please follow the link in your email or return to the login page from"
+msgstr ""
+
+#: .\FSJ\templates\registration\password_reset_email.html:3
+msgid "To reset the password for"
+msgstr ""
+
+#: .\FSJ\templates\registration\password_reset_email.html:3
+msgid "click the following link:"
+msgstr ""
+
+#: .\FSJ\templates\registration\password_reset_form.html:11
+msgid "Please enter your University of Alberta e-mail."
+msgstr ""
+
+#: .\FSJ\templates\registration\password_reset_form.html:14
+msgid "A link to set your new password will be sent to this e-mail."
+msgstr ""
+
+#: .\FSJ\templates\registration\password_reset_form.html:19
+msgid "Send Password Link"
+msgstr ""
+
+#: .\FSJ\templates\registration\register_activation.html:15
+msgid "Activate Account"
+msgstr ""
+
+#: .\FSJ\templates\registration\register_email.html:3
+msgid "Please click the following link to confirm your registration,"
+msgstr ""
+
+#: .\FSJ\templates\registration\register_form.html:12
+msgid "Please enter your Ualberta Email"
+msgstr ""
+
+#: .\FSJ\templates\registration\register_form.html:15
+msgid ""
+"If you are a Campus Saint Jean student, you will be sent an email to "
+"register on this website."
+msgstr ""
+
+#: .\FSJ\templates\registration\register_form.html:21
+msgid "Send Registration"
+msgstr ""
+
+#: .\FSJ\templates\registration\register_form.html:26
+msgid "This email is not associated with Campus Saint Jean's award system."
+msgstr ""
+
+#: .\FSJ\validators.py:6
+msgid "File must be in PDF format"
+msgstr ""
+
+#: .\FSJ\validators.py:12
+msgid "Student ID must be numeric"
+msgstr ""
+
+#: .\FSJ\views.py:40
+msgid "[DO NOT REPLY] Activate Campus Saint Jean Awards Account"
+msgstr ""
+
+#: .\FSJ\views.py:168 .\FSJ\views_coordinator.py:72
+msgid "Student does not exist"
+msgstr ""
+
+#: .\FSJ\views.py:197
+msgid "Application does not exist"
+msgstr ""
+
+#: .\FSJ\views.py:204
+msgid "Documents are required for this award"
+msgstr ""
+
+#: .\FSJ\views_coordinator.py:101
+msgid "Adjudicator does not exist"
+msgstr ""
+
+#: .\FSJ\views_coordinator.py:407
+msgid "Year does not exist"
+msgstr ""
+
+#: .\FSJ\views_coordinator.py:709
+msgid "Please upload a UTF-8 encoded CSV file."
+msgstr ""
+
+#: .\FSJ\views_coordinator.py:712
+msgid "Please make sure all column names match specified column names."
+msgstr ""
+
+#: .\FSJ\views_coordinator.py:715
+msgid "Please ensure all required programs have been added."
+msgstr ""
+
+#: .\FSJ\views_coordinator.py:718
+msgid "Please ensure all required years of study have been added."
+msgstr ""
+
+#: .\FSJ\views_coordinator.py:721
+msgid "The student you are attempting to upload a GPA for does not exist."
+msgstr ""
+
+#: .\FSJ\views_coordinator.py:724
+msgid ""
+"Unexpected error. Please confirm file is in a valid format, and has all "
+"required columns/programs/years."
+msgstr ""
+
+#: .\FSJ_django20_project\settings.py:115
+msgid "English"
+msgstr ""
+
+#: .\FSJ_django20_project\settings.py:116
+msgid "French"
+msgstr ""
