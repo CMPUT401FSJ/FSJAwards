@@ -8,8 +8,8 @@ class FSJUser(models.Model):
     FRENCH = 'fr'
     ENGLISH = 'en'
     LANG_CHOICES = (
-        (FRENCH, _('French')),
-        (ENGLISH, _('English')),
+        (FRENCH, "Fran"+u"\u00E7"+"ais"),
+        (ENGLISH, 'English'),
     )   
     # Link FSJUser with a User model for authentication related business
     user = models.OneToOneField(User, on_delete = models.CASCADE, blank = True, null = True)    
