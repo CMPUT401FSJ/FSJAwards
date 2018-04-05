@@ -76,7 +76,7 @@
         <form action='{{ context.url }}' method='post' enctype="multipart/form-data">
             {% csrf_token %}
                 {% if award.documents_needed %}
-                    {{ form.as_p }}
+                    <h4><b>{{ form.as_p }}</b></h4>
                 {% endif %}
             
             {# Save button on application #}

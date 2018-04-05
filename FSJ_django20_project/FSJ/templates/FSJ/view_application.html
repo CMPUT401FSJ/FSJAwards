@@ -63,7 +63,7 @@
         </div>
         {% if award.documents_needed %}
             <div>
-                {% trans "Document:" %} 
+                <h4><b>{% trans "Document:" %} </b></h4>
                 {% if document %}
                     <object> <embed src="{{ document }}" width="100%" height="500px"> </object>
                 {% else %}
