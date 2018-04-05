@@ -36,7 +36,7 @@
         {% if award.programs.all %}
             <ul>
                 {% for program in award.programs.all %}
-                    <li>{{ program.name }} </li>
+                    <li><div class=li-font18>{{ program.name }}</div></li>
                 {% endfor %}
             </ul>
         {% else %}
@@ -50,7 +50,7 @@
         <h4><b>{% trans "Eligible Years Of Study:" %}</b></h4>
         <ul>
             {% for year in award.years_of_study.all %}
-                <li>{{year}}</li>
+                <li><div class=li-font18>{{year}}</div></li>
             {% endfor %}
         </ul>
     </div>
@@ -69,7 +69,7 @@
     
     <div>
         {# Translators: Documents needed indicator on student application page #}
-        {% trans "Documents Needed:" %} <input type="checkbox" disabled {% if award.documents_needed %}checked{% endif %}>
+        <h4><b>{% trans "Documents Needed:" %} <input type="checkbox" disabled {% if award.documents_needed %}checked{% endif %}></b></h4>
     </div>
     
     <div>

@@ -25,7 +25,7 @@
             {% if award.programs.all %}
                 <ul>
                     {% for p in award.programs.all %}
-                        <li>{{ p }}</li>
+                        <li><div class=li-font18>{{ p }}</div></li>
                     {% endfor %}
                 </ul>
             {% endif %}
@@ -35,7 +35,7 @@
             {% if award.years_of_study.all %}
                 <ul>
                     {% for y in award.years_of_study.all %}
-                        <li>{{ y }}</li>
+                        <li><div class=li-font18>{{ y }}</div></li>
                     {% endfor %}
                 </ul>
             {% endif %}
