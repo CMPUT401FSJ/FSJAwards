@@ -9,16 +9,19 @@
 {% block content %}
     <div class='center-content'>
         <div>
-            {% trans "Award Name:" %} {{ award.award_name }}
+            <h4><b>{% trans "Award Name:" %}</b></h4> 
+            <div class=tab-text>{{ award.award_name }}</div>
         </div>
         <div>
-            {% trans "Award Description:" %} {{ award.description }}
+            <h4><b>{% trans "Award Description:" %}</b></h4>
+            <div class=tab-text>{{ award.description }}</div>
         </div>
         <div>
-            {% trans "Award Value:" %} {{ award.value }}
+            <h4><b>{% trans "Award Value:" %}</b></h4>
+            <div class=tab-text>{{ award.value }}</div>
         </div>
         <div>
-            {% trans "Award Program(s):" %}
+            <h4><b>{% trans "Award Program(s):" %}</b></h4>
             {% if award.programs.all %}
                 <ul>
                     {% for p in award.programs.all %}
@@ -28,7 +31,7 @@
             {% endif %}
         </div>
         <div>
-            {% trans "Award Year(s):" %}
+            <h4><b>{% trans "Award Year(s):" %}</b></h4>
             {% if award.years_of_study.all %}
                 <ul>
                     {% for y in award.years_of_study.all %}
@@ -37,17 +40,22 @@
                 </ul>
             {% endif %}
         </div>
+        <hr style="widtch:100%; height:2px; background-color: #FFDB05;" />
         <div>
-            {% trans "Student Name:" %} {{ student.get_name }}
+            <h4><b>{% trans "Student Name:" %}</b></h4>
+            <div class=tab-text>{{ student.get_name }}</div>
         </div>
         <div>
-            {% trans "Program:" %} {{ student.program }}
+            <h4><b>{% trans "Program:" %}</b></h4>
+            <div class=tab-text>{{ student.program }}</div>
         </div>
         <div>
-            {% trans "Year:" %} {{ student.year }}
+            <h4><b>{% trans "Year:" %}</b></h4>
+            <div class=tab-text>{{ student.year }}</div>
         </div>
         <div>
-            {% trans "GPA:" %} {{ student.gpa }}
+            <h4><b>{% trans "GPA:" %}</b></h4>
+            <div class=tab-text>{{ student.gpa }}</div>
         </div>
         {% if award.documents_needed %}
             <div>

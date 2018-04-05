@@ -20,17 +20,19 @@
     
     <div>
         {# Translators: Description for award on student application page #}
-        {% trans "Description:" %} {{ award.description}} 
+        <h4><b>{% trans "Description:" %}</b></h4> 
+        <div class = tab-text> {{ award.description}} </div>
     </div>
     
     <div>
         {# Translators: Value for award on student application page #}
-        {% trans "Value:" %} {{ award.value }}
+        <h4><b>{% trans "Value:" %}</b></h4>
+        <div class = tab-text>{{ award.value }}</div>
     </div>
     
     <div>
         {# Translators: Programs for award on student application page #}
-        {% trans "Programs:" %} 
+        <h4><b>{% trans "Eligible Programs:" %}</b></h4>
         {% if award.programs.all %}
             <ul>
                 {% for program in award.programs.all %}
@@ -45,7 +47,7 @@
     
     <div>
     {# Translators: Years of Study for award on student application page #}
-        {% trans "Years Of Study:" %}
+        <h4><b>{% trans "Eligible Years Of Study:" %}</b></h4>
         <ul>
             {% for year in award.years_of_study.all %}
                 <li>{{year}}</li>
@@ -55,12 +57,14 @@
     
     <div>
     {# Translators: Start date for award on student application page #}
-        {% trans "Start date:" %} {{ award.start_date }}
+        <h4><b>{% trans "Start date:" %}</b></h4>
+        <div class=tab-text>{{ award.start_date }}</div>
     </div>
 
     <div>
     {# Translators: End date for award on student application page #}
-        {% trans "End date:" %} {{ award.end_date }}
+        <h4><b>{% trans "End date:" %}</b></h4> 
+        <div class=tab-text>{{ award.end_date }}</div>
     </div>
     
     <div>
