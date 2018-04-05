@@ -445,22 +445,29 @@ def coordinator_committeeslist(request, FSJ_user):
     context["committees_list"] = committees_list
     return HttpResponse(template.render(context,request))
 
-# This handler allows a Coordinator to add a new committee
 @login_required
 @user_passes_test(is_coordinator)
 def coordinator_addcommittee(request):
     FSJ_user = get_FSJ_user(request.user.username)
-    
+
+    committees = Committee.objects.all()
+    awards_list = Award.objects.all()
+    awards_blocked = []
+    for committee in committees:
+        for award in committee.awards.all():
+            if award in awards_list:
+                awards_blocked.append(award.awardid)
+    available_awards = Award.objects.exclude(awardid__in = awards_blocked).values_list('awardid','award_name')
     # If the coordinator has just saved their new comittee, check for form validity before saving. Invalid forms are put back into the template to show errors.
     if request.method == "POST":
         # Loads adjudicator form with the new information
-        form = CommitteeForm(request.POST)
+        form = CommitteeForm(available_awards, request.POST)
         if form.is_valid():
             form.save()
             return redirect('coord_committeeslist')
     else:
         # If the coordinator hasn't entered information yet, create a blank committee
-        form = CommitteeForm()           
+        form = CommitteeForm(available_awards)           
     context = get_standard_context(FSJ_user)
     template = loader.get_template("FSJ/committee.html")
     context["form"] = form
@@ -479,14 +486,24 @@ def coordinator_committeeedit(request, committee_idnum):
     except Committee.DoesNotExist:
         raise Http404("Committee does not exist")
 
+    committees = Committee.objects.exclude(committeeid = committee.committeeid)
+    awards_list = Award.objects.all()
+    awards_blocked = []
+    for instance in committees:
+        for award in instance.awards.all():
+            if award in awards_list:
+                awards_blocked.append(award.awardid)
+    available_awards = Award.objects.exclude(awardid__in = awards_blocked).values_list('awardid','award_name')
+    selectedawards = committee.awards.all()
+
     if request.method == "POST":
-        form = CommitteeForm(request.POST, instance=committee)
+        form = CommitteeForm(available_awards, request.POST, instance=committee)
         if form.is_valid():
             form.save()
             return redirect('coord_committeeslist')
 
     else:
-        form = CommitteeForm(instance=committee)
+        form = CommitteeForm(available_awards,instance=committee)
     context = get_standard_context(FSJ_user)
     context["committee"] = committee
     context["form"] = form
@@ -666,8 +683,8 @@ def coordinator_upload_students(request):
                         year = YearOfStudy.objects.get(year = row['Year'])
                         obj, created = Student.objects.update_or_create(
                             ccid = row['CCID'],
-                            defaults={'ualberta_id': row['ID'], 'first_name': row['First Name'], 'last_name': row['Last Name'], 'email' : row['Email (Univ)'],
-                                      'program' : program, 'year' : year,},
+                            defaults={'student_id': row['ID'], 'first_name': row['First Name'], 'last_name': row['Last Name'], 'email' : row['Email (Univ)'],
+                                      'program' : program, 'year' : year, 'middle_name' : row['Middle Name'],},
                         ) 
                         
                 if 'gpa_file' in request.FILES:

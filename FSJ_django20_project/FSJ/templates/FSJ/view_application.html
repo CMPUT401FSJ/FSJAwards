@@ -14,7 +14,7 @@
         </div>
         <div>
             <h4><b>{% trans "Award Description:" %}</b></h4>
-            <div class=tab-text>{{ award.description }}</div>
+            <div class=tab-text>{{ award.description|linebreaks }}</div>
         </div>
         <div>
             <h4><b>{% trans "Award Value:" %}</b></h4>
@@ -47,7 +47,11 @@
         </div>
         <div>
             <h4><b>{% trans "Program:" %}</b></h4>
-            <div class=tab-text>{{ student.program }}</div>
+            <div class=tab-text>{% if student.program %}{{ student.program }}{% endif %}</div>
+        </div>
+        <div>
+            <h4><b>{% trans "Student ID:" %}</b></h4>
+            <div class=tab-text>{{ student.student_id }}</div>
         </div>
         <div>
             <h4><b>{% trans "Year:" %}</b></h4>
@@ -55,7 +59,7 @@
         </div>
         <div>
             <h4><b>{% trans "GPA:" %}</b></h4>
-            <div class=tab-text>{{ student.gpa }}</div>
+            <div class=tab-text>{%if student.gpa %}{{ student.gpa }}{% endif %}</div>
         </div>
         {% if award.documents_needed %}
             <div>

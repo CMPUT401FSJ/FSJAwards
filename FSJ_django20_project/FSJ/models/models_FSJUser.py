@@ -8,8 +8,8 @@ class FSJUser(models.Model):
     FRENCH = 'fr'
     ENGLISH = 'en'
     LANG_CHOICES = (
-        (FRENCH, _('French')),
-        (ENGLISH, _('English')),
+        (FRENCH, "Fran"+u"\u00E7"+"ais"),
+        (ENGLISH, 'English'),
     )   
     # Link FSJUser with a User model for authentication related business
     user = models.OneToOneField(User, on_delete = models.CASCADE, blank = True, null = True)    
@@ -19,8 +19,6 @@ class FSJUser(models.Model):
     first_name = models.CharField(max_length = 255, verbose_name = _("First Name"))
     last_name = models.CharField(max_length = 255, verbose_name = _("Last Name"))
     email = models.EmailField(max_length = 254, verbose_name= _("Email"))
-    ualberta_id = models.IntegerField(unique = True, verbose_name = _("University of Alberta ID"),
-                                      help_text = _("The University of Alberta ID is the Student ID or Employee ID"))
     lang_pref = models.CharField(max_length = 2, blank = False, choices = LANG_CHOICES, default = FRENCH, verbose_name = _("Language Preference"))
     
     def __str__(self):
