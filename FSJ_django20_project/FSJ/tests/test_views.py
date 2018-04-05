@@ -18,11 +18,11 @@ class ProfileViewTests(TestCase):
         self.first_name = "A"
         self.last_name = "Student"
         self.email = "aStudent@test.com"
-        self.ualberta_id = 1
+        self.student_id = '1'
         self.year = "First"
         self.year_of_study = YearOfStudy.objects.create(year = self.year)
         self.student = Student.objects.create(ccid = self.ccid, first_name = self.first_name, 
-                                   last_name = self.last_name, email = self.email, ualberta_id = self.ualberta_id, year = self.year_of_study)
+                                   last_name = self.last_name, email = self.email, student_id = self.student_id, year = self.year_of_study)
         
     def test_not_logged_in(self):
         request = self.factory.get(self.url)

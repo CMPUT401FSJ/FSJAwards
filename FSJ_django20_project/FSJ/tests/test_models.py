@@ -13,9 +13,8 @@ class AdjudicatorModelTests(TestCase):
         self.first_name = "An"
         self.last_name = "Adjudicator"
         self.email = "anAdjudicator@test.com"
-        self.ualberta_id = 1
         Adjudicator.objects.create(ccid = self.ccid, first_name = self.first_name,
-                                   last_name = self.last_name, email = self.email, ualberta_id = self.ualberta_id)
+                                   last_name = self.last_name, email = self.email)
 
     def test_get_adjudicator(self):
         obj = Adjudicator.objects.get(ccid = self.ccid)
@@ -24,13 +23,10 @@ class AdjudicatorModelTests(TestCase):
         self.assertEqual(obj.first_name, self.first_name)
         self.assertEqual(obj.last_name, self.last_name)
         self.assertEqual(obj.email, self.email)
-        self.assertEqual(obj.ualberta_id, self.ualberta_id)
 
     def test_create_duplicate_adjudicator(self):
         with self.assertRaises(IntegrityError):
             Adjudicator.objects.create(ccid = self.ccid)
-        with self.assertRaises(IntegrityError):
-            Adjudicator.objects.create(ualberta_id = self.ualberta_id)
 
     def test_user_model_is_created_with_adjudicator(self):
         obj = Adjudicator.objects.get(ccid = self.ccid)
@@ -63,9 +59,8 @@ class CoordinatorModelTests(TestCase):
         self.first_name = "A"
         self.last_name = "Coordinator"
         self.email = "aCoordinator@test.com"
-        self.ualberta_id = 1
         Coordinator.objects.create(ccid = self.ccid, first_name = self.first_name,
-                                   last_name = self.last_name, email = self.email, ualberta_id = self.ualberta_id)
+                                   last_name = self.last_name, email = self.email)
 
     def test_get_coordinator(self):
         obj = Coordinator.objects.get(ccid = self.ccid)
@@ -74,13 +69,10 @@ class CoordinatorModelTests(TestCase):
         self.assertEqual(obj.first_name, self.first_name)
         self.assertEqual(obj.last_name, self.last_name)
         self.assertEqual(obj.email, self.email)
-        self.assertEqual(obj.ualberta_id, self.ualberta_id)
 
     def test_create_duplicate_coordinator(self):
         with self.assertRaises(IntegrityError):
             Coordinator.objects.create(ccid = self.ccid)
-        with self.assertRaises(IntegrityError):
-            Coordinator.objects.create(ualberta_id = self.ualberta_id)
 
     def test_user_model_is_created_with_coordinator(self):
         obj = Coordinator.objects.get(ccid = self.ccid)
@@ -113,7 +105,7 @@ class StudentModelTests(TestCase):
         self.first_name = "A"
         self.last_name = "Student"
         self.email = "aStudent@test.com"
-        self.ualberta_id = 1
+        self.student_id = '1'
         self.programcode = "SP"
         self.programname = "StudentProgram"
         self.yearname = "StudentYear"
@@ -122,7 +114,7 @@ class StudentModelTests(TestCase):
         year = YearOfStudy.objects.create(year = self.yearname)
         
         Student.objects.create(ccid = self.ccid, first_name = self.first_name, last_name = self.last_name, 
-                               email = self.email, ualberta_id = self.ualberta_id, year = year, program = program)        
+                               email = self.email, student_id = self.student_id, year = year, program = program)        
         
         
     def test_get_student(self):
@@ -134,7 +126,7 @@ class StudentModelTests(TestCase):
         self.assertEqual(obj.first_name, self.first_name)
         self.assertEqual(obj.last_name, self.last_name)
         self.assertEqual(obj.email, self.email)
-        self.assertEqual(obj.ualberta_id, self.ualberta_id)
+        self.assertEqual(obj.student_id, self.student_id)
         self.assertEqual(obj.program, program)
         self.assertEqual(obj.year, year)
         
@@ -142,7 +134,7 @@ class StudentModelTests(TestCase):
         with self.assertRaises(IntegrityError):
             Student.objects.create(ccid = self.ccid)
         with self.assertRaises(IntegrityError):
-            Student.objects.create(ualberta_id = self.ualberta_id)               
+            Student.objects.create(student_id = self.student_id)               
         
     def test_user_model_is_created_with_student(self):
         obj = Student.objects.get(ccid = self.ccid)
@@ -185,7 +177,7 @@ class ApplicationTestModels(TestCase):
         self.first_name = "A"
         self.last_name = "Student"
         self.email = "aStudent@test.com"
-        self.ualberta_id = 1
+        self.student_id = '1'
         self.year = "First"
         self.year_of_study = YearOfStudy.objects.create(year = self.year)
         self.program_code = "PRFG"
@@ -194,16 +186,17 @@ class ApplicationTestModels(TestCase):
         self.award_name = "This award"
         self.award_description = "For students"
         self.award_value = "One gold pen"
-        self.award_deadline = str(datetime.datetime.now(pytz.timezone('America/Edmonton')))
+        self.award_start_date = str(datetime.datetime.now(pytz.timezone('America/Vancouver')))
+        self.award_end_date = str(datetime.datetime.now(pytz.timezone('America/Edmonton')))
         self.award_documents_needed = False
         self.award_is_active = True
         self.award = Award.objects.create(award_name = self.award_name, description = self.award_description, value = self.award_value,
-                                          deadline = self.award_deadline,
+                                          start_date = self.award_start_date, end_date = self.award_end_date, 
                                           documents_needed = self.award_documents_needed, is_active = self.award_is_active)
         self.award.programs.add(self.program)
         self.award.years_of_study.add(self.year_of_study)
         self.student = Student.objects.create(ccid = self.ccid, first_name = self.first_name, last_name = self.last_name,
-                                              email = self.email, ualberta_id = self.ualberta_id, year = self.year_of_study, program = self.program)
+                                              email = self.email, student_id = self.student_id, year = self.year_of_study, program = self.program)
         self.application_is_submitted = False
         self.application = Application.objects.create(award = self.award, student = self.student, is_submitted = self.application_is_submitted)
 
@@ -247,7 +240,7 @@ class ProgramModelTests(TestCase):
         self.first_name = "A"
         self.last_name = "Student"
         self.email = "aStudent@test.com"
-        self.ualberta_id = 1
+        self.student_id = '1'
         self.year = "First"
         self.year_of_study = YearOfStudy.objects.create(year = self.year)
         self.program_code = "PRFG"
@@ -256,16 +249,17 @@ class ProgramModelTests(TestCase):
         self.award_name = "This award"
         self.award_description = "For students"
         self.award_value = "One gold pen"
-        self.award_deadline = str(datetime.datetime.now(pytz.timezone('America/Edmonton')))
+        self.award_start_date = str(datetime.datetime.now(pytz.timezone('America/Vancouver')))
+        self.award_end_date = str(datetime.datetime.now(pytz.timezone('America/Edmonton')))
         self.award_documents_needed = False
         self.award_is_active = True
         self.award = Award.objects.create(award_name = self.award_name, description = self.award_description, value = self.award_value,
-                                          deadline = self.award_deadline,
+                                          start_date = self.award_start_date, end_date = self.award_end_date,
                                           documents_needed = self.award_documents_needed, is_active = self.award_is_active)
         self.award.programs.add(self.program)
         self.award.years_of_study.add(self.year_of_study)        
         self.student = Student.objects.create(ccid = self.ccid, first_name = self.first_name, last_name = self.last_name,
-                                              email = self.email, ualberta_id = self.ualberta_id, year = self.year_of_study, program = self.program)        
+                                              email = self.email, student_id = self.student_id, year = self.year_of_study, program = self.program)        
     
     def test_program_creation(self):
         program = Program.objects.get(code = self.program_code)
@@ -293,7 +287,8 @@ class AwardModelTests(TestCase):
         self.award_name = "Award Name 1"
         self.description = "Award Description 1"
         self.value = "Award Value 1"
-        self.deadline = str(datetime.datetime.now(pytz.timezone('America/Edmonton')))
+        self.start_date = str(datetime.datetime.now(pytz.timezone('America/Vancouver')))
+        self.end_date = str(datetime.datetime.now(pytz.timezone('America/Edmonton')))
         self.programcode = "AP"
         self.programname = "AwardProgram"
         self.yearname = "AwardYear"
@@ -302,7 +297,7 @@ class AwardModelTests(TestCase):
         self.year = YearOfStudy.objects.create(year = self.yearname)
         self.program = Program.objects.create(code = self.programcode, name = self.programname)
         self.award = Award.objects.create(award_name = self.award_name, description = self.description, value = self.value,
-                                    deadline = self.deadline,
+                                    start_date = self.start_date, end_date = self.end_date, 
                                     documents_needed = self.documents_needed, is_active = self.is_active)
         self.award.programs.add(self.program)
         self.award.years_of_study.add(self.year)
@@ -322,13 +317,13 @@ class CommitteeModelTests(TestCase):
         self.adjudicator_first_name = "Adjudicator 1 First"
         self.adjudicator_last_name = "Adjudicator 1 Last"
         self.adjudicator_email = "Adjudicator1@test.com"
-        self.adjudicator_ualberta_id = 1
         self.adjudicator = Adjudicator.objects.create(ccid = self.adjudicator_ccid, first_name = self.adjudicator_first_name,
-                                   last_name = self.adjudicator_last_name, email = self.adjudicator_email, ualberta_id = self.adjudicator_ualberta_id)
+                                   last_name = self.adjudicator_last_name, email = self.adjudicator_email)
         self.award_name = "Award Name 1"
         self.description = "Award Description 1"
         self.value = "Award Value 1"
-        self.deadline = str(datetime.datetime.now(pytz.timezone('America/Edmonton')))
+        self.start_date = str(datetime.datetime.now(pytz.timezone('America/Vancouver')))
+        self.end_date = str(datetime.datetime.now(pytz.timezone('America/Edmonton')))
         self.programcode = "AP"
         self.programname = "AwardProgram"
         self.yearname = "AwardYear"
@@ -338,7 +333,7 @@ class CommitteeModelTests(TestCase):
         self.program = Program.objects.create(code = self.programcode, name = self.programname)
 
         self.award = Award.objects.create(award_name = self.award_name, description = self.description, value = self.value,
-                                    deadline = self.deadline,
+                                    start_date = self.start_date, end_date = self.end_date, 
                                     documents_needed = self.documents_needed, is_active = self.is_active)
         self.award.programs.add(self.program)
         self.award.years_of_study.add(self.year)
