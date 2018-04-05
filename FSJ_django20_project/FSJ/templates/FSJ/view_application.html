@@ -66,7 +66,7 @@
         <form action='{{ url }}' method='post'>
             {% csrf_token %}
     
-            {% if FSJ_user.user_class == "Coordinator" and not archived %}
+            {% if FSJ_user.user_class == "Coordinator" %}
 
                 {% if comment_list %}
                     <table class="table table-bordered table-striped table-hover" align="center">

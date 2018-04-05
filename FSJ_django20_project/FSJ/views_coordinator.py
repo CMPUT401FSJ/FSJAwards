@@ -5,6 +5,7 @@ from django.utils.crypto import get_random_string
 from django.utils.translation import gettext_lazy as _
 from django.http import HttpResponse, Http404
 from django.template import loader
+from django.conf import settings
 from django.shortcuts import redirect
 from datetime import datetime, timezone
 from django.contrib import messages
@@ -538,7 +539,7 @@ def coordinator_application_list(request, award_idnum):
     except Award.DoesNotExist:
         raise Http404("Award does not exist")
 
-    application_list = award.applications.all()
+    application_list = award.applications.filter(is_archived = False)
 
     #delete in-progress applications if deadline is past
     if datetime.now(timezone.utc) > award.end_date: 
@@ -569,7 +570,7 @@ def coordinator_application_archive_list(request, award_idnum):
     except Award.DoesNotExist:
         raise Http404("Award does not exist")
 
-    archived_application_list = award.archived_applications.all()
+    archived_application_list = award.applications.filter(is_archived = True)
 
 
     context = get_standard_context(FSJ_user)
@@ -589,15 +590,34 @@ def coordinator_archived_application_view(request, award_idnum, application_idnu
     except Award.DoesNotExist:
         raise Http404("Award does not exist")
     try:
-        application = ArchivedApplication.objects.get(application_id = application_idnum)
+        application = Application.objects.get(application_id = application_idnum)
     except Award.DoesNotExist:
         raise Http404("application does not exist")
 
     context = get_standard_context(FSJ_user)
     context["student"] = application.student
     context["award"] = award
+    context["application"] = application
+    if application.application_file:
+        context["document"] = settings.MEDIA_URL + str(application.application_file)    
     context["archived"] = True
     context["return_url"] = "/coord_awardslist/" + str(award_idnum) + "/applications/archive/"
+    
+    comment_list = Comment.objects.filter(application = application)
+    
+    if comment_list.count() > 0:
+        ranking_list = []
+        for comment in comment_list:
+            try:
+                ranking = Ranking.objects.get(application = application, adjudicator = comment.adjudicator)
+                ranking_list.append(ranking.rank)
+                
+            except Ranking.DoesNotExist:
+                ranking_list.append("--")
+                
+        comment_list = zip(comment_list, ranking_list)
+        
+        context["comment_list"] = comment_list    
 
     template = loader.get_template("FSJ/view_application.html")
     return HttpResponse(template.render(context, request))
@@ -617,15 +637,9 @@ def coordinator_application_action(request, award_idnum):
 
         if "_archive" in request.POST:  
             for applicationid in application_list:
-                if not ArchivedApplication.objects.filter(application_id = applicationid).exists():
-                    application = Application.objects.get(application_id=applicationid)
-                    archivedapp = ArchivedApplication()
-                    archivedapp.application_id = application.application_id
-                    archivedapp.award = application.award
-                    archivedapp.student = application.student
-                    archivedapp.application_file = application.application_file
-                    archivedapp.save()
-                    application.delete()
+                application = Application.objects.get(application_id=applicationid)
+                application.is_archived = True;
+                application.save()
         elif "_delete" in request.POST:
             for applicationid in application_list:
                 Application.objects.get(application_id=applicationid).delete()
@@ -648,17 +662,9 @@ def coordinator_archive_action(request, award_idnum):
 
         if "_removeFromArchive" in request.POST:  
             for applicationid in archived_application_list:
-                if not Application.objects.filter(application_id = applicationid).exists():
-                    archivedapp = ArchivedApplication.objects.get(application_id=applicationid)
-                    application = Application()
-                    application.application_id = archivedapp.application_id
-                    application.award = archivedapp.award
-                    application.student = archivedapp.student
-                    application.application_file = archivedapp.application_file
-                    application.is_submitted = True
-                    application.is_reviewed = False
-                    application.save()
-                    archivedapp.delete()
+                archivedapp = Application.objects.get(application_id=applicationid)
+                archivedapp.is_archived = False;
+                archivedapp.save()
         elif "_delete" in request.POST:
             for applicationid in archived_application_list:
                 ArchivedApplication.objects.get(application_id=applicationid).delete()

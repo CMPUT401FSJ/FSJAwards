@@ -11,6 +11,7 @@ class Application(models.Model):
     student = models.ForeignKey(Student, on_delete=models.CASCADE, related_name='applications', verbose_name = _("Student"))
     is_submitted = models.BooleanField(verbose_name = _("Is Submitted"))
     is_reviewed = models.BooleanField(default = False, verbose_name = _("Is Reviewed"))
+    is_archived = models.BooleanField(default = False, verbose_name = _("Is Archived"))
     application_file = models.FileField(null=True, blank=True, upload_to='documents/', 
                                         verbose_name = _("Application Document"), validators=[validate_file_extension])
     
