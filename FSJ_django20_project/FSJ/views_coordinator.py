@@ -215,6 +215,7 @@ def coordinator_awards(request, FSJ_user):
     context = get_standard_context(FSJ_user)
     context["awards_list"] = awards_list
     context["filter"] = filtered_list
+    context["return_url"] = "/coord_awardslist/"
     return HttpResponse(template.render(context,request))
 
 #function for handling coordinator adding an award

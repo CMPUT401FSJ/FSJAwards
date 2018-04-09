@@ -34,6 +34,7 @@ def adjudicator_awards(request):
     context = get_standard_context(FSJ_user)
     context["awards_list"] = awards_list
     context["filter"] = filtered_list
+    context["return_url"] = "/adj_awardslist/"
     return HttpResponse(template.render(context,request))
 
 
