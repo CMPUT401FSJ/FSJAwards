@@ -75,7 +75,8 @@ def edit_student(request):
     if request.method == 'POST':
         form = StudentForm(request.POST, instance=student)
         if form.is_valid():
-            form.save()
+            student = form.save(commit = False)
+            student.save()
             return redirect('studentlist')
     else:
         form = StudentForm(instance=student)
@@ -104,7 +105,8 @@ def edit_adjudicator(request):
     if request.method == 'POST':
         form = AdjudicatorForm(request.POST, instance=adjudicator)
         if form.is_valid():
-            form.save()
+            adjudicator = form.save(commit = False)
+            adjudicator.save()
             return redirect('adjudicatorlist')
     else:
         form = AdjudicatorForm(instance=adjudicator)
