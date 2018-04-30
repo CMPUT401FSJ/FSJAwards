@@ -31,7 +31,8 @@ def student_home(request, FSJ_user):
 @user_passes_test(is_student)
 def student_awardslist(request):
     FSJ_user = get_FSJ_user(request.user.username)
-    unfiltered_list = Award.objects.filter(Q(is_active = True), Q(programs = FSJ_user.program) | Q(programs__isnull = True))
+    unfiltered_list = Award.objects.filter(Q(is_active = True), Q(programs = FSJ_user.program) | Q(programs__isnull = True),
+                                           Q(years_of_study = FSJ_user.year))
    
     awards_list = []
     in_progress_list = []
