@@ -37,8 +37,13 @@ class FSJUser(models.Model):
         if not self.user:
             user = User()
             user.username = self.ccid
+            user.email = self.email
             user.save()
             self.user = user
+        else:
+            self.user.email = self.email
+            self.user.username = self.ccid
+            self.user.save()
         super(FSJUser, self).save(*args, **kwargs)   
         
     def delete(self, *args, **kwargs):
