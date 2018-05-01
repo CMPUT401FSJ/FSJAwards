@@ -1,0 +1,57 @@
+{% extends "FSJ/base_with_banner.html" %}
+{% load i18n %} {# NOTE YOU MUST LOAD i18n to every HTML page even though it's also loaded to base.html #}
+{% load widget_tweaks %}
+
+{# A page for the adjudicator to view a list of awards as well as providing adding, deleting, and editing functionality #}
+{# This page is separate from the template for displaying awards to sutdents due to the added functionality #}
+{% block heading %}
+    {# Translators: Awards page home label #}
+    {% trans "Awards" %}
+{% endblock %}
+
+{% block content %}
+    <body>
+        <div class='center-content'>   
+            <table class="table table-bordered table-striped table-hover" align="center">
+                <tr>
+                    {# Translators: Award name header in awards table #}
+                    <th>{% trans "Award" %}</th>
+                    {# Translators: Award description header in awards table #}
+                    <th class="desc-column">{% trans "Description" %}</th>
+                    {# Translators: Award start date header in awards table #}
+                    <th>{% trans "Start Date" %}</th>
+                    {# Translators: Award end date header in awards table #}
+                    <th>{% trans "End Date" %}</th>
+                    {# Translators: Award is active header in awards table #}
+                    <th>{% trans "Active?" %}</th>
+                    {# Translators: Awards application header in awards table #}
+                    <th>{% trans "Applications" %}</th>
+                </tr>
+                {% for committee in committee_list %}
+                    <tr><th class="alternate-table-heading" colspan=6>{{ committee.committee_name }}</th></tr>
+                    {% for award in committee.awards.all %}
+                        <tr>
+                            
+                            <td>{{award.award_name }}</td>
+                            <td>{{award.description|linebreaks }}</td>
+                            <td>{{award.start_date}}</td>
+                            <td>{{award.end_date}}</td>
+                            <td>
+                                <input type="checkbox" disabled {% if award.is_active %}checked{% endif %}>
+                            </td>
+                            
+                            {% if award.get_review_status == "No Applications" %}
+                                {# Translators: No applications message in adjudicator awards list #}
+                                <td>{% trans "No Applications" %}</td>
+                            {% else %}    
+                                <td><a href="/adj_awardslist/{{ award.awardid }}/applications/">{% trans "View" %}</a></td>
+                            {% endif %}
+                            
+                        </tr>
+                    {% endfor %}
+                {% endfor %}
+                
+            </table>
+        </div>
+    </body>
+{% endblock %}
