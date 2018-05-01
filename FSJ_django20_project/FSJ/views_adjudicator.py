@@ -49,6 +49,21 @@ def adjudicator_application_list(request, award_idnum):
         raise Http404("Award does not exist")
 
     application_list = award.applications.filter(is_reviewed = True, is_archived = False)
+    ranking_list = Ranking.objects.filter(award = award, adjudicator = FSJ_user).order_by('-rank')
+    
+    sorted_application_list = []
+    sorted_ranking_list = []
+    
+    for ranking in ranking_list:
+        sorted_application_list.append(ranking.application)
+        sorted_ranking_list.append(ranking.rank)
+        
+    for application in application_list:
+        if application not in sorted_application_list:
+            sorted_application_list.append(application)
+            sorted_ranking_list.append('--')
+    
+    application_list = zip(sorted_application_list, sorted_ranking_list)
 
     context = get_standard_context(FSJ_user)
     context["application_list"] = application_list
