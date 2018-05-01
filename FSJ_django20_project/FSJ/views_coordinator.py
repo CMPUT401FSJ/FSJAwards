@@ -554,6 +554,13 @@ def coordinator_application_list(request, award_idnum):
         #not update correctly after deletion
         application_list = award.applications.all()
 
+    ranking_list = []
+    
+    for application in application_list:
+        ranking_list.append('--')
+        
+    application_list = zip(application_list, ranking_list)
+    
     context = get_standard_context(FSJ_user)
     context["application_list"] = application_list
     context["return_url"] = "/coord_awardslist/"
