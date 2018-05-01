@@ -3,86 +3,104 @@
 
 {# A trial Application form #}
 {% block heading %}
-    {{ award.award_name }}
+    {% trans "Apply" %}
 {% endblock %}
 
 {% block content %}
-    <br/>
-    <div>
-        {% if messages %}
-            <ul class="messages">
-                {% for message in messages %}
-                    <div class="alert alert-{{ message.tags }}"><b>{{ message }}</b></div>
-                {% endfor %}
-            </ul>
-        {% endif %}
-    </div>
-    
-    <div>
-        {# Translators: Description for award on student application page #}
-        <h4><b>{% trans "Description:" %}</b></h4> 
-        <div class = tab-text> {{ award.description|linebreaks}} </div>
-    </div>
-    
-    <div>
-        {# Translators: Value for award on student application page #}
-        <h4><b>{% trans "Value:" %}</b></h4>
-        <div class = tab-text>{{ award.value }}</div>
-    </div>
-    
-    <div>
-        {# Translators: Programs for award on student application page #}
-        <h4><b>{% trans "Eligible Programs:" %}</b></h4>
-        {% if award.programs.all %}
-            <ul>
+    <div class='center-content'>
+        <h3><b>{{ award.award_name }}</b></h3>
+        <div>
+            {% if messages %}
+                <ul class="messages">
+                    {% for message in messages %}
+                        <div class="alert alert-{{ message.tags }}"><b>{{ message }}</b></div>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+        </br>
+        <div>
+            {# Translators: Description for award on student application page #}
+            <h4><b>{% trans "Description" %}</b></h4> 
+            <hr class="hr-div">
+            {{ award.description|linebreaks}}
+        </div>
+        </br>
+        <div>
+            {# Translators: Value for award on student application page #}
+            <h4><b>{% trans "Value" %}</b></h4>
+            <hr class="hr-div">
+            {{ award.value }}
+        </div>
+        </br>
+        <div>
+            {# Translators: Programs for award on student application page #}
+            <h4><b>{% trans "Eligible Programs" %}</b></h4>
+            <hr class="hr-div">
+            {% if award.programs.all %}
                 {% for program in award.programs.all %}
-                    <li><div class=li-font18>{{ program.name }}</div></li>
+                    {{ program.name }}
+                    </br>
                 {% endfor %}
-            </ul>
-        {% else %}
-            {# Translators: No program chosen for an award, on the list of awards table #}
-            {% trans "N/A" %}
-        {% endif %}
-    </div>
-    
-    <div>
-    {# Translators: Years of Study for award on student application page #}
-        <h4><b>{% trans "Eligible Years Of Study:" %}</b></h4>
-        <ul>
-            {% for year in award.years_of_study.all %}
-                <li><div class=li-font18>{{year}}</div></li>
-            {% endfor %}
-        </ul>
-    </div>
-    
-    <div>
-    {# Translators: Start date for award on student application page #}
-        <h4><b>{% trans "Start date:" %}</b></h4>
-        <div class=tab-text>{{ award.start_date }}</div>
-    </div>
-
-    <div>
-    {# Translators: End date for award on student application page #}
-        <h4><b>{% trans "End date:" %}</b></h4> 
-        <div class=tab-text>{{ award.end_date }}</div>
-    </div>
-    
-    <div>
-        {# Translators: Documents needed indicator on student application page #}
-        <h4><b>{% trans "Documents Needed:" %} <input type="checkbox" disabled {% if award.documents_needed %}checked{% endif %}></b></h4>
-    </div>
-    
-    <div>
-        <form action='{{ context.url }}' method='post' enctype="multipart/form-data">
+            {% else %}
+                {# Translators: No program chosen for an award, on the list of awards table #}
+                {% trans "N/A" %}
+            {% endif %}
+        </div>
+        </br>
+        <div>
+        {# Translators: Years of Study for award on student application page #}
+            <h4><b>{% trans "Eligible Years Of Study" %}</b></h4>
+                <hr class="hr-div">
+                {% for year in award.years_of_study.all %}
+                    {{year}}
+                    </br>
+                {% endfor %}
+        </div>
+        </br>
+        <div>
+        {# Translators: Start date for award on student application page #}
+            <h4><b>{% trans "Start date" %}</b></h4>
+            <hr class="hr-div">
+            {{ award.start_date }}
+        </div>
+        </br>
+        <div>
+        {# Translators: End date for award on student application page #}
+            <h4><b>{% trans "End date" %}</b></h4> 
+            <hr class="hr-div">
+            {{ award.end_date }}
+        </div>
+        </br>
+        <div>
+            <form action='{{ context.url }}' method='post' enctype="multipart/form-data">
             {% csrf_token %}
                 {% if award.documents_needed %}
-                    <h4><b>{{ form.as_p }}</b></h4>
+                    {% for field in form %}
+                        <div>
+                            <div>
+                                {% if field.label %}
+                                    <h4><b>{{field.label_tag}}</b></h4>
+                                {% endif %}
+                            </div>
+                            <div {% if field.errors %}class='has-error'{% endif %}>
+                                {{ field }}
+                            </div>
+                            {% if field.help_text %}
+                                {{ field.help_text }}
+                            {% endif %}
+                            {% if field.errors %}
+                                {{ field.errors }}
+                            {% endif %}
+                        </div>
+                    {% endfor %}
                 {% endif %}
-            
-            {# Save button on application #}
-            <button class = "btn btn-success" type="submit" name="_save">{% trans "Save application" %}</button>
-            {# Submit button on application #}
-            <button class = "btn btn-success" type="submit" name="_submit">{% trans "Submit application" %}</button>
-        </form>
+                </br>
+                {# Save button on application #}
+                <button class = "btn btn-success" type="submit" name="_save">{% trans "Save application" %}</button>
+                {# Submit button on application #}
+                <button class = "btn btn-success" type="submit" name="_submit">{% trans "Submit application" %}</button>
+            </form>
+        </div>
     </div>
 {% endblock %}
