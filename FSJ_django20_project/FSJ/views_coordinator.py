@@ -643,6 +643,11 @@ def coordinator_application_action(request, award_idnum):
                 application = Application.objects.get(application_id=applicationid)
                 application.is_archived = True;
                 application.save()
+        elif "_review" in request.POST:
+            for applicationid in application_list:
+                application = Application.objects.get(application_id=applicationid)
+                application.is_reviewed = True;
+                application.save()
         elif "_delete" in request.POST:
             for applicationid in application_list:
                 Application.objects.get(application_id=applicationid).delete()
