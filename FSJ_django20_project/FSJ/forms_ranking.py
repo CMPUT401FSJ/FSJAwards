@@ -12,7 +12,9 @@ class RankingForm(ModelForm):
         
     def __init__(self, *args, **kwargs):
         super(RankingForm, self).__init__(*args, **kwargs) 
-        rankings = Ranking.objects.filter(adjudicator = user, award = award).values_list('rank', flat=True)
+        rankings = Ranking.objects.filter(adjudicator = user, award = award)
+        if self.instance.pk is not None:
+            rankings = rankings.exclude(pk=self.instance.pk).values_list('rank', flat=True)        
         choices = ['--', 1, 2, 3, 4, 5]
         available_rankings = [(str(x), x) for x in choices if x not in rankings]
         self.fields['rank'] = forms.ChoiceField(choices=available_rankings)
@@ -33,7 +35,9 @@ class RankingRestrictedForm(ModelForm):
             
     def __init__(self, user, award, *args, **kwargs):
         super(RankingRestrictedForm, self).__init__(*args, **kwargs)
-        rankings = Ranking.objects.filter(adjudicator = user, award = award).values_list('rank', flat=True)
+        rankings = Ranking.objects.filter(adjudicator = user, award = award)
+        if self.instance.pk is not None:
+            rankings = rankings.exclude(pk=self.instance.pk).values_list('rank', flat=True)         
         choices = ['--', 1, 2, 3, 4, 5]
         available_rankings = [(str(x), x) for x in choices if x not in rankings]
         self.fields['rank'] = forms.ChoiceField(choices=available_rankings)
