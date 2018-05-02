@@ -114,7 +114,8 @@ div.ualberta-themed-header {
     height:1px; 
     background-color: #a8a8a8;
     border:none;
-    margin:2px;
+    padding:0px;
+    margin:0px;
 }
 
 h4 {
