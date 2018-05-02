@@ -108,3 +108,24 @@ div.ualberta-themed-header {
 .li-font18{
     font-size: 18px;
 }
+
+.hr-div {
+    width:100%;
+    height:1px; 
+    background-color: #a8a8a8;
+    border:none;
+    padding:0px;
+    margin:0px;
+}
+
+h4 {
+    padding: 0px;
+    margin: 0px;
+    border: none;
+}
+
+b {
+    padding: 0px;
+    margin: 0px;
+    border: none;
+}
