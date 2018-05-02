@@ -717,8 +717,9 @@ def coordinator_upload_students(request):
                         if row['GPA']:
                             student.gpa = row['GPA']
                             student.save()
-                                    
-                return redirect('studentlist')
+                
+                form = FileUploadForm()                    
+                messages.success(request, _('Upload success!'))
             
             except UnicodeDecodeError:
                 messages.warning(request, _('Please upload a UTF-8 encoded CSV file.'))
