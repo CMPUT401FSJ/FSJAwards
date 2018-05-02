@@ -3,6 +3,9 @@
         <ul class="messages">
             {% for message in messages %}
                 <li class="{{ message.tags }}">{{ message }}</li>
+                <!--{% if message.tags == "alert-danger" %}-->
+                    <!--<li><img id="redx" src="{% static "FSJ/redx.png" %}" alt={% trans "Red X" %} /></li>-->
+                <!--{% endif %}-->
             {% endfor %}
         </ul>
     {% endif %}
