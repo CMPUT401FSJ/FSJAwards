@@ -9,16 +9,6 @@
 {% block content %}
     <br/>
     <div>
-        {% if messages %}
-            <ul class="messages">
-                {% for message in messages %}
-                    <div class="alert alert-{{ message.tags }}"><b>{{ message }}</b></div>
-                {% endfor %}
-            </ul>
-        {% endif %}
-    </div>
-    
-    <div>
         {# Translators: Description for award on student application page #}
         <h4><b>{% trans "Description:" %}</b></h4> 
         <div class = tab-text> {{ award.description|linebreaks}} </div>
