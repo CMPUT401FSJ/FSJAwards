@@ -81,6 +81,9 @@ def adjudicator_add_edit_comment_ranking(request, award_idnum, application_idnum
     
     application = Application.objects.get(application_id = application_idnum)
     
+    if FSJ_user not in application.adjudicators.all():
+        application.adjudicators.add(FSJ_user)
+    
     try:
         comment = Comment.objects.get(application = application, adjudicator = FSJ_user)
         

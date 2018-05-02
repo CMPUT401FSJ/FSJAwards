@@ -1,6 +1,7 @@
 {% extends "FSJ/base_with_banner.html" %}
 {% load i18n %}
 {% load widget_tweaks %}
+{% load fsj_tags %}
 
 {% block heading %}
     {{ award.award_name }}
@@ -62,7 +63,12 @@
                         {% if FSJ_user.user_class == "Adjudicator" %}
                             <td>{{application.1}}</td>
                         {% endif %}
-                        <td><a href="/view_application?application_id={{ application.0.application_id }}">{{ application.0.get_status }}</a></td>
+                        {% if FSJ_user.user_class == "Coordinator" %}
+                            <td><a href="/view_application?application_id={{ application.0.application_id }}">{{ application.0.get_status }}</a></td>
+                        {% endif %}
+                        {% if FSJ_user.user_class == "Adjudicator" %}
+                            <td><a href="/view_application?application_id={{ application.0.application_id }}">{% get_adj_status %}</a></td>
+                        {% endif %}
                     </tr>
                 {% endfor %}
             </table>
