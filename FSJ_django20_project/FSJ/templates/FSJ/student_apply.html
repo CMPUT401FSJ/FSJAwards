@@ -9,16 +9,6 @@
 {% block content %}
     <br/>
     <div>
-        {% if messages %}
-            <ul class="messages">
-                {% for message in messages %}
-                    <div class="alert alert-{{ message.tags }}"><b>{{ message }}</b></div>
-                {% endfor %}
-            </ul>
-        {% endif %}
-    </div>
-    
-    <div>
         {# Translators: Description for award on student application page #}
         <h4><b>{% trans "Description:" %}</b></h4> 
         <div class = tab-text> {{ award.description|linebreaks}} </div>
@@ -78,11 +68,17 @@
                 {% if award.documents_needed %}
                     <h4><b>{{ form.as_p }}</b></h4>
                 {% endif %}
-            
+
             {# Save button on application #}
             <button class = "btn btn-success" type="submit" name="_save">{% trans "Save application" %}</button>
             {# Submit button on application #}
             <button class = "btn btn-success" type="submit" name="_submit">{% trans "Submit application" %}</button>
+        </form>
+        
+        <form action='{{ delete_url }}' method='post'>
+            {% csrf_token %}
+            {# Delete button on application #}
+            <button class = "btn btn-danger" type= "submit" name="_delete" onclick="return confirm('Are you sure you want to delete this application?');">{% trans "Delete application" %}</button>
         </form>
     </div>
 {% endblock %}

@@ -103,8 +103,10 @@ def student_addapplication(request, award_idnum):
         template = loader.get_template("FSJ/student_apply.html")
         context["form"] = form
         context['award'] = award
-        url = "/student_awardlist/" + award_idnum + "/apply/"
+        url = "/student_awardslist/" + award_idnum + "/apply/"
+        delete_url = "/student_awardslist/"
         context["url"] = url    
+        context["delete_url"] = delete_url
         return HttpResponse(template.render(context, request))
 
 
@@ -153,8 +155,10 @@ def student_editapplication(request, award_idnum):
         template = loader.get_template("FSJ/student_apply.html")
         context["form"] = form
         context['award'] = award
-        url = "/student_awardlist/" + award_idnum + "/edit/"
+        url = "/student_awardslist/" + award_idnum + "/edit/"
+        delete_url = "/student_awardslist/" + award_idnum + "/delete/"
         context["url"] = url    
+        context["delete_url"] = delete_url
         return HttpResponse(template.render(context, request))        
 
     except Application.DoesNotExist:    
@@ -171,5 +175,19 @@ def student_unsubmitapplication(request, award_idnum):
     application.save()
     return redirect('home')
 
+@login_required
+@user_passes_test(is_student)
+def student_deleteapplication(request, award_idnum):
+    
+    if request.method == "POST":
+        FSJ_user = get_FSJ_user(request.user.username)
+        award = Award.objects.get(awardid = award_idnum)
+        try:
+            application = Application.objects.get(award = award, student = FSJ_user).delete()
+            
+        except:
+            pass
 
+    return redirect('home')
+    
 
