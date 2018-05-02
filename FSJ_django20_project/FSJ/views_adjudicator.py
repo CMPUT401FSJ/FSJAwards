@@ -98,9 +98,11 @@ def adjudicator_add_edit_comment_ranking(request, award_idnum, application_idnum
             form = CommentRestrictedForm(request.POST,  prefix = "form")
             if form.is_valid():
                 comment = form.save(commit = False)
-                comment.application = application
-                comment.adjudicator = FSJ_user
-                comment.save()
+                
+                if comment.comment_text:
+                    comment.application = application
+                    comment.adjudicator = FSJ_user
+                    comment.save()
         
     try:
         
