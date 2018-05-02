@@ -1,6 +1,7 @@
 env
 *.DS_Store
 *.pyc
+*.db
 __pycache__
 fsj.db
 FSJ_django20_project/FSJ/migrations/
