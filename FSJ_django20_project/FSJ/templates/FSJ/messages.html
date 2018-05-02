@@ -1,9 +1,16 @@
+{% load i18n %} {# NOTE YOU MUST LOAD i18n to every HTML page even though it's also loaded to base.html #}
+{% load static %}
+
 <div>
-    {% if messages %}
-        <ul class="messages">
-            {% for message in messages %}
-                <li class="{{ message.tags }}">{{ message }}</li>
-            {% endfor %}
-        </ul>
+  {% for message in messages %}
+    <div class="{{ message.tags }}">{{ message }} &nbsp;
+    {% if message.tags == "alert-danger" %}
+        <img id="redx" src="{% static "FSJ/redx.png" %}" alt={% trans "Red X" %} />
     {% endif %}
+    {% if message.tags == "alert-success" %}
+        <img id="greencheck" src="{% static "FSJ/greencheck.png" %}" alt={% trans "Green Checkmark" %} />
+    {% endif %}
+    </div>
+  {% endfor %}
+
 </div>
