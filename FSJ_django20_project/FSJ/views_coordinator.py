@@ -565,6 +565,7 @@ def coordinator_application_list(request, award_idnum):
     context["application_list"] = application_list
     context["return_url"] = "/coord_awardslist/"
     context["award"] = award
+    context["url"] = "/coord_awardslist/" + str(award_idnum) + "/applications/action/"
 
     template = loader.get_template("FSJ/application_list.html")
     return HttpResponse(template.render(context, request))

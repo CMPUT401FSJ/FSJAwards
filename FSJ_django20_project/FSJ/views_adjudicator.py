@@ -48,7 +48,7 @@ def adjudicator_application_list(request, award_idnum):
     except Award.DoesNotExist:
         raise Http404("Award does not exist")
 
-    application_list = award.applications.filter(is_reviewed = True, is_archived = False)
+    application_list = award.applications.filter(is_archived = False)
     ranking_list = Ranking.objects.filter(award = award, adjudicator = FSJ_user).order_by('rank')
     
     sorted_application_list = []
@@ -69,9 +69,24 @@ def adjudicator_application_list(request, award_idnum):
     context["application_list"] = application_list
     context["return_url"] = "/adj_awardslist/"
     context["award"] = award
+    context["url"] = "/adj_awardslist/" + str(award_idnum) + "/applications/action/"
 
     template = loader.get_template("FSJ/application_list.html")
     return HttpResponse(template.render(context, request))
+
+def adjudicator_application_action(request, award_idnum):
+    FSJ_user = get_FSJ_user(request.user.username)
+    
+    try:
+        award = Award.objects.get(awardid = award_idnum)
+    except Award.DoesNotExist:
+        raise Http404("Award does not exist")
+
+    if request.method == 'POST':
+        if "_adjreview" in request.POST:
+            award.add_reviewed(FSJ_user)
+
+    return redirect('/adj_awardslist/')
 
 
 @login_required
@@ -81,8 +96,7 @@ def adjudicator_add_edit_comment_ranking(request, award_idnum, application_idnum
     
     application = Application.objects.get(application_id = application_idnum)
     
-    if FSJ_user not in application.adjudicators.all():
-        application.adjudicators.add(FSJ_user)
+    application.add_reviewed(FSJ_user)
     
     try:
         comment = Comment.objects.get(application = application, adjudicator = FSJ_user)
