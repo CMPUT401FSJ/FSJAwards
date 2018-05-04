@@ -1,6 +1,7 @@
 {% extends "FSJ/base_with_banner.html" %}
 {% load i18n %} {# NOTE YOU MUST LOAD i18n to every HTML page even though it's also loaded to base.html #}
 {% load widget_tweaks %}
+{% load fsj_tags %}
 
 {# A page for the adjudicator to view a list of awards as well as providing adding, deleting, and editing functionality #}
 {# This page is separate from the template for displaying awards to sutdents due to the added functionality #}
@@ -40,11 +41,11 @@
                                 <input type="checkbox" disabled {% if award.is_active %}checked{% endif %}>
                             </td>
                             
-                            {% if award.get_review_status == "No Applications" %}
+                            {% if award.applications.count == 0 %}
                                 {# Translators: No applications message in adjudicator awards list #}
                                 <td>{% trans "No Applications" %}</td>
                             {% else %}    
-                                <td><a href="/adj_awardslist/{{ award.awardid }}/applications/">{% trans "View" %}</a></td>
+                                <td><a href="/adj_awardslist/{{ award.awardid }}/applications/">{% get_review_status %}</a></td>
                             {% endif %}
                             
                         </tr>
