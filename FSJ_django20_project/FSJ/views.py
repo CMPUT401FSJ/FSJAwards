@@ -267,5 +267,8 @@ def view_application(request):
     context["url"] = url
     context["return_url"] = return_url
     context["archived"] = False
+    context["FSJ_user"] = FSJ_user
     template = loader.get_template("FSJ/view_application.html")
+    
+    application.add_viewed(FSJ_user)
     return HttpResponse(template.render(context, request))  
