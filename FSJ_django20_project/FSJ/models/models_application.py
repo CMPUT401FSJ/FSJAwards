@@ -73,3 +73,12 @@ class Application(models.Model):
             
         except:
             pass        
+        
+        
+    def is_adj_reviewed(self, FSJ_user):
+        
+        if FSJ_user in self.adjudicators.all():
+            return True
+        
+        else:
+            return False

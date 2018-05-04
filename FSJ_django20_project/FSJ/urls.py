@@ -53,6 +53,7 @@ urlpatterns = [
     path('student_awardslist/<str:award_idnum>/delete/', views.student_deleteapplication, name = 'student_deleteapplication'),
     path('adj_awardslist/', views.adjudicator_awards, name = 'adj_awardslist'),
     path('adj_awardslist/<str:award_idnum>/applications/', views.adjudicator_application_list, name = 'adj_applicationlist'),
+    path('adj_awardslist/<str:award_idnum>/applications/action/', views.adjudicator_application_action, name = 'adj_application_action'),
     path('adj_awardslist/<str:award_idnum>/<str:application_idnum>/edit/', views.adjudicator_add_edit_comment_ranking, name = 'adj_editcomment'),
     path('adj_awardslist/<str:award_idnum>/<str:application_idnum>/delete/', views.adjudicator_delete_comment, name = 'adj_deletecomment'),
     path('view_student', views.view_student, name = 'view_student'),

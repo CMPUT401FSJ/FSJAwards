@@ -1,6 +1,7 @@
 {% extends "FSJ/base_with_banner.html" %}
 {% load i18n %} {# NOTE YOU MUST LOAD i18n to every HTML page even though it's also loaded to base.html #}
 {% load widget_tweaks %}
+{% load fsj_tags %}
 
 {# A page for the coordinator to view a list of awards as well as providing adding, deleting, and editing functionality #}
 {# This page is separate from the template for displaying awards to sutdents due to the added functionality #}
@@ -121,20 +122,20 @@
                             {% if FSJ_user.user_class == "Coordinator"%}
                                 {# Translators: Edit link in coordinator awards list #}
                                 <td><a href="/coord_awardslist/{{ award.awardid }}/">{% trans "Edit" %}</a></td>
-                                {% if get_review_status == "No Applications" %}
+                                {% if award.applications.count == 0 %}
                                     {# Translators: No applications message in coordinator awards list #}
                                     <td>{% trans "No Applications" %}</td>
                                 {% else %}
-                                    <td><a href="/coord_awardslist/{{ award.awardid }}/applications/">{{ get_review_status }}</a></td>
+                                    <td><a href="/coord_awardslist/{{ award.awardid }}/applications/">{% get_review_status %}</a></td>
                                 {% endif %} 
                             {% endif %}
                             
                             {% if FSJ_user.user_class == "Adjudicator" %}
-                                {% if get_review_status == "No Applications" %}
+                                {% if award.applications.count == 0 %}
                                     {# Translators: No applications message in adjudicator awards list #}
                                     <td>{% trans "No Applications" %}</td>
                                 {% else %}    
-                                    <td><a href="/adj_awardslist/{{ award.awardid }}/applications/">{{ get_review_status }}</a></td>
+                                    <td><a href="/adj_awardslist/{{ award.awardid }}/applications/">{% get_review_status %}</a></td>
                                 {% endif %}
                             {% endif %}
                             

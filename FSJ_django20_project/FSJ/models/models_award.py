@@ -4,7 +4,7 @@ from django.db import models
 from .models_yearofstudy import *
 from datetime import datetime, timezone
 from .models_program import Program
-from .models_Adjudicator import Adjudicator
+from .models_adjudicator import Adjudicator
 
 class Award(models.Model):
 	#All awards will have these attributes in common, will be able to select multiple years of study
@@ -18,7 +18,7 @@ class Award(models.Model):
 	end_date = models.DateTimeField(auto_now = False, auto_now_add = False, verbose_name = _("End Date"))
 	documents_needed = models.BooleanField(verbose_name = _("Documents Required"))
 	is_active = models.BooleanField(verbose_name = _("Is Active"))
-	adjudicators = models.ManyToManyField(Adjudicator, related_name='applications', verbose_name = _("Adjudicators"))
+	adjudicators = models.ManyToManyField(Adjudicator, related_name='awards', verbose_name = _("Adjudicators"))
 
 	#returns award name as a string
 	def __str__(self):
@@ -61,8 +61,20 @@ class Award(models.Model):
 		elif FSJ_user.user_class() == "Adjudicator":
 			if FSJ_user in self.adjudicators.all():
 				return _("Review Completed")
-			else:
-				return _("Review Pending")
+			else: 
+				applications = self.applications.all()
+				need_review = 0
+				for application in applications:
+					
+					if not application.is_adj_reviewed(FSJ_user):
+						need_review += 1
+						
+				if need_review == applications.count():
+					return _("Review Required")
+				else:
+					return _("Review In Progress")
+			
+
 
 
 
