@@ -1,4 +1,4 @@
-from .models import Committee
+from ..models import Committee
 from django.forms import ModelForm, CheckboxSelectMultiple
 
 #Modelform for a committee, this restricts what fields will be enabled/disabled as well as widgets, etc

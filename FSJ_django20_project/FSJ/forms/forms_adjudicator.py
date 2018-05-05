@@ -1,4 +1,4 @@
-from .models import Adjudicator
+from ..models import Adjudicator
 from .forms_modelform import ModelForm
 
 class AdjudicatorForm(ModelForm):

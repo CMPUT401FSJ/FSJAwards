@@ -1,4 +1,4 @@
-from .models import YearOfStudy
+from ..models import YearOfStudy
 from django.forms import CheckboxSelectMultiple
 from .forms_modelform import ModelForm
 

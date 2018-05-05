@@ -1,4 +1,4 @@
-from .models import Comment
+from ..models import Comment
 from .forms_modelform import ModelForm
 
 class CommentForm(ModelForm):
