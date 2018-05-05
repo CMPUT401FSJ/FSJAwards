@@ -1,4 +1,4 @@
-from .models import Student
+from ..models import Student
 from .forms_modelform import ModelForm
 from django.forms import TextInput
 

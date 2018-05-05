@@ -1,4 +1,4 @@
-from .models import Ranking
+from ..models import Ranking
 from .forms_modelform import ModelForm
 from django import forms
 from django.core.exceptions import ObjectDoesNotExist, ValidationError
