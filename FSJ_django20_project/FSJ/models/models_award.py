@@ -88,3 +88,11 @@ class Award(models.Model):
 
 		except:
 			pass        	
+		
+		
+	def reset(self, new_start_date, new_end_date):
+		
+		self.applications.all().delete()
+		self.adjudicators.all().delete()
+		self.start_date = new_start_date
+		self.end_date = new_end_date
