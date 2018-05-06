@@ -23,6 +23,8 @@
                     <th>{% trans "Start Date" %}</th>
                     {# Translators: Award end date header in awards table #}
                     <th>{% trans "End Date" %}</th>
+                    {# Translators: Documents required header in awards table #}
+                    <th>{% trans "Doc?" %}</th>
                     {# Translators: Award is active header in awards table #}
                     <th>{% trans "Active?" %}</th>
                     {# Translators: Awards application header in awards table #}
@@ -37,6 +39,9 @@
                             <td>{{award.description|linebreaks }}</td>
                             <td>{{award.start_date}}</td>
                             <td>{{award.end_date}}</td>
+                            <td>
+                                <input type="checkbox" disabled {% if award.documents_needed %}checked{% endif %}>
+                            </td>
                             <td>
                                 <input type="checkbox" disabled {% if award.is_active %}checked{% endif %}>
                             </td>
