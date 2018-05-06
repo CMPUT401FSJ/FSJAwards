@@ -4,11 +4,8 @@ from django.utils.translation import gettext_lazy as _
 
 class DateChangeForm(forms.Form):
 
-
     start_date = forms.DateTimeField(widget = forms.DateInput(format = '%Y-%m-%d'), label = _("Start date"))
     end_date = forms.DateTimeField(widget = forms.DateInput(format = '%Y-%m-%d'), label = _("End date"))
-    
-    
     
     def __init__(self, *args, **kwargs):
         super(DateChangeForm, self).__init__(*args, **kwargs)    

@@ -294,6 +294,15 @@ def coordinator_awardaction(request):
                 award = Award.objects.get(awardid=itemid)
                 award.is_active = False
                 award.save()       
+                
+        elif '_reset' in request.POST:
+            form = DateChangeForm(request.POST)
+            if form.is_valid():            
+                for itemid in awardid_list:
+                    award = Award.objects.get(awardid=itemid)
+                    award.reset(form.cleaned_data['start_date'], form.cleaned_data['end_date'])
+                    award.save()
+                    
 
     return redirect('coord_awardslist')
 
