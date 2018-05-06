@@ -215,6 +215,7 @@ def coordinator_awards(request, FSJ_user):
     filtered_list = AwardFilter(request.GET, queryset=awards_list)
     template = loader.get_template("FSJ/awards_list.html")
     context = get_standard_context(FSJ_user)
+    context["form"] = DateChangeForm()
     context["awards_list"] = awards_list
     context["filter"] = filtered_list
     context["return_url"] = "/coord_awardslist/"
