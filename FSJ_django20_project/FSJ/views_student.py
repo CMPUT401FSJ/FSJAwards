@@ -55,6 +55,21 @@ def student_awardslist(request):
     context["submitted_list"] = submitted_list
     return HttpResponse(template.render(context,request))
 
+@login_required
+@user_passes_test(is_student)
+def student_award_history(request):
+    FSJ_user = get_FSJ_user(request.user.username)
+    now = datetime.now(timezone.utc)  
+    
+    awards_id_list = Application.objects.filter(Q(student = FSJ_user), Q(is_submitted = True)).values_list('award', flat=True)
+    awards_list = Award.objects.filter(Q(pk__in=awards_id_list), Q(start_date__gt=now) | Q(end_date__lt=now))
+    
+    template = loader.get_template("FSJ/student_award_history.html")
+    context = get_standard_context(FSJ_user)
+    context["awards_list"] = awards_list    
+    
+    return HttpResponse(template.render(context,request))
+    
 
 @login_required
 @user_passes_test(is_student)

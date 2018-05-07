@@ -51,6 +51,7 @@ urlpatterns = [
     path('student_awardslist/<str:award_idnum>/edit/', views.student_editapplication, name = 'student_editapplication'),
     path('student_awardslist/<str:award_idnum>/unsubmit/', views.student_unsubmitapplication, name = 'student_unsubmitapplication'),
     path('student_awardslist/<str:award_idnum>/delete/', views.student_deleteapplication, name = 'student_deleteapplication'),
+    path('student_awardhistory/', views.student_award_history, name = 'student_awardhistory'),
     path('adj_awardslist/', views.adjudicator_awards, name = 'adj_awardslist'),
     path('adj_awardslist/<str:award_idnum>/applications/', views.adjudicator_application_list, name = 'adj_applicationlist'),
     path('adj_awardslist/<str:award_idnum>/applications/action/', views.adjudicator_application_action, name = 'adj_application_action'),
