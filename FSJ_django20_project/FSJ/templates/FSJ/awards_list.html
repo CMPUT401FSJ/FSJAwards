@@ -66,17 +66,14 @@
             <form action="/coord_awardslist/action/" method="POST">
             {% csrf_token %}
             
+                {# Translators: Button to add award #}
+                <a role="button" class="btn btn-success" href='/coord_awardslist/add'>{% trans "Add award" %}</a>
                 {# Translators: Button to activate selected awards #}
                 <button class = "btn btn-action" type="submit" name="_activate">{% trans "Activate award(s)" %}</button>
                 {# Translators: Button to deactivate selected awards #}
-                <button class = "btn btn-action" type="submit" name="_deactivate">{% trans "Deactivate award(s)" %}</button> <br>
-                <br>
-                
-                {# Translators: Button to add award #}
-                <a role="button" class="btn btn-success" href='/coord_awardslist/add'>{% trans "Add award" %}</a>
+                <button class = "btn btn-action" type="submit" name="_deactivate">{% trans "Deactivate award(s)" %}</button>
                 {# Translators: Button to delete selected awards #}
-                <button class="btn btn-danger" type="submit" name="_delete">{% trans "Delete award(s)" %}</button>    
-                
+                <button class="btn btn-danger" type="submit" name="_delete" onclick="return confirm('Are you sure you want to delete these awards?');">{% trans "Delete award(s)" %}</button>
                 
                 <table class="table table-bordered table-striped table-hover" align="center">
                     <tr>
@@ -123,17 +120,14 @@
                     {% endfor %}
                 </table>
                 
+                {# Translators: Button to add award #}
+                <a role="button" class="btn btn-success" href='/coord_awardslist/add'>{% trans "Add award" %}</a>
                 {# Translators: Button to activate selected awards #}
                 <button class = "btn btn-action" type="submit" name="_activate">{% trans "Activate award(s)" %}</button>
                 {# Translators: Button to deactivate selected awards #}
-                <button class = "btn btn-action" type="submit" name="_deactivate">{% trans "Deactivate award(s)" %}</button> <br>
-                <br>
-                
-                
-                {# Translators: Button to add award #}
-                <a role="button" class="btn btn-success" href='/coord_awardslist/add'>{% trans "Add award" %}</a>
+                <button class = "btn btn-action" type="submit" name="_deactivate">{% trans "Deactivate award(s)" %}</button>
                 {# Translators: Button to delete selected awards #}
-                <button class="btn btn-danger" type="submit" name="_delete">{% trans "Delete award(s)" %}</button>
+                <button class="btn btn-danger" type="submit" name="_delete" onclick="return confirm('Are you sure you want to delete these awards?');">{% trans "Delete award(s)" %}</button>
 
                 <br>
                 <br>
