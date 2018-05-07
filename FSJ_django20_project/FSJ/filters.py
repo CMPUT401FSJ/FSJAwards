@@ -8,7 +8,7 @@ LOOKUP_TYPES = [
 ]
 
 class DateInput(DateInput):
-    input_type = 'date'
+	input_type = 'date'
 
 
 class StudentFilter(django_filters.FilterSet):
@@ -39,3 +39,11 @@ class AwardFilter(django_filters.FilterSet):
 	class Meta:
 		model = Award
 		fields = ['award_name','description','value','programs','years_of_study','start_date', 'end_date', 'documents_needed','is_active']
+		
+class ApplicationFilter(django_filters.FilterSet):
+	#student__ccid = django_filters.CharFilter(lookup_expr='icontains')
+	#award__award_name = django_filters.CharFilter(lookup_expr='icontains')
+	
+	class Meta:
+		model = Application
+		fields = ['student', 'award']

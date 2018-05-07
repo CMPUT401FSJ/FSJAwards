@@ -58,7 +58,8 @@ urlpatterns = [
     path('adj_awardslist/<str:award_idnum>/<str:application_idnum>/edit/', views.adjudicator_add_edit_comment_ranking, name = 'adj_editcomment'),
     path('adj_awardslist/<str:award_idnum>/<str:application_idnum>/delete/', views.adjudicator_delete_comment, name = 'adj_deletecomment'),
     path('view_student', views.view_student, name = 'view_student'),
-    path('view_application', views.view_application, name = 'view_application')
+    path('view_application', views.view_application, name = 'view_application'),
+    path('coord_applicationlist/', views.coordinator_application_tab, name='coord_applicationtab')
 ]
 
 if settings.DEBUG:

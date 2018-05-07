@@ -1,0 +1,75 @@
+{% extends "FSJ/base_with_banner.html" %}
+{% load i18n %} {# NOTE YOU MUST LOAD i18n to every HTML page even though it's also loaded to base.html #}
+{% load widget_tweaks %}
+{% load fsj_tags %}
+
+{% block heading %}
+    {# Translators: Applications page home label #}
+    {% trans "Applications" %}
+{% endblock %}
+
+
+{% block content %}
+    <body>
+        <div class='center-content'>
+            <form method="get">
+                <form method="get">
+                    <div class = "well">
+                        <div class="row">
+                            <div class = "form-group col-sm-4 col-md-3">
+                                {{ filter.form.student.label_tag }}
+                                {% render_field filter.form.student class="form-control" %}
+                            </div>
+                            <div class = "form-group col-sm-4 col-md-3">
+                                {{ filter.form.award.label_tag }}
+                                {% render_field filter.form.award class="form-control" %}
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-success">
+                            <span class="glyphicon glyphicon-search"></span> 
+                            {# Translators: Search button for filtering #}
+                            {% trans "Search" %}    
+                    </button> 
+                    <a role="button" class="btn btn-success" href="{{ return_url }}">{% trans "Clear Filters" %}</a>
+                    </div>
+                </form>
+            </form>
+            
+            <form action="/coord_applicationlist/action/" method="POST">
+            {% csrf_token %}
+            
+                {# Translators: Button to delete selected applications #}
+                <button class="btn btn-danger" type="submit" name="_delete" onclick="return confirm('Are you sure you want to delete these applications?');">{% trans "Delete application(s)" %}</button>
+                
+                <table class="table table-bordered table-striped table-hover" align="center">
+                    <tr>
+                
+                        {# Translators: Select header in application table #}
+                        <th class="select-column"><input type='checkbox' onClick="toggle(this);"/></th>
+                        {# Translators: Student header in application table #}
+                        <th>{% trans "Student" %}</th>
+                        {# Translators: Award header in application table #}
+                        <th>{% trans "Award" %}</th>
+                        {# Translators: Submitted header in application table #}
+                        <th>{% trans "Submitted?" %}</th>
+                        
+                    </tr>
+                    {% for application in filter.qs %}
+                        <tr>
+                                
+                            <td><input type="checkbox"  name="applicationaction" value="{{application.application_id}}" > </td>
+                            <td>{{application.student }}</td>
+                            <td>{{application.award}}</td>
+                            <td>
+                                <input type="checkbox" disabled {% if application.is_submitted %}checked{% endif %}>
+                            </td>
+                            
+                        </tr>
+                    {% endfor %}
+                </table>
+                
+            </form>
+            
+        </div>   
+    </body>
+{% endblock %}

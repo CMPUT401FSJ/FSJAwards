@@ -772,3 +772,15 @@ def coordinator_upload_students(request):
     url = "/studentlist/addmulti/"
     context["url"] = url
     return HttpResponse(template.render(context, request))    
+
+def coordinator_application_tab(request):
+    FSJ_user = get_FSJ_user(request.user.username)
+    application_list = Application.objects.all()
+    filtered_list = ApplicationFilter(request.GET, queryset=application_list)
+    template = loader.get_template("FSJ/application_tab.html")
+    context = get_standard_context(FSJ_user)
+    context["application_list"] = application_list
+    context["filter"] = filtered_list
+    context["return_url"] = "/coord_applicationlist/"
+    return HttpResponse(template.render(context,request))    
+    
