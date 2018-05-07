@@ -483,7 +483,7 @@ def coordinator_addcommittee(request):
         for award in committee.awards.all():
             if award in awards_list:
                 awards_blocked.append(award.awardid)
-    available_awards = Award.objects.exclude(awardid__in = awards_blocked).values_list('awardid','award_name')
+    available_awards = Award.objects.exclude(awardid__in = awards_blocked).values_list('awardid','name')
     # If the coordinator has just saved their new comittee, check for form validity before saving. Invalid forms are put back into the template to show errors.
     if request.method == "POST":
         # Loads adjudicator form with the new information
@@ -519,7 +519,7 @@ def coordinator_committeeedit(request, committee_idnum):
         for award in instance.awards.all():
             if award in awards_list:
                 awards_blocked.append(award.awardid)
-    available_awards = Award.objects.exclude(awardid__in = awards_blocked).values_list('awardid','award_name')
+    available_awards = Award.objects.exclude(awardid__in = awards_blocked).values_list('awardid','name')
     selectedawards = committee.awards.all()
 
     if request.method == "POST":

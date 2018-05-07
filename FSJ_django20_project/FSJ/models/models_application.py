@@ -20,10 +20,10 @@ class Application(models.Model):
     adjudicators = models.ManyToManyField(Adjudicator, related_name='applications', verbose_name = _("Adjudicators"))
     
     def __str__(self):
-        return self.student.ccid + "'s application for " + self.award.award_name    
+        return self.student.ccid + "'s application for " + self.award.name    
     
     def getawardname(self):
-        return self.award.award_name
+        return self.award.name
     
     def getstudentccid(self):
         return self.student.ccid

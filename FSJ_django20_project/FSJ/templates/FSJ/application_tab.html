@@ -17,12 +17,32 @@
                     <div class = "well">
                         <div class="row">
                             <div class = "form-group col-sm-4 col-md-3">
-                                {{ filter.form.student.label_tag }}
-                                {% render_field filter.form.student class="form-control" %}
+                                {{ filter.form.student_ccid.label_tag }}
+                                {% render_field filter.form.student_ccid class="form-control" %}
+                            </div>
+                            <div class = "form-group col-sm-4 col-md-3">
+                                {{ filter.form.student_first_name.label_tag }}
+                                {% render_field filter.form.student_first_name class="form-control" %}
+                            </div>
+                            <div class = "form-group col-sm-4 col-md-3">
+                                {{ filter.form.student_last_name.label_tag }}
+                                {% render_field filter.form.student_last_name class="form-control" %}
                             </div>
                             <div class = "form-group col-sm-4 col-md-3">
                                 {{ filter.form.award.label_tag }}
                                 {% render_field filter.form.award class="form-control" %}
+                            </div>
+                            <div class = "form-group col-sm-4 col-md-3">
+                                {{ filter.form.award_name.label_tag }}
+                                {% render_field filter.form.award_name class="form-control" %}
+                            </div>
+                            <div class = "form-group col-sm-4 col-md-3">
+                                {{ filter.form.award__programs.label_tag }}
+                                {% render_field filter.form.award__programs class="form-control" %}
+                            </div>
+                            <div class = "form-group col-sm-4 col-md-3">
+                                {{ filter.form.is_submitted.label_tag }}
+                                {% render_field filter.form.is_submitted class="form-control" %}
                             </div>
                         </div>
                         <button type="submit" class="btn btn-success">
@@ -48,6 +68,11 @@
                         <th class="select-column"><input type='checkbox' onClick="toggle(this);"/></th>
                         {# Translators: Student header in application table #}
                         <th>{% trans "Student" %}</th>
+                        <th>{% trans "CCID" %}</th>
+                        <th>{% trans "Student ID" %}</th>
+                        <th>{% trans "Program" %}</th>
+                        <th>{% trans "Year" %}</th>
+                        <th>{% trans "GPA" %}</th>
                         {# Translators: Award header in application table #}
                         <th>{% trans "Award" %}</th>
                         {# Translators: Submitted header in application table #}
@@ -58,7 +83,20 @@
                         <tr>
                                 
                             <td><input type="checkbox"  name="applicationaction" value="{{application.application_id}}" > </td>
-                            <td>{{application.student }}</td>
+                            <td>{{application.student.get_name }}</td>
+                            <td>{{ application.student.ccid }}</td>
+                            <td>{{ application.student.student_id }}</td>
+                            <td>
+                                {% if application.student.program %}
+                                    {{ application.student.program }}
+                                {% endif %}
+                            </td>
+                            <td>{{ application.student.year }}</td>
+                            <td>
+                                {% if application.student.gpa %} 
+                                    {{ application.student.gpa }}
+                                {% endif %}
+                            </td>
                             <td>{{application.award}}</td>
                             <td>
                                 <input type="checkbox" disabled {% if application.is_submitted %}checked{% endif %}>

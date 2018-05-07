@@ -18,8 +18,8 @@
                 <div class = "well">
                   <div class="row">
                     <div class = "form-group col-sm-4 col-md-3">
-                      {{ filter.form.award_name.label_tag }}
-                      {% render_field filter.form.award_name class="form-control" %}
+                      {{ filter.form.name.label_tag }}
+                      {% render_field filter.form.name class="form-control" %}
                     </div>
                     <div class = "form-group col-sm-4 col-md-3">
                       {{ filter.form.description.label_tag }}
@@ -30,12 +30,12 @@
                       {% render_field filter.form.value class="form-control" %}
                     </div>
                     <div class = "form-group col-sm-4 col-md-3">
-                      {{ filter.form.programs.label_tag }}
-                      {% render_field filter.form.programs class="form-control" %}
-                    </div>
-                    <div class = "form-group col-sm-4 col-md-3">
                       {{ filter.form.years_of_study.label_tag }}
                       {% render_field filter.form.years_of_study class="form-control" %}
+                    </div>
+                    <div class = "form-group col-sm-6 col-md-5">
+                      {{ filter.form.programs.label_tag }}
+                      {% render_field filter.form.programs class="form-control" %}
                     </div>
                     <div class = "form-group col-sm-4 col-md-3">
                       {{ filter.form.start_date.label_tag }}
@@ -101,7 +101,7 @@
                         <tr>
                                 
                             <td><input type="checkbox"  name="awardaction" value="{{award.awardid}}" > </td>
-                            <td>{{award.award_name }}</td>
+                            <td>{{award.name }}</td>
                             <td>{{award.description|linebreaks }}</td>
                             <td>{{award.start_date}}</td>
                             <td>{{award.end_date}}</td>

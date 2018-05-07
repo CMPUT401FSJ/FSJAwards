@@ -3,14 +3,14 @@
 
 {% block heading %}
     {# Translators: View Application page heading #}
-    {% trans "View Application for " %}{{award.award_name}}
+    {% trans "View Application for " %}{{award.name}}
 {% endblock %}
 
 {% block content %}
     <div class='center-content'>
         <div>
             <h4><b>{% trans "Award Name:" %}</b></h4> 
-            <div class=tab-text>{{ award.award_name }}</div>
+            <div class=tab-text>{{ award.name }}</div>
         </div>
         <div>
             <h4><b>{% trans "Award Description:" %}</b></h4>

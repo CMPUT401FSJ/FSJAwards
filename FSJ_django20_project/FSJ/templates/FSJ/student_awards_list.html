@@ -31,7 +31,7 @@
             {% if awards_list %}
                 {% for award in awards_list %}
                     <tr>
-                        <td>{{award.award_name }}</td>
+                        <td>{{award.name }}</td>
                         <td>{{award.description|linebreaks}}</td>
                         <td>{{award.value}}</td>
                         <td>
@@ -52,7 +52,7 @@
             {% if in_progress_list %}
                 {% for award in in_progress_list %}
                     <tr>
-                        <td>{{award.award_name }}</td>
+                        <td>{{award.name }}</td>
                         <td>{{award.description|linebreaks}}</td>
                         <td>{{award.value}}</td>
                         <td>
@@ -73,7 +73,7 @@
             {% if submitted_list %}
                 {% for award in submitted_list %}
                     <tr>
-                        <td>{{award.award_name }}</td>
+                        <td>{{award.name }}</td>
                         <td>{{award.description|linebreaks}}</td>
                         <td>{{award.value}}</td>
                         <td>

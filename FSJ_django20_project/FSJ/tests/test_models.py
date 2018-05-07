@@ -183,14 +183,14 @@ class ApplicationModelTests(TestCase):
         self.program_code = "PRFG"
         self.program_name = "Science"
         self.program = Program.objects.create(code = self.program_code, name = self.program_name)
-        self.award_name = "This award"
+        self.name = "This award"
         self.award_description = "For students"
         self.award_value = "One gold pen"
         self.award_start_date = str(datetime.datetime.now(pytz.timezone('America/Vancouver')))
         self.award_end_date = str(datetime.datetime.now(pytz.timezone('America/Edmonton')))
         self.award_documents_needed = False
         self.award_is_active = True
-        self.award = Award.objects.create(award_name = self.award_name, description = self.award_description, value = self.award_value,
+        self.award = Award.objects.create(name = self.name, description = self.award_description, value = self.award_value,
                                           start_date = self.award_start_date, end_date = self.award_end_date, 
                                           documents_needed = self.award_documents_needed, is_active = self.award_is_active)
         self.award.programs.add(self.program)
@@ -246,14 +246,14 @@ class ProgramModelTests(TestCase):
         self.program_code = "PRFG"
         self.program_name = "Science"
         self.program = Program.objects.create(code = self.program_code, name = self.program_name)
-        self.award_name = "This award"
+        self.name = "This award"
         self.award_description = "For students"
         self.award_value = "One gold pen"
         self.award_start_date = str(datetime.datetime.now(pytz.timezone('America/Vancouver')))
         self.award_end_date = str(datetime.datetime.now(pytz.timezone('America/Edmonton')))
         self.award_documents_needed = False
         self.award_is_active = True
-        self.award = Award.objects.create(award_name = self.award_name, description = self.award_description, value = self.award_value,
+        self.award = Award.objects.create(name = self.name, description = self.award_description, value = self.award_value,
                                           start_date = self.award_start_date, end_date = self.award_end_date,
                                           documents_needed = self.award_documents_needed, is_active = self.award_is_active)
         self.award.programs.add(self.program)
@@ -284,7 +284,7 @@ class ProgramModelTests(TestCase):
 
 class AwardModelTests(TestCase):
     def setUp(self):
-        self.award_name = "Award Name 1"
+        self.name = "Award Name 1"
         self.description = "Award Description 1"
         self.value = "Award Value 1"
         self.start_date = str(datetime.datetime.now(pytz.timezone('America/Vancouver')))
@@ -296,7 +296,7 @@ class AwardModelTests(TestCase):
         self.is_active = True 
         self.year = YearOfStudy.objects.create(year = self.yearname)
         self.program = Program.objects.create(code = self.programcode, name = self.programname)
-        self.award = Award.objects.create(award_name = self.award_name, description = self.description, value = self.value,
+        self.award = Award.objects.create(name = self.name, description = self.description, value = self.value,
                                     start_date = self.start_date, end_date = self.end_date, 
                                     documents_needed = self.documents_needed, is_active = self.is_active)
         self.award.programs.add(self.program)
@@ -319,7 +319,7 @@ class CommitteeModelTests(TestCase):
         self.adjudicator_email = "Adjudicator1@test.com"
         self.adjudicator = Adjudicator.objects.create(ccid = self.adjudicator_ccid, first_name = self.adjudicator_first_name,
                                    last_name = self.adjudicator_last_name, email = self.adjudicator_email)
-        self.award_name = "Award Name 1"
+        self.name = "Award Name 1"
         self.description = "Award Description 1"
         self.value = "Award Value 1"
         self.start_date = str(datetime.datetime.now(pytz.timezone('America/Vancouver')))
@@ -332,7 +332,7 @@ class CommitteeModelTests(TestCase):
         self.year = YearOfStudy.objects.create(year = self.yearname)
         self.program = Program.objects.create(code = self.programcode, name = self.programname)
 
-        self.award = Award.objects.create(award_name = self.award_name, description = self.description, value = self.value,
+        self.award = Award.objects.create(name = self.name, description = self.description, value = self.value,
                                     start_date = self.start_date, end_date = self.end_date, 
                                     documents_needed = self.documents_needed, is_active = self.is_active)
         self.award.programs.add(self.program)
@@ -363,14 +363,14 @@ class CommentModelTests(TestCase):
         self.program_code = "PRFG"
         self.program_name = "Science"
         self.program = Program.objects.create(code = self.program_code, name = self.program_name)
-        self.award_name = "This award"
+        self.name = "This award"
         self.award_description = "For students"
         self.award_value = "One gold pen"
         self.award_start_date = str(datetime.datetime.now(pytz.timezone('America/Vancouver')))
         self.award_end_date = str(datetime.datetime.now(pytz.timezone('America/Edmonton')))
         self.award_documents_needed = False
         self.award_is_active = True
-        self.award = Award.objects.create(award_name = self.award_name, description = self.award_description, value = self.award_value,
+        self.award = Award.objects.create(name = self.name, description = self.award_description, value = self.award_value,
                                           start_date = self.award_start_date, end_date = self.award_end_date, 
                                           documents_needed = self.award_documents_needed, is_active = self.award_is_active)
         self.award.programs.add(self.program)
@@ -410,14 +410,14 @@ class RankingModelTests(TestCase):
         self.program_code = "PRFG"
         self.program_name = "Science"
         self.program = Program.objects.create(code = self.program_code, name = self.program_name)
-        self.award_name = "This award"
+        self.name = "This award"
         self.award_description = "For students"
         self.award_value = "One gold pen"
         self.award_start_date = str(datetime.datetime.now(pytz.timezone('America/Vancouver')))
         self.award_end_date = str(datetime.datetime.now(pytz.timezone('America/Edmonton')))
         self.award_documents_needed = False
         self.award_is_active = True
-        self.award = Award.objects.create(award_name = self.award_name, description = self.award_description, value = self.award_value,
+        self.award = Award.objects.create(name = self.name, description = self.award_description, value = self.award_value,
                                           start_date = self.award_start_date, end_date = self.award_end_date, 
                                           documents_needed = self.award_documents_needed, is_active = self.award_is_active)
         self.award.programs.add(self.program)
