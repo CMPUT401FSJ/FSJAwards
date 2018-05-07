@@ -9,6 +9,12 @@
                 <a class="header" href='/home'>{% trans "Home" %}</a>
             </div>
         {% endif %}
+        {% if FSJ_user.user_class == "Student" %}
+            <div>
+                {# Translators: History link on the main banner #}
+                <a class="header" href='/student_awardhistory'>{% trans "History" %}</a>
+            </div>
+        {% endif %}
         {% if FSJ_user.user_class == "Coordinator" %}
             <div>        
                 {# Translators: Awards link on the main banner #}

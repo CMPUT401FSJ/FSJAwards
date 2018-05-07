@@ -1,0 +1,51 @@
+{% extends "FSJ/base_with_banner.html" %}
+{% load i18n %} {# NOTE YOU MUST LOAD i18n to every HTML page even though it's also loaded to base.html #}
+
+{# A page for students to view awards for which they can apply #}
+{% block heading %}
+    {# Translators: Awards page home label #}
+    {% trans "Application History" %}
+{% endblock %}
+
+{% block content %}
+<body>
+    <div class='center-content'>
+        <table class="table table-bordered table-striped table-hover" align = "center">
+            <tr>
+                {# Translators: Award name header in awards table #}
+                <th>{% trans "Award" %}</th>
+                {# Translators: Award description header in awards table #}
+                <th class="desc-column">{% trans "Description" %}</th>
+                {# Translators: Award value header in awards table #}
+                <th>{% trans "Value" %}</th>
+                {# Translators: Award years of study header in awards table #}
+                <th>{% trans "Years of Study" %}</th>
+                {# Translators: Award start date header in awards table #}
+                <th>{% trans "Start date" %}</th>
+                {# Translators: Award end date header in awards table #}
+                <th>{% trans "End date" %}</th>
+            </tr>
+            
+            {% if awards_list %}
+                {% for award in awards_list %}
+                    <tr>
+                        <td>{{award.award_name }}</td>
+                        <td>{{award.description|linebreaks}}</td>
+                        <td>{{award.value}}</td>
+                        <td>
+                            {% for year in award.years_of_study.all %}
+                                {{year}} <br>
+                            {% endfor %}
+                        </td>
+                        <td>{{award.start_date}}</td>
+                        <td>{{award.end_date}}</td>
+                    </tr>
+                {% endfor %}
+            {% else %}
+                <tr><td colspan=9>{% trans "No past awards" %}</td></tr>
+            {% endif %}
+        </table>
+    </div>
+
+</body>
+{% endblock %}
