@@ -66,28 +66,20 @@
             <form action="/coord_awardslist/action/" method="POST">
             {% csrf_token %}
             
-                {% if FSJ_user.user_class == "Coordinator"%}
-                    {# Translators: Button to activate selected awards #}
-                    <button class = "btn btn-action" type="submit" name="_activate">{% trans "Activate award(s)" %}</button>
-                    {# Translators: Button to deactivate selected awards #}
-                    <button class = "btn btn-action" type="submit" name="_deactivate">{% trans "Deactivate award(s)" %}</button> <br/>
-                    <br/>
-                    
-                    {# Translators: Button to add award #}
-                    <a role="button" class="btn btn-success" href='/coord_awardslist/add'>{% trans "Add award" %}</a>
-                    {# Translators: Button to delete selected awards #}
-                    <button class="btn btn-danger" type="submit" name="_delete">{% trans "Delete award(s)" %}</button>    
-                {% endif %}
-                
+                {# Translators: Button to add award #}
+                <a role="button" class="btn btn-success" href='/coord_awardslist/add'>{% trans "Add award" %}</a>
+                {# Translators: Button to activate selected awards #}
+                <button class = "btn btn-action" type="submit" name="_activate">{% trans "Activate award(s)" %}</button>
+                {# Translators: Button to deactivate selected awards #}
+                <button class = "btn btn-action" type="submit" name="_deactivate">{% trans "Deactivate award(s)" %}</button>
+                {# Translators: Button to delete selected awards #}
+                <button class="btn btn-danger" type="submit" name="_delete" onclick="return confirm('Are you sure you want to delete these awards?');">{% trans "Delete award(s)" %}</button>
                 
                 <table class="table table-bordered table-striped table-hover" align="center">
                     <tr>
-                    
-                        {% if FSJ_user.user_class == "Coordinator"%}
-                            {# Translators: Select header in awards table #}
-                            <th class="select-column"><input type='checkbox' onClick="toggle(this);"/></th>
-                        {% endif %}
-
+                
+                        {# Translators: Select header in awards table #}
+                        <th class="select-column"><input type='checkbox' onClick="toggle(this);"/></th>
                         {# Translators: Award name header in awards table #}
                         <th>{% trans "Award" %}</th>
                         {# Translators: Award description header in awards table #}
@@ -100,20 +92,15 @@
                         <th>{% trans "Doc?" %}</th>
                         {# Translators: Award is active header in awards table #}
                         <th>{% trans "Active?" %}</th>
-                        
-                        {% if FSJ_user.user_class == "Coordinator"%}
-                            {# Translators: Award edit header in awards table #}
-                            <th>{% trans "Edit" %}</th>
-                        {% endif %}
+                        {# Translators: Award edit header in awards table #}
+                        <th>{% trans "Edit" %}</th>
                         {# Translators: Awards application header in awards table #}
                         <th>{% trans "Applications" %}</th>
                     </tr>
                     {% for award in filter.qs %}
                         <tr>
-                            {% if FSJ_user.user_class == "Coordinator"%}
-                                <td><input type="checkbox"  name="awardaction" value="{{award.awardid}}" > </td>
-                            {% endif %}
-                            
+                                
+                            <td><input type="checkbox"  name="awardaction" value="{{award.awardid}}" > </td>
                             <td>{{award.award_name }}</td>
                             <td>{{award.description|linebreaks }}</td>
                             <td>{{award.start_date}}</td>
@@ -124,43 +111,59 @@
                             <td>
                                 <input type="checkbox" disabled {% if award.is_active %}checked{% endif %}>
                             </td>
-                            {% if FSJ_user.user_class == "Coordinator"%}
-                                {# Translators: Edit link in coordinator awards list #}
-                                <td><a href="/coord_awardslist/{{ award.awardid }}/">{% trans "Edit" %}</a></td>
-                                {% if award.applications.count == 0 %}
-                                    {# Translators: No applications message in coordinator awards list #}
-                                    <td>{% trans "No Applications" %}</td>
-                                {% else %}
-                                    <td><a href="/coord_awardslist/{{ award.awardid }}/applications/">{% get_review_status %}</a></td>
-                                {% endif %} 
-                            {% endif %}
+                            {# Translators: Edit link in coordinator awards list #}
+                            <td><a href="/coord_awardslist/{{ award.awardid }}/">{% trans "Edit" %}</a></td>
+                            {% if award.applications.count == 0 %}
+                                {# Translators: No applications message in coordinator awards list #}
+                                <td>{% trans "No Applications" %}</td>
+                            {% else %}
+                                <td><a href="/coord_awardslist/{{ award.awardid }}/applications/">{% get_review_status %}</a></td>
+                            {% endif %} 
                             
-                            {% if FSJ_user.user_class == "Adjudicator" %}
-                                {% if award.applications.count == 0 %}
-                                    {# Translators: No applications message in adjudicator awards list #}
-                                    <td>{% trans "No Applications" %}</td>
-                                {% else %}    
-                                    <td><a href="/adj_awardslist/{{ award.awardid }}/applications/">{% get_review_status %}</a></td>
-                                {% endif %}
-                            {% endif %}
                             
                         </tr>
                     {% endfor %}
                 </table>
                 
-                {% if FSJ_user.user_class == "Coordinator"%}
-                    {# Translators: Button to activate selected awards #}
-                    <button class = "btn btn-action" type="submit" name="_activate">{% trans "Activate award(s)" %}</button>
-                    {# Translators: Button to deactivate selected awards #}
-                    <button class = "btn btn-action" type="submit" name="_deactivate">{% trans "Deactivate award(s)" %}</button> <br/>
-                    <br/>
-                    
-                    {# Translators: Button to add award #}
-                    <a role="button" class="btn btn-success" href='/coord_awardslist/add'>{% trans "Add award" %}</a>
-                    {# Translators: Button to delete selected awards #}
-                    <button class="btn btn-danger" type="submit" name="_delete">{% trans "Delete award(s)" %}</button>    
-                {% endif %}
+                {# Translators: Button to add award #}
+                <a role="button" class="btn btn-success" href='/coord_awardslist/add'>{% trans "Add award" %}</a>
+                {# Translators: Button to activate selected awards #}
+                <button class = "btn btn-action" type="submit" name="_activate">{% trans "Activate award(s)" %}</button>
+                {# Translators: Button to deactivate selected awards #}
+                <button class = "btn btn-action" type="submit" name="_deactivate">{% trans "Deactivate award(s)" %}</button>
+                {# Translators: Button to delete selected awards #}
+                <button class="btn btn-danger" type="submit" name="_delete" onclick="return confirm('Are you sure you want to delete these awards?');">{% trans "Delete award(s)" %}</button>
+
+                <br>
+                <br>
+                
+                
+                {% for field in form %}
+                    <div class="div-restrict-width">
+                        <div>
+                            {% if field.label %}
+                                {{field.label_tag}}
+                            {% endif %}
+                        </div>
+                        <div {% if field.errors %}class='has-error'{% endif %}>
+                            {{ field }}
+                        </div>
+                        {% if field.help_text %}
+                            {{ field.help_text }}
+                        {% endif %}
+                        {% if field.errors %}
+                            {{ field.errors }}
+                        {% endif %}
+                    </div>
+                {% endfor %}
+                <br>
+            
+                {# Translators: Button to reset selected awards #}
+                <button class = "btn btn-action" type="submit" name="_reset">{% trans "Reset award(s)" %}</button>
+                <br>
             </form>
+            
+            
         </div>
     </body>
 {% endblock %}

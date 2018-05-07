@@ -215,6 +215,7 @@ def coordinator_awards(request, FSJ_user):
     filtered_list = AwardFilter(request.GET, queryset=awards_list)
     template = loader.get_template("FSJ/awards_list.html")
     context = get_standard_context(FSJ_user)
+    context["form"] = DateChangeForm()
     context["awards_list"] = awards_list
     context["filter"] = filtered_list
     context["return_url"] = "/coord_awardslist/"
@@ -293,6 +294,27 @@ def coordinator_awardaction(request):
                 award = Award.objects.get(awardid=itemid)
                 award.is_active = False
                 award.save()       
+                
+        elif '_reset' in request.POST:
+            form = DateChangeForm(request.POST)
+            if form.is_valid():
+                start_date = form.cleaned_data.get('start_date')
+                end_date = form.cleaned_data.get('end_date')
+                
+                if start_date and end_date:
+                    for itemid in awardid_list:
+                        award = Award.objects.get(awardid=itemid)
+                        award.reset_date(start_date, end_date)
+                        award.save()
+                    messages.success(request, _("Awards reset and dates changed"))
+                        
+                else:
+                    for itemid in awardid_list:
+                        award = Award.objects.get(awardid=itemid)
+                        award.reset()
+                        award.save()   
+                    messages.success(request, _("Awards reset"))
+                    
 
     return redirect('coord_awardslist')
 
