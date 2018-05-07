@@ -297,11 +297,23 @@ def coordinator_awardaction(request):
                 
         elif '_reset' in request.POST:
             form = DateChangeForm(request.POST)
-            if form.is_valid():            
-                for itemid in awardid_list:
-                    award = Award.objects.get(awardid=itemid)
-                    award.reset(form.cleaned_data['start_date'], form.cleaned_data['end_date'])
-                    award.save()
+            if form.is_valid():
+                start_date = form.cleaned_data.get('start_date')
+                end_date = form.cleaned_data.get('end_date')
+                
+                if start_date and end_date:
+                    for itemid in awardid_list:
+                        award = Award.objects.get(awardid=itemid)
+                        award.reset_date(start_date, end_date)
+                        award.save()
+                    messages.success(request, _("Awards reset and dates changed"))
+                        
+                else:
+                    for itemid in awardid_list:
+                        award = Award.objects.get(awardid=itemid)
+                        award.reset()
+                        award.save()   
+                    messages.success(request, _("Awards reset"))
                     
 
     return redirect('coord_awardslist')

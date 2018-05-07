@@ -7,7 +7,7 @@ from .models_program import Program
 from .models_adjudicator import Adjudicator
 
 class Award(models.Model):
-	#All awards will have these attributes in common, will be able to select multiple years of study
+	# All awards will have these attributes in common, will be able to select multiple years of study
 	awardid = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
 	award_name = models.CharField(max_length = 255, verbose_name = _("Award Name"))
 	description = models.TextField(verbose_name = _("Description"))
@@ -90,8 +90,13 @@ class Award(models.Model):
 			pass        	
 		
 		
+	def reset(self):
 		
-	def reset(self, new_start_date, new_end_date):
+		self.applications.all().delete()
+		self.adjudicators.all().delete()
+		
+		
+	def reset_date(self, new_start_date, new_end_date):
 		
 		self.applications.all().delete()
 		self.adjudicators.all().delete()

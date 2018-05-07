@@ -170,7 +170,7 @@ class StudentModelTests(TestCase):
             user = User.objects.get(username = self.ccid)    
             
 
-class ApplicationTestModels(TestCase):
+class ApplicationModelTests(TestCase):
     
     def setUp(self):
         self.ccid = "Student"
@@ -350,7 +350,7 @@ class CommitteeModelTests(TestCase):
             new_committee = Committee.objects.create(committeeid = self.committee.committeeid)
 
 
-class CommentTestModels(TestCase):
+class CommentModelTests(TestCase):
     
     def setUp(self):
         self.ccid = "Student"
@@ -397,7 +397,7 @@ class CommentTestModels(TestCase):
         self.assertEqual(obj.application, self.application)
         self.assertEqual(obj.adjudicator, self.adjudicator)
 
-class RankingTestModels(TestCase):
+class RankingModelTests(TestCase):
     
     def setUp(self):
         self.ccid = "Student"
