@@ -53,14 +53,14 @@
         {# Translators: Start date for award on student application page #}
             <h4><b>{% trans "Start date" %}</b></h4>
             <hr class="hr-div">
-            {{ award.start_date }}
+            {{ award.start_date|date:"Y-m-d" }}
         </div>
         </br>
         <div>
         {# Translators: End date for award on student application page #}
             <h4><b>{% trans "End date" %}</b></h4> 
             <hr class="hr-div">
-            {{ award.end_date }}
+            {{award.end_date|date:"Y-m-d"}}
         </div>
         </br>
         <div>

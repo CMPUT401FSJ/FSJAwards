@@ -37,8 +37,8 @@
                                 {{year}} <br>
                             {% endfor %}
                         </td>
-                        <td>{{award.start_date}}</td>
-                        <td>{{award.end_date}}</td>
+                        <td class='date-column'>{{award.start_date|date:"Y-m-d"}}</td>
+                        <td class='date-column'>{{award.end_date|date:"Y-m-d"}}</td>
                     </tr>
                 {% endfor %}
             {% else %}

@@ -1,7 +1,10 @@
 
 from ..models import Award
 from django.forms import CheckboxSelectMultiple, DateInput
+from django import forms
 from .forms_modelform import ModelForm
+from django.utils.translation import gettext_lazy as _
+
 
 class DateInput(DateInput):
     input_type = 'date'
@@ -23,5 +26,12 @@ class AwardForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super(AwardForm, self).__init__(*args, **kwargs)
         
-        
-        
+    def clean(self):
+        cleaned_data = super().clean()
+        start_date = cleaned_data.get('start_date')
+        end_date = cleaned_data.get('end_date')
+    
+        if start_date and end_date:
+            if start_date > end_date:
+                msg = forms.ValidationError(_("The start date must be later than the end date."))
+                self.add_error('start_date', msg)

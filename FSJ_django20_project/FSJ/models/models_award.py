@@ -103,3 +103,6 @@ class Award(models.Model):
 		self.start_date = new_start_date
 		self.end_date = new_end_date
 
+
+	def get_start_date(self):
+		return 

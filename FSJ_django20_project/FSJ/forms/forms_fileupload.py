@@ -12,3 +12,9 @@ class FileUploadForm(forms.Form):
     
     def __init__(self, *args, **kwargs):
         super(FileUploadForm, self).__init__(*args, **kwargs) 
+        for f in self.fields:
+            field = self.fields[f]
+            widget = field.widget
+            field_class = widget.attrs.get('class', '')
+            field_class = field_class + ' form-control-file'
+            field.widget.attrs['class'] = field_class         

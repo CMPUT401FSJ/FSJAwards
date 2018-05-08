@@ -15,7 +15,7 @@ class FSJUser(models.Model):
     user = models.OneToOneField(User, on_delete = models.CASCADE, blank = True, null = True)    
     
     # All FSJ Users have these attributes in common
-    ccid = models.CharField(primary_key=True, max_length = 255, unique = True, verbose_name = _("CCID"))
+    ccid = models.CharField(max_length = 255, unique = True, verbose_name = _("CCID"))
     first_name = models.CharField(max_length = 255, verbose_name = _("First Name"))
     last_name = models.CharField(max_length = 255, verbose_name = _("Last Name"))
     email = models.EmailField(max_length = 254, verbose_name= _("Email"))

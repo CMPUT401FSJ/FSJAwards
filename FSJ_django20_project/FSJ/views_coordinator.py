@@ -211,7 +211,7 @@ def coordinator_deleteadjudicator(request):
 @login_required
 @user_passes_test(is_coordinator)
 def coordinator_awards(request, FSJ_user):
-    awards_list = Award.objects.all()
+    awards_list = Award.objects.all().order_by("name")
     filtered_list = AwardFilter(request.GET, queryset=awards_list)
     template = loader.get_template("FSJ/awards_list.html")
     context = get_standard_context(FSJ_user)
@@ -314,6 +314,9 @@ def coordinator_awardaction(request):
                         award.reset()
                         award.save()   
                     messages.success(request, _("Awards reset"))
+            
+            else:
+                messages.warning(request, _("The start date cannot be later than the end date"))
                     
 
     return redirect('coord_awardslist')
