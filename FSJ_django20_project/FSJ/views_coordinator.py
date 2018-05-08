@@ -785,5 +785,26 @@ def coordinator_application_tab(request):
     context["application_list"] = application_list
     context["filter"] = filtered_list
     context["return_url"] = "/coord_applicationlist/"
+    context["url"] = "/coord_applicationlist/action/"
     return HttpResponse(template.render(context,request))    
     
+    
+def coordinator_application_tab_action(request):
+    if request.method == 'POST':
+        application_list = request.POST.getlist('applicationaction')
+
+        if "_archive" in request.POST:  
+            for applicationid in application_list:
+                application = Application.objects.get(application_id=applicationid)
+                application.is_archived = True;
+                application.save()
+        elif "_review" in request.POST:
+            for applicationid in application_list:
+                application = Application.objects.get(application_id=applicationid)
+                application.is_reviewed = True;
+                application.save()
+        elif "_delete" in request.POST:
+            for applicationid in application_list:
+                Application.objects.get(application_id=applicationid).delete() 
+    
+        return redirect('coord_applicationtab')    
