@@ -24,6 +24,8 @@
             </div>
         {% endfor %}
         <br/>
-        <a class="btn btn-success" role="button" href="{{ return_url }}">{% trans "Return to Applications" %}</a>        
+        {% if return_url %}
+            <a class="btn btn-success" role="button" href="{{ return_url }}">{% trans "Return to Applications" %}</a>   
+        {% endif %}
     </div>
 {% endblock %}

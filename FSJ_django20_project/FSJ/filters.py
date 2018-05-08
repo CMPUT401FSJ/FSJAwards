@@ -48,4 +48,4 @@ class ApplicationFilter(django_filters.FilterSet):
 	
 	class Meta:
 		model = Application
-		fields = ['award', 'award__programs', 'is_submitted']
+		fields = ['award', 'award__programs', 'is_submitted', 'is_archived', 'is_reviewed']

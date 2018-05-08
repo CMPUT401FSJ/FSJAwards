@@ -708,7 +708,7 @@ def coordinator_archive_action(request, award_idnum):
                 archivedapp.save()
         elif "_delete" in request.POST:
             for applicationid in archived_application_list:
-                ArchivedApplication.objects.get(application_id=applicationid).delete()
+                Application.objects.get(application_id=applicationid).delete()
 
 
     return redirect('/coord_awardslist/'+ str(award_idnum) +'/applications/archive/')
@@ -798,6 +798,11 @@ def coordinator_application_tab_action(request):
                 application = Application.objects.get(application_id=applicationid)
                 application.is_archived = True;
                 application.save()
+        if "_removeFromArchive" in request.POST:  
+            for applicationid in archived_application_list:
+                application = Application.objects.get(application_id=applicationid)
+                application.is_archived = False;
+                application.save()        
         elif "_review" in request.POST:
             for applicationid in application_list:
                 application = Application.objects.get(application_id=applicationid)

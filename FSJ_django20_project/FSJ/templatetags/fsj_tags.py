@@ -7,6 +7,12 @@ register = template.Library()
 @register.simple_tag(takes_context=True)
 def get_status(context):
     FSJ_user = context['FSJ_user']
+    application = context['application']
+    return application.get_status(FSJ_user)
+
+@register.simple_tag(takes_context=True)
+def get_status_tuple(context):
+    FSJ_user = context['FSJ_user']
     application = context['application'][0]
     return application.get_status(FSJ_user)
 

@@ -31,7 +31,7 @@
                 {% for application in archived_list %}
                     <tr>
                         <td><input type="checkbox"  name="archiveaction" value="{{application.application_id}}" ></td>
-                        <td><a href="/view_student?ccid={{ application.student.ccid }}&awardid={{application.award.awardid}}">{{ application.student.get_name }}</a></td>
+                        <td><a href="/view_student?ccid={{ application.student.ccid }}&awardid={{application.award.awardid}}&return={{ request.get_full_path }}">{{ application.student.get_name }}</a></td>
                         <td>{{application.student.ccid}}</td>
                         <td>{{ application.student.student_id }}</td>
                         <td>
