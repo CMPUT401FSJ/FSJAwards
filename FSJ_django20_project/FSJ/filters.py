@@ -9,7 +9,7 @@ LOOKUP_TYPES = [
 
 class DateInput(DateInput):
 	input_type = 'date'
-
+	template_name = 'FSJ/date_field.html'
 
 class StudentFilter(django_filters.FilterSet):
 	ccid = django_filters.CharFilter(lookup_expr='icontains')
