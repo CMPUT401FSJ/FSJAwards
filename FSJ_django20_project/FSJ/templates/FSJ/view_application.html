@@ -1,5 +1,6 @@
 {% extends "FSJ/base_with_banner.html" %}
 {% load i18n %} {# NOTE YOU MUST LOAD i18n to every HTML page even though it's also loaded to base.html #}
+{% load fsj_tags %}
 
 {% block heading %}
     {# Translators: View Application page heading #}
@@ -144,7 +145,7 @@
                     <a class="btn btn-danger" role="button" href="{{ delete_url }}">{% trans "Delete comment & ranking" %}</a> 
                 {% endif %}
             {% endif %}
-            <a class="btn btn-success" role="button" href="{{ return_url }}">{% trans "Return to Applications" %}</a> 
+            <a class="btn btn-success" role="button" href="{{ return_url|unquote }}">{% trans "Return to Applications" %}</a> 
         </form>     
     </div>
 {% endblock %}

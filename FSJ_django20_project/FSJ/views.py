@@ -22,6 +22,7 @@ from .views_coordinator import *
 from django.conf import settings
 from django.shortcuts import redirect
 from django.utils.translation import gettext_lazy as _
+import urllib
 
 # A method used to redirect users who have no path to bring them to their home page
 def redirect_to_home(request):
@@ -163,6 +164,7 @@ def view_student(request):
     student_ccid = request.GET.get("ccid","")
     awardid = request.GET.get("awardid","")
     return_url = request.GET.get("return", "")
+    
     FSJ_user = get_FSJ_user(request.user.username)
     try:
         student = Student.objects.get(ccid = student_ccid)
@@ -176,7 +178,7 @@ def view_student(request):
     context["student"] = student
     context["form"] = form
     
-    url_is_safe = is_safe_url(url=return_url,
+    url_is_safe = is_safe_url(url=urllib.parse.unquote(return_url),
                             allowed_hosts=settings.ALLOWED_HOSTS,
                             require_https=request.is_secure(),)
     if url_is_safe and return_url:    
@@ -190,6 +192,10 @@ def view_application(request):
     application_id = request.GET.get("application_id","")
     FSJ_user = get_FSJ_user(request.user.username)
     return_url = request.GET.get("return", "")
+    url_is_safe = is_safe_url(url=urllib.parse.unquote(return_url),
+                              allowed_hosts=settings.ALLOWED_HOSTS,
+                              require_https=request.is_secure(),)    
+    
     try:
         application = Application.objects.get(application_id = application_id)
         if isinstance(FSJ_user, Adjudicator) and application.is_archived:
@@ -206,10 +212,12 @@ def view_application(request):
                 return redirect("/view_application?application_id=" + str(application.application_id) + "&return=" + str(return_url))
             else:
                 application.is_reviewed = True
-        if '_unreview' in request.POST:
+        elif '_unreview' in request.POST:
             application.is_reviewed = False
         application.save()
-        return redirect('coord_awardslist/' + str(application.award.awardid) + '/applications/')
+        
+        if url_is_safe:
+            return redirect(urllib.parse.unquote(return_url))
     
     context = get_standard_context(FSJ_user)
     
@@ -228,7 +236,6 @@ def view_application(request):
                     ranking_list.append("--")
                     
             comment_list = zip(comment_list, ranking_list)
-            
             context["comment_list"] = comment_list
 
     elif isinstance(FSJ_user, Adjudicator):
@@ -264,10 +271,6 @@ def view_application(request):
         context["document"] = settings.MEDIA_URL + str(application.application_file)
     context["award"] = application.award
     context["url"] = url
-    
-    url_is_safe = is_safe_url(url=return_url,
-                              allowed_hosts=settings.ALLOWED_HOSTS,
-                              require_https=request.is_secure(),)
     if url_is_safe and return_url:    
         context["return_url"] = str(return_url)
         

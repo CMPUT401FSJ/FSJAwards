@@ -87,7 +87,7 @@
                         <tr>
                                 
                             <td><input type="checkbox"  name="applicationaction" value="{{application.application_id}}" > </td>
-                            <td><a href="/view_student?ccid={{ application.student.ccid }}&awardid={{application.award.awardid}}&return={{ request.get_full_path }}">{{ application.student.get_name }}</a></td>
+                            <td><a href="/view_student?ccid={{ application.student.ccid }}&awardid={{application.award.awardid}}&return={{ request.get_full_path|quote }}">{{ application.student.get_name }}</a></td>
                             <td>{{ application.student.ccid }}</td>
                             <td>
                                 {% if application.student.program %}
@@ -99,7 +99,7 @@
                             <td>
                                 <input type="checkbox" disabled {% if application.is_submitted %}checked{% endif %}>
                             </td>
-                            <td><a href="/view_application?application_id={{ application.application_id }}&return={{ request.get_full_path }}">{% get_status %}</a></td>
+                            <td><a href="/view_application?application_id={{ application.application_id }}&return={{ request.get_full_path|quote }}">{% get_status %}</a></td>
                             
                         </tr>
                     {% endfor %}
