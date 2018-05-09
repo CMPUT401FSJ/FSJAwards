@@ -24,7 +24,8 @@ def is_coordinator(usr):
     return True
 
 # The user class specific home page handler, which returns the appropriate page for this user class.
-# Contains the decordator to ensure the user is logged into the system and a test to ensure the user accessing the page is valid.
+# Contains the decordator to ensure the user is logged into the system and a test to ensure the user accessing
+# the page is valid.
 @login_required
 @user_passes_test(is_coordinator)
 def coordinator_home(request, FSJ_user):
@@ -33,7 +34,8 @@ def coordinator_home(request, FSJ_user):
     return HttpResponse(template.render(context, request))
 
 
-# The handler used by the Coordinator class to produce a list of all students in the database, using the coord_student_list template.
+# The handler used by the Coordinator class to produce a list of all students in the database, using the coord_student
+# _list template.
 @login_required
 @user_passes_test(is_coordinator)
 def coordinator_studentlist(request):
@@ -46,7 +48,8 @@ def coordinator_studentlist(request):
     context["filter"] = filtered_list
     return HttpResponse(template.render(context, request))
 
-# The handler used by the Coordinator class to produce a list of all adjudicators in the database, using the adjudicator_student_list template.
+# The handler used by the Coordinator class to produce a list of all adjudicators in the database,
+# using the adjudicator_student_list template.
 @login_required
 @user_passes_test(is_coordinator)
 def coordinator_adjudicatorlist(request):
@@ -60,7 +63,8 @@ def coordinator_adjudicatorlist(request):
     return HttpResponse(template.render(context, request)) 
 
 
-# The handler used by the Coordinator class to show a specific student's profile in detail, using the generic profile temmplate and the unrestricted student model (with all fields editable).
+# The handler used by the Coordinator class to show a specific student's profile in detail,
+# using the generic profile temmplate and the unrestricted student model (with all fields editable).
 @login_required
 @user_passes_test(is_coordinator)
 def edit_student(request):
@@ -90,7 +94,8 @@ def edit_student(request):
     return HttpResponse(template.render(context, request))
 
 
-# The handler used by the Coordinator class to show a specific adjudicator's profile in detail, using the generic profile temmplate and the unrestricted adjudicator model (with all fields editable).
+# The handler used by the Coordinator class to show a specific adjudicator's profile in detail,
+# using the generic profile temmplate and the unrestricted adjudicator model (with all fields editable).
 @login_required
 @user_passes_test(is_coordinator)
 def edit_adjudicator(request):
@@ -135,7 +140,7 @@ def coordinator_addstudent(request):
             #set the user's email to that of the adjudicator
             user = User.objects.get(username=data['ccid'])
             user.email = data['email']
-            #generate a random 32 character password that will be reset on registration
+            # Generate a random 32 character password that will be reset on registration
             user.set_password(get_random_string(length=32))
             user.save()
             return redirect('studentlist')
