@@ -8,7 +8,7 @@
 
 {% block content %}
     <div class='center-content'>
-        <h3><b>{{ award.award_name }}</b></h3>
+        <h3><b>{{ award.name }}</b></h3>
         </br>
         <div>
             {# Translators: Description for award on student application page #}
@@ -53,14 +53,14 @@
         {# Translators: Start date for award on student application page #}
             <h4><b>{% trans "Start date" %}</b></h4>
             <hr class="hr-div">
-            {{ award.start_date }}
+            {{ award.start_date|date:"Y-m-d" }}
         </div>
         </br>
         <div>
         {# Translators: End date for award on student application page #}
             <h4><b>{% trans "End date" %}</b></h4> 
             <hr class="hr-div">
-            {{ award.end_date }}
+            {{award.end_date|date:"Y-m-d"}}
         </div>
         </br>
         <div>

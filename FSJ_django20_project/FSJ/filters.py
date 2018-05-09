@@ -8,8 +8,8 @@ LOOKUP_TYPES = [
 ]
 
 class DateInput(DateInput):
-    input_type = 'date'
-
+	input_type = 'date'
+	template_name = 'FSJ/date_field.html'
 
 class StudentFilter(django_filters.FilterSet):
 	ccid = django_filters.CharFilter(lookup_expr='icontains')
@@ -31,11 +31,21 @@ class AdjudicatorFilter(django_filters.FilterSet):
 		fields = ['ccid','first_name','last_name']
 
 class AwardFilter(django_filters.FilterSet):
-	award_name = django_filters.CharFilter(lookup_expr='icontains')
+	name = django_filters.CharFilter(lookup_expr='icontains')
 	description = django_filters.CharFilter(lookup_expr='icontains')
 	start_date = django_filters.DateFilter(widget = DateInput())
 	end_date = django_filters.DateFilter(widget = DateInput())
 
 	class Meta:
 		model = Award
-		fields = ['award_name','description','value','programs','years_of_study','start_date', 'end_date', 'documents_needed','is_active']
+		fields = ['name','description','value','programs','years_of_study','start_date', 'end_date', 'documents_needed','is_active']
+		
+class ApplicationFilter(django_filters.FilterSet):
+	student_ccid = django_filters.CharFilter(name='student__ccid', lookup_expr='icontains')
+	student_first_name = django_filters.CharFilter(name='student__first_name', lookup_expr='icontains')
+	student_last_name = django_filters.CharFilter(name='student__last_name', lookup_expr='icontains')
+	award_name = django_filters.CharFilter(name='award__name', lookup_expr='icontains')
+	
+	class Meta:
+		model = Application
+		fields = ['award', 'award__programs', 'is_submitted', 'is_archived', 'is_reviewed']

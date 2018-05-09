@@ -18,8 +18,8 @@
                 <div class = "well">
                   <div class="row">
                     <div class = "form-group col-sm-4 col-md-3">
-                      {{ filter.form.award_name.label_tag }}
-                      {% render_field filter.form.award_name class="form-control" %}
+                      {{ filter.form.name.label_tag }}
+                      {% render_field filter.form.name class="form-control" %}
                     </div>
                     <div class = "form-group col-sm-4 col-md-3">
                       {{ filter.form.description.label_tag }}
@@ -30,12 +30,12 @@
                       {% render_field filter.form.value class="form-control" %}
                     </div>
                     <div class = "form-group col-sm-4 col-md-3">
-                      {{ filter.form.programs.label_tag }}
-                      {% render_field filter.form.programs class="form-control" %}
-                    </div>
-                    <div class = "form-group col-sm-4 col-md-3">
                       {{ filter.form.years_of_study.label_tag }}
                       {% render_field filter.form.years_of_study class="form-control" %}
+                    </div>
+                    <div class = "form-group col-sm-6 col-md-5">
+                      {{ filter.form.programs.label_tag }}
+                      {% render_field filter.form.programs class="form-control" %}
                     </div>
                     <div class = "form-group col-sm-4 col-md-3">
                       {{ filter.form.start_date.label_tag }}
@@ -73,7 +73,7 @@
                 {# Translators: Button to deactivate selected awards #}
                 <button class = "btn btn-action" type="submit" name="_deactivate">{% trans "Deactivate award(s)" %}</button>
                 {# Translators: Button to delete selected awards #}
-                <button class="btn btn-danger" type="submit" name="_delete" onclick="return confirm('Are you sure you want to delete these awards?');">{% trans "Delete award(s)" %}</button>
+                <button class="btn btn-danger pull-right" type="submit" name="_delete" onclick="return confirm('Are you sure you want to delete these awards?');">{% trans "Delete award(s)" %}</button>
                 
                 <table class="table table-bordered table-striped table-hover" align="center">
                     <tr>
@@ -101,10 +101,10 @@
                         <tr>
                                 
                             <td><input type="checkbox"  name="awardaction" value="{{award.awardid}}" > </td>
-                            <td>{{award.award_name }}</td>
+                            <td>{{award.name }}</td>
                             <td>{{award.description|linebreaks }}</td>
-                            <td>{{award.start_date}}</td>
-                            <td>{{award.end_date}}</td>
+                            <td class='date-column'>{{award.start_date|date:"Y-m-d"}}</td>
+                            <td class='date-column'>{{award.end_date|date:"Y-m-d"}}</td>
                             <td>
                                 <input type="checkbox" disabled {% if award.documents_needed %}checked{% endif %}>
                             </td>
@@ -132,7 +132,7 @@
                 {# Translators: Button to deactivate selected awards #}
                 <button class = "btn btn-action" type="submit" name="_deactivate">{% trans "Deactivate award(s)" %}</button>
                 {# Translators: Button to delete selected awards #}
-                <button class="btn btn-danger" type="submit" name="_delete" onclick="return confirm('Are you sure you want to delete these awards?');">{% trans "Delete award(s)" %}</button>
+                <button class="btn btn-danger pull-right" type="submit" name="_delete" onclick="return confirm('Are you sure you want to delete these awards?');">{% trans "Delete award(s)" %}</button>
 
                 <br>
                 <br>
@@ -157,10 +157,15 @@
                     </div>
                 {% endfor %}
                 <br>
+             
+                {# Translators: Button to change date of selected awards #}
+                <button class = "btn btn-action" type="submit" name="_changeDate">{% trans "Change award date(s)" %}</button>
             
                 {# Translators: Button to reset selected awards #}
-                <button class = "btn btn-action" type="submit" name="_reset">{% trans "Reset award(s)" %}</button>
+                <button class = "btn btn-action" type="submit" name="_reset" onclick="return confirm('Are you sure you want to reset these awards?');">{% trans "Reset award(s)" %}</button>
+    
                 <br>
+                
             </form>
             
             

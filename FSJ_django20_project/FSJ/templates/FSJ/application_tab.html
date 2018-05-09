@@ -1,0 +1,119 @@
+{% extends "FSJ/base_with_banner.html" %}
+{% load i18n %} {# NOTE YOU MUST LOAD i18n to every HTML page even though it's also loaded to base.html #}
+{% load widget_tweaks %}
+{% load fsj_tags %}
+
+{% block heading %}
+    {# Translators: Applications page home label #}
+    {% trans "Applications" %}
+{% endblock %}
+
+
+{% block content %}
+    <body>
+        <div class='center-content'>
+            <form method="get">
+                <form method="get">
+                    <div class = "well">
+                        <div class="row">
+                            <div class = "form-group col-sm-4 col-md-3">
+                                {{ filter.form.student_ccid.label_tag }}
+                                {% render_field filter.form.student_ccid class="form-control" %}
+                            </div>
+                            <div class = "form-group col-sm-4 col-md-3">
+                                {{ filter.form.student_first_name.label_tag }}
+                                {% render_field filter.form.student_first_name class="form-control" %}
+                            </div>
+                            <div class = "form-group col-sm-4 col-md-3">
+                                {{ filter.form.student_last_name.label_tag }}
+                                {% render_field filter.form.student_last_name class="form-control" %}
+                            </div>
+                            <div class = "form-group col-sm-4 col-md-3">
+                                {{ filter.form.award.label_tag }}
+                                {% render_field filter.form.award class="form-control" %}
+                            </div>
+                            <div class = "form-group col-sm-4 col-md-3">
+                                {{ filter.form.award_name.label_tag }}
+                                {% render_field filter.form.award_name class="form-control" %}
+                            </div>
+                            <div class = "form-group col-sm-4 col-md-3">
+                                {{ filter.form.award__programs.label_tag }}
+                                {% render_field filter.form.award__programs class="form-control" %}
+                            </div>
+                            <div class = "form-group col-sm-3 col-md-2">
+                                {{ filter.form.is_submitted.label_tag }}
+                                {% render_field filter.form.is_submitted class="form-control" %}
+                            </div>
+                            <div class = "form-group col-sm-3 col-md-2">
+                                {{ filter.form.is_archived.label_tag }}
+                                {% render_field filter.form.is_archived class="form-control" %}
+                            </div>
+                            <div class = "form-group col-sm-3 col-md-2">
+                                {{ filter.form.is_reviewed.label_tag }}
+                                {% render_field filter.form.is_reviewed class="form-control" %}
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-success">
+                            <span class="glyphicon glyphicon-search"></span> 
+                            {# Translators: Search button for filtering #}
+                            {% trans "Search" %}    
+                    </button> 
+                    <a role="button" class="btn btn-success" href="{{ return_url }}">{% trans "Clear Filters" %}</a>
+                    </div>
+                </form>
+            </form>
+            
+            <form action="/coord_applicationlist/action/" method="POST">
+            {% csrf_token %}
+            
+                <table class="table table-bordered table-striped table-hover" align="center">
+                    <tr>
+                
+                        {# Translators: Select header in application table #}
+                        <th class="select-column"><input type='checkbox' onClick="toggle(this);"/></th>
+                        {# Translators: Student header in application table #}
+                        <th>{% trans "Student" %}</th>
+                        <th>{% trans "CCID" %}</th>
+                        <th>{% trans "Program" %}</th>
+                        <th>{% trans "Year" %}</th>
+                        {# Translators: Award header in application table #}
+                        <th>{% trans "Award" %}</th>
+                        {# Translators: Submitted header in application table #}
+                        <th>{% trans "Submitted?" %}</th>
+                        <th>{% trans "Status" %}</th>
+                        
+                    </tr>
+                    {% for application in filter.qs %}
+                        <tr>
+                                
+                            <td><input type="checkbox"  name="applicationaction" value="{{application.application_id}}" > </td>
+                            <td><a href="/view_student?ccid={{ application.student.ccid }}&awardid={{application.award.awardid}}&return={{ request.get_full_path|quote }}">{{ application.student.get_name }}</a></td>
+                            <td>{{ application.student.ccid }}</td>
+                            <td>
+                                {% if application.student.program %}
+                                    {{ application.student.program.code }}
+                                {% endif %}
+                            </td>
+                            <td>{{ application.student.year }}</td>
+                            <td>{{application.award}}</td>
+                            <td>
+                                <input type="checkbox" disabled {% if application.is_submitted %}checked{% endif %}>
+                            </td>
+                            <td><a href="/view_application?application_id={{ application.application_id }}&return={{ request.get_full_path|quote }}">{% get_status %}</a></td>
+                            
+                        </tr>
+                    {% endfor %}
+                </table>
+                
+                <button class="btn btn-success" type="submit" name="_review">{% trans "Review Application(s)" %}</button>
+                <button class="btn btn-action" type="submit", name="_archive">{% trans "Archive Application(s)" %}</button>
+                <button class="btn btn-action" type="submit", name="_removeFromArchive">{% trans "Reactivate Application(s)" %}</button>
+                {# Translators: Button to delete selected applications #}
+                <button class="btn btn-danger pull-right" type="submit" name="_delete" onclick="return confirm('Are you sure you want to delete these applications?');">{% trans "Delete application(s)" %}</button>
+                
+                
+            </form>
+            
+        </div>   
+    </body>
+{% endblock %}

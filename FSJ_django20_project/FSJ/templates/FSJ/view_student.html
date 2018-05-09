@@ -1,5 +1,6 @@
 {% extends "FSJ/base_with_banner.html" %}
 {% load i18n %} {# NOTE YOU MUST LOAD i18n to every HTML page even though it's also loaded to base.html #}
+{% load fsj_tags %}
 
 {% block heading %}
     {# Translators: View Student (read only) page heading #}
@@ -24,6 +25,8 @@
             </div>
         {% endfor %}
         <br/>
-        <a class="btn btn-success" role="button" href="{{ return_url }}">{% trans "Return to Applications" %}</a>        
+        {% if return_url %}
+            <a class="btn btn-success" role="button" href="{{ return_url|unquote }}">{% trans "Return to Applications" %}</a>   
+        {% endif %}
     </div>
 {% endblock %}

@@ -4,7 +4,7 @@
 {% load fsj_tags %}
 
 {% block heading %}
-    {{ award.award_name }}
+    {{ award.name }}
 {% endblock %}
 
 {% block content %}
@@ -50,7 +50,7 @@
                         {% if FSJ_user.user_class == "Coordinator" %}
                             <td><input type="checkbox"  name="applicationaction" value="{{application.0.application_id}}" ></td>
                         {% endif %}
-                        <td><a href="/view_student?ccid={{ application.0.student.ccid }}&awardid={{application.0.award.awardid}}">{{ application.0.student.get_name }}</a></td>
+                        <td><a href="/view_student?ccid={{ application.0.student.ccid }}&awardid={{application.0.award.awardid}}&return={{ request.get_full_path|quote }}">{{ application.0.student.get_name }}</a></td>
                         <td>{{ application.0.student.ccid }}</td>
                         <td>{{ application.0.student.student_id }}</td>
                         <td>
@@ -68,7 +68,7 @@
                         {% if FSJ_user.user_class == "Adjudicator" %}
                             <td>{{application.1}}</td>
                         {% endif %}
-                        <td><a href="/view_application?application_id={{ application.0.application_id }}">{% get_status %}</a></td>
+                        <td><a href="/view_application?application_id={{ application.0.application_id }}&return={{ request.get_full_path|quote }}">{% get_status_tuple %}</a></td>
                     </tr>
                 {% endfor %}
             </table>

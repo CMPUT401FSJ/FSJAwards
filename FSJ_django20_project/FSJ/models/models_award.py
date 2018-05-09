@@ -9,7 +9,7 @@ from .models_adjudicator import Adjudicator
 class Award(models.Model):
 	# All awards will have these attributes in common, will be able to select multiple years of study
 	awardid = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-	award_name = models.CharField(max_length = 255, verbose_name = _("Award Name"))
+	name = models.CharField(max_length = 255, verbose_name = _("Name"))
 	description = models.TextField(verbose_name = _("Description"))
 	value = models.CharField(max_length = 100, verbose_name = _("Value"))
 	programs = models.ManyToManyField(Program, blank = True, verbose_name = _("Programs"))
@@ -22,7 +22,7 @@ class Award(models.Model):
 
 	#returns award name as a string
 	def __str__(self):
-		return self.award_name
+		return self.name
 
 	#returns a bool stating whether the award is open or not due to start/end date
 	def is_open(self):
@@ -89,17 +89,23 @@ class Award(models.Model):
 		except:
 			pass        	
 		
-
-	def reset(self):
+		
+	def reset(self, new_start_date, new_end_date):
 		
 		self.applications.all().delete()
 		self.adjudicators.all().delete()
+		if new_start_date:
+			self.start_date = new_start_date
+		if new_end_date:
+			self.end_date = new_end_date
+			
+	def change_date(self, new_start_date, new_end_date):
 		
-		
-	def reset_date(self, new_start_date, new_end_date):
-		
-		self.applications.all().delete()
-		self.adjudicators.all().delete()
-		self.start_date = new_start_date
-		self.end_date = new_end_date
+		if new_start_date:
+			self.start_date = new_start_date
+		if new_end_date:
+			self.end_date = new_end_date	
 
+
+	def get_start_date(self):
+		return 

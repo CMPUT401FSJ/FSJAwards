@@ -11,6 +11,7 @@ from django.core.mail import EmailMessage
 from django.shortcuts import render, redirect
 from django.contrib.auth import update_session_auth_hash
 from django.utils.translation import gettext_lazy as _
+from django.utils.http import is_safe_url
 from .tokens import account_activation_token
 from .forms import *
 from .models import *
@@ -21,6 +22,7 @@ from .views_coordinator import *
 from django.conf import settings
 from django.shortcuts import redirect
 from django.utils.translation import gettext_lazy as _
+import urllib
 
 # A method used to redirect users who have no path to bring them to their home page
 def redirect_to_home(request):
@@ -90,7 +92,7 @@ def home(request):
 
 # The profile view for the user accessing their own profile (with restricted field editting)
 # Includes a POST handler for saving based on the results from the form, and adds the form back to the same template if validation fails
-# Contains the decordator to ensure the user is logged into the system and a test to ensure the user accessing the page is valid.
+# Contains the decorator to ensure the user is logged into the system and a test to ensure the user accessing the page is valid.
 @login_required
 @user_passes_test(is_FSJ_user)
 def profile(request):
@@ -161,6 +163,8 @@ def non_FSJ_home(request):
 def view_student(request):
     student_ccid = request.GET.get("ccid","")
     awardid = request.GET.get("awardid","")
+    return_url = request.GET.get("return", "")
+    
     FSJ_user = get_FSJ_user(request.user.username)
     try:
         student = Student.objects.get(ccid = student_ccid)
@@ -170,17 +174,15 @@ def view_student(request):
     # load a form with the student's info
     form = StudentReadOnlyForm(instance=student)
     
-    return_url = None
-    if isinstance(FSJ_user, Coordinator):
-        return_url = "/coord_awardslist/" + str(awardid) + "/applications"
-    # TODO The return url will be whereever the adjudicator accessed the application view from, once implemented
-    elif isinstance(FSJ_user, Adjudicator):
-        return_url = "/home/"
-        
     context = get_standard_context(FSJ_user)
     context["student"] = student
     context["form"] = form
-    context["return_url"] = return_url
+    
+    url_is_safe = is_safe_url(url=urllib.parse.unquote(return_url),
+                            allowed_hosts=settings.ALLOWED_HOSTS,
+                            require_https=request.is_secure(),)
+    if url_is_safe and return_url:    
+        context["return_url"] = str(return_url)
     template = loader.get_template("FSJ/view_student.html")
     return HttpResponse(template.render(context, request))    
 
@@ -189,6 +191,12 @@ def view_student(request):
 def view_application(request):
     application_id = request.GET.get("application_id","")
     FSJ_user = get_FSJ_user(request.user.username)
+    context = get_standard_context(FSJ_user)
+    return_url = request.GET.get("return", "")
+    url_is_safe = is_safe_url(url=urllib.parse.unquote(return_url),
+                              allowed_hosts=settings.ALLOWED_HOSTS,
+                              require_https=request.is_secure(),)    
+    
     try:
         application = Application.objects.get(application_id = application_id)
         if isinstance(FSJ_user, Adjudicator) and application.is_archived:
@@ -201,20 +209,21 @@ def view_application(request):
             raise PermissionDenied
         if '_review' in request.POST:
             if application.award.documents_needed and not application.application_file:
-                raise ValueError(_("Documents are required for this award"))
-            application.is_reviewed = True
-        if '_unreview' in request.POST:
+                messages.warning(request, _("This award is missing a document"))
+                return redirect("/view_application?application_id=" + str(application.application_id) + "&return=" + urllib.parse.quote(return_url))
+            else:
+                application.is_reviewed = True
+        elif '_unreview' in request.POST:
             application.is_reviewed = False
         application.save()
-        return redirect('coord_awardslist/' + str(application.award.awardid) + '/applications/')
+        
+        if url_is_safe:
+            print(return_url)
+            return redirect(urllib.parse.unquote(return_url))
     
-    return_url = None
-    
-    context = get_standard_context(FSJ_user)
     
     if isinstance(FSJ_user, Coordinator):
-        return_url = "/coord_awardslist/" + str(application.award.awardid) + "/applications"
-        url = "/view_application?application_id=" + str(application.application_id)
+        url = "/view_application?application_id=" + str(application.application_id) + "&return=" + urllib.parse.quote(return_url)
         comment_list = Comment.objects.filter(application = application)
         
         if comment_list.count() > 0:
@@ -228,7 +237,6 @@ def view_application(request):
                     ranking_list.append("--")
                     
             comment_list = zip(comment_list, ranking_list)
-            
             context["comment_list"] = comment_list
 
     elif isinstance(FSJ_user, Adjudicator):
@@ -255,7 +263,6 @@ def view_application(request):
             form2 = RankingRestrictedForm(FSJ_user, application.award, prefix = "form2")
         
         url = "/adj_awardslist/" + str(application.award.awardid) + "/" + str(application.application_id) + "/edit/"
-        return_url = "/adj_awardslist/" + str(application.award.awardid) + "/applications"
         context["form"] = form
         context["form2"] = form2
         context["adjudicator"] = FSJ_user
@@ -265,7 +272,9 @@ def view_application(request):
         context["document"] = settings.MEDIA_URL + str(application.application_file)
     context["award"] = application.award
     context["url"] = url
-    context["return_url"] = return_url
+    if url_is_safe and return_url:    
+        context["return_url"] = str(return_url)
+        
     context["archived"] = False
     context["FSJ_user"] = FSJ_user
     template = loader.get_template("FSJ/view_application.html")

@@ -24,7 +24,8 @@ def is_coordinator(usr):
     return True
 
 # The user class specific home page handler, which returns the appropriate page for this user class.
-# Contains the decordator to ensure the user is logged into the system and a test to ensure the user accessing the page is valid.
+# Contains the decordator to ensure the user is logged into the system and a test to ensure the user accessing
+# the page is valid.
 @login_required
 @user_passes_test(is_coordinator)
 def coordinator_home(request, FSJ_user):
@@ -33,7 +34,8 @@ def coordinator_home(request, FSJ_user):
     return HttpResponse(template.render(context, request))
 
 
-# The handler used by the Coordinator class to produce a list of all students in the database, using the coord_student_list template.
+# The handler used by the Coordinator class to produce a list of all students in the database, using the coord_student
+# _list template.
 @login_required
 @user_passes_test(is_coordinator)
 def coordinator_studentlist(request):
@@ -46,7 +48,8 @@ def coordinator_studentlist(request):
     context["filter"] = filtered_list
     return HttpResponse(template.render(context, request))
 
-# The handler used by the Coordinator class to produce a list of all adjudicators in the database, using the adjudicator_student_list template.
+# The handler used by the Coordinator class to produce a list of all adjudicators in the database,
+# using the adjudicator_student_list template.
 @login_required
 @user_passes_test(is_coordinator)
 def coordinator_adjudicatorlist(request):
@@ -60,7 +63,8 @@ def coordinator_adjudicatorlist(request):
     return HttpResponse(template.render(context, request)) 
 
 
-# The handler used by the Coordinator class to show a specific student's profile in detail, using the generic profile temmplate and the unrestricted student model (with all fields editable).
+# The handler used by the Coordinator class to show a specific student's profile in detail,
+# using the generic profile temmplate and the unrestricted student model (with all fields editable).
 @login_required
 @user_passes_test(is_coordinator)
 def edit_student(request):
@@ -90,7 +94,8 @@ def edit_student(request):
     return HttpResponse(template.render(context, request))
 
 
-# The handler used by the Coordinator class to show a specific adjudicator's profile in detail, using the generic profile temmplate and the unrestricted adjudicator model (with all fields editable).
+# The handler used by the Coordinator class to show a specific adjudicator's profile in detail,
+# using the generic profile temmplate and the unrestricted adjudicator model (with all fields editable).
 @login_required
 @user_passes_test(is_coordinator)
 def edit_adjudicator(request):
@@ -135,7 +140,7 @@ def coordinator_addstudent(request):
             #set the user's email to that of the adjudicator
             user = User.objects.get(username=data['ccid'])
             user.email = data['email']
-            #generate a random 32 character password that will be reset on registration
+            # Generate a random 32 character password that will be reset on registration
             user.set_password(get_random_string(length=32))
             user.save()
             return redirect('studentlist')
@@ -211,7 +216,7 @@ def coordinator_deleteadjudicator(request):
 @login_required
 @user_passes_test(is_coordinator)
 def coordinator_awards(request, FSJ_user):
-    awards_list = Award.objects.all()
+    awards_list = Award.objects.all().order_by("name")
     filtered_list = AwardFilter(request.GET, queryset=awards_list)
     template = loader.get_template("FSJ/awards_list.html")
     context = get_standard_context(FSJ_user)
@@ -301,19 +306,34 @@ def coordinator_awardaction(request):
                 start_date = form.cleaned_data.get('start_date')
                 end_date = form.cleaned_data.get('end_date')
                 
-                if start_date and end_date:
-                    for itemid in awardid_list:
-                        award = Award.objects.get(awardid=itemid)
-                        award.reset_date(start_date, end_date)
-                        award.save()
+                for itemid in awardid_list:
+                    award = Award.objects.get(awardid=itemid)
+                    award.reset(start_date, end_date)
+                    award.save()
+                
+                if start_date or end_date:
                     messages.success(request, _("Awards reset and dates changed"))
-                        
+                
                 else:
+                    messages.success(request, _("Awards reset"))
+                
+        elif '_changeDate' in request.POST:
+            form = DateChangeForm(request.POST)
+            if form.is_valid():
+                start_date = form.cleaned_data.get('start_date')
+                end_date = form.cleaned_data.get('end_date')
+                
+                if start_date or end_date:
                     for itemid in awardid_list:
                         award = Award.objects.get(awardid=itemid)
-                        award.reset()
-                        award.save()   
-                    messages.success(request, _("Awards reset"))
+                        award.change_date(start_date, end_date)
+                        award.save()
+                    
+                    messages.success(request, _("Award dates changed"))            
+                    
+            
+            else:
+                messages.warning(request, _("The start date cannot be later than the end date"))
                     
 
     return redirect('coord_awardslist')
@@ -483,7 +503,7 @@ def coordinator_addcommittee(request):
         for award in committee.awards.all():
             if award in awards_list:
                 awards_blocked.append(award.awardid)
-    available_awards = Award.objects.exclude(awardid__in = awards_blocked).values_list('awardid','award_name')
+    available_awards = Award.objects.exclude(awardid__in = awards_blocked).values_list('awardid','name')
     # If the coordinator has just saved their new comittee, check for form validity before saving. Invalid forms are put back into the template to show errors.
     if request.method == "POST":
         # Loads adjudicator form with the new information
@@ -519,7 +539,7 @@ def coordinator_committeeedit(request, committee_idnum):
         for award in instance.awards.all():
             if award in awards_list:
                 awards_blocked.append(award.awardid)
-    available_awards = Award.objects.exclude(awardid__in = awards_blocked).values_list('awardid','award_name')
+    available_awards = Award.objects.exclude(awardid__in = awards_blocked).values_list('awardid','name')
     selectedawards = committee.awards.all()
 
     if request.method == "POST":
@@ -705,7 +725,7 @@ def coordinator_archive_action(request, award_idnum):
                 archivedapp.save()
         elif "_delete" in request.POST:
             for applicationid in archived_application_list:
-                ArchivedApplication.objects.get(application_id=applicationid).delete()
+                Application.objects.get(application_id=applicationid).delete()
 
 
     return redirect('/coord_awardslist/'+ str(award_idnum) +'/applications/archive/')
@@ -772,3 +792,41 @@ def coordinator_upload_students(request):
     url = "/studentlist/addmulti/"
     context["url"] = url
     return HttpResponse(template.render(context, request))    
+
+def coordinator_application_tab(request):
+    FSJ_user = get_FSJ_user(request.user.username)
+    application_list = Application.objects.all()
+    filtered_list = ApplicationFilter(request.GET, queryset=application_list)
+    template = loader.get_template("FSJ/application_tab.html")
+    context = get_standard_context(FSJ_user)
+    context["application_list"] = application_list
+    context["filter"] = filtered_list
+    context["return_url"] = "/coord_applicationlist/"
+    context["url"] = "/coord_applicationlist/action/"
+    return HttpResponse(template.render(context,request))    
+    
+    
+def coordinator_application_tab_action(request):
+    if request.method == 'POST':
+        application_list = request.POST.getlist('applicationaction')
+
+        if "_archive" in request.POST:  
+            for applicationid in application_list:
+                application = Application.objects.get(application_id=applicationid)
+                application.is_archived = True;
+                application.save()
+        if "_removeFromArchive" in request.POST:  
+            for applicationid in archived_application_list:
+                application = Application.objects.get(application_id=applicationid)
+                application.is_archived = False;
+                application.save()        
+        elif "_review" in request.POST:
+            for applicationid in application_list:
+                application = Application.objects.get(application_id=applicationid)
+                application.is_reviewed = True;
+                application.save()
+        elif "_delete" in request.POST:
+            for applicationid in application_list:
+                Application.objects.get(application_id=applicationid).delete() 
+    
+        return redirect('coord_applicationtab')    

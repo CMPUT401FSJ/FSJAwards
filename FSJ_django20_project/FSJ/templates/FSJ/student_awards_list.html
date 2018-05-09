@@ -31,7 +31,7 @@
             {% if awards_list %}
                 {% for award in awards_list %}
                     <tr>
-                        <td>{{award.award_name }}</td>
+                        <td>{{award.name }}</td>
                         <td>{{award.description|linebreaks}}</td>
                         <td>{{award.value}}</td>
                         <td>
@@ -39,8 +39,8 @@
                                 {{year}} <br>
                             {% endfor %}
                         </td>
-                        <td>{{award.start_date}}</td>
-                        <td>{{award.end_date}}</td>
+                        <td class='date-column'>{{award.start_date|date:"Y-m-d"}}</td>
+                        <td class='date-column'>{{award.end_date|date:"Y-m-d"}}</td>
                         {# Translators: Apply button in award table #}
                         <td><a href="/student_awardslist/{{ award.awardid }}/apply/">{% trans "Apply" %}</a></td>
                     </tr>
@@ -52,7 +52,7 @@
             {% if in_progress_list %}
                 {% for award in in_progress_list %}
                     <tr>
-                        <td>{{award.award_name }}</td>
+                        <td>{{award.name }}</td>
                         <td>{{award.description|linebreaks}}</td>
                         <td>{{award.value}}</td>
                         <td>
@@ -60,8 +60,8 @@
                                 {{year}} <br>
                             {% endfor %}
                         </td>
-                        <td>{{award.start_date}}</td>
-                        <td>{{award.end_date}}</td>
+                        <td class='date-column'>{{award.start_date|date:"Y-m-d"}}</td>
+                        <td class='date-column'>{{award.end_date|date:"Y-m-d"}}</td>
                         {# Translators: Edit application button in student award table #}
                         <td><a href="/student_awardslist/{{ award.awardid }}/edit/">{% trans "Edit" %}</a></td>
                     </tr>
@@ -73,7 +73,7 @@
             {% if submitted_list %}
                 {% for award in submitted_list %}
                     <tr>
-                        <td>{{award.award_name }}</td>
+                        <td>{{award.name }}</td>
                         <td>{{award.description|linebreaks}}</td>
                         <td>{{award.value}}</td>
                         <td>
@@ -81,8 +81,8 @@
                                 {{year}} <br>
                             {% endfor %}
                         </td>
-                        <td>{{award.start_date}}</td>
-                        <td>{{award.end_date}}</td>
+                        <td class='date-column'>{{award.start_date|date:"Y-m-d"}}</td>
+                        <td class='date-column'>{{award.end_date|date:"Y-m-d"}}</td>
                         {# Translators: Unsubmit application button in student award table #}
                         <td><a href="/student_awardslist/{{ award.awardid }}/unsubmit/">{% trans "Unsubmit" %}</a></td>
                     </tr>
