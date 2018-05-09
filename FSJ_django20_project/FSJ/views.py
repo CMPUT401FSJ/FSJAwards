@@ -92,7 +92,7 @@ def home(request):
 
 # The profile view for the user accessing their own profile (with restricted field editting)
 # Includes a POST handler for saving based on the results from the form, and adds the form back to the same template if validation fails
-# Contains the decordator to ensure the user is logged into the system and a test to ensure the user accessing the page is valid.
+# Contains the decorator to ensure the user is logged into the system and a test to ensure the user accessing the page is valid.
 @login_required
 @user_passes_test(is_FSJ_user)
 def profile(request):
@@ -191,6 +191,7 @@ def view_student(request):
 def view_application(request):
     application_id = request.GET.get("application_id","")
     FSJ_user = get_FSJ_user(request.user.username)
+    context = get_standard_context(FSJ_user)
     return_url = request.GET.get("return", "")
     url_is_safe = is_safe_url(url=urllib.parse.unquote(return_url),
                               allowed_hosts=settings.ALLOWED_HOSTS,
@@ -209,7 +210,7 @@ def view_application(request):
         if '_review' in request.POST:
             if application.award.documents_needed and not application.application_file:
                 messages.warning(request, _("This award is missing a document"))
-                return redirect("/view_application?application_id=" + str(application.application_id) + "&return=" + str(return_url))
+                return redirect("/view_application?application_id=" + str(application.application_id) + "&return=" + urllib.parse.quote(return_url))
             else:
                 application.is_reviewed = True
         elif '_unreview' in request.POST:
@@ -217,12 +218,12 @@ def view_application(request):
         application.save()
         
         if url_is_safe:
+            print(return_url)
             return redirect(urllib.parse.unquote(return_url))
     
-    context = get_standard_context(FSJ_user)
     
     if isinstance(FSJ_user, Coordinator):
-        url = "/view_application?application_id=" + str(application.application_id) + "&return=" + str(return_url)
+        url = "/view_application?application_id=" + str(application.application_id) + "&return=" + urllib.parse.quote(return_url)
         comment_list = Comment.objects.filter(application = application)
         
         if comment_list.count() > 0:
