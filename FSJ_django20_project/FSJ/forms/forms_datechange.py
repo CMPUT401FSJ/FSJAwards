@@ -4,6 +4,7 @@ from django.utils.translation import gettext_lazy as _
 
 class DateInput(DateInput):
     input_type = 'date'
+    template_name = 'FSJ/date_field.html'
 
 class DateChangeForm(forms.Form):
 
