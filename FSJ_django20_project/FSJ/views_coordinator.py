@@ -301,19 +301,31 @@ def coordinator_awardaction(request):
                 start_date = form.cleaned_data.get('start_date')
                 end_date = form.cleaned_data.get('end_date')
                 
-                if start_date and end_date:
-                    for itemid in awardid_list:
-                        award = Award.objects.get(awardid=itemid)
-                        award.reset_date(start_date, end_date)
-                        award.save()
+                for itemid in awardid_list:
+                    award = Award.objects.get(awardid=itemid)
+                    award.reset(start_date, end_date)
+                    award.save()
+                
+                if start_date or end_date:
                     messages.success(request, _("Awards reset and dates changed"))
-                        
+                
                 else:
+                    messages.success(request, _("Awards reset"))
+                
+        elif '_changeDate' in request.POST:
+            form = DateChangeForm(request.POST)
+            if form.is_valid():
+                start_date = form.cleaned_data.get('start_date')
+                end_date = form.cleaned_data.get('end_date')
+                
+                if start_date or end_date:
                     for itemid in awardid_list:
                         award = Award.objects.get(awardid=itemid)
-                        award.reset()
-                        award.save()   
-                    messages.success(request, _("Awards reset"))
+                        award.change_date(start_date, end_date)
+                        award.save()
+                    
+                    messages.success(request, _("Award dates changed"))            
+                    
             
             else:
                 messages.warning(request, _("The start date cannot be later than the end date"))

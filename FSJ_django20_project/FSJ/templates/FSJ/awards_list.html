@@ -157,10 +157,15 @@
                     </div>
                 {% endfor %}
                 <br>
+             
+                {# Translators: Button to change date of selected awards #}
+                <button class = "btn btn-action" type="submit" name="_changeDate">{% trans "Change award date(s)" %}</button>
             
                 {# Translators: Button to reset selected awards #}
                 <button class = "btn btn-action" type="submit" name="_reset" onclick="return confirm('Are you sure you want to reset these awards?');">{% trans "Reset award(s)" %}</button>
+    
                 <br>
+                
             </form>
             
             
