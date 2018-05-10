@@ -78,18 +78,18 @@
     
             {% if FSJ_user.user_class == "Coordinator" %}
 
-                {% if comment_list %}
+                {% if review_list %}
                     <table class="table table-bordered table-striped table-hover" align="center">
                         <tr>
                             <th>{% trans "Adjudicator" %}</th>
                             <th>{% trans "Comment" %}</th>
                             <th>{% trans "Ranking" %}</th>
                         </tr>
-                        {% for comm in comment_list %}
+                        {% for review in review_list %}
                             <tr>
-                                <td>{{ comm.0.adjudicator.ccid }}</td>
-                                <td>{{ comm.0.comment_text }}</td>
-                                <td>{{ comm.1 }}</td>
+                                <td>{{ review.0.ccid }}</td>
+                                <td>{{ review.1 }}</td>
+                                <td>{{ review.2 }}</td>
                             </tr>
                         {% endfor %}
                     </table>
