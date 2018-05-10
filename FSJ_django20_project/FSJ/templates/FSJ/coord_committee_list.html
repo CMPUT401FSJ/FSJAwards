@@ -45,6 +45,7 @@
                                 {% endfor %}</td>
                             {# Translators: Edit button in coordinator committees list #}
                             <td><a href="/coord_committeeslist/{{ committee.committeeid }}/">{% trans "Edit" %}</a></td>
+                            <td><a href="{% url 'coordinator_export_final_review' committee_id=committee.committeeid%}">{% trans "Review" %}</a></td>
                         </tr>
                     {% endfor %}
                 </table>
@@ -53,6 +54,7 @@
                 {# Translators: Button to delete selected committees #}
                 <button class="btn btn-danger pull-right" type="submit" name="delete">{% trans "Delete committee(s)" %}</button>
             </form>
+
         </div>
     </body>
 {% endblock %}

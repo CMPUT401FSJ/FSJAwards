@@ -241,8 +241,8 @@ def view_application(request):
 
     elif isinstance(FSJ_user, Adjudicator):
         
-        if not application.is_reviewed:
-            return redirect('adj_awardslist')
+       # if not application.is_reviewed:
+       #     return redirect('adj_awardslist')
         
         try:
             comment = Comment.objects.get(application = application, adjudicator = FSJ_user)
