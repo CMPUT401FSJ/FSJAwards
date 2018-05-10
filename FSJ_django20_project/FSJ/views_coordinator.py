@@ -862,8 +862,6 @@ def coordinator_export_final_review(request, committee_id):
         except ValueError:
             pass
 
-
-
         # Sheet header, first row
         row_num = 0
 
@@ -881,22 +879,37 @@ def coordinator_export_final_review(request, committee_id):
         rows = []
 
         for adjudicator in adjudicators:
+
+            row_num += 1
             row = [None] * 6
             row[0] = str(adjudicator.ccid)
 
             for i in range(1, 6):
                 try:
                     row[i] = str(Ranking.objects.get(award=award, adjudicator=adjudicator, rank=i).application.student)
-
                 except:
                     row[i] = ""
 
-            rows.append(tuple(row))
-
-        for row in rows:
-            row_num += 1
+            row = tuple(row)
             for col_num in range(len(row)):
                 ws.write(row_num, col_num, row[col_num], font_style)
 
+
     wb.save(response)
     return response
+
+
+def coordinator_committee_review(request, committee_id):
+
+    FSJ_user = get_FSJ_user(request.user.username)
+    context = get_standard_context(FSJ_user)
+    try:
+        committee = Committee.objects.get(committeeid=committee_id)
+    except:
+        messages.warning(request, _("Committee does not exist"))
+        return redirect('coord_committeeslist')
+
+    context['committee'] = committee
+    context['return_url'] = "/coord_committeeslist/"
+    template = loader.get_template("FSJ/coord_final_review.html")
+    return HttpResponse(template.render(context, request))

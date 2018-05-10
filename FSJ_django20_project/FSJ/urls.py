@@ -62,6 +62,7 @@ urlpatterns = [
     path('coord_applicationlist/', views.coordinator_application_tab, name='coord_applicationtab'),
     path('coord_applicationlist/action/', views.coordinator_application_tab_action, name='coord_applicationtabaction'),
     re_path(r'^export/xls/(?P<committee_id>\S+)/$', views.coordinator_export_final_review, name='coordinator_export_final_review'),
+    re_path(r'^coord_committeeslist/(?P<committee_id>\S+)/review/$', views.coordinator_committee_review, name='coord_committeereview'),
 ]
 
 if settings.DEBUG:

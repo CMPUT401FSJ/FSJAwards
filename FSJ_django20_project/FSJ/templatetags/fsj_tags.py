@@ -1,7 +1,6 @@
 from django import template
 from django.template.defaultfilters import stringfilter
-from ..models import Application
-from ..models import Award
+from ..models import Ranking
 import urllib
 
 register = template.Library()
@@ -34,3 +33,19 @@ def quote(value):
 @stringfilter
 def unquote(value):
     return urllib.parse.unquote(value)
+
+@register.simple_tag(takes_context=True)
+def get_ranking(context, rank):
+    award = context['award']
+    adjudicator = context['adjudicator']
+    try:
+        ranking = Ranking.objects.get(award=award, adjudicator=adjudicator, rank=rank)
+        ccid = ranking.application.student.ccid
+        return ccid
+
+    except:
+        return ""
+
+@register.filter
+def get_range(size):
+    return range(1, size+1)
