@@ -1,0 +1,39 @@
+{% extends "FSJ/base_with_banner.html" %}
+{% load i18n %} {# NOTE YOU MUST LOAD i18n to every HTML page even though it's also loaded to base.html #}
+{% load fsj_tags %}
+
+{% block heading %}
+    {# Translators: Final Review page header #}
+    {% trans "Final Review" %}
+{% endblock %}
+
+{% block content %}
+    <body>
+        <div class='center-content'>
+            <table class="table table-bordered table-striped table-hover" align="center">
+                <tr>
+                    <th>{% trans "Adjudicator" %}</th>
+                    <th>{% trans "Rank 1" %}</th>
+                    <th>{% trans "Rank 2" %}</th>
+                    <th>{% trans "Rank 3" %}</th>
+                    <th>{% trans "Rank 4" %}</th>
+                    <th>{% trans "Rank 5" %}</th>
+                </tr>
+                {% for award in committee.awards.all %}
+                    <tr><th class="alternate-table-heading" colspan=7>{{ award.name }}</th></tr>
+                    {% for adjudicator in committee.adjudicators.all %}
+                        <tr>
+                            <td>{{ adjudicator.ccid }}</td>
+                            {% for i in 5|get_range %}
+                                <td>{% get_ranking i %}</td>
+                            {% endfor %}
+                        </tr>
+                    {% endfor %}
+                {% endfor %}
+            </table>
+
+            <a class="btn btn-success" role="button" href="{{ return_url }}">{% trans "Return to Committees" %}</a>
+
+        </div>
+    </body>
+{%  endblock %}

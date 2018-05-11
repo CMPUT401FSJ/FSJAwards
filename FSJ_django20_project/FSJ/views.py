@@ -192,3 +192,4 @@ def view_application(request):
         return coordinator_view_application(request)
     elif isinstance(FSJ_user, Adjudicator):
         return adjudicator_view_application(request)
+

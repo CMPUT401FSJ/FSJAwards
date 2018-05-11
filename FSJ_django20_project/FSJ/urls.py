@@ -1,5 +1,5 @@
 from django.contrib.auth import views as auth_views
-from django.urls import path
+from django.urls import path, re_path
 from . import views
 from django.conf import settings
 from django.conf.urls.static import static
@@ -60,7 +60,9 @@ urlpatterns = [
     path('view_student', views.view_student, name = 'view_student'),
     path('view_application', views.view_application, name = 'view_application'),
     path('coord_applicationlist/', views.coordinator_application_tab, name='coord_applicationtab'),
-    path('coord_applicationlist/action/', views.coordinator_application_tab_action, name='coord_applicationtabaction')
+    path('coord_applicationlist/action/', views.coordinator_application_tab_action, name='coord_applicationtabaction'),
+    re_path(r'^export/xls/(?P<committee_id>\S+)/$', views.coordinator_export_final_review, name='coordinator_export_final_review'),
+    re_path(r'^coord_committeeslist/(?P<committee_id>\S+)/review/$', views.coordinator_committee_review, name='coord_committeereview'),
 ]
 
 if settings.DEBUG:
