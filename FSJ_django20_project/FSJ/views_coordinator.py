@@ -858,6 +858,8 @@ def coordinator_view_application(request):
 
         if url_is_safe:
             return redirect(urllib.parse.unquote(return_url))
+        else:
+            return redirect(coordinator_application_tab)
 
     if request.method == 'POST':
         if '_review' in request.POST:
@@ -874,6 +876,8 @@ def coordinator_view_application(request):
 
         if url_is_safe:
             return redirect(urllib.parse.unquote(return_url))
+        else:
+            return redirect(coordinator_application_tab)
 
     else:
         adjudicators = application.adjudicators.all()
