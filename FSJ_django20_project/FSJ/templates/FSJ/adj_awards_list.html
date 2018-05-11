@@ -31,7 +31,7 @@
                     <th>{% trans "Applications" %}</th>
                 </tr>
                 {% for committee in committee_list %}
-                    <tr><th class="alternate-table-heading" colspan=6>{{ committee.committee_name }}</th></tr>
+                    <tr><th class="alternate-table-heading" colspan=7>{{ committee.committee_name }}</th></tr>
                     {% for award in committee.awards.all %}
                         <tr>
                             

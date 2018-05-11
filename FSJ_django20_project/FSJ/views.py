@@ -190,5 +190,5 @@ def view_application(request):
     FSJ_user = get_FSJ_user(request.user.username)
     if isinstance(FSJ_user, Coordinator):
         return coordinator_view_application(request)
-    elif isinstance(FSJ_user, Coordinator):
+    elif isinstance(FSJ_user, Adjudicator):
         return adjudicator_view_application(request)
