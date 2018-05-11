@@ -112,7 +112,7 @@
                                 <input type="checkbox" disabled {% if award.is_active %}checked{% endif %}>
                             </td>
                             {# Translators: Edit link in coordinator awards list #}
-                            <td><a href="/coord_awardslist/{{ award.awardid }}/">{% trans "Edit" %}</a></td>
+                            <td><a href="/coord_awardslist/edit/?award_id={{ award.awardid }}">{% trans "Edit" %}</a></td>
                             {% if award.applications.count == 0 %}
                                 {# Translators: No applications message in coordinator awards list #}
                                 <td>{% trans "No Applications" %}</td>

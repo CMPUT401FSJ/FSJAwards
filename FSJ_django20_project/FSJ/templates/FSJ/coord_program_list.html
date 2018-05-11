@@ -35,7 +35,7 @@
                             <td>{{ program.code }}</td>
                             <td>{{ program.name }}</td>
                             {# Translators: Edit button in coordinator program list #}
-                            <td><a href="/programs/edit/{{ program.code }}/">{% trans "Edit" %}</a></td>
+                            <td><a href="/programs/edit/?program_code={{ program.code }}">{% trans "Edit" %}</a></td>
                         </tr>
                     {% endfor %}
                 </table>

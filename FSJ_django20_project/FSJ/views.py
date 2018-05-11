@@ -128,10 +128,15 @@ def profile(request):
     return HttpResponse(template.render(context, request))
 
 @login_required
-@user_passes_test(is_coordinator)
+@user_passes_test(is_FSJ_user)
 def awards(request):
     FSJ_user = get_FSJ_user(request.user.username)
-    return coordinator_awards(request, FSJ_user)
+    if isinstance(FSJ_user, Coordinator):
+        return coordinator_awards(request, FSJ_user)
+    elif isinstance(FSJ_user, Adjudicator):
+        return adjudicator_awards(request)
+    elif isinstance(FSJ_user, Student):
+        return student_awardslist(request)
 
 @login_required
 @user_passes_test(is_coordinator)

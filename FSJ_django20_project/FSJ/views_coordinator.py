@@ -41,7 +41,7 @@ def coordinator_home(request, FSJ_user):
 # _list template.
 @login_required
 @user_passes_test(is_coordinator)
-def coordinator_studentlist(request):
+def coordinator_students(request):
     FSJ_user = get_FSJ_user(request.user.username)
     student_list = Student.objects.all()
     filtered_list = StudentFilter(request.GET, queryset=student_list)
@@ -55,7 +55,7 @@ def coordinator_studentlist(request):
 # using the adjudicator_student_list template.
 @login_required
 @user_passes_test(is_coordinator)
-def coordinator_adjudicatorlist(request):
+def coordinator_adjudicators(request):
     FSJ_user = get_FSJ_user(request.user.username)
     adjudicator_list = Adjudicator.objects.all()
     filtered_list = AdjudicatorFilter(request.GET, queryset=adjudicator_list)
@@ -70,7 +70,7 @@ def coordinator_adjudicatorlist(request):
 # using the generic profile temmplate and the unrestricted student model (with all fields editable).
 @login_required
 @user_passes_test(is_coordinator)
-def edit_student(request):
+def coordinator_edit_student(request):
     student_ccid = request.GET.get("ccid","")
     FSJ_user = get_FSJ_user(request.user.username)
     try:
@@ -84,10 +84,10 @@ def edit_student(request):
         if form.is_valid():
             student = form.save(commit = False)
             student.save()
-            return redirect('studentlist')
+            return redirect('students')
     else:
         form = StudentForm(instance=student)
-    return_url = "/studentlist/"
+    return_url = "/students/"
         
     context = get_standard_context(FSJ_user)
     context["student"] = student
@@ -101,7 +101,7 @@ def edit_student(request):
 # using the generic profile temmplate and the unrestricted adjudicator model (with all fields editable).
 @login_required
 @user_passes_test(is_coordinator)
-def edit_adjudicator(request):
+def coordinator_edit_adjudicator(request):
     adjudicator_ccid = request.GET.get("ccid","")
     FSJ_user = get_FSJ_user(request.user.username)
     try:
@@ -115,10 +115,10 @@ def edit_adjudicator(request):
         if form.is_valid():
             adjudicator = form.save(commit = False)
             adjudicator.save()
-            return redirect('adjudicatorlist')
+            return redirect('adjudicators')
     else:
         form = AdjudicatorForm(instance=adjudicator)
-    return_url = "/adjudicatorlist/"
+    return_url = "/adjudicators/"
         
     context = get_standard_context(FSJ_user)
     context["adjudicator"] = adjudicator
@@ -146,16 +146,16 @@ def coordinator_addstudent(request):
             # Generate a random 32 character password that will be reset on registration
             user.set_password(get_random_string(length=32))
             user.save()
-            return redirect('studentlist')
+            return redirect('students')
     else:
         # If the coordinator hasn't entered information yet, create a blank student form
         form = StudentForm()
     context = get_standard_context(FSJ_user)
     template = loader.get_template("FSJ/profile.html")
     context["form"] = form
-    url = "/studentlist/add/"
+    url = "/students/add/"
     context["url"] = url
-    context["return_url"] = "/studentlist/"
+    context["return_url"] = "/students/"
     return HttpResponse(template.render(context, request))
 
 
@@ -176,16 +176,16 @@ def coordinator_addadjudicator(request):
             user.email = data['email']
             user.set_password(get_random_string(length=32))
             user.save()
-            return redirect('adjudicatorlist')
+            return redirect('adjudicators')
     else:
         # If the coordinator hasn't entered information yet, create a blank adjudicator
         form = AdjudicatorForm()           
     context = get_standard_context(FSJ_user)
     template = loader.get_template("FSJ/profile.html")
     context["form"] = form
-    url = "/adjudicatorlist/add/"
+    url = "/adjudicators/add/"
     context["url"] = url
-    context["return_url"] = "/adjudicatorlist/"
+    context["return_url"] = "/adjudicators/"
     return HttpResponse(template.render(context, request))
 
 
@@ -200,7 +200,7 @@ def coordinator_deletestudent(request):
         for usr_ccid in id_list:
             Student.objects.get(ccid=usr_ccid).delete()
 
-    return redirect('studentlist')
+    return redirect('students')
 
 # This handler deletes adjudicators after their profiles have been selected from a checklist
 @login_required
@@ -213,7 +213,7 @@ def coordinator_deleteadjudicator(request):
         for usr_ccid in id_list:
             Adjudicator.objects.get(ccid=usr_ccid).delete()
 
-    return redirect('adjudicatorlist')
+    return redirect('adjudicators')
 
 #function for handling coordinator viewing a list of awards
 @login_required
@@ -253,10 +253,11 @@ def coordinator_add_awards(request):
 #function for handling coordinator editing an award
 @login_required
 @user_passes_test(is_coordinator)
-def coordinator_awardedit(request, award_idnum):
+def coordinator_awardedit(request):
     FSJ_user = get_FSJ_user(request.user.username)
+    award_id = request.GET.get("award_id", "")
     try:
-        award = Award.objects.get(awardid = award_idnum)
+        award = Award.objects.get(awardid = award_id)
     except Award.DoesNotExist:
         raise Http404("Award does not exist")
 
@@ -271,7 +272,7 @@ def coordinator_awardedit(request, award_idnum):
     context = get_standard_context(FSJ_user)
     context["award"] = award
     context["form"] = form
-    url = "/coord_awardslist/" + str(award.awardid) + "/"
+    url = "/coord_awardslist/edit/?award_id=" + str(award.awardid)
     context["url"] = url
     context["return_url"] = "/coord_awardslist/"
     template = loader.get_template("FSJ/award.html")
@@ -344,10 +345,10 @@ def coordinator_awardaction(request):
 #function for handling coordinator viewing a list of programs
 @login_required
 @user_passes_test(is_coordinator)
-def list_programs(request):
+def programs(request):
     FSJ_user = get_FSJ_user(request.user.username)
     programs_list = Program.objects.all()
-    template = loader.get_template("FSJ/list_programs.html")
+    template = loader.get_template("FSJ/coord_program_list.html")
     context = get_standard_context(FSJ_user)
     context["programs_list"] = programs_list
     return HttpResponse(template.render(context, request))
@@ -361,7 +362,7 @@ def add_program(request):
         form = ProgramForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('list_programs')
+            return redirect('progams')
     else:
         form = ProgramForm()
     context = get_standard_context(FSJ_user)
@@ -369,14 +370,15 @@ def add_program(request):
     context["form"] = form
     url = "/programs/add/"
     context["url"] = url
-    context["return_url"] = "/programs/list_programs"
+    context["return_url"] = "/programs/"
     return HttpResponse(template.render(context, request))
 
 #function for handling coordinator editing a program
 @login_required
 @user_passes_test(is_coordinator)
-def edit_program(request, program_code):
+def edit_program(request):
     FSJ_user = get_FSJ_user(request.user.username)
+    program_code = request.GET.get("program_code","")
     try:
         program = Program.objects.get(code = program_code)
     except Program.DoesNotExist:
@@ -386,15 +388,15 @@ def edit_program(request, program_code):
         form = ProgramForm(request.POST, instance = program)
         if form.is_valid():
             form.save()
-            return redirect('list_programs')
+            return redirect('programs')
     else:
         form = ProgramForm(instance = program)
     context = get_standard_context(FSJ_user)
     context["program_code"] = program_code
     context["form"] = form
-    url = "/programs/edit/" + str(program.code) + "/"
+    url = "/programs/edit/?program_code=" + str(program.code)
     context["url"] = url
-    context["return_url"] = "/programs/list_programs/"
+    context["return_url"] = "/programs/"
     template = loader.get_template("FSJ/program.html")
     return HttpResponse(template.render(context, request))
 
@@ -407,7 +409,7 @@ def delete_programs(request):
 
         for item_code in program_code_list:
             Program.objects.get(code = item_code).delete()
-    return redirect('list_programs')
+    return redirect('programs')
 
 #function for handling coordinator viewing a list of years of study
 @login_required
@@ -431,16 +433,16 @@ def coordinator_addyearofstudy(request):
         form = YearOfStudyForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('coord_yearslist')
+            return redirect('years')
     else:
         # If the coordinator hasn't entered information yet, create a blank adjudicator
         form = YearOfStudyForm()           
     context = get_standard_context(FSJ_user)
     template = loader.get_template("FSJ/year_of_study.html")
     context["form"] = form
-    url = "/coord_yearslist/add/"
+    url = "/years/add/"
     context["url"] = url
-    context["return_url"] = "/coord_yearslist/"
+    context["return_url"] = "/years/"
     return HttpResponse(template.render(context, request))
 
 #function for handling coordinator editing an award
@@ -459,10 +461,10 @@ def edit_year(request):
         form = YearOfStudyForm(request.POST, instance=yearofstudy)
         if form.is_valid():
             form.save()
-            return redirect('coord_yearslist')
+            return redirect('years')
     else:
         form = YearOfStudyForm(instance=yearofstudy)
-    return_url = "/coord_yearslist/"
+    return_url = "/years/"
         
     context = get_standard_context(FSJ_user)
     context["year"] = yearofstudy
@@ -482,7 +484,7 @@ def coordinator_yeardelete(request):
         for yearname in yearname_list:
             YearOfStudy.objects.get(year=yearname).delete()
 
-    return redirect('coord_yearslist')
+    return redirect('years')
 
 #function for handling coordinator viewing a list of committees
 @login_required
@@ -802,7 +804,7 @@ def coordinator_upload_students(request):
     context = get_standard_context(FSJ_user)
     template = loader.get_template("FSJ/coord_student_upload.html")
     context["form"] = form
-    url = "/studentlist/addmulti/"
+    url = "/students/addmulti/"
     context["url"] = url
     return HttpResponse(template.render(context, request))    
 
