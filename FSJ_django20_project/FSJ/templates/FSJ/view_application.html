@@ -9,143 +9,193 @@
 
 {% block content %}
     <div class='center-content'>
-        <div>
-            <h4><b>{% trans "Award Name:" %}</b></h4> 
-            <div class=tab-text>{{ award.name }}</div>
-        </div>
-        <div>
-            <h4><b>{% trans "Award Description:" %}</b></h4>
-            <div class=tab-text>{{ award.description|linebreaks }}</div>
-        </div>
-        <div>
-            <h4><b>{% trans "Award Value:" %}</b></h4>
-            <div class=tab-text>{{ award.value }}</div>
-        </div>
-        <div>
-            <h4><b>{% trans "Award Program(s):" %}</b></h4>
-            {% if award.programs.all %}
-                <ul>
-                    {% for p in award.programs.all %}
-                        <li><div class=li-font18>{{ p }}</div></li>
-                    {% endfor %}
-                </ul>
-            {% endif %}
-        </div>
-        <div>
-            <h4><b>{% trans "Award Year(s):" %}</b></h4>
-            {% if award.years_of_study.all %}
-                <ul>
-                    {% for y in award.years_of_study.all %}
-                        <li><div class=li-font18>{{ y }}</div></li>
-                    {% endfor %}
-                </ul>
-            {% endif %}
-        </div>
-        <hr style="widtch:100%; height:2px; background-color: #FFDB05;" />
-        <div>
-            <h4><b>{% trans "Student Name:" %}</b></h4>
-            <div class=tab-text>{{ student.get_name }}</div>
-        </div>
-        <div>
-            <h4><b>{% trans "Program:" %}</b></h4>
-            <div class=tab-text>{% if student.program %}{{ student.program }}{% endif %}</div>
-        </div>
-        <div>
-            <h4><b>{% trans "Student ID:" %}</b></h4>
-            <div class=tab-text>{{ student.student_id }}</div>
-        </div>
-        <div>
-            <h4><b>{% trans "Year:" %}</b></h4>
-            <div class=tab-text>{{ student.year }}</div>
-        </div>
-        <div>
-            <h4><b>{% trans "GPA:" %}</b></h4>
-            <div class=tab-text>{%if student.gpa %}{{ student.gpa }}{% endif %}</div>
-        </div>
-        {% if award.documents_needed %}
-            <div>
-                <h4><b>{% trans "Document:" %} </b></h4>
-                {% if document %}
-                    <object> <embed src="{{ document }}" width="100%" height="500px"> </object>
-                {% else %}
-                    {% trans "No document has been uploaded yet, but one is expected." %}
-                {% endif %}
-            </div>
-        {% endif %}
-        <br/>
-        <form action='{{ url }}' method='post'>
-            {% csrf_token %}
-    
+
+        <ul class="nav nav-tabs">
+            <li class="active"><a data-toggle="tab" href="#application">{% trans "Application" %}</a></li>
             {% if FSJ_user.user_class == "Coordinator" %}
+                <li><a data-toggle="tab" href="#comments">{% trans "Comments" %}</a></li>
+            {% endif %}
+        </ul>
 
-                {% if review_list %}
-                    <table class="table table-bordered table-striped table-hover" align="center">
-                        <tr>
-                            <th>{% trans "Adjudicator" %}</th>
-                            <th>{% trans "Comment" %}</th>
-                            <th>{% trans "Ranking" %}</th>
-                        </tr>
-                        {% for review in review_list %}
-                            <tr>
-                                {% for obj in review %}
-                                    <td>{{ obj }}</td>
-                                {% endfor %}
-                            </tr>
+        <div class="tab-content">
+            <div id="application" class="tab-pane fade in active">
+                <br>
+                <h3>{{ award.name }}</h3>
+
+                <div class="tab-text">
+                    <br>
+                    <div>
+                        <h4><b>{% trans "Description" %}</b></h4>
+                        <hr class="hr-div">
+                        {{ award.description|linebreaks }}
+                    </div>
+                    <br>
+                    <div>
+                        <h4><b>{% trans "Value" %}</b></h4>
+                        <hr class="hr-div">
+                        {{ award.value }}
+                    </div>
+                    <br>
+                    <div>
+                        <h4><b>{% trans "Program(s)" %}</b></h4>
+                        <hr class="hr-div">
+                        {% if award.programs.all %}
+                            {% for program in award.programs.all %}
+                                {{ program.name }}
+                                <br>
+                            {% endfor %}
+                        {% else %}
+                            {# Translators: No program chosen for an award, on the list of awards table #}
+                            {% trans "N/A" %}
+                        {% endif %}
+                    </div>
+                    <br>
+                    <div>
+                        <h4><b>{% trans "Year(s)" %}</b></h4>
+                        <hr class="hr-div">
+                        {% for year in award.years_of_study.all %}
+                            {{year}}
+                            <br>
                         {% endfor %}
-                    </table>
-                {% endif %}
-                {% if not archived %}
-                    <button class = "btn btn-success" type="submit" name="_review">{% trans "Mark reviewed" %}</button>
-    
-                    <button class = "btn btn-success" type="submit" name="_unreview">{% trans "Mark unreviewed" %}</button> 
-                {% endif %}
-            {% endif %}
-            {% if FSJ_user.user_class == "Adjudicator" %}
-                {% for field in form %}
-                    <div>
-                        <div>
-                            {% if field.label %}
-                                {{field.label_tag}}
-                            {% endif %}
-                        </div>
-                        <div {% if field.errors %}class='has-error'{% endif %}>
-                            {{ field }}
-                        </div>
-                        {% if field.help_text %}
-                            {{ field.help_text }}
-                        {% endif %}
-                        {% if field.errors %}
-                            {{ field.errors }}
-                        {% endif %}
                     </div>
-                {% endfor %}
+                </div>
 
-                {% for field in form2 %}
+{#                <hr style="width:100%; height:2px; background-color: #FFDB05;" />#}
+                <br>
+                <h3>{{ student.get_name }}</h3>
+                <br>
+
+                <div class="tab-text">
                     <div>
+                        <h4><b>{% trans "Program" %}</b></h4>
+                        <hr class="hr-div">
+                        {% if student.program %}{{ student.program }}{% endif %}
+                    </div>
+                    <br>
+                    <div>
+                        <h4><b>{% trans "Year" %}</b></h4>
+                        <hr class="hr-div">
+                        {{ student.year }}
+                    </div>
+                    <br>
+                    <div>
+                        <h4><b>{% trans "Student ID" %}</b></h4>
+                        <hr class="hr-div">
+                        {{ student.student_id }}
+                    </div>
+                    <br>
+
+                    {%if student.gpa %}
                         <div>
-                            {% if field.label %}
-                                {{field.label_tag}}
+                            <h4><b>{% trans "GPA" %}</b></h4>
+                            <hr class="hr-div">
+                            {{ student.gpa }}
+                        </div>
+                        <br>
+                    {% endif %}
+
+                    {% if award.documents_needed %}
+                        <div>
+                            <h4><b>{% trans "Document" %} </b></h4>
+                            <hr class="hr-div">
+                            {% if document %}
+                                <object> <embed src="{{ document }}" width="100%" height="500px"> </object>
+                            {% else %}
+                                {% trans "No document has been uploaded yet, but one is expected." %}
                             {% endif %}
                         </div>
-                        <div {% if field.errors %}class='has-error'{% endif %}>
-                            {{ field }}
-                        </div>
-                        {% if field.help_text %}
-                            {{ field.help_text }}
-                        {% endif %}
-                        {% if field.errors %}
-                            {{ field.errors }}
-                        {% endif %}
-                    </div>
-                {% endfor %}
+                        <br>
+                    {% endif %}
+                </div>
                 <br/>
-                {# Save button #}
-                <button class='btn btn-success' type='submit'>{% trans "Application Reviewed" %}</button>
-                {% if delete_url %}
-                    <a class="btn btn-danger" role="button" href="{{ delete_url }}">{% trans "Delete comment & ranking" %}</a> 
-                {% endif %}
+                <form action='{{ url }}' method='post'>
+                    {% csrf_token %}
+
+                    {% if FSJ_user.user_class == "Coordinator" %}
+
+                        {% if not archived %}
+                            <button class = "btn btn-success" type="submit" name="_review">{% trans "Mark reviewed" %}</button>
+
+                            <button class = "btn btn-success" type="submit" name="_unreview">{% trans "Mark unreviewed" %}</button>
+                        {% endif %}
+                    {% endif %}
+
+                    {% if FSJ_user.user_class == "Adjudicator" %}
+                        {% for field in form %}
+                            <div>
+                                <div>
+                                    {% if field.label %}
+                                        {{field.label_tag}}
+                                    {% endif %}
+                                </div>
+                                <div {% if field.errors %}class='has-error'{% endif %}>
+                                    {{ field }}
+                                </div>
+                                {% if field.help_text %}
+                                    {{ field.help_text }}
+                                {% endif %}
+                                {% if field.errors %}
+                                    {{ field.errors }}
+                                {% endif %}
+                            </div>
+                        {% endfor %}
+
+                        {% for field in form2 %}
+                            <div>
+                                <div>
+                                    {% if field.label %}
+                                        {{field.label_tag}}
+                                    {% endif %}
+                                </div>
+                                <div {% if field.errors %}class='has-error'{% endif %}>
+                                    {{ field }}
+                                </div>
+                                {% if field.help_text %}
+                                    {{ field.help_text }}
+                                {% endif %}
+                                {% if field.errors %}
+                                    {{ field.errors }}
+                                {% endif %}
+                            </div>
+                        {% endfor %}
+                        <br/>
+                        {# Save button #}
+                        <button class='btn btn-success' type='submit'>{% trans "Application Reviewed" %}</button>
+                        {% if delete_url %}
+                            <a class="btn btn-danger" role="button" href="{{ delete_url }}">{% trans "Delete comment & ranking" %}</a>
+                        {% endif %}
+                    {% endif %}
+                    <a class="btn btn-success" role="button" href="{{ return_url|unquote }}">{% trans "Return to Applications" %}</a>
+                </form>
+            </div>
+
+            {% if FSJ_user.user_class == "Coordinator" %}
+                <div id="comments" class="tab-pane fade">
+
+                    {% if review_list %}
+                        <table class="table table-bordered table-striped table-hover" align="center">
+                            <tr>
+                                <th>{% trans "Adjudicator" %}</th>
+                                <th>{% trans "Comment" %}</th>
+                                <th>{% trans "Ranking" %}</th>
+                            </tr>
+                            {% for review in review_list %}
+                                <tr>
+                                    {% for obj in review %}
+                                        <td>{{ obj }}</td>
+                                    {% endfor %}
+                                </tr>
+                            {% endfor %}
+                        </table>
+
+                        <br>
+                            <button class = "btn btn-success" type="submit" name="_review">{% trans "Mark reviewed" %}</button>
+                            <button class = "btn btn-success" type="submit" name="_unreview">{% trans "Mark unreviewed" %}</button>
+                            <a class="btn btn-success" role="button" href="{{ return_url|unquote }}">{% trans "Return to Applications" %}</a>
+
+                    {% endif %}
+                </div>
             {% endif %}
-            <a class="btn btn-success" role="button" href="{{ return_url|unquote }}">{% trans "Return to Applications" %}</a> 
-        </form>     
+        </div>
     </div>
 {% endblock %}
