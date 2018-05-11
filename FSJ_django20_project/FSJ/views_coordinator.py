@@ -900,7 +900,7 @@ def coordinator_view_application(request):
                     ranking_list.append("--")
 
 
-            review_list = zip(adjudicators, comment_list, ranking_list)
+            review_list = zip(adjudicators.values_list('ccid', flat=True), comment_list, ranking_list)
             context["review_list"] = review_list
 
 

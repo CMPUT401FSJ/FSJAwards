@@ -87,9 +87,9 @@
                         </tr>
                         {% for review in review_list %}
                             <tr>
-                                <td>{{ review.0.ccid }}</td>
-                                <td>{{ review.1 }}</td>
-                                <td>{{ review.2 }}</td>
+                                {% for obj in review %}
+                                    <td>{{ obj }}</td>
+                                {% endfor %}
                             </tr>
                         {% endfor %}
                     </table>
