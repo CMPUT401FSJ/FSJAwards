@@ -1,14 +1,17 @@
 from django.core.exceptions import PermissionDenied
 from django.contrib.auth.decorators import login_required, user_passes_test
-from django.http import HttpResponse
+from django.http import HttpResponse, Http404
 from django.template import loader
 from django.shortcuts import redirect
 from django.conf import settings
 from django.contrib import messages
+from django.utils.http import is_safe_url
+from django.utils.translation import gettext_lazy as _
 from .models import *
 from .utils import *
 from .filters import *
 from .forms import *
+import urllib
 
 # A test method to ensure a user is an Adjudicator to control access of certain views dependent on the user's class
 def is_adjudicator(usr):
@@ -216,6 +219,7 @@ def adjudicator_view_application(request):
 
         if url_is_safe:
             return redirect(urllib.parse.unquote(return_url))
+
 
     if request.method == 'POST':
         raise PermissionDenied
