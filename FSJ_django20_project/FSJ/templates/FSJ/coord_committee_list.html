@@ -54,6 +54,10 @@
                 </table>
                 {# Translators: Button to add committees #}
                 <a role="button" class="btn btn-success" href='/coord_committeeslist/add'>{% trans "Add Committee" %}</a>
+
+                {# Translaters: Button to export master review #}
+                <a role="button" class="btn btn-success" href="{% url 'coordinator_export_master_review' %}">{% trans "Export Review Summary" %}</a>
+
                 {# Translators: Button to delete selected committees #}
                 <button class="btn btn-danger pull-right" type="submit" name="delete">{% trans "Delete committee(s)" %}</button>
             </form>
