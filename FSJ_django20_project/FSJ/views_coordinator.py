@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.models import User
 from django.utils.crypto import get_random_string
 from django.utils.translation import gettext_lazy as _
+from django.utils.http import is_safe_url
 from django.http import HttpResponse, Http404
 from django.template import loader
 from django.conf import settings
@@ -15,6 +16,7 @@ from .utils import *
 from .forms import *
 import csv
 import io
+import urllib
 
 # A test method to ensure a user is a Coordinator to control access of certain views dependent on the user's class
 def is_coordinator(usr):
@@ -638,6 +640,8 @@ def coordinator_application_archive_list(request, award_idnum):
 @user_passes_test(is_coordinator)
 def coordinator_archived_application_view(request, award_idnum, application_idnum):
     FSJ_user = get_FSJ_user(request.user.username)
+    context = get_standard_context(FSJ_user)
+
     try:
         award = Award.objects.get(awardid = award_idnum)
     except Award.DoesNotExist:
@@ -647,7 +651,28 @@ def coordinator_archived_application_view(request, award_idnum, application_idnu
     except Award.DoesNotExist:
         raise Http404("application does not exist")
 
-    context = get_standard_context(FSJ_user)
+    adjudicators = application.adjudicators.all()
+    comment_list = []
+    ranking_list = []
+
+    if adjudicators.count() > 0:
+        for adjudicator in adjudicators:
+            try:
+                comment = Comment.objects.get(application=application, adjudicator=adjudicator)
+                comment_list.append(comment.comment_text)
+            except:
+                comment_list.append("")
+
+            try:
+                ranking = Ranking.objects.get(application=application, adjudicator=adjudicator)
+                ranking_list.append(ranking.rank)
+
+            except Ranking.DoesNotExist:
+                ranking_list.append("--")
+
+        review_list = zip(adjudicators.values_list('ccid', flat=True), comment_list, ranking_list)
+        context["review_list"] = review_list
+
     context["student"] = application.student
     context["award"] = award
     context["application"] = application
@@ -655,22 +680,7 @@ def coordinator_archived_application_view(request, award_idnum, application_idnu
         context["document"] = settings.MEDIA_URL + str(application.application_file)    
     context["archived"] = True
     context["return_url"] = "/coord_awardslist/" + str(award_idnum) + "/applications/archive/"
-    
-    comment_list = Comment.objects.filter(application = application)
-    
-    if comment_list.count() > 0:
-        ranking_list = []
-        for comment in comment_list:
-            try:
-                ranking = Ranking.objects.get(application = application, adjudicator = comment.adjudicator)
-                ranking_list.append(ranking.rank)
-                
-            except Ranking.DoesNotExist:
-                ranking_list.append("--")
-                
-        comment_list = zip(comment_list, ranking_list)
-        
-        context["comment_list"] = comment_list    
+
 
     template = loader.get_template("FSJ/view_application.html")
     return HttpResponse(template.render(context, request))
@@ -730,6 +740,8 @@ def coordinator_archive_action(request, award_idnum):
 
     return redirect('/coord_awardslist/'+ str(award_idnum) +'/applications/archive/')
 
+@login_required
+@user_passes_test(is_coordinator)
 def coordinator_upload_students(request):
     FSJ_user = get_FSJ_user(request.user.username)
 
@@ -793,6 +805,8 @@ def coordinator_upload_students(request):
     context["url"] = url
     return HttpResponse(template.render(context, request))    
 
+@login_required
+@user_passes_test(is_coordinator)
 def coordinator_application_tab(request):
     FSJ_user = get_FSJ_user(request.user.username)
     application_list = Application.objects.all()
@@ -805,7 +819,9 @@ def coordinator_application_tab(request):
     context["url"] = "/coord_applicationlist/action/"
     return HttpResponse(template.render(context,request))    
     
-    
+
+@login_required
+@user_passes_test(is_coordinator)
 def coordinator_application_tab_action(request):
     if request.method == 'POST':
         application_list = request.POST.getlist('applicationaction')
@@ -813,20 +829,104 @@ def coordinator_application_tab_action(request):
         if "_archive" in request.POST:  
             for applicationid in application_list:
                 application = Application.objects.get(application_id=applicationid)
-                application.is_archived = True;
+                application.is_archived = True
                 application.save()
         if "_removeFromArchive" in request.POST:  
-            for applicationid in archived_application_list:
+            for applicationid in application_list:
                 application = Application.objects.get(application_id=applicationid)
-                application.is_archived = False;
+                application.is_archived = False
                 application.save()        
         elif "_review" in request.POST:
             for applicationid in application_list:
                 application = Application.objects.get(application_id=applicationid)
-                application.is_reviewed = True;
+                application.is_reviewed = True
                 application.save()
         elif "_delete" in request.POST:
             for applicationid in application_list:
                 Application.objects.get(application_id=applicationid).delete() 
     
-        return redirect('coord_applicationtab')    
+        return redirect('coord_applicationtab')
+
+
+@login_required
+@user_passes_test(is_coordinator)
+def coordinator_view_application(request):
+    application_id = request.GET.get("application_id", "")
+    FSJ_user = get_FSJ_user(request.user.username)
+    context = get_standard_context(FSJ_user)
+    return_url = request.GET.get("return", "")
+    url_is_safe = is_safe_url(url=urllib.parse.unquote(return_url),
+                              allowed_hosts=settings.ALLOWED_HOSTS,
+                              require_https=request.is_secure(), )
+
+    try:
+        application = Application.objects.get(application_id=application_id)
+    except Application.DoesNotExist:
+        messages.warning(request, _("This application does not exist"))
+
+        if url_is_safe:
+            return redirect(urllib.parse.unquote(return_url))
+        else:
+            return redirect(coordinator_application_tab)
+
+    if request.method == 'POST':
+        if '_review' in request.POST:
+            if application.award.documents_needed and not application.application_file:
+                messages.warning(request, _("This award is missing a document"))
+                return redirect("/view_application?application_id=" + str(
+                    application.application_id) + "&return=" + urllib.parse.quote(return_url))
+            else:
+                application.is_reviewed = True
+        elif '_unreview' in request.POST:
+            application.is_reviewed = False
+
+        application.save()
+
+        if url_is_safe:
+            return redirect(urllib.parse.unquote(return_url))
+        else:
+            return redirect(coordinator_application_tab)
+
+    else:
+        adjudicators = application.adjudicators.all()
+        comment_list = []
+        ranking_list = []
+
+        if adjudicators.count() > 0:
+            for adjudicator in adjudicators:
+                try:
+                    comment = Comment.objects.get(application = application, adjudicator = adjudicator)
+                    comment_list.append(comment.comment_text)
+                except:
+                    comment_list.append("")
+
+                try:
+                    ranking = Ranking.objects.get(application=application, adjudicator=adjudicator)
+                    ranking_list.append(ranking.rank)
+
+                except Ranking.DoesNotExist:
+                    ranking_list.append("--")
+
+
+            review_list = zip(adjudicators.values_list('ccid', flat=True), comment_list, ranking_list)
+            context["review_list"] = review_list
+
+
+        context["student"] = application.student
+        if application.application_file:
+            context["document"] = settings.MEDIA_URL + str(application.application_file)
+        context["award"] = application.award
+
+        url = "/view_application?application_id=" + str(application.application_id) + "&return=" + urllib.parse.quote(
+            return_url)
+        context["url"] = url
+
+        if url_is_safe and return_url:
+            context["return_url"] = str(return_url)
+
+        context["archived"] = False
+        context["FSJ_user"] = FSJ_user
+        template = loader.get_template("FSJ/view_application.html")
+
+        application.add_viewed(FSJ_user)
+        return HttpResponse(template.render(context, request))
