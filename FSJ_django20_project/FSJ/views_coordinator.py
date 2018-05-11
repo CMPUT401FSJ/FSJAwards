@@ -852,20 +852,17 @@ def coordinator_application_tab_action(request):
 def coordinator_export_final_review(request, committee_id):
     try:
         committee = Committee.objects.get(committeeid=committee_id)
-
     except:
         messages.warning(request, _("Committee does not exist"))
         return redirect('coord_committeeslist')
 
-    filename = str(committee.committee_name).replace(" ", "") + "-" + datetime.now(timezone.utc).strftime("%Y-%m-%d")
-
+    filename = str(committee.committee_name).replace(" ", "") + "Review-" + datetime.now(timezone.utc).strftime("%Y-%m-%d")
     response = HttpResponse(content_type='application/ms-excel')
     response['Content-Disposition'] = 'attachment; filename="' + filename + '.xls"'
 
     wb = xlwt.Workbook(encoding='utf-8')
 
     adjudicators = committee.adjudicators.all()
-
     for award in committee.awards.all():
         sheet_name = str((award.name).replace(" ", ""))[:30]
         ws = wb.add_sheet(sheet_name)
@@ -880,7 +877,6 @@ def coordinator_export_final_review(request, committee_id):
 
         # Sheet header, first row
         row_num = 0
-
         font_style = xlwt.XFStyle()
         font_style.font.bold = True
 
@@ -1013,4 +1009,86 @@ def coordinator_view_application(request):
 
         application.add_viewed(FSJ_user)
         return HttpResponse(template.render(context, request))
+
+
+
+def coordinator_export_master_review(request):
+
+    filename = "MasterReview-" + datetime.now(timezone.utc).strftime(
+        "%Y-%m-%d")
+    response = HttpResponse(content_type='application/ms-excel')
+    response['Content-Disposition'] = 'attachment; filename="' + filename + '.xls"'
+
+    wb = xlwt.Workbook(encoding='utf-8')
+
+    for committee in Committee.objects.all():
+
+        sheet_name = str((committee.committee_name).replace(" ", ""))[:30]
+        ws = wb.add_sheet(sheet_name)
+
+        col_width = 256 * 20  # 20 characters wide
+
+        try:
+            for i in range(0, 7):
+                ws.col(i).width = col_width
+        except ValueError:
+            pass
+
+        # Sheet header, first row
+        row_num = 0
+        font_style = xlwt.XFStyle()
+        font_style.font.bold = True
+
+        columns = ['Award', 'Adjudicator', 'Rank 1', 'Rank 2', 'Rank 3', 'Rank 4', 'Rank 5', ]
+
+        for col_num in range(len(columns)):
+            ws.write(row_num, col_num, columns[col_num], font_style)
+
+
+        adjudicators = committee.adjudicators.all()
+        for award in committee.awards.all():
+
+            font_style = xlwt.XFStyle()
+            font_style.font.bold = True
+
+
+
+            row_num += 2
+            ws.write(row_num, 0, award.name, font_style)
+            row_num += 1
+
+            pattern = xlwt.Pattern()
+            pattern.pattern = xlwt.Pattern.SOLID_PATTERN
+            pattern.pattern_fore_colour = xlwt.Style.colour_map['pale_blue']
+
+            font_style.pattern = pattern
+
+            row = [""] * 7
+            for col_num in range(7):
+                ws.write(row_num, col_num, row[i], font_style)
+
+            # Sheet body, remaining rows
+            font_style = xlwt.XFStyle()
+
+            rows = []
+
+            for adjudicator in adjudicators:
+
+                row_num += 1
+                row = [None] * 7
+                row[1] = str(adjudicator.ccid)
+
+                for i in range(2, 7):
+                    try:
+                        row[i] = str(
+                            Ranking.objects.get(award=award, adjudicator=adjudicator, rank=i).application.student)
+                    except:
+                        row[i] = ""
+
+                row = tuple(row)
+                for col_num in range(len(row)):
+                    ws.write(row_num, col_num, row[col_num], font_style)
+
+    wb.save(response)
+    return response
 
