@@ -640,6 +640,8 @@ def coordinator_application_archive_list(request, award_idnum):
 @user_passes_test(is_coordinator)
 def coordinator_archived_application_view(request, award_idnum, application_idnum):
     FSJ_user = get_FSJ_user(request.user.username)
+    context = get_standard_context(FSJ_user)
+
     try:
         award = Award.objects.get(awardid = award_idnum)
     except Award.DoesNotExist:
@@ -649,7 +651,28 @@ def coordinator_archived_application_view(request, award_idnum, application_idnu
     except Award.DoesNotExist:
         raise Http404("application does not exist")
 
-    context = get_standard_context(FSJ_user)
+    adjudicators = application.adjudicators.all()
+    comment_list = []
+    ranking_list = []
+
+    if adjudicators.count() > 0:
+        for adjudicator in adjudicators:
+            try:
+                comment = Comment.objects.get(application=application, adjudicator=adjudicator)
+                comment_list.append(comment.comment_text)
+            except:
+                comment_list.append("")
+
+            try:
+                ranking = Ranking.objects.get(application=application, adjudicator=adjudicator)
+                ranking_list.append(ranking.rank)
+
+            except Ranking.DoesNotExist:
+                ranking_list.append("--")
+
+        review_list = zip(adjudicators.values_list('ccid', flat=True), comment_list, ranking_list)
+        context["review_list"] = review_list
+
     context["student"] = application.student
     context["award"] = award
     context["application"] = application
@@ -657,22 +680,7 @@ def coordinator_archived_application_view(request, award_idnum, application_idnu
         context["document"] = settings.MEDIA_URL + str(application.application_file)    
     context["archived"] = True
     context["return_url"] = "/coord_awardslist/" + str(award_idnum) + "/applications/archive/"
-    
-    comment_list = Comment.objects.filter(application = application)
-    
-    if comment_list.count() > 0:
-        ranking_list = []
-        for comment in comment_list:
-            try:
-                ranking = Ranking.objects.get(application = application, adjudicator = comment.adjudicator)
-                ranking_list.append(ranking.rank)
-                
-            except Ranking.DoesNotExist:
-                ranking_list.append("--")
-                
-        comment_list = zip(comment_list, ranking_list)
-        
-        context["comment_list"] = comment_list    
+
 
     template = loader.get_template("FSJ/view_application.html")
     return HttpResponse(template.render(context, request))
