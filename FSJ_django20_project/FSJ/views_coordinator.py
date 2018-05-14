@@ -530,10 +530,11 @@ def coordinator_addcommittee(request):
 #function for handling coordinator editing a committee
 @login_required
 @user_passes_test(is_coordinator)
-def coordinator_committeeedit(request, committee_idnum):
+def coordinator_committeeedit(request):
     FSJ_user = get_FSJ_user(request.user.username)
+    committee_id = request.GET.get('committee_id', '')
     try:
-        committee = Committee.objects.get(committeeid = committee_idnum)
+        committee = Committee.objects.get(committeeid = committee_id)
     except Committee.DoesNotExist:
         raise Http404("Committee does not exist")
 
