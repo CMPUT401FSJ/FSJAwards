@@ -226,7 +226,7 @@ def coordinator_awards(request, FSJ_user):
     context["form"] = DateChangeForm()
     context["awards_list"] = awards_list
     context["filter"] = filtered_list
-    context["return_url"] = "/coord_awardslist/"
+    context["return_url"] = "/awards/"
     return HttpResponse(template.render(context,request))
 
 #function for handling coordinator adding an award
@@ -238,16 +238,16 @@ def coordinator_add_awards(request):
         form = AwardForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('coord_awardslist')
+            return redirect('awards')
     else:
         form = AwardForm()
 
     context = get_standard_context(FSJ_user)
     template = loader.get_template("FSJ/award.html")
     context["form"] = form
-    url = "/coord_awardslist/add/"
+    url = "/awards/add/"
     context["url"] = url
-    context["return_url"] = "/coord_awardslist/"
+    context["return_url"] = "/awards/"
     return HttpResponse(template.render(context,request))
 
 #function for handling coordinator editing an award
@@ -265,16 +265,16 @@ def coordinator_awardedit(request):
         form = AwardForm(request.POST, instance=award)
         if form.is_valid():
             form.save()
-            return redirect('coord_awardslist')
+            return redirect('awards')
 
     else:
         form = AwardForm(instance=award)
     context = get_standard_context(FSJ_user)
     context["award"] = award
     context["form"] = form
-    url = "/coord_awardslist/edit/?award_id=" + str(award.awardid)
+    url = "/awards/edit/?award_id=" + str(award.awardid)
     context["url"] = url
-    context["return_url"] = "/coord_awardslist/"
+    context["return_url"] = "/awards/"
     template = loader.get_template("FSJ/award.html")
     return HttpResponse(template.render(context, request))
 
@@ -340,7 +340,7 @@ def coordinator_awardaction(request):
                 messages.warning(request, _("The start date cannot be later than the end date"))
                     
 
-    return redirect('coord_awardslist')
+    return redirect('awards')
 
 #function for handling coordinator viewing a list of programs
 @login_required
@@ -581,11 +581,12 @@ def coordinator_committeedelete(request):
 # Handler for coordinator to see applications
 @login_required
 @user_passes_test(is_coordinator)
-def coordinator_application_list(request, award_idnum):
+def coordinator_application_list(request):
     FSJ_user = get_FSJ_user(request.user.username)
+    award_id = request.GET.get('award_id', '')
     
     try:
-        award = Award.objects.get(awardid = award_idnum)
+        award = Award.objects.get(awardid = award_id)
 
     except Award.DoesNotExist:
         raise Http404("Award does not exist")
@@ -611,9 +612,9 @@ def coordinator_application_list(request, award_idnum):
     
     context = get_standard_context(FSJ_user)
     context["application_list"] = application_list
-    context["return_url"] = "/coord_awardslist/"
+    context["return_url"] = "/awards/"
     context["award"] = award
-    context["url"] = "/coord_awardslist/" + str(award_idnum) + "/applications/action/"
+    context["url"] = "/awards/applications/action/?award_id=" + str(award_id)
 
     template = loader.get_template("FSJ/application_list.html")
     return HttpResponse(template.render(context, request))
@@ -621,11 +622,12 @@ def coordinator_application_list(request, award_idnum):
 #Handler used to produce the list of archived applications for an award using coord_application_archive template
 @login_required
 @user_passes_test(is_coordinator)
-def coordinator_application_archive_list(request, award_idnum):
+def coordinator_application_archive_list(request, award_id):
     FSJ_user = get_FSJ_user(request.user.username)
+    award_id = request.GET.get('award_id', '')
 
     try:
-        award = Award.objects.get(awardid = award_idnum)
+        award = Award.objects.get(awardid = award_id)
     except Award.DoesNotExist:
         raise Http404("Award does not exist")
 
@@ -635,23 +637,25 @@ def coordinator_application_archive_list(request, award_idnum):
     context = get_standard_context(FSJ_user)
     context["archived_list"] = archived_application_list
     context["award"] = award
-    context["return_url"] = "/coord_awardslist/" + str(award_idnum) + "/applications/"
+    context["return_url"] = "/awards/applications/?award_id=" + str(award_id)
 
     template = loader.get_template("FSJ/coord_application_archive.html") 
     return HttpResponse(template.render(context, request))
 
 @login_required
 @user_passes_test(is_coordinator)
-def coordinator_archived_application_view(request, award_idnum, application_idnum):
+def coordinator_archived_application_view(request):
     FSJ_user = get_FSJ_user(request.user.username)
     context = get_standard_context(FSJ_user)
+    award_id = request.GET.get('award_id', '')
+    application_id = request.GET.get('application_id', '')
 
     try:
-        award = Award.objects.get(awardid = award_idnum)
+        award = Award.objects.get(awardid = award_id)
     except Award.DoesNotExist:
         raise Http404("Award does not exist")
     try:
-        application = Application.objects.get(application_id = application_idnum)
+        application = Application.objects.get(application_id = application_id)
     except Award.DoesNotExist:
         raise Http404("application does not exist")
 
@@ -683,7 +687,7 @@ def coordinator_archived_application_view(request, award_idnum, application_idnu
     if application.application_file:
         context["document"] = settings.MEDIA_URL + str(application.application_file)    
     context["archived"] = True
-    context["return_url"] = "/coord_awardslist/" + str(award_idnum) + "/applications/archive/"
+    context["return_url"] = "/awards/applications/archive/?award_id=" + str(award_id)
 
 
     template = loader.get_template("FSJ/view_application.html")
@@ -693,9 +697,11 @@ def coordinator_archived_application_view(request, award_idnum, application_idnu
 #Also used to delete applications
 @login_required
 @user_passes_test(is_coordinator)
-def coordinator_application_action(request, award_idnum):
+def coordinator_application_action(request):
+    award_id = request.GET.get('award_id', '')
+    
     try:
-        award = Award.objects.get(awardid = award_idnum)
+        award = Award.objects.get(awardid = award_id)
     except Award.DoesNotExist:
         raise Http404("Award does not exist")
 
@@ -717,15 +723,17 @@ def coordinator_application_action(request, award_idnum):
                 Application.objects.get(application_id=applicationid).delete()
 
 
-    return redirect('/coord_awardslist/'+ str(award_idnum) +'/applications/')
+    return redirect('/awards/applications/?award_id=/' + str(award_id))
 
 #Function used to dearchive an archived application by createing a new application object and deleteing the old archived application.
 #Also used to delete archived applications
 @login_required
 @user_passes_test(is_coordinator)
-def coordinator_archive_action(request, award_idnum):
+def coordinator_archive_action(request):
+    award_id = request.GET.get('award_id', '')
+    
     try:
-        award = Award.objects.get(awardid = award_idnum)
+        award = Award.objects.get(awardid = award_id)
     except Award.DoesNotExist:
         raise Http404("Award does not exist")
 
@@ -742,7 +750,7 @@ def coordinator_archive_action(request, award_idnum):
                 Application.objects.get(application_id=applicationid).delete()
 
 
-    return redirect('/coord_awardslist/'+ str(award_idnum) +'/applications/archive/')
+    return redirect('/awards/applications/archive/?award_id='+ str(award_id))
 
 @login_required
 @user_passes_test(is_coordinator)
@@ -955,7 +963,7 @@ def coordinator_view_application(request):
         if '_review' in request.POST:
             if application.award.documents_needed and not application.application_file:
                 messages.warning(request, _("This award is missing a document"))
-                return redirect("/view_application?application_id=" + str(
+                return redirect("/view_application/?application_id=" + str(
                     application.application_id) + "&return=" + urllib.parse.quote(return_url))
             else:
                 application.is_reviewed = True
@@ -999,7 +1007,7 @@ def coordinator_view_application(request):
             context["document"] = settings.MEDIA_URL + str(application.application_file)
         context["award"] = application.award
 
-        url = "/view_application?application_id=" + str(application.application_id) + "&return=" + urllib.parse.quote(
+        url = "/view_application/?application_id=" + str(application.application_id) + "&return=" + urllib.parse.quote(
             return_url)
         context["url"] = url
 

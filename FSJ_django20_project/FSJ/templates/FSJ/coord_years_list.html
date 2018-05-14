@@ -32,7 +32,7 @@
                             <td><input type="checkbox"  name="todelete" value="{{year.year}}" > </td>
                             <td>{{year.year }}</td>
                             {# Translators: Edit link in coordinator years list #}
-                            <td><a href="/years/edit?year={{ year.year }}">{% trans "Edit" %}</a></td>
+                            <td><a href="/years/edit/?year={{ year.year }}">{% trans "Edit" %}</a></td>
                         </tr>
                     {% endfor %}
                 </table>

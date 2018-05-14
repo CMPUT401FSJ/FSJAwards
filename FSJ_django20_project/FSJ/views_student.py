@@ -73,9 +73,10 @@ def student_award_history(request):
 
 @login_required
 @user_passes_test(is_student)
-def student_addapplication(request, award_idnum):
+def student_addapplication(request):
     FSJ_user = get_FSJ_user(request.user.username)
-    award = Award.objects.get(awardid = award_idnum)
+    award_id = request.GET.get('award_id', '')
+    award = Award.objects.get(awardid = award_id)
     
     if not award.is_active:
         return redirect('home')
@@ -118,8 +119,8 @@ def student_addapplication(request, award_idnum):
         template = loader.get_template("FSJ/student_apply.html")
         context["form"] = form
         context['award'] = award
-        url = "/student_awardslist/" + award_idnum + "/apply/"
-        delete_url = "/student_awardslist/"
+        url = "awards/apply/?award_id=" + str(award.awardid)
+        delete_url = "/awards/"
         context["url"] = url    
         context["delete_url"] = delete_url
         return HttpResponse(template.render(context, request))
@@ -127,17 +128,19 @@ def student_addapplication(request, award_idnum):
 
 @login_required
 @user_passes_test(is_student)
-def student_editapplication(request, award_idnum):
+def student_editapplication(request):
     FSJ_user = get_FSJ_user(request.user.username)
-    award = Award.objects.get(awardid = award_idnum)
+    award_id = request.GET.get('award_id', '')
     
-    if award.is_active == False:
-        return redirect('home')
     
     try:
+        award = Award.objects.get(awardid = award_id)
         application = Application.objects.get(award = award, student = FSJ_user)
         
-        if application.is_submitted == True:
+        if (not application.award.is_active) or (not application.award.is_open()):
+            return redirect('home')        
+        
+        if application.is_submitted:
             return redirect('home')
         
         if request.method == "POST":
@@ -170,8 +173,8 @@ def student_editapplication(request, award_idnum):
         template = loader.get_template("FSJ/student_apply.html")
         context["form"] = form
         context['award'] = award
-        url = "/student_awardslist/" + award_idnum + "/edit/"
-        delete_url = "/student_awardslist/" + award_idnum + "/delete/"
+        url = "/awards/edit/?award_id=" + str(award.awardid)
+        delete_url = "/awards/delete/?award_id=" + str(award.awardid)
         context["url"] = url    
         context["delete_url"] = delete_url
         return HttpResponse(template.render(context, request))        
@@ -182,23 +185,39 @@ def student_editapplication(request, award_idnum):
     
 @login_required
 @user_passes_test(is_student)
-def student_unsubmitapplication(request, award_idnum):
+def student_unsubmitapplication(request):
     FSJ_user = get_FSJ_user(request.user.username)
-    award = Award.objects.get(awardid = award_idnum)    
-    application = Application.objects.get(award = award, student = FSJ_user)
-    application.is_submitted = False
-    application.save()
+    award_id = request.GET.get('award_id', '')
+    
+    try:
+        award = Award.objects.get(awardid = award_id)
+        
+        if (not award.is_active) or (not award.is_open()):
+            return redirect('home')
+        
+        application = Application.objects.get(award = award, student = FSJ_user)
+        application.is_submitted = False
+        application.save()
+        
+    except:
+        pass
     return redirect('home')
 
 @login_required
 @user_passes_test(is_student)
-def student_deleteapplication(request, award_idnum):
+def student_deleteapplication(request):
+    award_id = request.GET.get('award_id', '')
     
     if request.method == "POST":
         FSJ_user = get_FSJ_user(request.user.username)
-        award = Award.objects.get(awardid = award_idnum)
+        award = Award.objects.get(awardid = award_idn)
         try:
-            application = Application.objects.get(award = award, student = FSJ_user).delete()
+            application = Application.objects.get(award = award, student = FSJ_user)
+            
+            if (not award.is_active) or (not award.is_open()):
+                return redirect('home')
+            else:
+                application.delete()
             
         except:
             pass

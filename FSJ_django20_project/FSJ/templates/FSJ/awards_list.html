@@ -63,11 +63,11 @@
                 </div>
               </form>
             </form>
-            <form action="/coord_awardslist/action/" method="POST">
+            <form action="/awards/action/" method="POST">
             {% csrf_token %}
             
                 {# Translators: Button to add award #}
-                <a role="button" class="btn btn-success" href='/coord_awardslist/add'>{% trans "Add award" %}</a>
+                <a role="button" class="btn btn-success" href='/awards/add'>{% trans "Add award" %}</a>
                 {# Translators: Button to activate selected awards #}
                 <button class = "btn btn-action" type="submit" name="_activate">{% trans "Activate award(s)" %}</button>
                 {# Translators: Button to deactivate selected awards #}
@@ -112,12 +112,12 @@
                                 <input type="checkbox" disabled {% if award.is_active %}checked{% endif %}>
                             </td>
                             {# Translators: Edit link in coordinator awards list #}
-                            <td><a href="/coord_awardslist/edit/?award_id={{ award.awardid }}">{% trans "Edit" %}</a></td>
+                            <td><a href="/awards/edit/?award_id={{ award.awardid }}">{% trans "Edit" %}</a></td>
                             {% if award.applications.count == 0 %}
                                 {# Translators: No applications message in coordinator awards list #}
                                 <td>{% trans "No Applications" %}</td>
                             {% else %}
-                                <td><a href="/coord_awardslist/{{ award.awardid }}/applications/">{% get_review_status %}</a></td>
+                                <td><a href="/awards/applications/?award_id={{ award.awardid }}">{% get_review_status %}</a></td>
                             {% endif %} 
                             
                             
@@ -126,7 +126,7 @@
                 </table>
                 
                 {# Translators: Button to add award #}
-                <a role="button" class="btn btn-success" href='/coord_awardslist/add'>{% trans "Add award" %}</a>
+                <a role="button" class="btn btn-success" href='/awards/add'>{% trans "Add award" %}</a>
                 {# Translators: Button to activate selected awards #}
                 <button class = "btn btn-action" type="submit" name="_activate">{% trans "Activate award(s)" %}</button>
                 {# Translators: Button to deactivate selected awards #}

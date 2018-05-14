@@ -37,17 +37,18 @@ def adjudicator_awards(request):
     template = loader.get_template("FSJ/adj_awards_list.html")
     context = get_standard_context(FSJ_user)
     context["committee_list"] = committee_list
-    context["return_url"] = "/adj_awardslist/"
+    context["return_url"] = "/awards/"
     return HttpResponse(template.render(context,request))
 
 
 @login_required
 @user_passes_test(is_adjudicator)
-def adjudicator_application_list(request, award_idnum):
+def adjudicator_application_list(request):
     FSJ_user = get_FSJ_user(request.user.username)
+    award_id = request.GET.get('award_id', '')
     
     try:
-        award = Award.objects.get(awardid = award_idnum)
+        award = Award.objects.get(awardid = award_id)
     except Award.DoesNotExist:
         raise Http404("Award does not exist")
 
@@ -70,18 +71,19 @@ def adjudicator_application_list(request, award_idnum):
 
     context = get_standard_context(FSJ_user)
     context["application_list"] = application_list
-    context["return_url"] = "/adj_awardslist/"
+    context["return_url"] = "/awards/"
     context["award"] = award
-    context["url"] = "/adj_awardslist/" + str(award_idnum) + "/applications/action/"
+    context["url"] = "/awards/applications/action/?award_id=" + str(award_id)
 
     template = loader.get_template("FSJ/application_list.html")
     return HttpResponse(template.render(context, request))
 
-def adjudicator_application_action(request, award_idnum):
+def adjudicator_application_action(request):
     FSJ_user = get_FSJ_user(request.user.username)
+    award_id = request.GET.get('award_id', '')
     
     try:
-        award = Award.objects.get(awardid = award_idnum)
+        award = Award.objects.get(awardid = award_id)
     except Award.DoesNotExist:
         raise Http404("Award does not exist")
 
@@ -89,15 +91,18 @@ def adjudicator_application_action(request, award_idnum):
         if "_adjreview" in request.POST:
             award.add_reviewed(FSJ_user)
 
-    return redirect('/adj_awardslist/')
+    return redirect('/awards/')
 
 
 @login_required
 @user_passes_test(is_adjudicator)
-def adjudicator_add_edit_comment_ranking(request, award_idnum, application_idnum):
+def adjudicator_add_edit_comment_ranking(request):
     FSJ_user = get_FSJ_user(request.user.username)
+    award_id = request.GET.get('award_id', '')
+    application_id = request.GET.get('application_id', '')
     
-    application = Application.objects.get(application_id = application_idnum)
+    
+    application = Application.objects.get(application_id = application_id)
     
     application.add_reviewed(FSJ_user)
     
@@ -153,15 +158,17 @@ def adjudicator_add_edit_comment_ranking(request, award_idnum, application_idnum
                 ranking.save()
                  
             
-    return redirect('adj_applicationlist', award_idnum = award_idnum)
+    return redirect('/awards/applications/?award_id='+ str(award_id))
     
     
 @login_required
 @user_passes_test(is_adjudicator)
-def adjudicator_edit_comment(request, award_idnum, application_idnum):
+def adjudicator_edit_comment(request):
     FSJ_user = get_FSJ_user(request.user.username)
+    award_id = request.GET.get('award_id', '')
+    application_id = request.GET.get('application_id', '')    
     
-    application = Application.objects.get(application_id = application_idnum)
+    application = Application.objects.get(application_id = application_id)
     
     try:
         comment = Comment.objects.get(application = application, adjudicator = FSJ_user)
@@ -173,36 +180,41 @@ def adjudicator_edit_comment(request, award_idnum, application_idnum):
                 comment.application = application
                 comment.adjudicator = FSJ_user
                 comment.save()
-                return redirect('adj_applicationlist', award_idnum = award_idnum)
+                return redirect('/awards/applications/?award_id='+ str(award_id))
         else:
-            return redirect('adj_applicationlist', award_idnum = award_idnum)
+            return redirect('/awards/applications/?award_id='+ str(award_id))
         
     except Comment.DoesNotExist:
         
-        return redirect('adj_applicationlist', award_idnum = award_idnum)    
+        return redirect('/awards/applications/?award_id='+ str(award_id))    
         
         
 @login_required
 @user_passes_test(is_adjudicator)
-def adjudicator_delete_comment(request, award_idnum, application_idnum):
+def adjudicator_delete_comment(request):
     FSJ_user = get_FSJ_user(request.user.username)
+    award_id = request.GET.get('award_id', '')
+    application_id = request.GET.get('application_id', '')    
     
-    application = Application.objects.get(application_id = application_idnum)
+    application = Application.objects.get(application_id = application_id)
     
-    comment = Comment.objects.get(application = application, adjudicator = FSJ_user).delete()
     try:
+        comment = Comment.objects.get(application = application, adjudicator = FSJ_user)
         ranking = Ranking.objects.get(application = application, adjudicator = FSJ_user)
+        comment.delete()
         ranking.delete()   
         
     except:
         pass
     
-    return redirect('adj_applicationlist', award_idnum = award_idnum)
+    return redirect('/awards/applications/?award_id='+ str(award_id))
 
 @login_required
 @user_passes_test(is_adjudicator)
 def adjudicator_view_application(request):
+    
     application_id = request.GET.get("application_id", "")
+    
     FSJ_user = get_FSJ_user(request.user.username)
     context = get_standard_context(FSJ_user)
     return_url = request.GET.get("return", "")
@@ -229,8 +241,7 @@ def adjudicator_view_application(request):
             comment = Comment.objects.get(application=application, adjudicator=FSJ_user)
             form = CommentRestrictedForm(instance=comment, prefix="form")
 
-            delete_url = "/adj_awardslist/" + str(application.award.awardid) + "/" + str(
-                application.application_id) + "/delete/"
+            delete_url = "/awards/delete/?awardid=" + str(application.award.awardid) + "&application_id=" + str(application.application_id)
             context["delete_url"] = delete_url
 
         except Comment.DoesNotExist:
@@ -244,7 +255,7 @@ def adjudicator_view_application(request):
         except Ranking.DoesNotExist:
             form2 = RankingRestrictedForm(FSJ_user, application.award, prefix="form2")
 
-        url = "/adj_awardslist/" + str(application.award.awardid) + "/" + str(application.application_id) + "/edit/"
+        url = "/awards/edit/?award_id=" + str(application.award.awardid) + "&application_id=" + str(application.application_id)
         context["form"] = form
         context["form2"] = form2
         context["adjudicator"] = FSJ_user
