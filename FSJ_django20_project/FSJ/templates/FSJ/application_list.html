@@ -75,7 +75,7 @@
             <br/>
             <a class="btn btn-success" role="button" href="{{ return_url }}">{% trans "Return to Awards" %}</a>
             {% if FSJ_user.user_class == "Coordinator" %}
-                <a role="button" class="btn btn-action" href='archive/'>{% trans "View Archive" %}</a>
+                <a role="button" class="btn btn-action" href='archive/?award_id={{ award.awardid }}'>{% trans "View Archive" %}</a>
                 </br></br>
                 <button class="btn btn-success" type="submit" name="_review">{% trans "Review Application(s)" %}</button>
                 <button class="btn btn-success" type="submit", name="_archive">{% trans "Archive Application(s)" %}</button>

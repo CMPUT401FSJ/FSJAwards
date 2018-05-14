@@ -522,9 +522,9 @@ def coordinator_addcommittee(request):
     context = get_standard_context(FSJ_user)
     template = loader.get_template("FSJ/committee.html")
     context["form"] = form
-    url = "/coord_committeeslist/add/"
+    url = "/committees/add/"
     context["url"] = url
-    context["return_url"] = "/coord_committeeslist/"
+    context["return_url"] = "/committees/"
     return HttpResponse(template.render(context, request))
 
 #function for handling coordinator editing a committee
@@ -552,16 +552,16 @@ def coordinator_committeeedit(request):
         form = CommitteeForm(available_awards, request.POST, instance=committee)
         if form.is_valid():
             form.save()
-            return redirect('coord_committeeslist')
+            return redirect('committees')
 
     else:
         form = CommitteeForm(available_awards,instance=committee)
     context = get_standard_context(FSJ_user)
     context["committee"] = committee
     context["form"] = form
-    url = "/coord_committeeslist/" + str(committee.committeeid) + "/"
+    url = "/committees/edit/?committee_id=" + str(committee.committeeid)
     context["url"] = url
-    context["return_url"] = "/coord_committeeslist/"
+    context["return_url"] = "/committees/"
     template = loader.get_template("FSJ/committee.html")
     return HttpResponse(template.render(context, request))
 
@@ -622,7 +622,7 @@ def coordinator_application_list(request):
 #Handler used to produce the list of archived applications for an award using coord_application_archive template
 @login_required
 @user_passes_test(is_coordinator)
-def coordinator_application_archive_list(request, award_id):
+def coordinator_application_archive_list(request):
     FSJ_user = get_FSJ_user(request.user.username)
     award_id = request.GET.get('award_id', '')
 
@@ -723,9 +723,9 @@ def coordinator_application_action(request):
                 Application.objects.get(application_id=applicationid).delete()
 
 
-    return redirect('/awards/applications/?award_id=/' + str(award_id))
+    return redirect('/awards/applications/?award_id=' + str(award_id))
 
-#Function used to dearchive an archived application by createing a new application object and deleteing the old archived application.
+#Function used to dearchive an archived application by creating a new application object and deleteing the old archived application.
 #Also used to delete archived applications
 @login_required
 @user_passes_test(is_coordinator)
@@ -933,7 +933,7 @@ def coordinator_committee_review(request, committee_id):
         return redirect('coord_committeeslist')
 
     context['committee'] = committee
-    context['return_url'] = "/coord_committeeslist/"
+    context['return_url'] = "/committees/"
     template = loader.get_template("FSJ/coord_final_review.html")
     return HttpResponse(template.render(context, request))
 

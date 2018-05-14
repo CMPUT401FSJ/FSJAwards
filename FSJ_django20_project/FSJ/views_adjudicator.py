@@ -241,7 +241,7 @@ def adjudicator_view_application(request):
             comment = Comment.objects.get(application=application, adjudicator=FSJ_user)
             form = CommentRestrictedForm(instance=comment, prefix="form")
 
-            delete_url = "/awards/delete/?awardid=" + str(application.award.awardid) + "&application_id=" + str(application.application_id)
+            delete_url = "/awards/delete/?award_id=" + str(application.award.awardid) + "&application_id=" + str(application.application_id)
             context["delete_url"] = delete_url
 
         except Comment.DoesNotExist:
