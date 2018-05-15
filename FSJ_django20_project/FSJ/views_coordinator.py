@@ -238,7 +238,7 @@ def coordinator_add_awards(request):
         form = AwardForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('awards')
+            return redirect('/awards/')
     else:
         form = AwardForm()
 
