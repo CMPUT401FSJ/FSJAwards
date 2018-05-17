@@ -31,11 +31,11 @@
                     </tr>
                     {% for program in programs_list %}
                         <tr>
-                            <td><input type="checkbox"  name="todelete" value="{{ program.code }}" > </td>
+                            <td><input type="checkbox"  name="todelete" value="{{ program.id }}" > </td>
                             <td>{{ program.code }}</td>
                             <td>{{ program.name }}</td>
                             {# Translators: Edit button in coordinator program list #}
-                            <td><a href="/programs/edit/?program_code={{ program.code }}">{% trans "Edit" %}</a></td>
+                            <td><a href="/programs/edit/?program_id={{ program.id }}">{% trans "Edit" %}</a></td>
                         </tr>
                     {% endfor %}
                 </table>

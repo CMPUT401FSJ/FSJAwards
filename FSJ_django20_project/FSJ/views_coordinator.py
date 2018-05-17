@@ -362,7 +362,7 @@ def add_program(request):
         form = ProgramForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('/progams/')
+            return redirect('/programs/')
     else:
         form = ProgramForm()
     context = get_standard_context(FSJ_user)
@@ -378,9 +378,9 @@ def add_program(request):
 @user_passes_test(is_coordinator)
 def edit_program(request):
     FSJ_user = get_FSJ_user(request.user.username)
-    program_code = request.GET.get("program_code","")
+    program_id = request.GET.get("program_id","")
     try:
-        program = Program.objects.get(code = program_code)
+        program = Program.objects.get(id = program_id)
     except Program.DoesNotExist:
         raise Http404("Program does not exist")
 
@@ -392,9 +392,9 @@ def edit_program(request):
     else:
         form = ProgramForm(instance = program)
     context = get_standard_context(FSJ_user)
-    context["program_code"] = program_code
+    context["program_id"] = program_id
     context["form"] = form
-    url = "/programs/edit/?program_code=" + str(program.code)
+    url = "/programs/edit/?program_id=" + str(program.id)
     context["url"] = url
     context["return_url"] = "/programs/"
     template = loader.get_template("FSJ/program.html")
@@ -405,10 +405,10 @@ def edit_program(request):
 @user_passes_test(is_coordinator)
 def delete_programs(request):
     if request.method == 'POST':
-        program_code_list = request.POST.getlist('todelete')
+        program_id_list = request.POST.getlist('todelete')
 
-        for item_code in program_code_list:
-            Program.objects.get(code = item_code).delete()
+        for item_id in program_id_list:
+            Program.objects.get(id = item_id).delete()
     return redirect('/programs/')
 
 #function for handling coordinator viewing a list of years of study
@@ -449,10 +449,10 @@ def coordinator_addyearofstudy(request):
 @login_required
 @user_passes_test(is_coordinator)
 def edit_year(request):
-    year_name = request.GET.get("year","")
+    year_id = request.GET.get("year","")
     FSJ_user = get_FSJ_user(request.user.username)
     try:
-        yearofstudy = YearOfStudy.objects.get(year = year_name)
+        yearofstudy = YearOfStudy.objects.get(id = year_id)
     except YearOfStudy.DoesNotExist:
         raise Http404(_("Year does not exist"))
     
@@ -479,10 +479,10 @@ def edit_year(request):
 def coordinator_yeardelete(request):
 
     if request.method == 'POST':
-        yearname_list = request.POST.getlist('todelete')
+        year_id_list = request.POST.getlist('todelete')
 
-        for yearname in yearname_list:
-            YearOfStudy.objects.get(year=yearname).delete()
+        for year_id in year_id_list:
+            YearOfStudy.objects.get(id=year_id).delete()
 
     return redirect('/years/')
 

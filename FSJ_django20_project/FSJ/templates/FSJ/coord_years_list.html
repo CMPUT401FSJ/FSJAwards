@@ -29,10 +29,10 @@
                     </tr>
                     {% for year in years_list %}
                         <tr>
-                            <td><input type="checkbox"  name="todelete" value="{{year.year}}" > </td>
+                            <td><input type="checkbox"  name="todelete" value="{{year.id}}" > </td>
                             <td>{{year.year }}</td>
                             {# Translators: Edit link in coordinator years list #}
-                            <td><a href="/years/edit/?year={{ year.year }}">{% trans "Edit" %}</a></td>
+                            <td><a href="/years/edit/?year={{ year.id }}">{% trans "Edit" %}</a></td>
                         </tr>
                     {% endfor %}
                 </table>

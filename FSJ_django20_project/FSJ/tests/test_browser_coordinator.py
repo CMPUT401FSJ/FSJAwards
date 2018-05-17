@@ -468,3 +468,60 @@ class CoordinatorSeleniumTest(SeleniumTest):
             committee = Committee.objects.get(committee_name = self.committee_name)
 
 
+
+    def test_coordinator_programs(self):
+
+        self.program_code = "CODE123"
+        self.program_name = "Program 123"
+
+        self.new_program_code = "CODE124"
+        self.new_program_name = "Program 124"
+
+        self.selenium.get('%s%s' % (self.live_server_url, '/programs/'))
+
+        WebDriverWait(self.selenium, timeout).until(
+            lambda driver: driver.find_element_by_tag_name("body"))
+
+        self.selenium.find_element_by_link_text("Add program").click()
+
+        WebDriverWait(self.selenium, timeout).until(
+            lambda driver: driver.find_element_by_tag_name("body"))
+
+        self.selenium.find_element_by_id("id_code").send_keys(self.program_code)
+        self.selenium.find_element_by_id("id_name").send_keys(self.program_name)
+        self.selenium.find_element_by_css_selector("button.btn.btn-success").click()
+
+        WebDriverWait(self.selenium, timeout).until(
+            lambda driver: driver.find_element_by_tag_name("body"))
+
+        program = Program.objects.get(code = self.program_code)
+        self.assertEquals(program.name, self.program_name)
+
+        self.selenium.find_element_by_link_text("Edit").click()
+
+        WebDriverWait(self.selenium, timeout).until(
+            lambda driver: driver.find_element_by_tag_name("body"))
+
+        code = self.selenium.find_element_by_id("id_code")
+        code.clear()
+        code.send_keys(self.new_program_code)
+        name = self.selenium.find_element_by_id("id_name")
+        name.clear()
+        name.send_keys(self.new_program_name)
+        self.selenium.find_element_by_css_selector("button.btn.btn-success").click()
+
+        WebDriverWait(self.selenium, timeout).until(
+            lambda driver: driver.find_element_by_tag_name("body"))
+
+        program.refresh_from_db()
+        self.assertEquals(program.code, self.new_program_code)
+        self.assertEquals(program.name, self.new_program_name)
+
+        self.selenium.find_element_by_name("todelete").click()
+        self.selenium.find_element_by_name("delete").click()
+
+        WebDriverWait(self.selenium, timeout).until(
+            lambda driver: driver.find_element_by_tag_name("body"))
+
+        with self.assertRaises(Program.DoesNotExist):
+            program = Program.objects.get(code = self.new_program_code)
