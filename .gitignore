@@ -8,4 +8,5 @@ FSJ_django20_project/FSJ/migrations/
 FSJ_django20_project/media/
 *.idea
 geckodriver.log
+FSJ_django20_project/geckodriver.log
 
