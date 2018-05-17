@@ -78,11 +78,11 @@ def register_activation(request, uidb64, token):
 def home(request):
     FSJ_user = get_FSJ_user(request.user.username)
     if isinstance(FSJ_user, Student):
-        return redirect('awards')
+        return redirect('/awards/')
     elif isinstance(FSJ_user, Coordinator):
-        return redirect('awards')
+        return redirect('/awards/')
     elif isinstance(FSJ_user, Adjudicator):
-        return redirect('awards')
+        return redirect('/awards/')
     elif request.user.is_superuser:
         return redirect('/admin/')
     else:

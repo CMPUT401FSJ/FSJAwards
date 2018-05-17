@@ -3,37 +3,48 @@ from django.contrib.auth.models import User
 from selenium.webdriver.support.wait import WebDriverWait
 timeout = 15
 import time
+import pytz
+import datetime
 from .selenium_test import SeleniumTest
+from django.conf import settings
+from selenium.webdriver.firefox.webdriver import WebDriver
+
 
 class CoordinatorSeleniumTest(SeleniumTest):
 
     @classmethod
     def setUpClass(cls):
         super(CoordinatorSeleniumTest, cls).setUpClass()
-        cls.password = "coord_password"
-        cls.ccid = "coordinator"
-        cls.first_name = "A"
-        cls.last_name = "Coordinator"
-        cls.email = "coordinator@csjawards.ca"
-
-
-        cls.user = User.objects.create_user(username=cls.ccid,
-                                      password=cls.password)
-
-
-        cls.coordinator = Coordinator.objects.create(ccid=cls.ccid, first_name=cls.first_name,
-                                   last_name=cls.last_name, email=cls.email,
-                                   user = cls.user)
-
-        cls.user = User.objects.get(username = cls.ccid)
-
 
 
     def setUp(self):
+        self.password = "coord_password"
+        self.ccid = "coordinator"
+        self.first_name = "A"
+        self.last_name = "Coordinator"
+        self.email = "coordinator@csjawards.ca"
+        self.lang_pref = "en"
+
+        self.user = User.objects.create_user(username=self.ccid,
+                                            password=self.password)
+
+        self.coordinator = Coordinator.objects.create(ccid=self.ccid, first_name=self.first_name,
+                                                     last_name=self.last_name, email=self.email,
+                                                     user=self.user, lang_pref=self.lang_pref)
+
+        self.user = User.objects.get(username=self.ccid)
 
         self.selenium.get('%s%s' % (self.live_server_url, '/login/'))
+
+        WebDriverWait(self.selenium, timeout).until(
+            lambda driver: driver.find_element_by_id("id_username"))
+
         username = self.selenium.find_element_by_id("id_username")
         username.send_keys(self.ccid)
+
+        WebDriverWait(self.selenium, timeout).until(
+            lambda driver: driver.find_element_by_id("id_password"))
+
         password =self.selenium.find_element_by_id("id_password")
         password.send_keys(self.password)
 
@@ -43,8 +54,9 @@ class CoordinatorSeleniumTest(SeleniumTest):
         WebDriverWait(self.selenium, timeout).until(
             lambda driver: driver.find_element_by_tag_name('body'))
 
+
     def tearDown(self):
-        pass
+        self.selenium.get('%s%s' % (self.live_server_url, '/logout/'))
 
     def test_coordinator_awards(self):
         self.award_name = "An Award Name"
@@ -81,12 +93,6 @@ class CoordinatorSeleniumTest(SeleniumTest):
         self.selenium.find_element_by_id("id_is_active").click()
         self.selenium.find_element_by_css_selector("button.btn.btn-success").click()
 
-        # WebDriverWait(self.selenium, timeout).until(
-        #     lambda driver: driver.find_element_by_tag_name('body'))
-        #
-        # self.assertEquals(self.selenium.current_url, ("%s%s" % (self.live_server_url, '/awards/')))
-        #
-        # self.selenium.get('%s%s' % (self.live_server_url, '/awards/'))
 
         WebDriverWait(self.selenium, timeout).until(
             lambda driver: driver.current_url == ("%s%s" % (self.live_server_url, '/awards/')))
@@ -163,34 +169,271 @@ class CoordinatorSeleniumTest(SeleniumTest):
         with self.assertRaises(Award.DoesNotExist):
             award = Award.objects.get(name=self.award_name)
 
-        self.award_program.delete()
-        self.award_year.delete()
+        self.selenium.find_element_by_link_text("Add award").click()
+
+        WebDriverWait(self.selenium, timeout).until(
+            lambda driver: driver.find_element_by_tag_name('body'))
+
+        self.assertEquals(self.selenium.current_url, ("%s%s" % (self.live_server_url, '/awards/add/')))
+
+        self.selenium.find_element_by_id("id_name").send_keys(self.award_name)
+        self.selenium.find_element_by_id("id_description").send_keys(self.award_description)
+        self.selenium.find_element_by_id("id_value").send_keys(self.award_value)
+        self.selenium.find_element_by_css_selector("#id_programs_0").click()
+        self.selenium.find_element_by_css_selector("#id_years_of_study_0").click()
+        self.selenium.find_element_by_id("id_start_date").send_keys(self.start_date)
+        self.selenium.find_element_by_id("id_end_date").send_keys(self.end_date)
+        self.selenium.find_element_by_id("id_documents_needed").click()
+        self.selenium.find_element_by_id("id_is_active").click()
+        self.selenium.find_element_by_link_text("Cancel").click()
+
+        WebDriverWait(self.selenium, timeout).until(
+            lambda driver: driver.find_element_by_tag_name('body'))
+
+        with self.assertRaises(Award.DoesNotExist):
+            award = Award.objects.get(name=self.award_name)
 
 
 
+    def test_coordinator_students(self):
 
-    # def test_coordinator_cancel_award(self):
-    #
-    #     self.selenium.get('%s%s' % (self.live_server_url, '/awards/add/'))
-    #
-    #     WebDriverWait(self.selenium, timeout).until(
-    #         lambda driver: driver.find_element_by_tag_name('body'))
-    #
-    #     self.selenium.find_element_by_id("id_name").send_keys(self.award_name)
-    #     self.selenium.find_element_by_id("id_description").send_keys(self.award_description)
-    #     self.selenium.find_element_by_id("id_value").send_keys(self.award_value)
-    #     self.selenium.find_element_by_css_selector("#id_programs_0").click()
-    #     self.selenium.find_element_by_css_selector("#id_years_of_study_0").click()
-    #     self.selenium.find_element_by_id("id_start_date").send_keys(self.start_date)
-    #     self.selenium.find_element_by_id("id_end_date").send_keys(self.end_date)
-    #     self.selenium.find_element_by_id("id_documents_needed").click()
-    #     self.selenium.find_element_by_id("id_is_active").click()
-    #     self.selenium.find_element_by_css_selector("a.btn.btn-danger").click()
-    #
-    #     WebDriverWait(self.selenium, timeout).until(
-    #         lambda driver: driver.find_element_by_tag_name('body'))
-    #
-    #     self.assertEquals(self.selenium.current_url, ("%s%s" % (self.live_server_url, '/awards/')))
-    #
-    #     with self.assertRaises(Award.DoesNotExist):
-    #         award = Award.objects.get(name=self.award_name)
+        self.student_ccid = "student"
+        self.student_first_name = "A"
+        self.student_middle_name = "Normal"
+        self.student_last_name = "Student"
+        self.student_ualberta_id = "123456789"
+        self.program_name = "A Program Name"
+        self.program_code = "A Code"
+        self.year_name = "Year 1"
+        self.student_program = Program.objects.create(name=self.program_name, code=self.program_code)
+        self.student_year = YearOfStudy.objects.create(year=self.year_name)
+        self.student_email = "student@csjawards.ca"
+        self.student_gpa = "4.0"
+
+        self.new_student_first_name = "New"
+        self.new_student_middle_name = "Student"
+        self.new_student_last_name = "Name"
+
+
+        self.selenium.get('%s%s' % (self.live_server_url, '/students/'))
+        self.selenium.find_element_by_link_text("Add student").click()
+
+        self.selenium.find_element_by_id("id_ccid").send_keys(self.student_ccid)
+        self.selenium.find_element_by_id("id_first_name").send_keys(self.student_first_name)
+        self.selenium.find_element_by_id("id_middle_name").send_keys(self.student_middle_name)
+        self.selenium.find_element_by_id("id_last_name").send_keys(self.student_last_name)
+        self.selenium.find_element_by_id("id_email").send_keys(self.student_email)
+        self.selenium.find_element_by_css_selector("#id_program > option:nth-child(2)").click()
+        self.selenium.find_element_by_css_selector("#id_year > option:nth-child(2)").click()
+        self.selenium.find_element_by_id("id_student_id").send_keys(self.student_ualberta_id)
+        self.selenium.find_element_by_id("id_gpa").send_keys(self.student_gpa)
+        self.selenium.find_element_by_css_selector("button.btn.btn-success").click()
+
+        WebDriverWait(self.selenium, timeout).until(
+            lambda driver: driver.find_element_by_name("instance"))
+
+
+        student = Student.objects.get(ccid = self.student_ccid)
+        self.assertEquals(student.first_name, self.student_first_name)
+        self.assertEquals(student.middle_name, self.student_middle_name)
+        self.assertEquals(student.last_name, self.student_last_name)
+        self.assertEquals(student.email, self.student_email)
+        self.assertEquals(student.program, self.student_program)
+        self.assertEquals(student.year, self.student_year)
+        self.assertEquals(student.student_id, self.student_ualberta_id)
+        self.assertEquals(student.gpa, self.student_gpa)
+
+        user = User.objects.get(username = self.student_ccid)
+        self.assertEquals(student.user, user)
+        self.assertEquals(student.email, user.email, self.student_email)
+
+
+        self.selenium.find_element_by_link_text("Edit").click()
+
+        WebDriverWait(self.selenium, timeout).until(
+            lambda driver: driver.find_element_by_id("id_first_name"))
+
+        self.selenium.find_element_by_id("id_first_name").send_keys(self.new_student_first_name)
+        self.selenium.find_element_by_id("id_middle_name").send_keys(self.new_student_middle_name)
+        self.selenium.find_element_by_id("id_last_name").send_keys(self.new_student_last_name)
+        self.selenium.find_element_by_css_selector("button.btn.btn-success").click()
+
+        WebDriverWait(self.selenium, timeout).until(
+            lambda driver: driver.find_element_by_name("instance"))
+
+
+        student.refresh_from_db()
+        self.assertEquals(student.first_name, self.new_student_first_name)
+        self.assertEquals(student.middle_name, self.new_student_middle_name)
+        self.assertEquals(student.last_name, self.new_student_last_name)
+
+        self.selenium.find_element_by_name("instance").click()
+        self.selenium.find_element_by_name("delete").click()
+
+        WebDriverWait(self.selenium, timeout).until(
+            lambda driver: driver.find_element_by_link_text("Upload files"))
+
+        with self.assertRaises(Student.DoesNotExist):
+            student = Student.objects.get(ccid = self.student_ccid)
+
+        with self.assertRaises(User.DoesNotExist):
+            user = User.objects.get(username = self.student_ccid)
+
+
+        self.selenium.find_element_by_link_text("Upload files").click()
+
+        WebDriverWait(self.selenium, timeout).until(
+            lambda driver: driver.find_element_by_id("id_student_file"))
+
+        self.selenium.find_element_by_id("id_student_file").send_keys(settings.TEST_FILE_ROOT+'\selenium_test_student.csv')
+        self.selenium.find_element_by_id("id_gpa_file").send_keys(settings.TEST_FILE_ROOT+'\selenium_test_gpa.csv')
+        self.selenium.find_element_by_css_selector("button.btn.btn-success").click()
+
+        WebDriverWait(self.selenium, timeout).until(
+            lambda driver: driver.find_element_by_tag_name("body"))
+
+        self.selenium.get('%s%s' % (self.live_server_url, '/students/'))
+
+        WebDriverWait(self.selenium, timeout).until(
+            lambda driver: driver.find_element_by_tag_name("body"))
+
+        student = Student.objects.get(ccid=self.student_ccid)
+        self.assertEquals(student.first_name, self.student_first_name)
+        self.assertEquals(student.middle_name, self.student_middle_name)
+        self.assertEquals(student.last_name, self.student_last_name)
+        self.assertEquals(student.email, self.student_email)
+        self.assertEquals(student.program, self.student_program)
+        self.assertEquals(student.year, self.student_year)
+        self.assertEquals(student.student_id, self.student_ualberta_id)
+        self.assertEquals(student.gpa, self.student_gpa)
+
+
+
+    def test_coordinator_adjudicators(self):
+
+        self.adjudicator_ccid = "adjudicator"
+        self.adjudicator_first_name = "An"
+        self.adjudicator_last_name = "Adjudicator"
+        self.adjudicator_email = "adjudicator@csjawards.ca"
+
+        self.new_adjudicator_email = "newadjudicatoremail@csjawards.ca"
+
+        self.selenium.get('%s%s' % (self.live_server_url, '/adjudicators/'))
+
+        WebDriverWait(self.selenium, timeout).until(
+            lambda driver: driver.find_element_by_tag_name("body"))
+
+        self.selenium.find_element_by_link_text("Add adjudicator").click()
+
+        WebDriverWait(self.selenium, timeout).until(
+            lambda driver: driver.find_element_by_tag_name("body"))
+
+        self.selenium.find_element_by_id("id_ccid").send_keys(self.adjudicator_ccid)
+        self.selenium.find_element_by_id("id_first_name").send_keys(self.adjudicator_first_name)
+        self.selenium.find_element_by_id("id_last_name").send_keys(self.adjudicator_last_name)
+        self.selenium.find_element_by_id("id_email").send_keys(self.adjudicator_email)
+        self.selenium.find_element_by_css_selector("button.btn.btn-success").click()
+
+        WebDriverWait(self.selenium, timeout).until(
+            lambda driver: driver.current_url == ("%s%s" % (self.live_server_url, '/adjudicators/')))
+
+
+        adjudicator = Adjudicator.objects.get(ccid=self.adjudicator_ccid)
+        self.assertEquals(adjudicator.first_name, self.adjudicator_first_name)
+        self.assertEquals(adjudicator.last_name, self.adjudicator_last_name)
+        self.assertEquals(adjudicator.email, self.adjudicator_email)
+
+        user = User.objects.get(username=self.adjudicator_ccid)
+        self.assertEquals(adjudicator.user, user)
+        self.assertEquals(adjudicator.user.email, user.email, self.adjudicator_email)
+
+        self.selenium.find_element_by_link_text("Edit").click()
+
+        WebDriverWait(self.selenium, timeout).until(
+            lambda driver: driver.find_element_by_tag_name("body"))
+
+        self.selenium.find_element_by_id("id_email").send_keys(self.new_adjudicator_email)
+        self.selenium.find_element_by_css_selector("button.btn.btn-success").click()
+
+        WebDriverWait(self.selenium, timeout).until(
+            lambda driver: driver.find_element_by_tag_name("body"))
+
+        adjudicator.refresh_from_db()
+        user.refresh_from_db()
+
+        self.assertEquals(adjudicator.email, user.email, self.new_adjudicator_email)
+
+        self.selenium.find_element_by_name("instance").click()
+        self.selenium.find_element_by_css_selector("button.btn.btn-danger").click()
+
+        WebDriverWait(self.selenium, timeout).until(
+            lambda driver: driver.find_element_by_tag_name("body"))
+
+        with self.assertRaises(Adjudicator.DoesNotExist):
+            adjudicator = Adjudicator.objects.get(ccid = self.adjudicator_ccid)
+
+        with self.assertRaises(User.DoesNotExist):
+            user = User.objects.get(username = self.adjudicator_ccid)
+
+
+    def test_coordinator_committees(self):
+        self.committee_name = "A Committee"
+        self.adjudicator_ccid = "adjudicator"
+        self.adjudicator_first_name = "An"
+        self.adjudicator_last_name = "Adjudicator"
+        self.adjudicator_email = "adjudicator@csjawards.ca"
+        self.adjudicator = Adjudicator.objects.create(ccid = self.adjudicator_ccid, first_name = self.adjudicator_first_name,
+                                                      last_name = self.adjudicator_last_name, email = self.adjudicator_email)
+
+        self.year = "First"
+        self.year_of_study = YearOfStudy.objects.create(year=self.year)
+        self.program_code = "PRFG"
+        self.program_name = "Science"
+        self.program = Program.objects.create(code=self.program_code, name=self.program_name)
+
+        self.award_name = "This award"
+        self.award_description = "For students"
+        self.award_value = "One gold pen"
+        self.award_start_date = str(datetime.datetime.now(pytz.timezone('America/Vancouver')))
+        self.award_end_date = str(datetime.datetime.now(pytz.timezone('America/Edmonton')))
+        self.award_documents_needed = False
+        self.award_is_active = True
+        self.award = Award.objects.create(name=self.award_name, description=self.award_description, value=self.award_value,
+                                          start_date=self.award_start_date, end_date=self.award_end_date,
+                                          documents_needed=self.award_documents_needed, is_active=self.award_is_active)
+        self.award.programs.add(self.program)
+        self.award.years_of_study.add(self.year_of_study)
+
+
+        self.selenium.get('%s%s' % (self.live_server_url, '/committees/'))
+
+        WebDriverWait(self.selenium, timeout).until(
+            lambda driver: driver.find_element_by_tag_name("body"))
+
+        self.selenium.find_element_by_link_text("Add Committee").click()
+
+        WebDriverWait(self.selenium, timeout).until(
+            lambda driver: driver.find_element_by_tag_name("body"))
+
+        self.selenium.find_element_by_id("id_committee_name").send_keys(self.committee_name)
+        self.selenium.find_element_by_id("id_adjudicators_0").click()
+        self.selenium.find_element_by_id("id_awards_0").click()
+        self.selenium.find_element_by_css_selector("button.btn.btn-success").click()
+
+        WebDriverWait(self.selenium, timeout).until(
+            lambda driver: driver.find_element_by_tag_name("body"))
+
+        committee = Committee.objects.get(committee_name = self.committee_name)
+        self.assertEquals(committee.adjudicators.get(ccid = self.adjudicator_ccid), self.adjudicator)
+        self.assertEquals(committee.awards.get(name = self.award_name), self.award)
+
+        self.selenium.find_element_by_name("instance").click()
+        self.selenium.find_element_by_name("delete").click()
+
+        WebDriverWait(self.selenium, timeout).until(
+            lambda driver: driver.find_element_by_tag_name("body"))
+
+        with self.assertRaises(Committee.DoesNotExist):
+            committee = Committee.objects.get(committee_name = self.committee_name)
+
+

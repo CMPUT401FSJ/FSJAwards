@@ -46,7 +46,7 @@
                                     {{award}} <br>
                                 {% endfor %}</td>
                             {# Translators: Edit button in coordinator committees list #}
-                            <td><a href="/committees/edit/?committee_id={{ committee.committeeid }}/">{% trans "Edit" %}</a></td>
+                            <td><a href="/committees/edit/?committee_id={{ committee.committeeid }}">{% trans "Edit" %}</a></td>
                             <td><a href="{% url 'coord_committeereview' committee_id=committee.committeeid %}">{% trans "View" %}</a></td>
                             <td><a href="{% url 'coordinator_export_final_review' committee_id=committee.committeeid%}">{% trans "Export" %}</a></td>
                         </tr>

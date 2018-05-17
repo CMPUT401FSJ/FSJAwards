@@ -84,7 +84,7 @@ def coordinator_edit_student(request):
         if form.is_valid():
             student = form.save(commit = False)
             student.save()
-            return redirect('students')
+            return redirect('/students/')
     else:
         form = StudentForm(instance=student)
     return_url = "/students/"
@@ -115,7 +115,7 @@ def coordinator_edit_adjudicator(request):
         if form.is_valid():
             adjudicator = form.save(commit = False)
             adjudicator.save()
-            return redirect('adjudicators')
+            return redirect('/adjudicators/')
     else:
         form = AdjudicatorForm(instance=adjudicator)
     return_url = "/adjudicators/"
@@ -146,7 +146,7 @@ def coordinator_addstudent(request):
             # Generate a random 32 character password that will be reset on registration
             user.set_password(get_random_string(length=32))
             user.save()
-            return redirect('students')
+            return redirect('/students/')
     else:
         # If the coordinator hasn't entered information yet, create a blank student form
         form = StudentForm()
@@ -176,7 +176,7 @@ def coordinator_addadjudicator(request):
             user.email = data['email']
             user.set_password(get_random_string(length=32))
             user.save()
-            return redirect('adjudicators')
+            return redirect('/adjudicators/')
     else:
         # If the coordinator hasn't entered information yet, create a blank adjudicator
         form = AdjudicatorForm()           
@@ -200,7 +200,7 @@ def coordinator_deletestudent(request):
         for usr_ccid in id_list:
             Student.objects.get(ccid=usr_ccid).delete()
 
-    return redirect('students')
+    return redirect('/students/')
 
 # This handler deletes adjudicators after their profiles have been selected from a checklist
 @login_required
@@ -213,7 +213,7 @@ def coordinator_deleteadjudicator(request):
         for usr_ccid in id_list:
             Adjudicator.objects.get(ccid=usr_ccid).delete()
 
-    return redirect('adjudicators')
+    return redirect('/adjudicators/')
 
 #function for handling coordinator viewing a list of awards
 @login_required
@@ -265,7 +265,7 @@ def coordinator_awardedit(request):
         form = AwardForm(request.POST, instance=award)
         if form.is_valid():
             form.save()
-            return redirect('awards')
+            return redirect('/awards/')
 
     else:
         form = AwardForm(instance=award)
@@ -340,7 +340,7 @@ def coordinator_awardaction(request):
                 messages.warning(request, _("The start date cannot be later than the end date"))
                     
 
-    return redirect('awards')
+    return redirect('/awards/')
 
 #function for handling coordinator viewing a list of programs
 @login_required
@@ -362,7 +362,7 @@ def add_program(request):
         form = ProgramForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('progams')
+            return redirect('/progams/')
     else:
         form = ProgramForm()
     context = get_standard_context(FSJ_user)
@@ -388,7 +388,7 @@ def edit_program(request):
         form = ProgramForm(request.POST, instance = program)
         if form.is_valid():
             form.save()
-            return redirect('programs')
+            return redirect('/programs/')
     else:
         form = ProgramForm(instance = program)
     context = get_standard_context(FSJ_user)
@@ -409,7 +409,7 @@ def delete_programs(request):
 
         for item_code in program_code_list:
             Program.objects.get(code = item_code).delete()
-    return redirect('programs')
+    return redirect('/programs/')
 
 #function for handling coordinator viewing a list of years of study
 @login_required
@@ -433,7 +433,7 @@ def coordinator_addyearofstudy(request):
         form = YearOfStudyForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('years')
+            return redirect('/years/')
     else:
         # If the coordinator hasn't entered information yet, create a blank adjudicator
         form = YearOfStudyForm()           
@@ -461,7 +461,7 @@ def edit_year(request):
         form = YearOfStudyForm(request.POST, instance=yearofstudy)
         if form.is_valid():
             form.save()
-            return redirect('years')
+            return redirect('/years/')
     else:
         form = YearOfStudyForm(instance=yearofstudy)
     return_url = "/years/"
@@ -484,7 +484,7 @@ def coordinator_yeardelete(request):
         for yearname in yearname_list:
             YearOfStudy.objects.get(year=yearname).delete()
 
-    return redirect('years')
+    return redirect('/years/')
 
 #function for handling coordinator viewing a list of committees
 @login_required
@@ -515,7 +515,7 @@ def coordinator_addcommittee(request):
         form = CommitteeForm(available_awards, request.POST)
         if form.is_valid():
             form.save()
-            return redirect('coord_committeeslist')
+            return redirect('/committees/')
     else:
         # If the coordinator hasn't entered information yet, create a blank committee
         form = CommitteeForm(available_awards)           
@@ -552,7 +552,7 @@ def coordinator_committeeedit(request):
         form = CommitteeForm(available_awards, request.POST, instance=committee)
         if form.is_valid():
             form.save()
-            return redirect('committees')
+            return redirect('/committees/')
 
     else:
         form = CommitteeForm(available_awards,instance=committee)
@@ -576,7 +576,7 @@ def coordinator_committeedelete(request):
         for itemid in committeeid_list:
             Committee.objects.get(committeeid=itemid).delete()
 
-    return redirect('coord_committeeslist')
+    return redirect('/committees/')
 
 # Handler for coordinator to see applications
 @login_required
@@ -827,8 +827,8 @@ def coordinator_application_tab(request):
     context = get_standard_context(FSJ_user)
     context["application_list"] = application_list
     context["filter"] = filtered_list
-    context["return_url"] = "/coord_applicationlist/"
-    context["url"] = "/coord_applicationlist/action/"
+    context["return_url"] = "/applications/"
+    context["url"] = "/applications/action/"
     return HttpResponse(template.render(context,request))    
     
 
@@ -865,7 +865,7 @@ def coordinator_export_final_review(request, committee_id):
         committee = Committee.objects.get(committeeid=committee_id)
     except:
         messages.warning(request, _("Committee does not exist"))
-        return redirect('coord_committeeslist')
+        return redirect('/committees/')
 
     filename = str(committee.committee_name).replace(" ", "") + "Review-" + datetime.now(timezone.utc).strftime("%Y-%m-%d")
     response = HttpResponse(content_type='application/ms-excel')
@@ -930,7 +930,7 @@ def coordinator_committee_review(request, committee_id):
         committee = Committee.objects.get(committeeid=committee_id)
     except:
         messages.warning(request, _("Committee does not exist"))
-        return redirect('coord_committeeslist')
+        return redirect('/committees/')
 
     context['committee'] = committee
     context['return_url'] = "/committees/"

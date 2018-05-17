@@ -158,6 +158,8 @@ MEDIA_URL = '/media/'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
+TEST_FILE_ROOT = os.path.join(BASE_DIR, 'test_files')
+
 SESSION_COOKIE_AGE = 3600
 
 SESSION_SAVE_EVERY_REQUEST = True
