@@ -67,7 +67,7 @@ def register_activation(request, uidb64, token):
         if form.is_valid():
             user=form.save()
             update_session_auth_hash(request,user)
-            return redirect('login')
+            return redirect('/login/')
     else:
         form = SetPasswordForm(user)
     return render(request,'registration/register_activation.html', {'form':form})
@@ -107,7 +107,7 @@ def profile(request):
         # If the form isn't valid we'll rerender it with the errors to display on the template
         if profile_form.is_valid():
             profile_form.save()
-            return redirect('profile')
+            return redirect('/profile/')
 
     else:
         # On a GET, we prefill the fields based on the instance of the user whose profile is being editted

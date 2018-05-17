@@ -225,7 +225,7 @@ def adjudicator_view_application(request):
     try:
         application = Application.objects.get(application_id=application_id)
         if application.is_archived:
-            return redirect('home')
+            return redirect('/home/')
     except Application.DoesNotExist:
         messages.warning(request, _("This application does not exist"))
 
