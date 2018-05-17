@@ -253,9 +253,15 @@ class CoordinatorSeleniumTest(SeleniumTest):
         WebDriverWait(self.selenium, timeout).until(
             lambda driver: driver.find_element_by_id("id_first_name"))
 
-        self.selenium.find_element_by_id("id_first_name").send_keys(self.new_student_first_name)
-        self.selenium.find_element_by_id("id_middle_name").send_keys(self.new_student_middle_name)
-        self.selenium.find_element_by_id("id_last_name").send_keys(self.new_student_last_name)
+        first_name = self.selenium.find_element_by_id("id_first_name")
+        first_name.clear()
+        first_name.send_keys(self.new_student_first_name)
+        middle_name = self.selenium.find_element_by_id("id_middle_name")
+        middle_name.clear()
+        middle_name.send_keys(self.new_student_middle_name)
+        last_name = self.selenium.find_element_by_id("id_last_name")
+        last_name.clear()
+        last_name.send_keys(self.new_student_last_name)
         self.selenium.find_element_by_css_selector("button.btn.btn-success").click()
 
         WebDriverWait(self.selenium, timeout).until(
@@ -352,7 +358,9 @@ class CoordinatorSeleniumTest(SeleniumTest):
         WebDriverWait(self.selenium, timeout).until(
             lambda driver: driver.find_element_by_tag_name("body"))
 
-        self.selenium.find_element_by_id("id_email").send_keys(self.new_adjudicator_email)
+        email = self.selenium.find_element_by_id("id_email")
+        email.clear()
+        email.send_keys(self.new_adjudicator_email)
         self.selenium.find_element_by_css_selector("button.btn.btn-success").click()
 
         WebDriverWait(self.selenium, timeout).until(
@@ -405,6 +413,7 @@ class CoordinatorSeleniumTest(SeleniumTest):
         self.award.years_of_study.add(self.year_of_study)
 
 
+
         self.selenium.get('%s%s' % (self.live_server_url, '/committees/'))
 
         WebDriverWait(self.selenium, timeout).until(
@@ -426,6 +435,28 @@ class CoordinatorSeleniumTest(SeleniumTest):
         committee = Committee.objects.get(committee_name = self.committee_name)
         self.assertEquals(committee.adjudicators.get(ccid = self.adjudicator_ccid), self.adjudicator)
         self.assertEquals(committee.awards.get(name = self.award_name), self.award)
+
+        self.second_award_name = "A different award"
+        self.second_award = Award.objects.create(name=self.second_award_name, description=self.award_description,
+                                                 value=self.award_value,
+                                                 start_date=self.award_start_date, end_date=self.award_end_date,
+                                                 documents_needed=self.award_documents_needed,
+                                                 is_active=self.award_is_active)
+
+        self.selenium.find_element_by_link_text("Edit").click()
+
+        WebDriverWait(self.selenium, timeout).until(
+            lambda driver: driver.find_element_by_tag_name("body"))
+
+        self.selenium.find_element_by_id("id_awards_1").click()
+        self.selenium.find_element_by_css_selector("button.btn.btn-success").click()
+
+        WebDriverWait(self.selenium, timeout).until(
+            lambda driver: driver.find_element_by_tag_name("body"))
+
+        committee.refresh_from_db()
+        self.assertEquals(committee.awards.get(name = self.second_award_name), self.second_award)
+
 
         self.selenium.find_element_by_name("instance").click()
         self.selenium.find_element_by_name("delete").click()
