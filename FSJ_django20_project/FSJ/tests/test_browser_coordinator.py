@@ -709,9 +709,176 @@ class CoordinatorSeleniumTest(SeleniumTest):
         with self.assertRaises(Application.DoesNotExist):
             application = Application.objects.get(student = self.student, award = self.award)
 
-    # TODO: Implement application list tests
-    #def test_coordinator_application_list(self):
 
+    def test_coordinator_application_list(self):
+        self.award_name = "An Award Name"
+        self.award_description = "An Award Description"
+        self.award_value = "An Award Value"
+        self.program_name = "A Program Name"
+        self.program_code = "A Code"
+        self.year_name = "Year 1"
+        self.program = Program.objects.create(name=self.program_name, code=self.program_code)
+        self.year = YearOfStudy.objects.create(year=self.year_name)
+        self.award_start_date = str(datetime.datetime.now(pytz.timezone('America/Vancouver')))
+        self.award_end_date = str(datetime.datetime.now(pytz.timezone('America/Edmonton')))
+        self.award_documents_needed = False
+        self.award_is_active = True
+
+        self.award = Award.objects.create(name=self.award_name, description=self.award_description,
+                                          value=self.award_value,
+                                          start_date=self.award_start_date, end_date=self.award_end_date,
+                                          documents_needed=self.award_documents_needed, is_active=self.award_is_active)
+
+        self.award.programs.add(self.program)
+        self.award.years_of_study.add(self.year)
+
+        self.adjudicator_ccid = "adjudicator"
+        self.adjudicator_first_name = "An"
+        self.adjudicator_last_name = "Adjudicator"
+        self.adjudicator_email = "adjudicator@csjawards.ca"
+        self.adjudicator = Adjudicator.objects.create(ccid=self.adjudicator_ccid,
+                                                      first_name=self.adjudicator_first_name,
+                                                      last_name=self.adjudicator_last_name,
+                                                      email=self.adjudicator_email)
+
+        self.student_ccid = "student"
+        self.student_first_name = "A"
+        self.student_middle_name = "Normal"
+        self.student_last_name = "Student"
+        self.student_ualberta_id = "123456789"
+        self.student_email = "student@csjawards.ca"
+        self.student_gpa = "4.0"
+
+        self.student = Student.objects.create(ccid=self.student_ccid, first_name=self.student_first_name,
+                                              middle_name=self.student_middle_name, last_name=self.student_last_name,
+                                              student_id=self.student_ualberta_id, email=self.student_email,
+                                              gpa=self.student_gpa, year=self.year, program=self.program)
+
+        Application.objects.create(student=self.student, award=self.award, is_submitted=True, is_archived=False,
+                                                      is_reviewed=False)
+
+        application = Application.objects.get(student = self.student, award = self.award)
+
+        self.selenium.get('%s%s' % (self.live_server_url, '/awards/'))
+
+        WebDriverWait(self.selenium, timeout).until(
+            lambda driver: driver.find_element_by_tag_name("body"))
+
+        self.selenium.find_element_by_link_text("Review Required").click()
+
+        WebDriverWait(self.selenium, timeout).until(
+            lambda driver: driver.find_element_by_tag_name("body"))
+
+        self.selenium.find_element_by_link_text("View Application").click()
+
+        WebDriverWait(self.selenium, timeout).until(
+            lambda driver: driver.find_element_by_tag_name("body"))
+
+        self.selenium.find_element_by_name("_review").click()
+
+        WebDriverWait(self.selenium, timeout).until(
+            lambda driver: driver.find_element_by_tag_name("body"))
+
+        application.refresh_from_db()
+
+        self.assertTrue(application.is_reviewed)
+
+        self.selenium.find_element_by_link_text("Review Completed").click()
+
+        WebDriverWait(self.selenium, timeout).until(
+            lambda driver: driver.find_element_by_tag_name("body"))
+
+        self.selenium.find_element_by_name("_unreview").click()
+
+        WebDriverWait(self.selenium, timeout).until(
+            lambda driver: driver.find_element_by_tag_name("body"))
+
+        application.refresh_from_db()
+
+        self.assertFalse(application.is_reviewed)
+
+        self.selenium.find_element_by_link_text("Review Pending").click()
+
+        WebDriverWait(self.selenium, timeout).until(
+            lambda driver: driver.find_element_by_tag_name("body"))
+
+        self.selenium.find_element_by_link_text("Return to Applications").click()
+
+        WebDriverWait(self.selenium, timeout).until(
+            lambda driver: driver.find_element_by_tag_name("body"))
+
+        self.assertEquals(self.selenium.current_url, '%s%s%s' % (self.live_server_url, '/awards/applications/?award_id=', self.award.awardid))
+
+        application.refresh_from_db()
+
+        WebDriverWait(self.selenium, timeout).until(
+            lambda driver: driver.find_element_by_name("_review"))
+
+        self.selenium.find_element_by_name("applicationaction").click()
+        self.selenium.find_element_by_name("_review").click()
+
+        WebDriverWait(self.selenium, timeout).until(
+            lambda driver: driver.find_element_by_tag_name("body"))
+
+        application.refresh_from_db()
+        self.assertTrue(application.is_reviewed)
+        self.assertFalse(application.is_archived)
+
+
+        self.selenium.find_element_by_name("applicationaction").click()
+        self.selenium.find_element_by_name("_archive").click()
+
+
+        WebDriverWait(self.selenium, timeout).until(
+            lambda driver: driver.find_element_by_tag_name("body"))
+
+        application.refresh_from_db()
+        self.assertTrue(application.is_archived)
+
+        self.selenium.get('%s%s%s' % (self.live_server_url, '/awards/applications/?award_id=', self.award.awardid))
+
+        WebDriverWait(self.selenium, timeout).until(
+            lambda driver: driver.find_element_by_link_text("View Archive"))
+
+        self.selenium.find_element_by_link_text("View Archive").click()
+
+        WebDriverWait(self.selenium, timeout).until(
+            lambda driver: driver.find_element_by_tag_name("body"))
+
+        self.selenium.find_element_by_link_text("View").click()
+
+        WebDriverWait(self.selenium, timeout).until(
+            lambda driver: driver.find_element_by_tag_name("body"))
+
+        self.selenium.find_element_by_link_text("Return to Applications").click()
+
+        WebDriverWait(self.selenium, timeout).until(
+            lambda driver: driver.find_element_by_tag_name("body"))
+
+        self.selenium.find_element_by_name("archiveaction").click()
+        self.selenium.find_element_by_name("_removeFromArchive").click()
+
+        WebDriverWait(self.selenium, timeout).until(
+            lambda driver: driver.find_element_by_tag_name("body"))
+
+        application.refresh_from_db()
+        self.assertFalse(application.is_archived)
+
+        self.selenium.find_element_by_link_text("Return to Applications").click()
+
+        WebDriverWait(self.selenium, timeout).until(
+            lambda driver: driver.find_element_by_tag_name("body"))
+
+        self.selenium.find_element_by_name("applicationaction").click()
+        self.selenium.find_element_by_name("_delete").click()
+
+        WebDriverWait(self.selenium, timeout).until(
+            lambda driver: driver.find_element_by_tag_name("body"))
+
+        time.sleep(5)
+
+        with self.assertRaises(Application.DoesNotExist):
+            application = Application.objects.get(student=self.student, award=self.award)
 
 
 

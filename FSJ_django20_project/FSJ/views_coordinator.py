@@ -693,7 +693,7 @@ def coordinator_archived_application_view(request):
     template = loader.get_template("FSJ/view_application.html")
     return HttpResponse(template.render(context, request))
 
-#Function used to archive an application by createing a new archivedapp object and deleteing the old application.
+#Function used to archive an application by createing a new archivedapp object and deleting the old application.
 #Also used to delete applications
 @login_required
 @user_passes_test(is_coordinator)
@@ -711,12 +711,12 @@ def coordinator_application_action(request):
         if "_archive" in request.POST:  
             for applicationid in application_list:
                 application = Application.objects.get(application_id=applicationid)
-                application.is_archived = True;
+                application.is_archived = True
                 application.save()
         elif "_review" in request.POST:
             for applicationid in application_list:
                 application = Application.objects.get(application_id=applicationid)
-                application.is_reviewed = True;
+                application.is_reviewed = True
                 application.save()
         elif "_delete" in request.POST:
             for applicationid in application_list:
@@ -743,7 +743,7 @@ def coordinator_archive_action(request):
         if "_removeFromArchive" in request.POST:  
             for applicationid in archived_application_list:
                 archivedapp = Application.objects.get(application_id=applicationid)
-                archivedapp.is_archived = False;
+                archivedapp.is_archived = False
                 archivedapp.save()
         elif "_delete" in request.POST:
             for applicationid in archived_application_list:
