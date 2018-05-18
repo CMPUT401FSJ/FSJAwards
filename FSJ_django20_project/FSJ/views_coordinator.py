@@ -857,7 +857,7 @@ def coordinator_application_tab_action(request):
             for applicationid in application_list:
                 Application.objects.get(application_id=applicationid).delete() 
     
-        return redirect('coord_applicationtab')
+        return redirect('/applications/')
 
 
 def coordinator_export_final_review(request, committee_id):
@@ -957,7 +957,7 @@ def coordinator_view_application(request):
         if url_is_safe:
             return redirect(urllib.parse.unquote(return_url))
         else:
-            return redirect(coordinator_application_tab)
+            return redirect('/applications/')
 
     if request.method == 'POST':
         if '_review' in request.POST:
@@ -975,7 +975,7 @@ def coordinator_view_application(request):
         if url_is_safe:
             return redirect(urllib.parse.unquote(return_url))
         else:
-            return redirect(coordinator_application_tab)
+            return redirect('/applications/')
 
     else:
         adjudicators = application.adjudicators.all()
