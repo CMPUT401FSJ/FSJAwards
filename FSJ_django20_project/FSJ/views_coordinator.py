@@ -823,7 +823,7 @@ def coordinator_application_tab(request):
     FSJ_user = get_FSJ_user(request.user.username)
     application_list = Application.objects.all()
     filtered_list = ApplicationFilter(request.GET, queryset=application_list)
-    template = loader.get_template("FSJ/application_tab.html")
+    template = loader.get_template("FSJ/coord_application_tab.html")
     context = get_standard_context(FSJ_user)
     context["application_list"] = application_list
     context["filter"] = filtered_list
