@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-05-18 12:29-0600\n"
+"POT-Creation-Date: 2018-05-22 12:45-0600\n"
 "PO-Revision-Date: 2018-05-18 12:30-0600\n"
+"Last-Translator: \n"
+"Language-Team: \n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"Last-Translator: \n"
-"Language-Team: \n"
 "X-Generator: Poedit 2.0.7\n"
 
 #: .\FSJ\filters.py:7
@@ -73,7 +73,7 @@ msgstr ""
 #. Translators: CCID header in adjudicator table
 #. Translators: CCID header in student table
 #: .\FSJ\models\models_FSJUser.py:18
-#: .\FSJ\templates\FSJ\application_list.html:37
+#: .\FSJ\templates\FSJ\application_list.html:38
 #: .\FSJ\templates\FSJ\coord_adjudicator_list.html:51
 #: .\FSJ\templates\FSJ\coord_application_archive.html:25
 #: .\FSJ\templates\FSJ\coord_application_tab.html:76
@@ -119,7 +119,7 @@ msgstr ""
 
 #. Translators: Student header in application table
 #: .\FSJ\models\models_application.py:13
-#: .\FSJ\templates\FSJ\application_list.html:36
+#: .\FSJ\templates\FSJ\application_list.html:37
 #: .\FSJ\templates\FSJ\coord_application_archive.html:24
 #: .\FSJ\templates\FSJ\coord_application_tab.html:75
 msgid "Student"
@@ -266,14 +266,14 @@ msgid "Code"
 msgstr ""
 
 #: .\FSJ\models\models_ranking.py:11
-#: .\FSJ\templates\FSJ\application_list.html:44
+#: .\FSJ\templates\FSJ\application_list.html:45
 msgid "Rank"
 msgstr ""
 
 #. Translators: Program name header in program table
 #. Translators: Program header in student table
 #: .\FSJ\models\models_student.py:12
-#: .\FSJ\templates\FSJ\application_list.html:39
+#: .\FSJ\templates\FSJ\application_list.html:40
 #: .\FSJ\templates\FSJ\coord_application_archive.html:27
 #: .\FSJ\templates\FSJ\coord_application_tab.html:77
 #: .\FSJ\templates\FSJ\coord_program_list.html:28
@@ -284,7 +284,7 @@ msgstr ""
 
 #. Translators: Year header in years table
 #: .\FSJ\models\models_student.py:13
-#: .\FSJ\templates\FSJ\application_list.html:40
+#: .\FSJ\templates\FSJ\application_list.html:41
 #: .\FSJ\templates\FSJ\coord_application_archive.html:28
 #: .\FSJ\templates\FSJ\coord_application_tab.html:78
 #: .\FSJ\templates\FSJ\coord_years_list.html:26
@@ -294,7 +294,7 @@ msgstr ""
 
 #. Translators: GPA header in student table
 #: .\FSJ\models\models_student.py:14
-#: .\FSJ\templates\FSJ\application_list.html:41
+#: .\FSJ\templates\FSJ\application_list.html:42
 #: .\FSJ\templates\FSJ\coord_application_archive.html:29
 #: .\FSJ\templates\FSJ\coord_student_list.html:85
 #: .\FSJ\templates\FSJ\view_application.html:90
@@ -353,52 +353,52 @@ msgid "No Applications"
 msgstr ""
 
 #: .\FSJ\templates\FSJ\application_list.html:15
-#: .\FSJ\templates\FSJ\application_list.html:76
+#: .\FSJ\templates\FSJ\application_list.html:77
 msgid "Return to Awards"
 msgstr ""
 
 #: .\FSJ\templates\FSJ\application_list.html:17
-#: .\FSJ\templates\FSJ\application_list.html:78
+#: .\FSJ\templates\FSJ\application_list.html:79
 msgid "View Archive"
 msgstr ""
 
-#: .\FSJ\templates\FSJ\application_list.html:19
-#: .\FSJ\templates\FSJ\application_list.html:80
+#: .\FSJ\templates\FSJ\application_list.html:20
+#: .\FSJ\templates\FSJ\application_list.html:82
 #: .\FSJ\templates\FSJ\coord_application_tab.html:108
 msgid "Review Application(s)"
 msgstr ""
 
-#: .\FSJ\templates\FSJ\application_list.html:20
-#: .\FSJ\templates\FSJ\application_list.html:81
+#: .\FSJ\templates\FSJ\application_list.html:21
+#: .\FSJ\templates\FSJ\application_list.html:83
 #: .\FSJ\templates\FSJ\coord_application_tab.html:109
 msgid "Archive Application(s)"
 msgstr ""
 
-#: .\FSJ\templates\FSJ\application_list.html:21
-#: .\FSJ\templates\FSJ\application_list.html:82
+#: .\FSJ\templates\FSJ\application_list.html:22
+#: .\FSJ\templates\FSJ\application_list.html:84
 #: .\FSJ\templates\FSJ\coord_application_archive.html:17
 #: .\FSJ\templates\FSJ\coord_application_archive.html:55
 msgid "Delete Application(s)"
 msgstr ""
 
-#: .\FSJ\templates\FSJ\application_list.html:26
-#: .\FSJ\templates\FSJ\application_list.html:86
+#: .\FSJ\templates\FSJ\application_list.html:27
+#: .\FSJ\templates\FSJ\application_list.html:88
 msgid "Finish Award Review"
 msgstr ""
 
 #. Translators: Student ID header in student table
-#: .\FSJ\templates\FSJ\application_list.html:38
+#: .\FSJ\templates\FSJ\application_list.html:39
 #: .\FSJ\templates\FSJ\coord_application_archive.html:26
 #: .\FSJ\templates\FSJ\coord_student_list.html:79
 #: .\FSJ\templates\FSJ\view_application.html:82
 msgid "Student ID"
 msgstr ""
 
-#: .\FSJ\templates\FSJ\application_list.html:42
+#: .\FSJ\templates\FSJ\application_list.html:43
 msgid "Is Submitted?"
 msgstr ""
 
-#: .\FSJ\templates\FSJ\application_list.html:46
+#: .\FSJ\templates\FSJ\application_list.html:47
 #: .\FSJ\templates\FSJ\coord_application_tab.html:83
 msgid "Status"
 msgstr ""
