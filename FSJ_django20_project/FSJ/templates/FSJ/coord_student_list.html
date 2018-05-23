@@ -49,17 +49,17 @@
                 {# Translators: Search button for filtering #}
                 {% trans "Search" %}
               </button>          
-              <a role="button" class="btn btn-success" href='/studentlist'>{% trans "Clear Filters" %}</a>
+              <a role="button" class="btn btn-success" href='/students'>{% trans "Clear Filters" %}</a>
             </div>
           </form>
 
-        <form action="/studentlist/delete/" method="POST">
+        <form action="/students/delete/" method="POST">
             {% csrf_token %}
             
             {# Translators: Button to add student #}
-            <a role="button" class="btn btn-success" href='/studentlist/add/'>{% trans "Add student" %}</a>
+            <a role="button" class="btn btn-success" href='/students/add/'>{% trans "Add student" %}</a>
             {# Translators: Button to upload files #}
-            <a role="button" class="btn btn-success" href='/studentlist/addmulti/'>{% trans "Upload files" %}</a>
+            <a role="button" class="btn btn-success" href='/students/addmulti/'>{% trans "Upload files" %}</a>
             {# Translators: Button to delete selected students #}
             <button class="btn btn-danger pull-right" type="submit" name="delete">{% trans "Delete student(s)" %}</button>
             
@@ -104,14 +104,14 @@
                             {% endif %}
                          </td> 
                         {# Translators: Edit link in student table #}
-                        <td><a href="/edit_student?ccid={{ student.ccid }}">{% trans "Edit" %}</a></td>
+                        <td><a href="/students/edit/?ccid={{ student.ccid }}">{% trans "Edit" %}</a></td>
                     </tr>
                 {% endfor %}
             </table>
             {# Translators: Button to add student #}
-            <a role="button" class="btn btn-success" href='/studentlist/add/'>{% trans "Add student" %}</a>
+            <a role="button" class="btn btn-success" href='/students/add/'>{% trans "Add student" %}</a>
             {# Translators: Button to upload files #}
-            <a role="button" class="btn btn-success" href='/studentlist/addmulti/'>{% trans "Upload files" %}</a>
+            <a role="button" class="btn btn-success" href='/students/addmulti/'>{% trans "Upload files" %}</a>
             {# Translators: Button to delete selected students #}
             <button class="btn btn-danger pull-right" type="submit" name="delete">{% trans "Delete student(s)" %}</button>
         </form>

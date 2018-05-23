@@ -14,10 +14,11 @@
             
             <a class="btn btn-success" role="button" href="{{ return_url }}">{% trans "Return to Awards" %}</a>
             {% if FSJ_user.user_class == "Coordinator" %}
-                <a role="button" class="btn btn-action" href='archive/'>{% trans "View Archive" %}</a>
-                </br></br>
+                <a role="button" class="btn btn-action" href='archive/?award_id={{ award.awardid }}'>{% trans "View Archive" %}</a>
+                <br>
+                <br>
                 <button class="btn btn-success" type="submit" name="_review">{% trans "Review Application(s)" %}</button>
-                <button class="btn btn-success" type="submit", name="_archive">{% trans "Archive Application(s)" %}</button>
+                <button class="btn btn-success" type="submit" name="_archive">{% trans "Archive Application(s)" %}</button>
                 <button class="btn btn-danger" type="submit" name="_delete">{% trans "Delete Application(s)" %}</button>
             {% endif %}
             
@@ -50,7 +51,7 @@
                         {% if FSJ_user.user_class == "Coordinator" %}
                             <td><input type="checkbox"  name="applicationaction" value="{{application.0.application_id}}" ></td>
                         {% endif %}
-                        <td><a href="/view_student?ccid={{ application.0.student.ccid }}&awardid={{application.0.award.awardid}}&return={{ request.get_full_path|quote }}">{{ application.0.student.get_name }}</a></td>
+                        <td><a href="/view_student/?ccid={{ application.0.student.ccid }}&awardid={{application.0.award.awardid}}&return={{ request.get_full_path|quote }}">{{ application.0.student.get_name }}</a></td>
                         <td>{{ application.0.student.ccid }}</td>
                         <td>{{ application.0.student.student_id }}</td>
                         <td>
@@ -68,17 +69,18 @@
                         {% if FSJ_user.user_class == "Adjudicator" %}
                             <td>{{application.1}}</td>
                         {% endif %}
-                        <td><a href="/view_application?application_id={{ application.0.application_id }}&return={{ request.get_full_path|quote }}">{% get_status_tuple %}</a></td>
+                        <td><a href="/view_application/?application_id={{ application.0.application_id }}&return={{ request.get_full_path|quote }}">{% get_status_tuple %}</a></td>
                     </tr>
                 {% endfor %}
             </table>
             <br/>
             <a class="btn btn-success" role="button" href="{{ return_url }}">{% trans "Return to Awards" %}</a>
             {% if FSJ_user.user_class == "Coordinator" %}
-                <a role="button" class="btn btn-action" href='archive/'>{% trans "View Archive" %}</a>
-                </br></br>
+                <a role="button" class="btn btn-action" href='archive/?award_id={{ award.awardid }}'>{% trans "View Archive" %}</a>
+                <br>
+                <br>
                 <button class="btn btn-success" type="submit" name="_review">{% trans "Review Application(s)" %}</button>
-                <button class="btn btn-success" type="submit", name="_archive">{% trans "Archive Application(s)" %}</button>
+                <button class="btn btn-success" type="submit" name="_archive">{% trans "Archive Application(s)" %}</button>
                 <button class="btn btn-danger" type="submit" name="_delete">{% trans "Delete Application(s)" %}</button>
             {% endif %}
             

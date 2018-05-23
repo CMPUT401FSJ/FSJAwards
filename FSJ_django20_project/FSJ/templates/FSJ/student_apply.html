@@ -43,10 +43,16 @@
         {# Translators: Years of Study for award on student application page #}
             <h4><b>{% trans "Eligible Years Of Study" %}</b></h4>
                 <hr class="hr-div">
+                {% if award.years_of_study.all %}
                 {% for year in award.years_of_study.all %}
                     {{year}}
                     <br>
                 {% endfor %}
+            {% else %}
+                {# Translators: No year chosen for an award, on the list of awards table #}
+                {% trans "N/A" %}
+            {% endif %}
+
         </div>
         <br>
         <div>

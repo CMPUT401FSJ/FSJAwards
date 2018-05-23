@@ -50,7 +50,7 @@
                                 {# Translators: No applications message in adjudicator awards list #}
                                 <td>{% trans "No Applications" %}</td>
                             {% else %}    
-                                <td><a href="/adj_awardslist/{{ award.awardid }}/applications/">{% get_review_status %}</a></td>
+                                <td><a href="/awards/applications/?award_id={{ award.awardid }}">{% get_review_status %}</a></td>
                             {% endif %}
                             
                         </tr>

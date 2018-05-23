@@ -12,37 +12,37 @@
         {% if FSJ_user.user_class == "Student" %}
             <div>
                 {# Translators: History link on the main banner #}
-                <a class="header" href='/student_awardhistory'>{% trans "History" %}</a>
+                <a class="header" href='/history'>{% trans "History" %}</a>
             </div>
         {% endif %}
         {% if FSJ_user.user_class == "Coordinator" %}
             <div>        
                 {# Translators: Awards link on the main banner #}
-                <a class="header" href='/coord_awardslist'>{% trans "Awards" %}</a>
+                <a class="header" href='/awards'>{% trans "Awards" %}</a>
             </div>
             <div>        
                 {# Translators: Students link on the main banner #}
-                <a class="header" href='/studentlist'>{% trans "Students" %}</a>
+                <a class="header" href='/students'>{% trans "Students" %}</a>
             </div>
             <div>        
                 {# Translators: Adjudicators link on the main banner #}
-                <a class="header" href='/adjudicatorlist'>{% trans "Adjudicators" %}</a>
+                <a class="header" href='/adjudicators'>{% trans "Adjudicators" %}</a>
             </div>
             <div>        
                 {# Translators: Committees link on the main banner #}
-                <a class="header" href='/coord_committeeslist'>{% trans "Committees" %}</a>
+                <a class="header" href='/committees'>{% trans "Committees" %}</a>
             </div>
             <div>
                 {# Translators: Programs link on the main banner #}
-                <a class="header" href='/programs/list_programs'>{% trans "Programs" %}</a>
+                <a class="header" href='/programs'>{% trans "Programs" %}</a>
             </div>
             <div>
                 {# Translators: Years of study link on the main banner #}
-                <a class="header" href='/coord_yearslist'>{% trans "Years of study" %}</a>
+                <a class="header" href='/years'>{% trans "Years of study" %}</a>
             </div>
             <div>
                 {# Translators: Applications link on the main banner #}
-                <a class="header" href='/coord_applicationlist'>{% trans "Applications" %}</a>
+                <a class="header" href='/applications'>{% trans "Applications" %}</a>
             </div>
         {% endif %}
         {% if user.is_staff %}

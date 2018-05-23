@@ -67,7 +67,7 @@ def register_activation(request, uidb64, token):
         if form.is_valid():
             user=form.save()
             update_session_auth_hash(request,user)
-            return redirect('login')
+            return redirect('/login/')
     else:
         form = SetPasswordForm(user)
     return render(request,'registration/register_activation.html', {'form':form})
@@ -78,11 +78,11 @@ def register_activation(request, uidb64, token):
 def home(request):
     FSJ_user = get_FSJ_user(request.user.username)
     if isinstance(FSJ_user, Student):
-        return redirect('student_awardslist')
+        return redirect('/awards/')
     elif isinstance(FSJ_user, Coordinator):
-        return redirect('coord_awardslist')
+        return redirect('/awards/')
     elif isinstance(FSJ_user, Adjudicator):
-        return redirect('adj_awardslist')
+        return redirect('/awards/')
     elif request.user.is_superuser:
         return redirect('/admin/')
     else:
@@ -107,7 +107,7 @@ def profile(request):
         # If the form isn't valid we'll rerender it with the errors to display on the template
         if profile_form.is_valid():
             profile_form.save()
-            return redirect('profile')
+            return redirect('/profile/')
 
     else:
         # On a GET, we prefill the fields based on the instance of the user whose profile is being editted
@@ -128,11 +128,49 @@ def profile(request):
     return HttpResponse(template.render(context, request))
 
 @login_required
-@user_passes_test(is_coordinator)
+@user_passes_test(is_FSJ_user)
 def awards(request):
     FSJ_user = get_FSJ_user(request.user.username)
-    return coordinator_awards(request, FSJ_user)
-
+    if isinstance(FSJ_user, Coordinator):
+        return coordinator_awards(request, FSJ_user)
+    elif isinstance(FSJ_user, Adjudicator):
+        return adjudicator_awards(request)
+    elif isinstance(FSJ_user, Student):
+        return student_awardslist(request)
+    
+@login_required
+@user_passes_test(is_FSJ_user)
+def award_edit(request):
+    FSJ_user = get_FSJ_user(request.user.username)
+    if isinstance(FSJ_user, Coordinator):
+        return coordinator_awardedit(request)
+    elif isinstance(FSJ_user, Adjudicator):
+        return adjudicator_add_edit_comment_ranking(request)
+    elif isinstance(FSJ_user, Student):
+        return student_editapplication(request)
+    
+def award_applications(request):
+    FSJ_user = get_FSJ_user(request.user.username)
+    if isinstance(FSJ_user, Coordinator):
+        return coordinator_application_list(request)
+    elif isinstance(FSJ_user, Adjudicator):
+        return adjudicator_application_list(request)
+    
+def award_applications_action(request):
+    FSJ_user = get_FSJ_user(request.user.username)
+    if isinstance(FSJ_user, Coordinator):
+        return coordinator_application_action(request)
+    elif isinstance(FSJ_user, Adjudicator):
+        return adjudicator_application_action(request)
+    
+def award_delete(request):
+    FSJ_user = get_FSJ_user(request.user.username)
+    if isinstance(FSJ_user, Student):
+        return student_deleteapplication(request)
+    elif isinstance(FSJ_user, Adjudicator):
+        return adjudicator_delete_comment(request)    
+    
+    
 @login_required
 @user_passes_test(is_coordinator)
 def committees(request):

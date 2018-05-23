@@ -42,7 +42,7 @@
                         <td class='date-column'>{{award.start_date|date:"Y-m-d"}}</td>
                         <td class='date-column'>{{award.end_date|date:"Y-m-d"}}</td>
                         {# Translators: Apply button in award table #}
-                        <td><a href="/student_awardslist/{{ award.awardid }}/apply/">{% trans "Apply" %}</a></td>
+                        <td><a href="/awards/apply/?award_id={{ award.awardid }}">{% trans "Apply" %}</a></td>
                     </tr>
                 {% endfor %}
             {% else %}
@@ -63,7 +63,7 @@
                         <td class='date-column'>{{award.start_date|date:"Y-m-d"}}</td>
                         <td class='date-column'>{{award.end_date|date:"Y-m-d"}}</td>
                         {# Translators: Edit application button in student award table #}
-                        <td><a href="/student_awardslist/{{ award.awardid }}/edit/">{% trans "Edit" %}</a></td>
+                        <td><a href="/awards/edit/?award_id={{ award.awardid }}">{% trans "Edit" %}</a></td>
                     </tr>
                 {% endfor %}
             {% else %}
@@ -84,7 +84,7 @@
                         <td class='date-column'>{{award.start_date|date:"Y-m-d"}}</td>
                         <td class='date-column'>{{award.end_date|date:"Y-m-d"}}</td>
                         {# Translators: Unsubmit application button in student award table #}
-                        <td><a href="/student_awardslist/{{ award.awardid }}/unsubmit/">{% trans "Unsubmit" %}</a></td>
+                        <td><a href="/awards/unsubmit/?award_id={{ award.awardid }}">{% trans "Unsubmit" %}</a></td>
                     </tr>
                 {% endfor %}
             {% else %}

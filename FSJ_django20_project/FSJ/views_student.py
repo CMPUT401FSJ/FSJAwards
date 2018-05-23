@@ -31,7 +31,7 @@ def student_home(request, FSJ_user):
 @user_passes_test(is_student)
 def student_awardslist(request):
     FSJ_user = get_FSJ_user(request.user.username)
-    unfiltered_list = Award.objects.filter(Q(is_active = True), Q(years_of_study = FSJ_user.year), Q(programs = FSJ_user.program) | Q(programs__isnull = True))
+    unfiltered_list = Award.objects.filter(Q(is_active = True), Q(years_of_study = FSJ_user.year) | Q(years_of_study__isnull = True), Q(programs = FSJ_user.program) | Q(programs__isnull = True))
    
     awards_list = []
     in_progress_list = []
@@ -73,16 +73,17 @@ def student_award_history(request):
 
 @login_required
 @user_passes_test(is_student)
-def student_addapplication(request, award_idnum):
+def student_addapplication(request):
     FSJ_user = get_FSJ_user(request.user.username)
-    award = Award.objects.get(awardid = award_idnum)
+    award_id = request.GET.get('award_id', '')
+    award = Award.objects.get(awardid = award_id)
     
     if not award.is_active:
-        return redirect('home')
+        return redirect('/awards/')
     
     try:
         application = Application.objects.get(award = award, student = FSJ_user)
-        return redirect('home')
+        return redirect('/awards/')
     
     except Application.DoesNotExist:    
         if request.method == "POST":
@@ -96,11 +97,11 @@ def student_addapplication(request, award_idnum):
                     application.student = FSJ_user
                     application.award = award
                     application.save()
-                    return redirect('home')                    
+                    return redirect('/awards/')
                         
                 elif '_submit' in request.POST:
                     if not award.is_open():
-                        return redirect('home')            
+                        return redirect('/awards/')
                     if award.documents_needed == True and not application.application_file:
                         messages.warning(request, 'Please upload a document.')
                     
@@ -109,7 +110,7 @@ def student_addapplication(request, award_idnum):
                         application.student = FSJ_user
                         application.award = award
                         application.save()
-                        return redirect('home')
+                        return redirect('/awards/')
             
         else:
             form = ApplicationRestrictedForm()
@@ -118,8 +119,8 @@ def student_addapplication(request, award_idnum):
         template = loader.get_template("FSJ/student_apply.html")
         context["form"] = form
         context['award'] = award
-        url = "/student_awardslist/" + award_idnum + "/apply/"
-        delete_url = "/student_awardslist/"
+        url = "awards/apply/?award_id=" + str(award.awardid)
+        delete_url = "/awards/"
         context["url"] = url    
         context["delete_url"] = delete_url
         return HttpResponse(template.render(context, request))
@@ -127,18 +128,20 @@ def student_addapplication(request, award_idnum):
 
 @login_required
 @user_passes_test(is_student)
-def student_editapplication(request, award_idnum):
+def student_editapplication(request):
     FSJ_user = get_FSJ_user(request.user.username)
-    award = Award.objects.get(awardid = award_idnum)
+    award_id = request.GET.get('award_id', '')
     
-    if award.is_active == False:
-        return redirect('home')
     
     try:
+        award = Award.objects.get(awardid = award_id)
         application = Application.objects.get(award = award, student = FSJ_user)
         
-        if application.is_submitted == True:
-            return redirect('home')
+        if (not application.award.is_active) or (not application.award.is_open()):
+            return redirect('/awards/')
+        
+        if application.is_submitted:
+            return redirect('/awards/')
         
         if request.method == "POST":
             form = ApplicationRestrictedForm(request.POST, request.FILES, instance = application)
@@ -149,18 +152,18 @@ def student_editapplication(request, award_idnum):
                 if '_save' in request.POST: 
                     application.is_submitted = False
                     application.save()
-                    return redirect('home')                    
+                    return redirect('/awards/')
                         
                 elif '_submit' in request.POST:
                     if not award.is_open():
-                        return redirect('home')
+                        return redirect('/awards/')
                     application.is_submitted = True            
                     if award.documents_needed == True and not application.application_file:
                         messages.warning(request, 'Please upload a document.')
                     
                     else:
                         application.save()
-                        return redirect('home')
+                        return redirect('/awards/')
             
         else:
             # If the student hasn't entered any information yet, create a new blank form
@@ -170,39 +173,55 @@ def student_editapplication(request, award_idnum):
         template = loader.get_template("FSJ/student_apply.html")
         context["form"] = form
         context['award'] = award
-        url = "/student_awardslist/" + award_idnum + "/edit/"
-        delete_url = "/student_awardslist/" + award_idnum + "/delete/"
+        url = "/awards/edit/?award_id=" + str(award.awardid)
+        delete_url = "/awards/delete/?award_id=" + str(award.awardid)
         context["url"] = url    
         context["delete_url"] = delete_url
         return HttpResponse(template.render(context, request))        
 
     except Application.DoesNotExist:    
-        return redirect('home')
+        return redirect('/awards/')
      
     
 @login_required
 @user_passes_test(is_student)
-def student_unsubmitapplication(request, award_idnum):
+def student_unsubmitapplication(request):
     FSJ_user = get_FSJ_user(request.user.username)
-    award = Award.objects.get(awardid = award_idnum)    
-    application = Application.objects.get(award = award, student = FSJ_user)
-    application.is_submitted = False
-    application.save()
-    return redirect('home')
+    award_id = request.GET.get('award_id', '')
+    
+    try:
+        award = Award.objects.get(awardid = award_id)
+        
+        if (not award.is_active) or (not award.is_open()):
+            return redirect('/awards/')
+        
+        application = Application.objects.get(award = award, student = FSJ_user)
+        application.is_submitted = False
+        application.save()
+        
+    except:
+        pass
+    return redirect('/awards/')
 
 @login_required
 @user_passes_test(is_student)
-def student_deleteapplication(request, award_idnum):
+def student_deleteapplication(request):
+    award_id = request.GET.get('award_id', '')
     
     if request.method == "POST":
         FSJ_user = get_FSJ_user(request.user.username)
-        award = Award.objects.get(awardid = award_idnum)
+        award = Award.objects.get(awardid = award_idn)
         try:
-            application = Application.objects.get(award = award, student = FSJ_user).delete()
+            application = Application.objects.get(award = award, student = FSJ_user)
+            
+            if (not award.is_active) or (not award.is_open()):
+                return redirect('/awards/')
+            else:
+                application.delete()
             
         except:
             pass
 
-    return redirect('home')
+    return redirect('/awards/')
     
 
