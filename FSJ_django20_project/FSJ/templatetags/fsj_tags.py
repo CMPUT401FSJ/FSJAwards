@@ -3,6 +3,7 @@ from django.template.defaultfilters import stringfilter
 from ..models import Ranking
 from ..forms import AwardReviewCommentForm
 import urllib
+import re
 
 register = template.Library()
 
@@ -76,3 +77,24 @@ def get_award_id(context):
     award = awards_list[x]
 
     return award.awardid
+
+@register.filter(name='link_name')
+def link_name(path, page_number):
+    output = re.search('(page=\d+)', path)
+    if output is not None:
+        return path.replace(str(output.group(1)), f"page={page_number}")
+    if re.search('(page=\d+)', path):
+        path.replace()
+    page_number = str(page_number)
+    if '?' in path:
+        return path + "&page=" + page_number
+    return path + "?page=" + page_number
+
+@register.filter(name='proper_paginate')
+def proper_paginate(paginator, current_page, neighbors=5):
+    if paginator.num_pages > 2*neighbors:
+        start_index = max(1, current_page-neighbors)
+        end_index = min(paginator.num_pages, current_page + neighbors)
+        page_list = [f for f in range(start_index, end_index+1)]
+        return page_list[:(2*neighbors + 1)]
+    return paginator.page_range

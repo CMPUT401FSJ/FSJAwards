@@ -1,6 +1,7 @@
 {% extends "FSJ/base_with_banner.html" %}
 {% load i18n %}
 {% load widget_tweaks %}
+{% load fsj_tags %}
 
 {# A page for the coordinator to view a list of all students as well as providing adding, deleting, and editing functionality #}
 
@@ -60,9 +61,7 @@
             <a role="button" class="btn btn-success" href='/students/add/'>{% trans "Add student" %}</a>
             {# Translators: Button to upload files #}
             <a role="button" class="btn btn-success" href='/students/addmulti/'>{% trans "Upload student files" %}</a>
-            {# Translators: Button to delete selected students #}
-            <button class="btn btn-danger pull-right" type="submit" name="delete">{% trans "Delete student(s)" %}</button>
-            
+
             <table class="table table-bordered table-striped table-hover" align="center">
                 <tr>
                     {# Translators: Select header in student table #}
@@ -108,92 +107,64 @@
                     </tr>
                 {% endfor %}
             </table>
+        
+
+            {% if students.has_other_pages %}
+
+                <ul class="pagination">
+                    {% if students.number == 1 %}
+                        <li class="disabled"><span>&laquo;</span></li>
+                    {% else %}
+                        <li><a href={{ request.get_full_path|link_name:1 }}>&laquo;</a></li>
+                    {% endif %}
+
+                    {% if students.has_previous %}
+                        <li><a href={{ request.get_full_path|link_name:students.previous_page_number }}>&lt;</a></li>
+                    {% else %}
+                        <li class="disabled"><span>&lt;</span></li>
+                    {% endif %}
+
+                    {% if students.number|add:'-5' >= 1 %}
+                        {% with students.number|add:'-5' as number %}
+                            <li><a href={{ request.get_full_path|link_name:number }}>&hellip;</a></li>
+                        {% endwith %}
+                    {% endif %}
 
 
-            {% with request.get_full_path as querystring %}
-                {% if students.has_other_pages %}
-                    <ul class="pagination">
-
-                        {% if students.has_previous %}
-                            {% if 'ccid' in request.get_full_path %}
-                                {% if 'page' in request.get_full_path %}
-                                    <li><a href="{{ querystring|slice:":-7" }}&page={{ students.previous_page_number }}">&laquo;</a></li>
-                                {% else %}
-                                    <li><a href="{{ request.get_full_path }}&page={{ students.previous_page_number }}">&laquo;</a></li>
-                                {% endif %}
-                            {% else %}
-                                <li><a href="?page={{ students.previous_page_number }}">&laquo;</a></li>
-                            {% endif %}
+                    {% for i in students.paginator|proper_paginate:students.number %}
+                        {% if students.number == i %}
+                            <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
                         {% else %}
-                            <li class="disabled"><span>&laquo;</span></li>
+                            <li><a href={{ request.get_full_path|link_name:i }}>{{ i }}</a></li>
                         {% endif %}
+                    {% endfor %}
 
-                        {% if students.number|add:'-3' >= 1 %}
-                            {% if 'ccid' in request.get_full_path %}
-                                {% if 'page' in request.get_full_path %}
-                                    <li><a href="{{ querystring|slice:":-7" }}&page={{ students.number|add:'-3' }}">&hellip;</a></li>
-                                {% else %}
-                                    <li><a href="{{ request.get_full_path }}&page={{ students.number|add:'-3' }}">&hellip;</a></li>
-                                {% endif %}
-                            {% else %}
-                                <li><a href="?page={{ students.number|add:'-3' }}">&hellip;</a></li>
-                            {% endif %}
-                        {% endif %}
+                    {% if students.paginator.num_pages >= students.number|add:'5' %}
+                        {% with students.number|add:'5' as number %}
+                            <li><a href = {{ request.get_full_path|link_name:number }}>&hellip;</a></li>
+                        {% endwith %}
+                    {% endif %}
 
-                        {% for i in page_range %}
-                            {% if students.number == i %}
-                                <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
-                            {% else %}
-                               {% if 'ccid' in request.get_full_path %}
-                                   {% if 'page' in request.get_full_path %}
-                                        <li><a href="{{ querystring|slice:":-7" }}&page={{ i }}">{{ i }}</a></li>
-                                   {% else %}
-                                       <li><a href="{{ request.get_full_path }}&page={{ i }}">{{ i }}</a></li>
-                                   {% endif %}
-                                {% else %}
-                                    <li><a href="?page={{ i }}">{{ i }}</a></li>
-                                {% endif %}
+                    {% if students.has_next %}
+                        <li><a href={{ request.get_full_path|link_name:students.next_page_number }}>&gt;</a></li>
+                    {% else %}
+                        <li class="disabled"><span>&gt;</span></li>
+                    {% endif %}
 
-                            {% endif %}
-                        {% endfor %}
+                    {% if students.number == students.paginator.num_pages %}
+                        <li class="disabled"><span>&raquo;</span></li>
+                    {% else %}
+                        <li><a href={{ request.get_full_path|link_name:students.paginator.num_pages }}>&raquo;</a></li>
+                    {% endif %}
+                </ul>
+            {% endif %}
 
-                        {% if students.paginator.num_pages >= students.number|add:'3' %}
-                            {% if 'ccid' in request.get_full_path %}
-                                {% if 'page' in request.get_full_path %}
-                                    <li><a href="{{ querystring|slice:":-7" }}&page={{ students.number|add:'3' }}">&hellip;</a></li>
-                                {% else %}
-                                    <li><a href="{{ request.get_full_path }}&page={{ students.number|add:'3' }}">&hellip;</a></li>
-                                {% endif %}
-                            {% else %}
-                                <li><a href="?page={{ students.number|add:'3' }}">&hellip;</a></li>
-                            {% endif %}
-                        {% endif %}
+            <br>
 
-                        {% if students.has_next %}
-                            {% if 'ccid' in request.get_full_path %}
-                                {% if 'page' in request.get_full_path %}
-                                    <li><a href="{{ querystring|slice:":-7" }}&page={{ students.next_page_number }}">&raquo;</a></li>
-                                {% else %}
-                                    <li><a href="{{ request.get_full_path }}&page={{ students.next_page_number }}">&raquo;</a></li>
-                                {% endif %}
-                            {% else %}
-                                <li><a href="?page={{ students.next_page_number }}">&raquo;</a></li>
-                            {% endif %}
-                        {% else %}
-                            <li class="disabled"><span>&raquo;</span></li>
-                        {% endif %}
-                    </ul>
-                {% endif %}
-            {% endwith %}
-
-            <br><br>
-
-            {# Translators: Button to add student #}
-            <a role="button" class="btn btn-success" href='/students/add/'>{% trans "Add student" %}</a>
-            {# Translators: Button to upload files #}
-            <a role="button" class="btn btn-success" href='/students/addmulti/'>{% trans "Upload student files" %}</a>
             {# Translators: Button to delete selected students #}
             <button class="btn btn-danger pull-right" type="submit" name="delete">{% trans "Delete student(s)" %}</button>
+
+            <br><br>
         </form>
         </div>
     </body>
