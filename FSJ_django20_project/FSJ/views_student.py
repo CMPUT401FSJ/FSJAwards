@@ -111,6 +111,9 @@ def student_addapplication(request):
                         application.award = award
                         application.save()
                         return redirect('/awards/')
+
+                elif '_delete' in request.POST:
+                    return redirect('/awards/')
             
         else:
             form = ApplicationRestrictedForm()
@@ -120,9 +123,7 @@ def student_addapplication(request):
         context["form"] = form
         context['award'] = award
         url = "awards/apply/?award_id=" + str(award.awardid)
-        delete_url = "/awards/"
-        context["url"] = url    
-        context["delete_url"] = delete_url
+        context["url"] = url
         return HttpResponse(template.render(context, request))
 
 
@@ -164,6 +165,20 @@ def student_editapplication(request):
                     else:
                         application.save()
                         return redirect('/awards/')
+
+                elif '_delete' in request.POST:
+                    try:
+                        application = Application.objects.get(award=award, student=FSJ_user)
+
+                        if (not award.is_active) or (not award.is_open()):
+                            return redirect('/awards/')
+                        else:
+                            application.delete()
+
+                    except:
+                        pass
+
+                    return redirect('/awards/')
             
         else:
             # If the student hasn't entered any information yet, create a new blank form
@@ -174,10 +189,8 @@ def student_editapplication(request):
         context["form"] = form
         context['award'] = award
         url = "/awards/edit/?award_id=" + str(award.awardid)
-        delete_url = "/awards/delete/?award_id=" + str(award.awardid)
-        context["url"] = url    
-        context["delete_url"] = delete_url
-        return HttpResponse(template.render(context, request))        
+        context["url"] = url
+        return HttpResponse(template.render(context, request))
 
     except Application.DoesNotExist:    
         return redirect('/awards/')
@@ -203,25 +216,6 @@ def student_unsubmitapplication(request):
         pass
     return redirect('/awards/')
 
-@login_required
-@user_passes_test(is_student)
-def student_deleteapplication(request):
-    award_id = request.GET.get('award_id', '')
-    
-    if request.method == "POST":
-        FSJ_user = get_FSJ_user(request.user.username)
-        award = Award.objects.get(awardid = award_idn)
-        try:
-            application = Application.objects.get(award = award, student = FSJ_user)
-            
-            if (not award.is_active) or (not award.is_open()):
-                return redirect('/awards/')
-            else:
-                application.delete()
-            
-        except:
-            pass
 
-    return redirect('/awards/')
     
 

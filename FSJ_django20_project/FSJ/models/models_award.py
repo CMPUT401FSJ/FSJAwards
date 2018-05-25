@@ -19,6 +19,7 @@ class Award(models.Model):
 	documents_needed = models.BooleanField(verbose_name = _("Documents Required"))
 	is_active = models.BooleanField(verbose_name = _("Is Active"))
 	adjudicators = models.ManyToManyField(Adjudicator, related_name='awards', verbose_name = _("Adjudicators"))
+	review_comment = models.CharField(blank = True, max_length = 255, verbose_name = _("Comment"))
 
 	#returns award name as a string
 	def __str__(self):
@@ -108,4 +109,11 @@ class Award(models.Model):
 
 
 	def get_start_date(self):
-		return 
+		return
+
+	def all_archived(self):
+		for application in self.applications.all():
+			if not application.is_archived:
+				return False
+
+		return True

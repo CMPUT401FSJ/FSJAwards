@@ -148,26 +148,27 @@ def award_edit(request):
         return adjudicator_add_edit_comment_ranking(request)
     elif isinstance(FSJ_user, Student):
         return student_editapplication(request)
-    
+
+@login_required
 def award_applications(request):
     FSJ_user = get_FSJ_user(request.user.username)
     if isinstance(FSJ_user, Coordinator):
         return coordinator_application_list(request)
     elif isinstance(FSJ_user, Adjudicator):
         return adjudicator_application_list(request)
-    
+
+@login_required
 def award_applications_action(request):
     FSJ_user = get_FSJ_user(request.user.username)
     if isinstance(FSJ_user, Coordinator):
         return coordinator_application_action(request)
     elif isinstance(FSJ_user, Adjudicator):
         return adjudicator_application_action(request)
-    
+
+@login_required
 def award_delete(request):
     FSJ_user = get_FSJ_user(request.user.username)
-    if isinstance(FSJ_user, Student):
-        return student_deleteapplication(request)
-    elif isinstance(FSJ_user, Adjudicator):
+    if isinstance(FSJ_user, Adjudicator):
         return adjudicator_delete_comment(request)    
     
     

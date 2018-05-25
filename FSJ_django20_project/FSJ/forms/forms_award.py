@@ -36,3 +36,10 @@ class AwardForm(ModelForm):
             if start_date > end_date:
                 msg = forms.ValidationError(_("The start date must be later than the end date."))
                 self.add_error('start_date', msg)
+
+
+class AwardReviewCommentForm(ModelForm):
+
+    class Meta:
+        model = Award
+        fields = ('review_comment',)
