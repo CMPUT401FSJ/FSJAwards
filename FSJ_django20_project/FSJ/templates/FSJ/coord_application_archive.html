@@ -12,10 +12,7 @@
     <div class='center-content'>
         <form action ="/awards/applications/archive/action/?award_id={{ award.awardid }}" method="POST" >
             {% csrf_token %}
-            
-            <button class="btn btn-success" type="submit", name="_removeFromArchive">{% trans "Reactivate Application(s)" %}</button>
-            <button class="btn btn-danger" type="submit" name="_delete">{% trans "Delete Application(s)" %}</button>
-            </br></br>
+
             <a class="btn btn-success" role="button" href="{{ return_url }}">{% trans "Return to Applications" %}</a>
             
             <table class="table table-bordered table-striped table-hover" align="center">
@@ -50,11 +47,8 @@
                     </tr>
                 {% endfor %}
             </table>
-            </br>
             <button class="btn btn-success" type="submit", name="_removeFromArchive">{% trans "Reactivate Application(s)" %}</button>
-            <button class="btn btn-danger" type="submit" name="_delete">{% trans "Delete Application(s)" %}</button>
-            </br></br>
-            <a class="btn btn-success" role="button" href="{{ return_url }}">{% trans "Return to Applications" %}</a>
+            <button class="btn btn-danger pull-right" type="submit" name="_delete">{% trans "Delete Application(s)" %}</button>
         </form>
     </div>
 {% endblock %}

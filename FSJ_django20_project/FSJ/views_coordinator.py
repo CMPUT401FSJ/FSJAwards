@@ -62,18 +62,6 @@ def coordinator_students(request):
     except EmptyPage:
         students = student_paginator.page(student_paginator.num_pages)
 
-    index = students.number - 1
-    max_index = len(student_paginator.page_range)
-    start_index = index - 2 if index >= 2 else 0
-    end_index = index + 2 if index <= max_index - 2 else max_index
-    page_range = list(student_paginator.page_range)[start_index:end_index+1]
-
-    context['page_range'] = page_range
-    if start_index > 0:
-        context['start_page'] = True
-    if end_index < max_index:
-        context['end_page'] = True
-
     context["filter"] = filtered_list
     context["students"] = students
     return HttpResponse(template.render(context, request))
@@ -850,10 +838,24 @@ def coordinator_application_tab(request):
     FSJ_user = get_FSJ_user(request.user.username)
     application_list = Application.objects.all().order_by('student__ccid')
     filtered_list = ApplicationFilter(request.GET, queryset=application_list)
+
+    application_paginator = Paginator(filtered_list.qs, 25)
+
+    page = request.GET.get('page', 1)
+
+    try:
+        applications = application_paginator.page(page)
+    except PageNotAnInteger:
+        applications = application_paginator.page(1)
+    except EmptyPage:
+        applications = application_paginator.page(application_paginator.num_pages)
+
+
     template = loader.get_template("FSJ/coord_application_tab.html")
     context = get_standard_context(FSJ_user)
     context["application_list"] = application_list
     context["filter"] = filtered_list
+    context['applications'] = applications
     context["return_url"] = "/applications/"
     context["url"] = "/applications/action/"
     return HttpResponse(template.render(context,request))    

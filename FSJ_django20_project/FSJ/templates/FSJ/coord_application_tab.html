@@ -80,10 +80,11 @@
                         <th>{% trans "Award" %}</th>
                         {# Translators: Submitted header in application table #}
                         <th>{% trans "Submitted?" %}</th>
+                        <th>{% trans "Archived?" %}</th>
                         <th>{% trans "Status" %}</th>
                         
                     </tr>
-                    {% for application in filter.qs %}
+                    {% for application in applications %}
                         <tr>
                                 
                             <td><input type="checkbox"  name="applicationaction" value="{{application.application_id}}" > </td>
@@ -99,11 +100,67 @@
                             <td>
                                 <input type="checkbox" disabled {% if application.is_submitted %}checked{% endif %}>
                             </td>
+                            <td>
+                                <input type="checkbox" disabled {% if application.is_archived %}checked{% endif %}>
+                            </td>
                             <td><a href="/view_application/?application_id={{ application.application_id }}&return={{ request.get_full_path|quote }}">{% get_status %}</a></td>
                             
                         </tr>
                     {% endfor %}
                 </table>
+
+
+                {% if applications.has_other_pages %}
+
+                    <ul class="pagination">
+                        {% if applications.number == 1 %}
+                            <li class="disabled"><span>&laquo;</span></li>
+                        {% else %}
+                            <li><a href={{ request.get_full_path|link_name:1 }}>&laquo;</a></li>
+                        {% endif %}
+
+                        {% if applications.has_previous %}
+                            <li><a href={{ request.get_full_path|link_name:applications.previous_page_number }}>&lt;</a></li>
+                        {% else %}
+                            <li class="disabled"><span>&lt;</span></li>
+                        {% endif %}
+
+                        {% if applications.number|add:'-5' >= 1 %}
+                            {% with applications.number|add:'-5' as number %}
+                                <li><a href={{ request.get_full_path|link_name:number }}>&hellip;</a></li>
+                            {% endwith %}
+                        {% endif %}
+
+
+                        {% for i in applications.paginator|proper_paginate:applications.number %}
+                            {% if applications.number == i %}
+                                <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+                            {% else %}
+                                <li><a href={{ request.get_full_path|link_name:i }}>{{ i }}</a></li>
+                            {% endif %}
+                        {% endfor %}
+
+                        {% if applications.paginator.num_pages >= applications.number|add:'5' %}
+                            {% with applications.number|add:'5' as number %}
+                                <li><a href = {{ request.get_full_path|link_name:number }}>&hellip;</a></li>
+                            {% endwith %}
+                        {% endif %}
+
+                        {% if applications.has_next %}
+                            <li><a href={{ request.get_full_path|link_name:applications.next_page_number }}>&gt;</a></li>
+                        {% else %}
+                            <li class="disabled"><span>&gt;</span></li>
+                        {% endif %}
+
+                        {% if applications.number == applications.paginator.num_pages %}
+                            <li class="disabled"><span>&raquo;</span></li>
+                        {% else %}
+                            <li><a href={{ request.get_full_path|link_name:applications.paginator.num_pages }}>&raquo;</a></li>
+                        {% endif %}
+                    </ul>
+                {% endif %}
+
+                <br>
                 
                 <button class="btn btn-success" type="submit" name="_review">{% trans "Review Application(s)" %}</button>
                 <button class="btn btn-action" type="submit", name="_archive">{% trans "Archive Application(s)" %}</button>
