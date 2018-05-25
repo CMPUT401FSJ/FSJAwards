@@ -11,7 +11,15 @@ class StudentForm(ModelForm):
         
     def __init__(self, *args, **kwargs):
         super(StudentForm, self).__init__(*args, **kwargs)               
-        
+
+
+class StudentEditForm(StudentForm):
+
+    def __init__(self, *args, **kwargs):
+        super(StudentEditForm, self).__init__(*args, **kwargs)
+        self.fields['student_id'].disabled=True
+
+
     
 class StudentRestrictedForm(ModelForm):
 
@@ -29,6 +37,9 @@ class StudentRestrictedForm(ModelForm):
         self.fields['year'].disabled=True
         self.fields['student_id'].disabled=True
         self.fields['gpa'].disabled=True
+        self.fields['first_name'].disabled=True
+        self.fields['middle_name'].disabled=True
+        self.fields['last_name'].disabled=True
         
 class StudentReadOnlyForm(StudentForm):
     

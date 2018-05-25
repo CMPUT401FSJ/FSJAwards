@@ -277,7 +277,7 @@ class CoordinatorSeleniumTest(SeleniumTest):
         self.selenium.find_element_by_name("delete").click()
 
         WebDriverWait(self.selenium, timeout).until(
-            lambda driver: driver.find_element_by_link_text("Upload files"))
+            lambda driver: driver.find_element_by_link_text("Upload student files"))
 
         with self.assertRaises(Student.DoesNotExist):
             student = Student.objects.get(ccid = self.student_ccid)
@@ -286,7 +286,7 @@ class CoordinatorSeleniumTest(SeleniumTest):
             user = User.objects.get(username = self.student_ccid)
 
 
-        self.selenium.find_element_by_link_text("Upload files").click()
+        self.selenium.find_element_by_link_text("Upload student files").click()
 
         WebDriverWait(self.selenium, timeout).until(
             lambda driver: driver.find_element_by_id("id_student_file"))
