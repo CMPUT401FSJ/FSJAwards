@@ -1,6 +1,7 @@
 from django.core.exceptions import PermissionDenied
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.models import User
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.utils.crypto import get_random_string
 from django.utils.translation import gettext_lazy as _
 from django.utils.http import is_safe_url
@@ -45,10 +46,24 @@ def coordinator_students(request):
     FSJ_user = get_FSJ_user(request.user.username)
     student_list = Student.objects.all().order_by('ccid')
     filtered_list = StudentFilter(request.GET, queryset=student_list)
+
+    student_paginator = Paginator(filtered_list.qs, 25)
+
     template = loader.get_template("FSJ/coord_student_list.html")
     context = get_standard_context(FSJ_user)
     context["student_list"] = student_list
+
+    page = request.GET.get('page', 1)
+
+    try:
+        students = student_paginator.page(page)
+    except PageNotAnInteger:
+        students = student_paginator.page(1)
+    except EmptyPage:
+        students = student_paginator.page(student_paginator.num_pages)
+
     context["filter"] = filtered_list
+    context["students"] = students
     return HttpResponse(template.render(context, request))
 
 # The handler used by the Coordinator class to produce a list of all adjudicators in the database,

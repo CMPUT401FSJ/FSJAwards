@@ -86,7 +86,7 @@
                     {# Translators: View header in student table #}
                     <th>{% trans "View" %}</th>
                 </tr>
-                {% for student in filter.qs %}
+                {% for student in students %}
                     <tr>
                         <td><input type="checkbox"  name="instance" value="{{student.ccid}}">
                         <td>{{ student.ccid }}</td>
@@ -108,6 +108,61 @@
                     </tr>
                 {% endfor %}
             </table>
+
+            {% with request.get_full_path as querystring %}
+                {% if students.has_other_pages %}
+                    <ul class="pagination">
+
+                        {% if students.has_previous %}
+                            {% if 'ccid' in request.get_full_path %}
+                                {% if 'page' in request.get_full_path %}
+                                    <li><a href="{{ querystring|slice:":-7" }}&page={{ students.previous_page_number }}">&laquo;</a></li>
+                                {% else %}
+                                    <li><a href="{{ request.get_full_path }}&page={{ students.previous_page_number }}">&laquo;</a></li>
+                                {% endif %}
+                            {% else %}
+                                <li><a href="?page={{ students.previous_page_number }}">&laquo;</a></li>
+                            {% endif %}
+                        {% else %}
+                            <li class="disabled"><span>&laquo;</span></li>
+                        {% endif %}
+
+                        {% for i in students.paginator.page_range %}
+                            {% if students.number == i %}
+                                <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+                            {% else %}
+                               {% if 'ccid' in request.get_full_path %}
+                                   {% if 'page' in request.get_full_path %}
+                                        <li><a href="{{ querystring|slice:":-7" }}&page={{ i }}">{{ i }}</a></li>
+                                   {% else %}
+                                       <li><a href="{{ request.get_full_path }}&page={{ i }}">{{ i }}</a></li>
+                                   {% endif %}
+                                {% else %}
+                                    <li><a href="?page={{ i }}">{{ i }}</a></li>
+                                {% endif %}
+
+                            {% endif %}
+                        {% endfor %}
+
+                        {% if students.has_next %}
+                            {% if 'ccid' in request.get_full_path %}
+                                {% if 'page' in request.get_full_path %}
+                                    <li><a href="{{ querystring|slice:":-7" }}&page={{ students.next_page_number }}">&raquo;</a></li>
+                                {% else %}
+                                    <li><a href="{{ request.get_full_path }}&page={{ students.next_page_number }}">&raquo;</a></li>
+                                {% endif %}
+                            {% else %}
+                                <li><a href="?page={{ students.next_page_number }}">&raquo;</a></li>
+                            {% endif %}
+                        {% else %}
+                            <li class="disabled"><span>&raquo;</span></li>
+                        {% endif %}
+                    </ul>
+                {% endif %}
+            {% endwith %}
+
+            <br><br>
+
             {# Translators: Button to add student #}
             <a role="button" class="btn btn-success" href='/students/add/'>{% trans "Add student" %}</a>
             {# Translators: Button to upload files #}
