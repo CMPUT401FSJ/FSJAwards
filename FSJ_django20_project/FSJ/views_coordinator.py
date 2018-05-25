@@ -62,6 +62,18 @@ def coordinator_students(request):
     except EmptyPage:
         students = student_paginator.page(student_paginator.num_pages)
 
+    index = students.number - 1
+    max_index = len(student_paginator.page_range)
+    start_index = index - 2 if index >= 2 else 0
+    end_index = index + 2 if index <= max_index - 2 else max_index
+    page_range = list(student_paginator.page_range)[start_index:end_index+1]
+
+    context['page_range'] = page_range
+    if start_index > 0:
+        context['start_page'] = True
+    if end_index < max_index:
+        context['end_page'] = True
+
     context["filter"] = filtered_list
     context["students"] = students
     return HttpResponse(template.render(context, request))

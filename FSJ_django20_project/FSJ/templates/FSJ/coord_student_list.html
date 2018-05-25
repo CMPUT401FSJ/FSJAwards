@@ -109,6 +109,7 @@
                 {% endfor %}
             </table>
 
+
             {% with request.get_full_path as querystring %}
                 {% if students.has_other_pages %}
                     <ul class="pagination">
@@ -127,7 +128,19 @@
                             <li class="disabled"><span>&laquo;</span></li>
                         {% endif %}
 
-                        {% for i in students.paginator.page_range %}
+                        {% if students.number|add:'-3' >= 1 %}
+                            {% if 'ccid' in request.get_full_path %}
+                                {% if 'page' in request.get_full_path %}
+                                    <li><a href="{{ querystring|slice:":-7" }}&page={{ students.number|add:'-3' }}">&hellip;</a></li>
+                                {% else %}
+                                    <li><a href="{{ request.get_full_path }}&page={{ students.number|add:'-3' }}">&hellip;</a></li>
+                                {% endif %}
+                            {% else %}
+                                <li><a href="?page={{ students.number|add:'-3' }}">&hellip;</a></li>
+                            {% endif %}
+                        {% endif %}
+
+                        {% for i in page_range %}
                             {% if students.number == i %}
                                 <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
                             {% else %}
@@ -143,6 +156,18 @@
 
                             {% endif %}
                         {% endfor %}
+
+                        {% if students.paginator.num_pages >= students.number|add:'3' %}
+                            {% if 'ccid' in request.get_full_path %}
+                                {% if 'page' in request.get_full_path %}
+                                    <li><a href="{{ querystring|slice:":-7" }}&page={{ students.number|add:'3' }}">&hellip;</a></li>
+                                {% else %}
+                                    <li><a href="{{ request.get_full_path }}&page={{ students.number|add:'3' }}">&hellip;</a></li>
+                                {% endif %}
+                            {% else %}
+                                <li><a href="?page={{ students.number|add:'3' }}">&hellip;</a></li>
+                            {% endif %}
+                        {% endif %}
 
                         {% if students.has_next %}
                             {% if 'ccid' in request.get_full_path %}
