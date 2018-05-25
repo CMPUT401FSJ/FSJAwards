@@ -43,7 +43,7 @@ def coordinator_home(request, FSJ_user):
 @user_passes_test(is_coordinator)
 def coordinator_students(request):
     FSJ_user = get_FSJ_user(request.user.username)
-    student_list = Student.objects.all()
+    student_list = Student.objects.all().order_by('ccid')
     filtered_list = StudentFilter(request.GET, queryset=student_list)
     template = loader.get_template("FSJ/coord_student_list.html")
     context = get_standard_context(FSJ_user)
@@ -80,13 +80,13 @@ def coordinator_edit_student(request):
     
     # load a form with the year info with editable fields
     if request.method == 'POST':
-        form = StudentForm(request.POST, instance=student)
+        form = StudentEditForm(request.POST, instance=student)
         if form.is_valid():
             student = form.save(commit = False)
             student.save()
             return redirect('/students/')
     else:
-        form = StudentForm(instance=student)
+        form = StudentEditForm(instance=student)
     return_url = "/students/"
         
     context = get_standard_context(FSJ_user)
@@ -770,8 +770,8 @@ def coordinator_upload_students(request):
                         program = Program.objects.get(code = row['Prog'])
                         year = YearOfStudy.objects.get(year = row['Year'])
                         obj, created = Student.objects.update_or_create(
-                            ccid = row['CCID'],
-                            defaults={'student_id': row['ID'], 'first_name': row['First Name'], 'last_name': row['Last Name'], 'email' : row['Email (Univ)'],
+                            student_id = row['ID'],
+                            defaults={'ccid' : row['CCID'], 'first_name': row['First Name'], 'last_name': row['Last Name'], 'email' : row['Email (Univ)'],
                                       'program' : program, 'year' : year, 'middle_name' : row['Middle Name'],},
                         ) 
                         
@@ -780,7 +780,7 @@ def coordinator_upload_students(request):
                     csv_file.seek(0)
                     gpareader = csv.DictReader(io.StringIO(csv_file.read().decode('utf-8-sig')))    
                     for row in gpareader:
-                        student = Student.objects.get(ccid = row['CCID'])
+                        student = Student.objects.get(student_id = row['ID'])
                         if row['GPA']:
                             student.gpa = row['GPA']
                             student.save()
@@ -821,7 +821,7 @@ def coordinator_upload_students(request):
 @user_passes_test(is_coordinator)
 def coordinator_application_tab(request):
     FSJ_user = get_FSJ_user(request.user.username)
-    application_list = Application.objects.all()
+    application_list = Application.objects.all().order_by('student__ccid')
     filtered_list = ApplicationFilter(request.GET, queryset=application_list)
     template = loader.get_template("FSJ/coord_application_tab.html")
     context = get_standard_context(FSJ_user)
@@ -867,56 +867,69 @@ def coordinator_export_final_review(request, committee_id):
         messages.warning(request, _("Committee does not exist"))
         return redirect('/committees/')
 
-    filename = str(committee.committee_name).replace(" ", "") + "Review-" + datetime.now(timezone.utc).strftime("%Y-%m-%d")
+    filename = str(committee.committee_name).replace(" ", "") + "-" + datetime.now(timezone.utc).strftime("%Y-%m-%d")
     response = HttpResponse(content_type='application/ms-excel')
     response['Content-Disposition'] = 'attachment; filename="' + filename + '.xls"'
 
     wb = xlwt.Workbook(encoding='utf-8')
 
     adjudicators = committee.adjudicators.all()
-    for award in committee.awards.all():
-        sheet_name = str((award.name).replace(" ", ""))[:30]
-        ws = wb.add_sheet(sheet_name)
+    awards = committee.awards.all()
 
-        col_width = 256 * 20  # 20 characters wide
+    if adjudicators and awards:
+        for award in awards:
+            sheet_name = str((award.name).replace(" ", ""))[:30]
+            ws = wb.add_sheet(sheet_name)
 
-        try:
-            for i in range(0, 6):
-                ws.col(i).width = col_width
-        except ValueError:
-            pass
+            col_width = 256 * 20  # 20 characters wide
 
-        # Sheet header, first row
-        row_num = 0
-        font_style = xlwt.XFStyle()
-        font_style.font.bold = True
+            try:
+                for i in range(0, 6):
+                    ws.col(i).width = col_width
+            except ValueError:
+                pass
 
-        columns = ['Adjudicator', 'Rank 1', 'Rank 2', 'Rank 3', 'Rank 4', 'Rank 5', ]
+            # Sheet header, first row
+            row_num = 0
+            font_style = xlwt.XFStyle()
+            font_style.font.bold = True
 
-        for col_num in range(len(columns)):
-            ws.write(row_num, col_num, columns[col_num], font_style)
+            columns = ['Adjudicator', 'Rank 1', 'Rank 2', 'Rank 3', 'Rank 4', 'Rank 5', ]
 
-        # Sheet body, remaining rows
-        font_style = xlwt.XFStyle()
+            for col_num in range(len(columns)):
+                ws.write(row_num, col_num, columns[col_num], font_style)
 
-        rows = []
+            # Sheet body, remaining rows
+            font_style = xlwt.XFStyle()
 
-        for adjudicator in adjudicators:
+            for adjudicator in adjudicators:
 
-            row_num += 1
-            row = [None] * 6
-            row[0] = str(adjudicator.ccid)
+                row_num += 1
+                row = [None] * 6
+                row[0] = str(adjudicator.ccid)
 
-            for i in range(1, 6):
-                try:
-                    row[i] = str(Ranking.objects.get(award=award, adjudicator=adjudicator, rank=i).application.student)
-                except:
-                    row[i] = ""
+                for i in range(1, 6):
+                    try:
+                        row[i] = str(Ranking.objects.get(award=award, adjudicator=adjudicator, rank=i).application.student)
+                    except:
+                        row[i] = ""
 
-            row = tuple(row)
-            for col_num in range(len(row)):
-                ws.write(row_num, col_num, row[col_num], font_style)
+                row = tuple(row)
+                for col_num in range(len(row)):
+                    ws.write(row_num, col_num, row[col_num], font_style)
 
+            row_num += 2
+            font_style = xlwt.XFStyle()
+            font_style.font.bold = True
+
+            ws.write(row_num, 0, "Final Comment:", font_style)
+
+            font_style = xlwt.XFStyle()
+
+            ws.write(row_num, 1, award.review_comment, font_style)
+
+    else:
+        ws = wb.add_sheet("Sheet1")
 
     wb.save(response)
     return response
@@ -934,6 +947,28 @@ def coordinator_committee_review(request, committee_id):
 
     context['committee'] = committee
     context['return_url'] = "/committees/"
+    context['url'] = "/committees/" + str(committee.committeeid) + "/review/"
+    awards_list = committee.awards.all()
+
+    if request.method == 'POST':
+        for award in awards_list:
+            form = AwardReviewCommentForm(request.POST, prefix = str(award.awardid), instance = award)
+            if form.is_valid():
+                form.save()
+
+        return redirect('/committees/')
+
+    formlist = []
+
+    for award in awards_list:
+        form = AwardReviewCommentForm(instance = award, prefix = str(award.awardid))
+        #formlist.append(form)
+        award.form = form
+
+    context["formlist"] = formlist
+    context['awards_list'] = awards_list
+
+
     template = loader.get_template("FSJ/coord_final_review.html")
     return HttpResponse(template.render(context, request))
 
@@ -1032,73 +1067,91 @@ def coordinator_export_master_review(request):
 
     wb = xlwt.Workbook(encoding='utf-8')
 
-    for committee in Committee.objects.all():
+    committees = Committee.objects.all()
 
-        sheet_name = str((committee.committee_name).replace(" ", ""))[:30]
-        ws = wb.add_sheet(sheet_name)
+    if committees:
+        for committee in Committee.objects.all():
 
-        col_width = 256 * 20  # 20 characters wide
+            sheet_name = str((committee.committee_name).replace(" ", ""))[:30]
+            ws = wb.add_sheet(sheet_name)
 
-        try:
-            for i in range(0, 7):
-                ws.col(i).width = col_width
-        except ValueError:
-            pass
+            col_width = 256 * 20  # 20 characters wide
 
-        # Sheet header, first row
-        row_num = 0
-        font_style = xlwt.XFStyle()
-        font_style.font.bold = True
+            try:
+                for i in range(0, 7):
+                    ws.col(i).width = col_width
+            except ValueError:
+                pass
 
-        columns = ['Award', 'Adjudicator', 'Rank 1', 'Rank 2', 'Rank 3', 'Rank 4', 'Rank 5', ]
-
-        for col_num in range(len(columns)):
-            ws.write(row_num, col_num, columns[col_num], font_style)
-
-
-        adjudicators = committee.adjudicators.all()
-        for award in committee.awards.all():
-
+            # Sheet header, first row
+            row_num = 0
             font_style = xlwt.XFStyle()
             font_style.font.bold = True
 
+            columns = ['Award', 'Adjudicator', 'Rank 1', 'Rank 2', 'Rank 3', 'Rank 4', 'Rank 5', ]
+
+            for col_num in range(len(columns)):
+                ws.write(row_num, col_num, columns[col_num], font_style)
 
 
-            row_num += 2
-            ws.write(row_num, 0, award.name, font_style)
-            row_num += 1
+            adjudicators = committee.adjudicators.all()
+            awards = committee.awards.all()
 
-            pattern = xlwt.Pattern()
-            pattern.pattern = xlwt.Pattern.SOLID_PATTERN
-            pattern.pattern_fore_colour = xlwt.Style.colour_map['pale_blue']
+            if adjudicators and awards:
 
-            font_style.pattern = pattern
+                for award in awards:
 
-            row = [""] * 7
-            for col_num in range(7):
-                ws.write(row_num, col_num, row[i], font_style)
+                    row_num += 1
 
-            # Sheet body, remaining rows
-            font_style = xlwt.XFStyle()
+                    pattern = xlwt.Pattern()
+                    pattern.pattern = xlwt.Pattern.SOLID_PATTERN
+                    pattern.pattern_fore_colour = xlwt.Style.colour_map['dark_green_ega']
+                    font_style.pattern = pattern
 
-            rows = []
+                    row = [""] * 7
+                    for col_num in range(7):
+                        ws.write(row_num, col_num, row[i], font_style)
 
-            for adjudicator in adjudicators:
 
-                row_num += 1
-                row = [None] * 7
-                row[1] = str(adjudicator.ccid)
+                    font_style = xlwt.XFStyle()
+                    font_style.font.bold = True
 
-                for i in range(2, 7):
-                    try:
-                        row[i] = str(
-                            Ranking.objects.get(award=award, adjudicator=adjudicator, rank=i).application.student)
-                    except:
-                        row[i] = ""
+                    row_num += 1
+                    ws.write(row_num, 0, award.name, font_style)
+                    row_num += 1
 
-                row = tuple(row)
-                for col_num in range(len(row)):
-                    ws.write(row_num, col_num, row[col_num], font_style)
+                    font_style = xlwt.XFStyle()
+
+                    for adjudicator in adjudicators:
+
+                        row_num += 1
+                        row = [None] * 7
+                        row[1] = str(adjudicator.ccid)
+
+                        for i in range(2, 7):
+                            try:
+                                row[i] = str(
+                                    Ranking.objects.get(award=award, adjudicator=adjudicator, rank=i).application.student)
+                            except:
+                                row[i] = ""
+
+                        row = tuple(row)
+                        for col_num in range(len(row)):
+                            ws.write(row_num, col_num, row[col_num], font_style)
+
+                    row_num += 2
+                    font_style = xlwt.XFStyle()
+                    font_style.font.bold = True
+
+                    ws.write(row_num, 0, "Final Comment:", font_style)
+
+                    font_style = xlwt.XFStyle()
+
+                    ws.write(row_num, 1, award.review_comment, font_style)
+
+
+    else:
+        ws = wb.add_sheet("Sheet1")
 
     wb.save(response)
     return response

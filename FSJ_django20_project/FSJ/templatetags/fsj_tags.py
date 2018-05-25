@@ -1,6 +1,7 @@
 from django import template
 from django.template.defaultfilters import stringfilter
 from ..models import Ranking
+from ..forms import AwardReviewCommentForm
 import urllib
 
 register = template.Library()
@@ -46,6 +47,32 @@ def get_ranking(context, rank):
     except:
         return ""
 
+@register.simple_tag(takes_context=True)
+def get_ranking_x(context, rank):
+    awards_list = context['awards_list']
+    adjudicator = context['adjudicator']
+    x = context['x']
+    try:
+        ranking = Ranking.objects.get(award=awards_list[x], adjudicator=adjudicator, rank=rank)
+        ccid = ranking.application.student.ccid
+        return ccid
+
+    except:
+        return ""
+
+
 @register.filter
 def get_range(size):
     return range(1, size+1)
+
+@register.filter
+def get_range_0(size):
+    return range(0, size)
+
+@register.simple_tag(takes_context=True)
+def get_award_id(context):
+    awards_list = context['awards_list']
+    x = context['x']
+    award = awards_list[x]
+
+    return award.awardid
