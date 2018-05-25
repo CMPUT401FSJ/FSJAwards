@@ -12,9 +12,8 @@
 
 .banner div {
     display: inline-block;
-    min-width: 120px;
-    width: 120px;
     text-align: center;
+    min-width: 120px;
 }
 
 .banner div a.header {
@@ -22,6 +21,16 @@
     padding-top: 10px;
     color: #4F4C25;
     font-size: 15;
+}
+
+.banner div a.header-applications {
+    display: block;
+    padding-top: 10px;
+    padding-left: 20px;
+    padding-right:10px;
+    color: #4F4C25;
+    font-size: 15;
+
 }
 
 .banner #logout {

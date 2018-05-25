@@ -1026,7 +1026,7 @@ def coordinator_view_application(request):
     if request.method == 'POST':
         if '_review' in request.POST:
             if application.award.documents_needed and not application.application_file:
-                messages.warning(request, _("This award is missing a document"))
+                messages.warning(request, _("This application is missing a document"))
                 return redirect("/view_application/?application_id=" + str(
                     application.application_id) + "&return=" + urllib.parse.quote(return_url))
             else:
