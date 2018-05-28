@@ -131,8 +131,8 @@ class CoordinatorSeleniumTest(SeleniumTest):
         self.assertEquals(award.is_active, True)
 
         self.selenium.find_element_by_name("awardaction").click()
-        self.selenium.find_element_by_css_selector("div.div-restrict-width:nth-child(13) > div:nth-child(2) > input:nth-child(1)").send_keys(self.new_start_date)
-        self.selenium.find_element_by_css_selector("div.div-restrict-width:nth-child(14) > div:nth-child(2) > input:nth-child(1)").send_keys(self.new_end_date)
+        self.selenium.find_element_by_css_selector("body > div > div:nth-child(3) > div > div:nth-child(2) > form:nth-child(2) > div:nth-child(9) > div:nth-child(2) > #id_start_date").send_keys(self.new_start_date)
+        self.selenium.find_element_by_css_selector("body > div > div:nth-child(3) > div > div:nth-child(2) > form:nth-child(2) > div:nth-child(10) > div:nth-child(2) > #id_end_date").send_keys(self.new_end_date)
         self.selenium.find_element_by_name("_changeDate").click()
 
         WebDriverWait(self.selenium, timeout).until(
