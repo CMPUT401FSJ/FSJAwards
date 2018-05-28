@@ -13,54 +13,52 @@
     <body>
         <div class='center-content'>
             <form method="get">
-                <form method="get">
-                    <div class = "well">
-                        <div class="row">
-                            <div class = "form-group col-sm-4 col-md-3">
-                                {{ filter.form.student_ccid.label_tag }}
-                                {% render_field filter.form.student_ccid class="form-control" %}
-                            </div>
-                            <div class = "form-group col-sm-4 col-md-3">
-                                {{ filter.form.student_first_name.label_tag }}
-                                {% render_field filter.form.student_first_name class="form-control" %}
-                            </div>
-                            <div class = "form-group col-sm-4 col-md-3">
-                                {{ filter.form.student_last_name.label_tag }}
-                                {% render_field filter.form.student_last_name class="form-control" %}
-                            </div>
-                            <div class = "form-group col-sm-4 col-md-3">
-                                {{ filter.form.award.label_tag }}
-                                {% render_field filter.form.award class="form-control" %}
-                            </div>
-                            <div class = "form-group col-sm-4 col-md-3">
-                                {{ filter.form.award_name.label_tag }}
-                                {% render_field filter.form.award_name class="form-control" %}
-                            </div>
-                            <div class = "form-group col-sm-4 col-md-3">
-                                {{ filter.form.award__programs.label_tag }}
-                                {% render_field filter.form.award__programs class="form-control" %}
-                            </div>
-                            <div class = "form-group col-sm-3 col-md-2">
-                                {{ filter.form.is_submitted.label_tag }}
-                                {% render_field filter.form.is_submitted class="form-control" %}
-                            </div>
-                            <div class = "form-group col-sm-3 col-md-2">
-                                {{ filter.form.is_archived.label_tag }}
-                                {% render_field filter.form.is_archived class="form-control" %}
-                            </div>
-                            <div class = "form-group col-sm-3 col-md-2">
-                                {{ filter.form.is_reviewed.label_tag }}
-                                {% render_field filter.form.is_reviewed class="form-control" %}
-                            </div>
+                <div class = "well">
+                    <div class="row">
+                        <div class = "form-group col-sm-4 col-md-3">
+                            {{ filter.form.student_ccid.label_tag }}
+                            {% render_field filter.form.student_ccid class="form-control" %}
                         </div>
-                        <button type="submit" class="btn btn-success">
-                            <span class="glyphicon glyphicon-search"></span> 
-                            {# Translators: Search button for filtering #}
-                            {% trans "Search" %}    
-                    </button> 
-                    <a role="button" class="btn btn-success" href="{{ return_url }}">{% trans "Clear Filters" %}</a>
+                        <div class = "form-group col-sm-4 col-md-3">
+                            {{ filter.form.student_first_name.label_tag }}
+                            {% render_field filter.form.student_first_name class="form-control" %}
+                        </div>
+                        <div class = "form-group col-sm-4 col-md-3">
+                            {{ filter.form.student_last_name.label_tag }}
+                            {% render_field filter.form.student_last_name class="form-control" %}
+                        </div>
+                        <div class = "form-group col-sm-4 col-md-3">
+                            {{ filter.form.award.label_tag }}
+                            {% render_field filter.form.award class="form-control" %}
+                        </div>
+                        <div class = "form-group col-sm-4 col-md-3">
+                            {{ filter.form.award_name.label_tag }}
+                            {% render_field filter.form.award_name class="form-control" %}
+                        </div>
+                        <div class = "form-group col-sm-4 col-md-3">
+                            {{ filter.form.award__programs.label_tag }}
+                            {% render_field filter.form.award__programs class="form-control" %}
+                        </div>
+                        <div class = "form-group col-sm-3 col-md-2">
+                            {{ filter.form.is_submitted.label_tag }}
+                            {% render_field filter.form.is_submitted class="form-control" %}
+                        </div>
+                        <div class = "form-group col-sm-3 col-md-2">
+                            {{ filter.form.is_archived.label_tag }}
+                            {% render_field filter.form.is_archived class="form-control" %}
+                        </div>
+                        <div class = "form-group col-sm-3 col-md-2">
+                            {{ filter.form.is_reviewed.label_tag }}
+                            {% render_field filter.form.is_reviewed class="form-control" %}
+                        </div>
                     </div>
-                </form>
+                    <button type="submit" class="btn btn-success">
+                        <span class="glyphicon glyphicon-search"></span>
+                        {# Translators: Search button for filtering #}
+                        {% trans "Search" %}
+                </button>
+                <a role="button" class="btn btn-success" href="{{ return_url }}">{% trans "Clear Filters" %}</a>
+                </div>
             </form>
             
             <form action="/applications/action/" method="POST">

@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-05-25 15:28-0600\n"
-"PO-Revision-Date: 2018-05-25 15:34-0600\n"
+"POT-Creation-Date: 2018-05-28 10:05-0600\n"
+"PO-Revision-Date: 2018-05-28 09:28-0600\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: fr\n"
@@ -60,8 +60,6 @@ msgid "Student File"
 msgstr "Dossier étudiant"
 
 #: .\FSJ\forms\forms_fileupload.py:8
-#, fuzzy
-#| msgid "Upload a CSV with fields CCID & GPA"
 msgid "Upload a CSV with fields ID & GPA"
 msgstr "Téléverser un fichier CSV avec les champs CCID & GPA"
 
@@ -342,8 +340,6 @@ msgstr "Année d'études"
 
 #: .\FSJ\templates\FSJ\adj_awards_list.html:18
 #: .\FSJ\templates\FSJ\coord_final_review.html:17
-#, fuzzy
-#| msgid "View"
 msgid "View All"
 msgstr "Afficher"
 
@@ -626,8 +622,6 @@ msgid "Submitted?"
 msgstr "Demande soumise?"
 
 #: .\FSJ\templates\FSJ\coord_application_tab.html:83
-#, fuzzy
-#| msgid "Archive"
 msgid "Archived?"
 msgstr "Archive"
 
@@ -716,8 +710,6 @@ msgstr "Ajouter étudiant"
 
 #. Translators: Button to upload files
 #: .\FSJ\templates\FSJ\coord_student_list.html:63
-#, fuzzy
-#| msgid "Upload files"
 msgid "Upload student files"
 msgstr "Télécharger fichier"
 
@@ -732,10 +724,8 @@ msgid "Upload"
 msgstr "Télécharger"
 
 #: .\FSJ\templates\FSJ\coord_student_upload.html:12
-#, fuzzy
-#| msgid "Return to Awards"
 msgid "Return to Students"
-msgstr "Retour page de bourses"
+msgstr "Retour page d'étudiants"
 
 #. Translators: Years page home label
 #. Translators: Award years of study header in awards table
@@ -866,20 +856,14 @@ msgid "No past awards"
 msgstr "Aucune bourse précedente"
 
 #: .\FSJ\templates\FSJ\student_awards_list.html:15
-#, fuzzy
-#| msgid "New awards"
 msgid "New Awards"
 msgstr "Nouvelles bourses"
 
 #: .\FSJ\templates\FSJ\student_awards_list.html:16
-#, fuzzy
-#| msgid "In-progress awards"
 msgid "In-Progress Awards"
 msgstr "Demande en cours"
 
 #: .\FSJ\templates\FSJ\student_awards_list.html:17
-#, fuzzy
-#| msgid "Submitted awards"
 msgid "Submitted Awards"
 msgstr "Demandes soumises"
 
