@@ -118,7 +118,8 @@ LANGUAGES = [
 ]
 
 LOCALE_PATHS = [
-    'locale'
+    'locale',
+    os.path.join(BASE_DIR, 'locale'),
 ]
 
 TIME_ZONE = 'America/Edmonton'
