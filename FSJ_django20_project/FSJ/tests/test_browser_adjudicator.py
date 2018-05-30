@@ -159,10 +159,51 @@ class AdjudicatorSeleniumTest(SeleniumTest):
         self.selenium.find_element_by_css_selector("#id_form2-rank > option:nth-child(3)").click()
         self.selenium.find_element_by_css_selector("button.btn.btn-success").click()
 
+        WebDriverWait(self.selenium, timeout).until(
+            lambda driver: driver.find_element_by_tag_name("body"))
+
+
         comment = Comment.objects.get(application=self.application, adjudicator=self.adjudicator)
         self.assertEquals(self.new_comment_text, comment.comment_text)
 
         ranking = Ranking.objects.get(application=self.application, adjudicator=self.adjudicator)
         self.assertEquals(self.new_ranking, ranking.rank)
+
+        self.selenium.find_element_by_link_text("Return to Awards").click()
+
+        WebDriverWait(self.selenium, timeout).until(
+            lambda driver: driver.find_element_by_tag_name("body"))
+
+        self.selenium.find_element_by_link_text("Review In Progress").click()
+
+        WebDriverWait(self.selenium, timeout).until(
+            lambda driver: driver.find_element_by_tag_name("body"))
+
+        self.selenium.find_element_by_name("_adjreview").click()
+
+        WebDriverWait(self.selenium, timeout).until(
+            lambda driver: driver.find_element_by_tag_name("body"))
+
+        self.selenium.find_element_by_link_text("Review Completed").click()
+
+        WebDriverWait(self.selenium, timeout).until(
+            lambda driver: driver.find_element_by_tag_name("body"))
+
+        self.selenium.find_element_by_link_text("Review Completed").click()
+
+        WebDriverWait(self.selenium, timeout).until(
+            lambda driver: driver.find_element_by_tag_name("body"))
+
+        self.selenium.find_element_by_css_selector("a.btn.btn-danger").click()
+
+        WebDriverWait(self.selenium, timeout).until(
+            lambda driver: driver.find_element_by_tag_name("body"))
+
+        with self.assertRaises(Comment.DoesNotExist):
+            comment = Comment.objects.get(application=self.application, adjudicator=self.adjudicator)
+
+        with self.assertRaises(Ranking.DoesNotExist):
+            ranking = Ranking.objects.get(application=self.application, adjudicator=self.adjudicator)
+
 
 
