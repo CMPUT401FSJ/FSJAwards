@@ -1,7 +1,10 @@
+"""Contains FileUploadForm class"""
+
 from django import forms
 from django.utils.translation import gettext_lazy as _
 
 class FileUploadForm(forms.Form):
+    """Used by the coordinator to upload CSV files containing information about students and their GPAs"""
     student_file = forms.FileField(required = False, 
                                    help_text = _("Upload a CSV with fields CCID, ID, First Name, Middle Name, Last Name, Email (Univ), Prog & Year"), 
                                    label = _("Student File"))

@@ -95,7 +95,7 @@ class Award(models.Model):
 	def reset(self, new_start_date, new_end_date):
 		
 		self.applications.all().delete()
-		self.adjudicators.all().clear()
+		self.adjudicators.clear()
 		if new_start_date:
 			self.start_date = new_start_date
 		if new_end_date:

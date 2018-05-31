@@ -3,6 +3,8 @@ from django.utils.translation import gettext_lazy as _
 from django import forms
 
 class SignupForm(forms.Form):
+	"""Registration form for new users"""
+
 	email = forms.EmailField(max_length=200)
 
 	def clean(self):

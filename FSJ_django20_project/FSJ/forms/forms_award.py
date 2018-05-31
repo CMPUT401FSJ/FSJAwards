@@ -1,3 +1,4 @@
+"""Contains all Django ModelForms relating to the Award Model and related custom fields"""
 
 from ..models import Award
 from django.forms import CheckboxSelectMultiple, DateInput
@@ -7,12 +8,13 @@ from django.utils.translation import gettext_lazy as _
 
 
 class DateInput(DateInput):
+    """A DateInput form which uses 'date' as the input type rather than the text default"""
     input_type = 'date'
     template_name = 'FSJ/date_field.html'
 
 #Modelform for an award, this restricts what fields will be enabled/disabled as well as widgets, etc
 class AwardForm(ModelForm):
-
+    """Unrestricted Award form with all fields enabled except the review comment"""
     class Meta:
         model = Award
         exclude = ()
@@ -28,6 +30,7 @@ class AwardForm(ModelForm):
         super(AwardForm, self).__init__(*args, **kwargs)
         
     def clean(self):
+        """Validates award dates by checking that the start date is before the end date"""
         cleaned_data = super().clean()
         start_date = cleaned_data.get('start_date')
         end_date = cleaned_data.get('end_date')
@@ -39,7 +42,7 @@ class AwardForm(ModelForm):
 
 
 class AwardReviewCommentForm(ModelForm):
-
+    """Restricted Award form used in the coordinator's final review of an award"""
     class Meta:
         model = Award
         fields = ('review_comment',)
