@@ -3,6 +3,16 @@ from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.models import User
 
 class FSJUser(models.Model):
+    """A generic user class which represents all the people who use the awards system
+
+    user -- A Django user instance for login/logout etc.
+    ccid -- the CCID of the user
+    first_name -- the first name of the user
+    last_name -- the last name of the user
+    email -- the user's ualberta email
+    lang_pref -- represents whether the user wants to see the system in English or French
+    """
+
     # List the languages a user may choose from in human readable format and also make them accessible in other files 
     # via FSJUser.LANG_CHOICES, FSJUser.ENGLISH, etc.
     FRENCH = 'fr'
@@ -34,6 +44,8 @@ class FSJUser(models.Model):
 
     @transaction.atomic # The method is an atomic transaction so if something occurs part way through it will not persist the User.
     def save(self, *args, **kwargs):
+        """Custom save method which overrides Django's default save to make sure the FSJUser's user object is updated
+        whenever the FSJuser is updated."""
         if not self.user:
             user = User()
             user.username = self.ccid
@@ -47,6 +59,7 @@ class FSJUser(models.Model):
         super(FSJUser, self).save(*args, **kwargs)   
         
     def delete(self, *args, **kwargs):
+        """Custom delete method which deletes the user object when the FSJuser is deleted"""
         if self.user:
             self.user.delete()
         super(FSJUser, self).delete(*args, **kwargs)
