@@ -78,6 +78,8 @@ def adjudicator_application_list(request):
     template = loader.get_template("FSJ/application_list.html")
     return HttpResponse(template.render(context, request))
 
+@login_required
+@user_passes_test(is_adjudicator)
 def adjudicator_application_action(request):
     FSJ_user = get_FSJ_user(request.user.username)
     award_id = request.GET.get('award_id', '')
@@ -90,6 +92,9 @@ def adjudicator_application_action(request):
     if request.method == 'POST':
         if "_adjreview" in request.POST:
             award.add_reviewed(FSJ_user)
+
+        elif '_adjUnreview' in request.POST:
+            award.delete_reviewed(FSJ_user)
 
     return redirect('/awards/')
 

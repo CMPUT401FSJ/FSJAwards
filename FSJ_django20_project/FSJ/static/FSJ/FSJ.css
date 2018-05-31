@@ -82,7 +82,7 @@ div.ualberta-themed-header {
 }
 
 .btn {
-    width: 182px;
+    min-width: 182px;
 }
 
 .btn-success {
