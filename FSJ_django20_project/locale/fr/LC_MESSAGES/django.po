@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-05-28 10:55-0600\n"
-"PO-Revision-Date: 2018-05-28 10:54-0600\n"
+"POT-Creation-Date: 2018-05-30 17:01-0600\n"
+"PO-Revision-Date: 2018-05-30 17:11-0600\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: fr\n"
@@ -70,7 +70,7 @@ msgstr "Fichier GPA"
 #: .\FSJ\forms\forms_ranking.py:27 .\FSJ\forms\forms_ranking.py:50
 #, python-format
 msgid "Cannot understand %s"
-msgstr "Impossible de lire%s"
+msgstr "Impossible de lire %s"
 
 #: .\FSJ\forms\forms_signup.py:12
 msgid "An email is required"
@@ -293,7 +293,7 @@ msgstr "Classement"
 
 #. Translators: Program name header in program table
 #. Translators: Program header in student table
-#: .\FSJ\models\models_student.py:12
+#: .\FSJ\models\models_student.py:11
 #: .\FSJ\templates\FSJ\application_list.html:36
 #: .\FSJ\templates\FSJ\coord_application_archive.html:24
 #: .\FSJ\templates\FSJ\coord_application_tab.html:75
@@ -304,7 +304,7 @@ msgid "Program"
 msgstr "Programme"
 
 #. Translators: Year header in years table
-#: .\FSJ\models\models_student.py:13
+#: .\FSJ\models\models_student.py:12
 #: .\FSJ\templates\FSJ\application_list.html:37
 #: .\FSJ\templates\FSJ\coord_application_archive.html:25
 #: .\FSJ\templates\FSJ\coord_application_tab.html:76
@@ -314,7 +314,7 @@ msgid "Year"
 msgstr "Année d'études"
 
 #. Translators: GPA header in student table
-#: .\FSJ\models\models_student.py:14
+#: .\FSJ\models\models_student.py:13
 #: .\FSJ\templates\FSJ\application_list.html:38
 #: .\FSJ\templates\FSJ\coord_application_archive.html:26
 #: .\FSJ\templates\FSJ\coord_student_list.html:84
@@ -323,12 +323,12 @@ msgid "GPA"
 msgstr "GPA"
 
 #. Translators: Middle Name header in student table
-#: .\FSJ\models\models_student.py:15
+#: .\FSJ\models\models_student.py:14
 #: .\FSJ\templates\FSJ\coord_student_list.html:74
 msgid "Middle Name"
 msgstr "2e Nom"
 
-#: .\FSJ\models\models_student.py:16
+#: .\FSJ\models\models_student.py:15
 msgid "U of A Student ID"
 msgstr "Numero d'étudiant UofA"
 
@@ -616,6 +616,42 @@ msgstr "Retour aux demandes"
 msgid "Reactivate Application(s)"
 msgstr "Réactiver demande?"
 
+#: .\FSJ\templates\FSJ\coord_application_tab.html:19
+msgid "Student CCID contains:"
+msgstr "CCID contient:"
+
+#: .\FSJ\templates\FSJ\coord_application_tab.html:23
+msgid "Student First Name contains:"
+msgstr "Prénom contient:"
+
+#: .\FSJ\templates\FSJ\coord_application_tab.html:27
+msgid "Student Last Name contains:"
+msgstr "Nom de famille contient:"
+
+#: .\FSJ\templates\FSJ\coord_application_tab.html:31
+msgid "Award:"
+msgstr "Bourse:"
+
+#: .\FSJ\templates\FSJ\coord_application_tab.html:35
+msgid "Award Name contains:"
+msgstr "Nom de la bourse contient:"
+
+#: .\FSJ\templates\FSJ\coord_application_tab.html:39
+msgid "Award Programs:"
+msgstr "Programmes de la bourse:"
+
+#: .\FSJ\templates\FSJ\coord_application_tab.html:43
+msgid "Is Submitted:"
+msgstr "Soumise?"
+
+#: .\FSJ\templates\FSJ\coord_application_tab.html:47
+msgid "Is Archived:"
+msgstr "Archivée?"
+
+#: .\FSJ\templates\FSJ\coord_application_tab.html:51
+msgid "Is Reviewed:"
+msgstr "Évaluée?"
+
 #. Translators: Submitted header in application table
 #: .\FSJ\templates\FSJ\coord_application_tab.html:80
 msgid "Submitted?"
@@ -623,7 +659,7 @@ msgstr "Demande soumise?"
 
 #: .\FSJ\templates\FSJ\coord_application_tab.html:81
 msgid "Archived?"
-msgstr "Archive"
+msgstr "Archivée?"
 
 #. Translators: Button to delete selected applications
 #: .\FSJ\templates\FSJ\coord_application_tab.html:167
@@ -702,6 +738,34 @@ msgstr "Ajouter programme"
 #: .\FSJ\templates\FSJ\coord_program_list.html:42
 msgid "Delete program(s)"
 msgstr "Supprimer programme"
+
+#: .\FSJ\templates\FSJ\coord_student_list.html:20
+msgid "CCID contains:"
+msgstr "CCID contient:"
+
+#: .\FSJ\templates\FSJ\coord_student_list.html:24
+msgid "First Name contains:"
+msgstr "Prénom contient:"
+
+#: .\FSJ\templates\FSJ\coord_student_list.html:28
+msgid "Middle Name contains:"
+msgstr "2e Nom contient:"
+
+#: .\FSJ\templates\FSJ\coord_student_list.html:32
+msgid "Last Name contains:"
+msgstr "Nom de famille contient:"
+
+#: .\FSJ\templates\FSJ\coord_student_list.html:36
+msgid "Student ID contains:"
+msgstr "Numéro d'étudiant contient:"
+
+#: .\FSJ\templates\FSJ\coord_student_list.html:40
+msgid "Year:"
+msgstr "Année d'étude:"
+
+#: .\FSJ\templates\FSJ\coord_student_list.html:44
+msgid "Program:"
+msgstr "Programme:"
 
 #. Translators: Button to add student
 #: .\FSJ\templates\FSJ\coord_student_list.html:61

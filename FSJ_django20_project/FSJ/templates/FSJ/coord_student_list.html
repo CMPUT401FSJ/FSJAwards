@@ -17,31 +17,31 @@
             <div class = "well">
               <div class="row">
                 <div class = "form-group col-sm-4 col-md-3">
-                  {{ filter.form.ccid.label_tag }}
+                  <b>{% trans "CCID contains:" %}</b>
                   {% render_field filter.form.ccid class="form-control" %}
                 </div>
                 <div class = "form-group col-sm-4 col-md-3">
-                  {{ filter.form.first_name.label_tag }}
+                  <b>{% trans "First Name contains:" %}</b>
                   {% render_field filter.form.first_name class="form-control" %}
                 </div>
                 <div class = "form-group col-sm-4 col-md-3">
-                  {{ filter.form.middle_name.label_tag }}
+                  <b>{% trans "Middle Name contains:" %}</b>
                   {% render_field filter.form.middle_name class="form-control" %}
                 </div>
                 <div class = "form-group col-sm-4 col-md-3">
-                  {{ filter.form.last_name.label_tag }}
+                  <b>{% trans "Last Name contains:" %}</b>
                   {% render_field filter.form.last_name class="form-control" %}
                 </div>
                 <div class = "form-group col-sm-4 col-md-3">
-                  {{ filter.form.student_id.label_tag }}
+                  <b>{% trans "Student ID contains:" %}</b>
                   {% render_field filter.form.student_id class="form-control" %}
                 </div>
                 <div class = "form-group col-sm-4 col-md-3">
-                  {{ filter.form.year.label_tag }}
+                  <b>{% trans "Year:" %}</b>
                   {% render_field filter.form.year class="form-control" %}
                 </div>
                 <div class = "form-group col-sm-4 col-md-3">
-                  {{ filter.form.program.label_tag }}
+                  <b>{% trans "Program:" %}</b>
                   {% render_field filter.form.program class="form-control" %}
                 </div>
               </div>
