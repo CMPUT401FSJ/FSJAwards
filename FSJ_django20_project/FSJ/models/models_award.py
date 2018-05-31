@@ -86,8 +86,8 @@ class Award(models.Model):
 
 	def delete_reviewed(self, FSJ_user):
 		try:
-			self.adjudicators.filter(pk = FSJ_user.pk).delete()
-
+			self.adjudicators.remove(FSJ_user)
+			self.save()
 		except:
 			pass        	
 		
@@ -95,7 +95,7 @@ class Award(models.Model):
 	def reset(self, new_start_date, new_end_date):
 		
 		self.applications.all().delete()
-		self.adjudicators.all().delete()
+		self.adjudicators.all().clear()
 		if new_start_date:
 			self.start_date = new_start_date
 		if new_end_date:

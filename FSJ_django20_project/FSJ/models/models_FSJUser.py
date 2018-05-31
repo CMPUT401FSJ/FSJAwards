@@ -47,7 +47,7 @@ class FSJUser(models.Model):
         super(FSJUser, self).save(*args, **kwargs)   
         
     def delete(self, *args, **kwargs):
-        super(FSJUser, self).delete(*args, **kwargs)
         if self.user:
-            self.user.delete() 
+            self.user.delete()
+        super(FSJUser, self).delete(*args, **kwargs)
 
