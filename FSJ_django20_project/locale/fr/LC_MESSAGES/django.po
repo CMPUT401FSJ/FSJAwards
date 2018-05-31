@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-05-31 10:51-0600\n"
+"POT-Creation-Date: 2018-05-31 11:39-0600\n"
 "PO-Revision-Date: 2018-05-31 10:53-0600\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -21,6 +21,70 @@ msgstr ""
 #: .\FSJ\filters.py:7
 msgid "contains"
 msgstr "contient"
+
+#: .\FSJ\filters.py:15
+msgid "CCID contains:"
+msgstr "CCID contient:"
+
+#: .\FSJ\filters.py:16
+msgid "First Name contains:"
+msgstr "Prénom contient:"
+
+#: .\FSJ\filters.py:17
+msgid "Middle Name contains:"
+msgstr "2e Nom contient:"
+
+#: .\FSJ\filters.py:18
+msgid "Last Name contains:"
+msgstr "Nom de famille contient:"
+
+#: .\FSJ\filters.py:19
+msgid "Student ID contains:"
+msgstr "Numéro d'étudiant contient:"
+
+#: .\FSJ\filters.py:27
+msgid "Year:"
+msgstr "Année d'étude:"
+
+#: .\FSJ\filters.py:28
+msgid "Program:"
+msgstr "Programme:"
+
+#: .\FSJ\filters.py:51
+msgid "Student CCID contains:"
+msgstr "CCID contient:"
+
+#: .\FSJ\filters.py:52
+msgid "Student First Name contains:"
+msgstr "Prénom contient:"
+
+#: .\FSJ\filters.py:53
+msgid "Student Last Name contains:"
+msgstr "Nom de famille contient:"
+
+#: .\FSJ\filters.py:54
+msgid "Award Name contains:"
+msgstr "Nom de la bourse contient:"
+
+#: .\FSJ\filters.py:62
+msgid "Award:"
+msgstr "Bourse:"
+
+#: .\FSJ\filters.py:63
+msgid "Award Programs:"
+msgstr "Programmes de la bourse:"
+
+#: .\FSJ\filters.py:64
+msgid "Is Submitted:"
+msgstr "Soumise:"
+
+#: .\FSJ\filters.py:65
+msgid "Is Archived:"
+msgstr "Archivée:"
+
+#: .\FSJ\filters.py:66
+msgid "Is Reviewed:"
+msgstr "Évaluée:"
 
 #: .\FSJ\forms\forms_award.py:37 .\FSJ\forms\forms_datechange.py:31
 msgid "The start date must be later than the end date."
@@ -66,6 +130,12 @@ msgstr "Téléverser un fichier CSV avec les champs CCID & GPA"
 #: .\FSJ\forms\forms_fileupload.py:8
 msgid "GPA File"
 msgstr "Fichier GPA"
+
+#: .\FSJ\forms\forms_ranking.py:20 .\FSJ\forms\forms_ranking.py:43
+#: .\FSJ\models\models_ranking.py:11
+#: .\FSJ\templates\FSJ\application_list.html:37
+msgid "Rank"
+msgstr "Classement"
 
 #: .\FSJ\forms\forms_ranking.py:27 .\FSJ\forms\forms_ranking.py:50
 #, python-format
@@ -285,11 +355,6 @@ msgstr "Bourses"
 #: .\FSJ\templates\FSJ\coord_program_list.html:24
 msgid "Code"
 msgstr "Code"
-
-#: .\FSJ\models\models_ranking.py:11
-#: .\FSJ\templates\FSJ\application_list.html:37
-msgid "Rank"
-msgstr "Classement"
 
 #. Translators: Program name header in program table
 #. Translators: Program header in student table
@@ -619,42 +684,6 @@ msgstr "Retour aux demandes"
 msgid "Reactivate Application(s)"
 msgstr "Réactiver demande?"
 
-#: .\FSJ\templates\FSJ\coord_application_tab.html:19
-msgid "Student CCID contains:"
-msgstr "CCID contient:"
-
-#: .\FSJ\templates\FSJ\coord_application_tab.html:23
-msgid "Student First Name contains:"
-msgstr "Prénom contient:"
-
-#: .\FSJ\templates\FSJ\coord_application_tab.html:27
-msgid "Student Last Name contains:"
-msgstr "Nom de famille contient:"
-
-#: .\FSJ\templates\FSJ\coord_application_tab.html:31
-msgid "Award:"
-msgstr "Bourse:"
-
-#: .\FSJ\templates\FSJ\coord_application_tab.html:35
-msgid "Award Name contains:"
-msgstr "Nom de la bourse contient:"
-
-#: .\FSJ\templates\FSJ\coord_application_tab.html:39
-msgid "Award Programs:"
-msgstr "Programmes de la bourse:"
-
-#: .\FSJ\templates\FSJ\coord_application_tab.html:43
-msgid "Is Submitted:"
-msgstr "Soumise:"
-
-#: .\FSJ\templates\FSJ\coord_application_tab.html:47
-msgid "Is Archived:"
-msgstr "Archivée:"
-
-#: .\FSJ\templates\FSJ\coord_application_tab.html:51
-msgid "Is Reviewed:"
-msgstr "Évaluée:"
-
 #. Translators: Submitted header in application table
 #: .\FSJ\templates\FSJ\coord_application_tab.html:80
 msgid "Submitted?"
@@ -741,34 +770,6 @@ msgstr "Ajouter programme"
 #: .\FSJ\templates\FSJ\coord_program_list.html:42
 msgid "Delete program(s)"
 msgstr "Supprimer programme"
-
-#: .\FSJ\templates\FSJ\coord_student_list.html:20
-msgid "CCID contains:"
-msgstr "CCID contient:"
-
-#: .\FSJ\templates\FSJ\coord_student_list.html:24
-msgid "First Name contains:"
-msgstr "Prénom contient:"
-
-#: .\FSJ\templates\FSJ\coord_student_list.html:28
-msgid "Middle Name contains:"
-msgstr "2e Nom contient:"
-
-#: .\FSJ\templates\FSJ\coord_student_list.html:32
-msgid "Last Name contains:"
-msgstr "Nom de famille contient:"
-
-#: .\FSJ\templates\FSJ\coord_student_list.html:36
-msgid "Student ID contains:"
-msgstr "Numéro d'étudiant contient:"
-
-#: .\FSJ\templates\FSJ\coord_student_list.html:40
-msgid "Year:"
-msgstr "Année d'étude:"
-
-#: .\FSJ\templates\FSJ\coord_student_list.html:44
-msgid "Program:"
-msgstr "Programme:"
 
 #. Translators: Button to add student
 #: .\FSJ\templates\FSJ\coord_student_list.html:61
