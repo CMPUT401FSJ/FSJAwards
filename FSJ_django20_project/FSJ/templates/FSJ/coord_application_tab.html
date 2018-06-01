@@ -3,6 +3,7 @@
 {% load widget_tweaks %}
 {% load fsj_tags %}
 
+{# This page shows all applications for awards and is used by coordinators #}
 {% block heading %}
     {# Translators: Applications page home label #}
     {% trans "Applications" %}
@@ -107,7 +108,7 @@
                     {% endfor %}
                 </table>
 
-
+                {# Paginator links for applications to take the user to other pages #}
                 {% if applications.has_other_pages %}
 
                     <ul class="pagination">

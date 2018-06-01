@@ -1,7 +1,7 @@
 {% extends "FSJ/base_with_banner.html" %}
 {% load i18n %} {# NOTE YOU MUST LOAD i18n to every HTML page even though it's also loaded to base.html #}
 
-{# A trial Application form #}
+{# A page used for students to apply to awards #}
 {% block heading %}
     {% trans "Apply" %}
 {% endblock %}
@@ -70,6 +70,8 @@
         </div>
         <br>
         <div>
+
+            {# The document field only appears if the award requires one #}
             <form action='{{ context.url }}' method='post' enctype="multipart/form-data">
             {% csrf_token %}
                 {% if award.documents_needed %}

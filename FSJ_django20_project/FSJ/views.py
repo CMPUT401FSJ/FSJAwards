@@ -127,6 +127,7 @@ def profile(request):
     context["return_url"] = "/FSJ/"
     return HttpResponse(template.render(context, request))
 
+# Returns the appropriate awards page based on user type
 @login_required
 @user_passes_test(is_FSJ_user)
 def awards(request):
@@ -137,7 +138,8 @@ def awards(request):
         return adjudicator_awards(request)
     elif isinstance(FSJ_user, Student):
         return student_awardslist(request)
-    
+
+# Returns the appropriate edit page based on user type
 @login_required
 @user_passes_test(is_FSJ_user)
 def award_edit(request):
@@ -149,7 +151,9 @@ def award_edit(request):
     elif isinstance(FSJ_user, Student):
         return student_editapplication(request)
 
+# Returns the appropriate applications page based on user type
 @login_required
+@user_passes_test(is_coordinator_or_adjudicator)
 def award_applications(request):
     FSJ_user = get_FSJ_user(request.user.username)
     if isinstance(FSJ_user, Coordinator):
@@ -157,7 +161,10 @@ def award_applications(request):
     elif isinstance(FSJ_user, Adjudicator):
         return adjudicator_application_list(request)
 
+
+# Returns the appropriate action page based on user type
 @login_required
+@user_passes_test(is_coordinator_or_adjudicator)
 def award_applications_action(request):
     FSJ_user = get_FSJ_user(request.user.username)
     if isinstance(FSJ_user, Coordinator):
@@ -165,19 +172,22 @@ def award_applications_action(request):
     elif isinstance(FSJ_user, Adjudicator):
         return adjudicator_application_action(request)
 
+# Returns the adjudicator delete comment page
 @login_required
+@user_passes_test(is_adjudicator())
 def award_delete(request):
     FSJ_user = get_FSJ_user(request.user.username)
     if isinstance(FSJ_user, Adjudicator):
         return adjudicator_delete_comment(request)    
     
-    
+# Returns the coordinator committees page
 @login_required
 @user_passes_test(is_coordinator)
 def committees(request):
     FSJ_user = get_FSJ_user(request.user.username)
     return coordinator_committeeslist(request, FSJ_user)
 
+# Returns the coordinator years page
 @login_required
 @user_passes_test(is_coordinator)
 def years(request):
@@ -195,6 +205,7 @@ def non_FSJ_home(request):
     template = loader.get_template("FSJ/non_FSJ_home.html")
     return HttpResponse(template.render(context, request))
 
+# View which allows a coordinator or adjudicator to see a student's profile
 @login_required
 @user_passes_test(is_coordinator_or_adjudicator)
 def view_student(request):
@@ -208,7 +219,7 @@ def view_student(request):
     except Student.DoesNotExist:
         raise Http404(_("Student does not exist"))
     
-    # load a form with the student's info
+    # Load a form with the student's info
     form = StudentReadOnlyForm(instance=student)
     
     context = get_standard_context(FSJ_user)
@@ -223,6 +234,7 @@ def view_student(request):
     template = loader.get_template("FSJ/view_student.html")
     return HttpResponse(template.render(context, request))    
 
+# Returns the appropriate view application page based on user type
 @login_required
 @user_passes_test(is_coordinator_or_adjudicator)
 def view_application(request):

@@ -2,7 +2,6 @@
 {% load i18n %} {# NOTE YOU MUST LOAD i18n to every HTML page even though it's also loaded to base.html #}
 
 {# A page for the coordinator to view a list of committees as well as providing adding, deleting, and editing functionality #}
-{# This page is separate from the template for displaying committees to sutdents due to the added functionality #}
 {% block heading %}
     {# Translators: committees page home label #}
     {% trans "Committees" %}
@@ -16,7 +15,7 @@
                 
                 {# Translators: Button to add committees #}
                 <a role="button" class="btn btn-success" href='/committees/add'>{% trans "Add Committee" %}</a>
-                {# Translaters: Button to export master review #}
+                {# Translators: Button to export master review #}
                 <a role="button" class="btn btn-success" href="{% url 'coordinator_export_master_review' %}">{% trans "Export Review Summary" %}</a>
 
 
@@ -48,7 +47,9 @@
                                 {% endfor %}</td>
                             {# Translators: Edit button in coordinator committees list #}
                             <td><a href="/committees/edit/?committee_id={{ committee.committeeid }}">{% trans "Edit" %}</a></td>
+                            {# Translators: View Final Review button in committee list #}
                             <td><a href="{% url 'coord_committeereview' committee_id=committee.committeeid %}">{% trans "View" %}</a></td>
+                            {# Translators: Export Final Review button in committee list #}
                             <td><a href="{% url 'coordinator_export_final_review' committee_id=committee.committeeid%}">{% trans "Export" %}</a></td>
                         </tr>
                     {% endfor %}

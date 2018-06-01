@@ -2,6 +2,8 @@
 {% load i18n %} {# NOTE YOU MUST LOAD i18n to every HTML page even though it's also loaded to base.html #}
 {% load fsj_tags %}
 
+{# This page allows the coordinator to view a summary of the adjudicator's picks for an award and enter a final #}
+{# comment recording the decision #}
 {% block heading %}
     {# Translators: Final Review page header #}
     {% trans "Final Review" %}
@@ -15,7 +17,7 @@
 
             <ul class="nav nav-tabs">
                 <li class="active"><a data-toggle="tab" href="#all-awards">{% trans "View All" %}</a></li>
-
+                {# Each award is in its own tab #}
                 {% for award in awards_list %}
                     <li><a data-toggle="tab" href="#award_{{ award.awardid }}">{{ award.name }}</a></li>
                 {% endfor %}

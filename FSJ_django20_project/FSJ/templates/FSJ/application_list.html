@@ -3,8 +3,10 @@
 {% load widget_tweaks %}
 {% load fsj_tags %}
 
+{# A page to view the list of applications for a certain award. Adjudicators and coordinators have acceess to it. #}
 {% block heading %}
-    {{ award.name }}
+    {# Translators: Header on applications page #}
+    {% trans "Applications" %}
 {% endblock %}
 
 {% block content %}
