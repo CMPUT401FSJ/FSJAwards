@@ -1,3 +1,5 @@
+# Contains all adjudicator-specific views
+
 from django.core.exceptions import PermissionDenied
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.http import HttpResponse, Http404
@@ -21,7 +23,7 @@ def is_adjudicator(usr):
     return True
 
 # The user class specific home page handler, which returns the appropriate page for this user class.
-# Contains the decordator to ensure the user is logged into the system and a test to ensure the user accessing the page is valid.
+# Contains the decorator to ensure the user is logged into the system and a test to ensure the user accessing the page is valid.
 @login_required
 @user_passes_test(is_adjudicator)
 def adjudicator_home(request, FSJ_user):
@@ -32,6 +34,9 @@ def adjudicator_home(request, FSJ_user):
 @login_required
 @user_passes_test(is_adjudicator)
 def adjudicator_awards(request):
+    """Adjudicator view for seeing a list of the awards to be reviewed, which passes a list of the adjudicator's
+    committees to the template
+    """
     FSJ_user = get_FSJ_user(request.user.username)
     committee_list = Committee.objects.filter(adjudicators = FSJ_user)
     template = loader.get_template("FSJ/adj_awards_list.html")
@@ -44,6 +49,9 @@ def adjudicator_awards(request):
 @login_required
 @user_passes_test(is_adjudicator)
 def adjudicator_application_list(request):
+    """Adjudicator view for seeing a list of the applications for an award, which passes a list of applcations to
+    the template
+    """
     FSJ_user = get_FSJ_user(request.user.username)
     award_id = request.GET.get('award_id', '')
     
@@ -52,16 +60,21 @@ def adjudicator_application_list(request):
     except Award.DoesNotExist:
         raise Http404("Award does not exist")
 
+    # ranking_list is a list of all the adjudicator's rankings for this award, which is retrieved to help sort the
+    # applications by ranking
+
     application_list = award.applications.filter(is_archived = False)
     ranking_list = Ranking.objects.filter(award = award, adjudicator = FSJ_user).order_by('rank')
     
     sorted_application_list = []
     sorted_ranking_list = []
-    
+
+    # Ranked applications are sorted by rank and put at the beginning of the list
     for ranking in ranking_list:
         sorted_application_list.append(ranking.application)
         sorted_ranking_list.append(ranking.rank)
-        
+
+    # All other applications are appended after the ranked applications
     for application in application_list:
         if application not in sorted_application_list:
             sorted_application_list.append(application)
@@ -81,6 +94,8 @@ def adjudicator_application_list(request):
 @login_required
 @user_passes_test(is_adjudicator)
 def adjudicator_application_action(request):
+    """View handles adjudicator POST requests from the application list when they want to mark an award as
+    having been reviewed or needing review"""
     FSJ_user = get_FSJ_user(request.user.username)
     award_id = request.GET.get('award_id', '')
     
@@ -102,6 +117,9 @@ def adjudicator_application_action(request):
 @login_required
 @user_passes_test(is_adjudicator)
 def adjudicator_add_edit_comment_ranking(request):
+    """View handles POST requests from adjudicator_view_application and creates or edits the comment and ranking
+    for a specific application.
+    """
     FSJ_user = get_FSJ_user(request.user.username)
     award_id = request.GET.get('award_id', '')
     application_id = request.GET.get('application_id', '')
@@ -169,6 +187,7 @@ def adjudicator_add_edit_comment_ranking(request):
 @login_required
 @user_passes_test(is_adjudicator)
 def adjudicator_edit_comment(request):
+    """This is an obsolete method from before the Ranking model was added, designed to allow editing of comments"""
     FSJ_user = get_FSJ_user(request.user.username)
     award_id = request.GET.get('award_id', '')
     application_id = request.GET.get('application_id', '')    
@@ -197,6 +216,7 @@ def adjudicator_edit_comment(request):
 @login_required
 @user_passes_test(is_adjudicator)
 def adjudicator_delete_comment(request):
+    """View deletes an adjudicator's comment and ranking for a specific application"""
     FSJ_user = get_FSJ_user(request.user.username)
     award_id = request.GET.get('award_id', '')
     application_id = request.GET.get('application_id', '')    
@@ -217,17 +237,20 @@ def adjudicator_delete_comment(request):
 @login_required
 @user_passes_test(is_adjudicator)
 def adjudicator_view_application(request):
+    """View which handles adjudicator viewing of applications"""
     
     application_id = request.GET.get("application_id", "")
     
     FSJ_user = get_FSJ_user(request.user.username)
     context = get_standard_context(FSJ_user)
+    # Return_url specifies where the view is being accessed from
     return_url = request.GET.get("return", "")
     url_is_safe = is_safe_url(url=urllib.parse.unquote(return_url),
                               allowed_hosts=settings.ALLOWED_HOSTS,
                               require_https=request.is_secure(), )
 
     try:
+        # Archived applications can only be viewed by coordinators and get redirected
         application = Application.objects.get(application_id=application_id)
         if application.is_archived:
             return redirect('/home/')
@@ -238,6 +261,7 @@ def adjudicator_view_application(request):
             return redirect(urllib.parse.unquote(return_url))
 
 
+    # Adjudicators cannot post directly to the application
     if request.method == 'POST':
         raise PermissionDenied
 
@@ -261,7 +285,10 @@ def adjudicator_view_application(request):
             form2 = RankingRestrictedForm(FSJ_user, application.award, prefix="form2")
 
         url = "/awards/edit/?award_id=" + str(application.award.awardid) + "&application_id=" + str(application.application_id)
+
+        # form is the Comment form
         context["form"] = form
+        # form2 is the Ranking form
         context["form2"] = form2
         context["adjudicator"] = FSJ_user
 
