@@ -3,7 +3,7 @@ from .forms_modelform import ModelForm
 
 #Modelform for a program, this restricts what fields will be enabled/disabled as well as widgets, etc
 class ProgramForm(ModelForm):
-
+    """Unrestricted program form"""
     class Meta:
         model = Program
         exclude = ()

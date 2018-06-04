@@ -1,7 +1,11 @@
+"""Contains generic ModelForm"""
+
 from django.forms import ModelForm as DjangoModelForm, TextInput, Textarea, Select, EmailInput, NumberInput
 
 class ModelForm(DjangoModelForm):
-    
+    """ModelForm is based on DjangoModelForm but modifies it so all fields with form control are switched to make
+    use of it.
+    """
     def __init__(self, *args, **kwargs):
         def _is_form_control_widget(widget):
             if isinstance(widget, TextInput):

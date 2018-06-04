@@ -1,8 +1,7 @@
 {% extends "FSJ/base_with_banner.html" %}
 {% load i18n %} {# NOTE YOU MUST LOAD i18n to every HTML page even though it's also loaded to base.html #}
 
-{# Extend the base template that includes banner to represent a standard home page. #}
-{# This home page is likely to be removed and replaced with specific pages based on user class once the default landing page is confirmed #}
+{# Anyone who has a user but not an FSJUser account is redirected here #}
 {% block heading %}
     {# Translators: Home page home label #}
     {% trans "Home" %}
@@ -13,5 +12,6 @@
         {# Translators: Non FSJ User home greeting #}
         {% trans "Your account has not been set up as a Student, Coordinator, or Adjudicator." %}
         {% trans "Please contact the Coordinator or system administrator to be set up." %}
+        {% trans "You can log out from " %} <a href="/logout/"> {% trans "here" %} </a>
     </div>
 {% endblock %}

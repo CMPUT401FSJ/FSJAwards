@@ -1,9 +1,14 @@
+"""Contains all Django ModelForms based on the Committee model"""
+
 from ..models import Committee
 from django.forms import ModelForm, CheckboxSelectMultiple
 
-#Modelform for a committee, this restricts what fields will be enabled/disabled as well as widgets, etc
 class CommitteeForm(ModelForm):
+    """Unrestricted Committee form. Choices for awards are restricted based on those which are not already associated
+    with an award.
 
+    available_awards -- a list of the awards currently not associated with a committee
+    """
     class Meta:
         model = Committee
         exclude = ()

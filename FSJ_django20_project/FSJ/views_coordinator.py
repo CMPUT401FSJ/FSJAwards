@@ -1,4 +1,6 @@
-from django.core.exceptions import PermissionDenied
+# Contains all coordinator-specific views
+
+from django.db import transaction
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.models import User
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
@@ -47,6 +49,7 @@ def coordinator_students(request):
     student_list = Student.objects.all().order_by('ccid')
     filtered_list = StudentFilter(request.GET, queryset=student_list)
 
+    # student_paginator breaks the filtered queryset of students into pages 25 entries long
     student_paginator = Paginator(filtered_list.qs, 25)
 
     template = loader.get_template("FSJ/coord_student_list.html")
@@ -265,7 +268,7 @@ def coordinator_add_awards(request):
     context["return_url"] = "/awards/"
     return HttpResponse(template.render(context,request))
 
-#function for handling coordinator editing an award
+# Function for handling coordinator editing an award
 @login_required
 @user_passes_test(is_coordinator)
 def coordinator_awardedit(request):
@@ -293,7 +296,7 @@ def coordinator_awardedit(request):
     template = loader.get_template("FSJ/award.html")
     return HttpResponse(template.render(context, request))
 
-#Function for handling coordinator deleting, activating or deactivating an award
+#Function for handling coordinator deleting, activating, deactivating or resetting an award
 @login_required
 @user_passes_test(is_coordinator)
 def coordinator_awardaction(request):
@@ -511,6 +514,7 @@ def coordinator_committeeslist(request, FSJ_user):
     context["committees_list"] = committees_list
     return HttpResponse(template.render(context,request))
 
+# View allows the coordinator to add a new committee
 @login_required
 @user_passes_test(is_coordinator)
 def coordinator_addcommittee(request):
@@ -523,8 +527,11 @@ def coordinator_addcommittee(request):
         for award in committee.awards.all():
             if award in awards_list:
                 awards_blocked.append(award.awardid)
+
+    # An award should only be in one committee at a time, so this prevents awards being added to multiple committees
     available_awards = Award.objects.exclude(awardid__in = awards_blocked).values_list('awardid','name')
-    # If the coordinator has just saved their new comittee, check for form validity before saving. Invalid forms are put back into the template to show errors.
+
+    # If the coordinator has just saved their new committee, check for form validity before saving. Invalid forms are put back into the template to show errors.
     if request.method == "POST":
         # Loads adjudicator form with the new information
         form = CommitteeForm(available_awards, request.POST)
@@ -657,6 +664,8 @@ def coordinator_application_archive_list(request):
     template = loader.get_template("FSJ/coord_application_archive.html") 
     return HttpResponse(template.render(context, request))
 
+
+# Allows a coordinator to view an archived application
 @login_required
 @user_passes_test(is_coordinator)
 def coordinator_archived_application_view(request):
@@ -708,8 +717,7 @@ def coordinator_archived_application_view(request):
     template = loader.get_template("FSJ/view_application.html")
     return HttpResponse(template.render(context, request))
 
-#Function used to archive an application by createing a new archivedapp object and deleting the old application.
-#Also used to delete applications
+# View handles POST requests by the coordinator from an award's application list
 @login_required
 @user_passes_test(is_coordinator)
 def coordinator_application_action(request):
@@ -740,8 +748,7 @@ def coordinator_application_action(request):
 
     return redirect('/awards/applications/?award_id=' + str(award_id))
 
-#Function used to dearchive an archived application by creating a new application object and deleteing the old archived application.
-#Also used to delete archived applications
+#Function used to reactivate or delete archived applications
 @login_required
 @user_passes_test(is_coordinator)
 def coordinator_archive_action(request):
@@ -767,6 +774,9 @@ def coordinator_archive_action(request):
 
     return redirect('/awards/applications/archive/?award_id='+ str(award_id))
 
+# View allows the coordinator to upload CSVs for students and their GPAs to be processed into Student objects
+# Transaction is atomic as there are many errors which can occur during this process
+@transaction.atomic
 @login_required
 @user_passes_test(is_coordinator)
 def coordinator_upload_students(request):
@@ -777,10 +787,15 @@ def coordinator_upload_students(request):
         if form.is_valid():
 
             try:
+                # student_file contains the records of the students to be used for Student creation/update
                 if 'student_file' in request.FILES:
                     csv_file = request.FILES['student_file']
+                    # Gets line 0 of the file, containing the headers
                     csv_file.seek(0)
-                    studentreader = csv.DictReader(io.StringIO(csv_file.read().decode('utf-8-sig')))    
+                    studentreader = csv.DictReader(io.StringIO(csv_file.read().decode('utf-8-sig')))
+
+                    # processes each row into a Student object, creating them when they don't exist and updating them
+                    # when they do
                     for row in studentreader:
                         program = Program.objects.get(code = row['Prog'])
                         year = YearOfStudy.objects.get(year = row['Year'])
@@ -789,7 +804,8 @@ def coordinator_upload_students(request):
                             defaults={'ccid' : row['CCID'], 'first_name': row['First Name'], 'last_name': row['Last Name'], 'email' : row['Email (Univ)'],
                                       'program' : program, 'year' : year, 'middle_name' : row['Middle Name'],},
                         ) 
-                        
+
+                # gpa_file contains the GPAs for students who have been added to the system
                 if 'gpa_file' in request.FILES:
                     csv_file = request.FILES['gpa_file']
                     csv_file.seek(0)
@@ -832,6 +848,7 @@ def coordinator_upload_students(request):
     context["url"] = url
     return HttpResponse(template.render(context, request))    
 
+# View allows the coordinator to see a list of all applications for all awards
 @login_required
 @user_passes_test(is_coordinator)
 def coordinator_application_tab(request):
@@ -839,6 +856,7 @@ def coordinator_application_tab(request):
     application_list = Application.objects.all().order_by('student__ccid')
     filtered_list = ApplicationFilter(request.GET, queryset=application_list)
 
+    # application_paginator breaks the filtered queryset into pages of 25 entries each
     application_paginator = Paginator(filtered_list.qs, 25)
 
     page = request.GET.get('page', 1)
@@ -860,7 +878,7 @@ def coordinator_application_tab(request):
     context["url"] = "/applications/action/"
     return HttpResponse(template.render(context,request))    
     
-
+# View handles POST requests from coordinator_application_tab
 @login_required
 @user_passes_test(is_coordinator)
 def coordinator_application_tab_action(request):
@@ -889,13 +907,22 @@ def coordinator_application_tab_action(request):
         return redirect('/applications/')
 
 
+
+@login_required
+@user_passes_test(is_coordinator)
 def coordinator_export_final_review(request, committee_id):
+    """Function creates an Excel file for a committee which lists all of its awards, its adjudicators' reviews and
+    the final review comment for each award
+
+    committee_id -- the uuid of the committee to be exported
+    """
     try:
         committee = Committee.objects.get(committeeid=committee_id)
     except:
         messages.warning(request, _("Committee does not exist"))
         return redirect('/committees/')
 
+    # filename is the name of the committee stripped of all spaces and with the current date appended
     filename = str(committee.committee_name).replace(" ", "") + "-" + datetime.now(timezone.utc).strftime("%Y-%m-%d")
     response = HttpResponse(content_type='application/ms-excel')
     response['Content-Disposition'] = 'attachment; filename="' + filename + '.xls"'
@@ -906,6 +933,7 @@ def coordinator_export_final_review(request, committee_id):
     awards = committee.awards.all()
 
     if adjudicators and awards:
+        # Each award gets a new sheet in the workbook
         for award in awards:
             sheet_name = str((award.name).replace(" ", ""))[:30]
             ws = wb.add_sheet(sheet_name)
@@ -925,12 +953,14 @@ def coordinator_export_final_review(request, committee_id):
 
             columns = ['Adjudicator', 'Rank 1', 'Rank 2', 'Rank 3', 'Rank 4', 'Rank 5', ]
 
+            # Writes headers to the workbook
             for col_num in range(len(columns)):
                 ws.write(row_num, col_num, columns[col_num], font_style)
 
             # Sheet body, remaining rows
             font_style = xlwt.XFStyle()
 
+            # Write a row for each adjudicator containing their ccid and the ccids of their top-ranked applications
             for adjudicator in adjudicators:
 
                 row_num += 1
@@ -951,6 +981,7 @@ def coordinator_export_final_review(request, committee_id):
             font_style = xlwt.XFStyle()
             font_style.font.bold = True
 
+            # After writing the adjudicators write the coordinator's review comment
             ws.write(row_num, 0, "Final Comment:", font_style)
 
             font_style = xlwt.XFStyle()
@@ -964,7 +995,14 @@ def coordinator_export_final_review(request, committee_id):
     return response
 
 
+@login_required
+@user_passes_test(is_coordinator)
 def coordinator_committee_review(request, committee_id):
+    """View which displays the summary of a committee, with the adjudicator's rankings. Also allows the coordinator
+    to add a final comment to each award
+
+    committee_id -- the uuid of the committee to be viewed
+    """
 
     FSJ_user = get_FSJ_user(request.user.username)
     context = get_standard_context(FSJ_user)
@@ -979,6 +1017,7 @@ def coordinator_committee_review(request, committee_id):
     context['url'] = "/committees/" + str(committee.committeeid) + "/review/"
     awards_list = committee.awards.all()
 
+    # Saves the final comment for each award displayed
     if request.method == 'POST':
         for award in awards_list:
             form = AwardReviewCommentForm(request.POST, prefix = str(award.awardid), instance = award)
@@ -987,24 +1026,23 @@ def coordinator_committee_review(request, committee_id):
 
         return redirect('/committees/')
 
-    formlist = []
-
+    # Adds a comment form with a unique prefix for each award in the committee
     for award in awards_list:
         form = AwardReviewCommentForm(instance = award, prefix = str(award.awardid))
-        #formlist.append(form)
         award.form = form
 
-    context["formlist"] = formlist
     context['awards_list'] = awards_list
 
 
     template = loader.get_template("FSJ/coord_final_review.html")
     return HttpResponse(template.render(context, request))
 
- 
+
 @login_required
 @user_passes_test(is_coordinator)
 def coordinator_view_application(request):
+    """View which allows the coordinator to view an application and the comments and rankings various adjudicators have
+    assigned to it"""
     application_id = request.GET.get("application_id", "")
     FSJ_user = get_FSJ_user(request.user.username)
     context = get_standard_context(FSJ_user)
@@ -1024,6 +1062,8 @@ def coordinator_view_application(request):
             return redirect('/applications/')
 
     if request.method == 'POST':
+
+        # Applications cannot be marked as reviewed and complete if they are missing an application document
         if '_review' in request.POST:
             if application.award.documents_needed and not application.application_file:
                 messages.warning(request, _("This application is missing a document"))
@@ -1046,6 +1086,8 @@ def coordinator_view_application(request):
         comment_list = []
         ranking_list = []
 
+        # Produces a list of all comments and rankings for the award which are then zipped together to produce a list
+        # of tuples in the format (adjudicator, comment, ranking)
         if adjudicators.count() > 0:
             for adjudicator in adjudicators:
                 try:
@@ -1086,9 +1128,12 @@ def coordinator_view_application(request):
         return HttpResponse(template.render(context, request))
 
 
-
+@login_required
+@user_passes_test(is_coordinator)
 def coordinator_export_master_review(request):
+    """Exports an Excel file containing the review summaries of every extant committee"""
 
+    # filename is MasterReview with the current date appended
     filename = "MasterReview-" + datetime.now(timezone.utc).strftime(
         "%Y-%m-%d")
     response = HttpResponse(content_type='application/ms-excel')
@@ -1101,6 +1146,7 @@ def coordinator_export_master_review(request):
     if committees:
         for committee in Committee.objects.all():
 
+            # Each committee gets its own worksheet named after it
             sheet_name = str((committee.committee_name).replace(" ", ""))[:30]
             ws = wb.add_sheet(sheet_name)
 
@@ -1128,6 +1174,7 @@ def coordinator_export_master_review(request):
 
             if adjudicators and awards:
 
+                # Lists each award with every adjudicator's rankings
                 for award in awards:
 
                     row_num += 1

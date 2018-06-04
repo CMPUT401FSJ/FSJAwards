@@ -1,10 +1,11 @@
+"""All ModelForms based on the Student model"""
+
 from ..models import Student
 from .forms_modelform import ModelForm
 from django.forms import TextInput
 
-# These are the unrestricted and restricted ModelForms used for Students, accessible by Coordinators and Students respectively.
 class StudentForm(ModelForm):
-
+    """Unrestricted student form available to coordinators creating a new student"""
     class Meta:
         model = Student
         fields = ('ccid', 'first_name', 'middle_name', 'last_name', 'email', 'lang_pref', 'program', 'year', 'student_id', 'gpa')
@@ -14,7 +15,7 @@ class StudentForm(ModelForm):
 
 
 class StudentEditForm(StudentForm):
-
+    """Semi-restricted form available to coordinators who are editing students"""
     def __init__(self, *args, **kwargs):
         super(StudentEditForm, self).__init__(*args, **kwargs)
         self.fields['student_id'].disabled=True
@@ -22,7 +23,7 @@ class StudentEditForm(StudentForm):
 
     
 class StudentRestrictedForm(ModelForm):
-
+    """Restricted form available to students who are editing their own profiles"""
     class Meta:
         model = Student
         fields = ('ccid', 'first_name', 'middle_name', 'last_name', 'email', 'lang_pref', 'program', 'year', 'student_id', 'gpa')
@@ -42,7 +43,7 @@ class StudentRestrictedForm(ModelForm):
         self.fields['last_name'].disabled=True
         
 class StudentReadOnlyForm(StudentForm):
-    
+    """Read-only form available to coordinators and adjudicators who are viewing students"""
     def __init__(self, *args, **kwargs):
         super(StudentReadOnlyForm, self).__init__(*args, **kwargs)
         for field in self.fields:

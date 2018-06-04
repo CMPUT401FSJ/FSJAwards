@@ -1,6 +1,7 @@
 {% load i18n %} {# NOTE YOU MUST LOAD i18n to every HTML page even though it's also loaded to base.html #}
 {% load static %}
 
+{# This template displays any messages included in the context and is included in the base #}
 <div>
   {% for message in messages %}
     <div class="{{ message.tags }}">{{ message }} &nbsp;

@@ -6,8 +6,15 @@ from .models_yearofstudy import *
 from ..validators import validate_student_id
 
 
-# This class inherits from a standard FSJ User and extends for Student specific attributes and methods
 class Student(FSJUser):
+    """A subclass of FSJUser representing the students who can apply for and receive awards
+
+    program -- foreign key representing the student's university program
+    year - foreign key representing the student's year of study
+    gpa - optional field to enter the student's GPA
+    middle_name - the student's middle name if they have one
+    student_id -- the student's UAlberta ID number
+    """
     program = models.ForeignKey(Program, on_delete = models.SET_NULL, null = True, blank = True, verbose_name = _("Program"))
     year = models.ForeignKey(YearOfStudy, on_delete=models.PROTECT, verbose_name = _("Year"))
     gpa = models.CharField(max_length = 10, null = True, blank = True, verbose_name = _("GPA"))

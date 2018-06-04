@@ -3,8 +3,9 @@
 {% load widget_tweaks %}
 {% load fsj_tags %}
 
+{# This page shows all the archived applications for a particular award #}
 {% block heading %}
-        {{ award.name }}
+        {# Translators: Heading for the archived applications page #}
         {% trans "Archive" %}
 {% endblock %}
 
@@ -47,7 +48,9 @@
                     </tr>
                 {% endfor %}
             </table>
-            <button class="btn btn-success" type="submit", name="_removeFromArchive">{% trans "Reactivate Application(s)" %}</button>
+            {# Translators: Button to reactivate archived applications #}
+            <button class="btn btn-success" type="submit" name="_removeFromArchive">{% trans "Reactivate Application(s)" %}</button>
+            {# Translators: Button to delete archived applications #}
             <button class="btn btn-danger pull-right" type="submit" name="_delete">{% trans "Delete Application(s)" %}</button>
         </form>
     </div>

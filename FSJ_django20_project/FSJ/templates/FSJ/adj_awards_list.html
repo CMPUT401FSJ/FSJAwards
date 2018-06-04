@@ -3,8 +3,8 @@
 {% load widget_tweaks %}
 {% load fsj_tags %}
 
-{# A page for the adjudicator to view a list of awards as well as providing adding, deleting, and editing functionality #}
-{# This page is separate from the template for displaying awards to sutdents due to the added functionality #}
+{# A page for the adjudicator to view a list of awards  #}
+{# This page is separate from the template for displaying awards to students or coordinators due to the added functionality #}
 {% block heading %}
     {# Translators: Awards page home label #}
     {% trans "Awards" %}
@@ -17,13 +17,14 @@
             <ul class="nav nav-tabs">
                 <li class="active"><a data-toggle="tab" href="#all-committees">{% trans "View All" %}</a></li>
 
+                {# Each committee an adjudicator is part of gets its own tab#}
                 {% for committee in committee_list %}
                     <li><a data-toggle="tab" href="#committee_{{ committee.committeeid }}">{{ committee.committee_name }}</a></li>
                 {% endfor %}
             </ul>
 
             <div class="tab-content">
-
+                {# The all-committees tab displays a table with a list of all committees and all awards in those committees #}
                 <div id="all-committees" class="tab-pane fade in active">
 
                     <table class="table table-bordered table-striped table-hover" align="center">
@@ -76,6 +77,7 @@
                 </div>
 
                 {% for committee in committee_list %}
+                    {# Each committee gets its own tab with a table that displays its awards #}
                     <div id="committee_{{ committee.committeeid }}" class = "tab-pane fade">
                         <table class="table table-bordered table-striped table-hover" align="center">
                             <tr>
