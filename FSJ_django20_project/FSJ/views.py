@@ -174,7 +174,7 @@ def award_applications_action(request):
 
 # Returns the adjudicator delete comment page
 @login_required
-@user_passes_test(is_adjudicator())
+@user_passes_test(is_adjudicator)
 def award_delete(request):
     FSJ_user = get_FSJ_user(request.user.username)
     if isinstance(FSJ_user, Adjudicator):
