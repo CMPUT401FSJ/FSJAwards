@@ -75,6 +75,8 @@
                         <th>{% trans "CCID" %}</th>
                         <th>{% trans "Program" %}</th>
                         <th>{% trans "Year" %}</th>
+                        <th>{% trans "GPA" %}</th>
+                        <th>{% trans "Credits" %}</th>
                         {# Translators: Award header in application table #}
                         <th>{% trans "Award" %}</th>
                         {# Translators: Submitted header in application table #}
@@ -95,6 +97,16 @@
                                 {% endif %}
                             </td>
                             <td>{{ application.student.year }}</td>
+                            <td>
+                                {% if application.student.gpa %}
+                                    {{ application.student.gpa }}
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if application.student.credits %}
+                                    {{ application.student.credits }}
+                                {% endif %}
+                            </td>
                             <td>{{application.award}}</td>
                             <td>
                                 <input type="checkbox" disabled {% if application.is_submitted %}checked{% endif %}>
