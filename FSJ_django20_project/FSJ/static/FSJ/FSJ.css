@@ -146,3 +146,8 @@ b {
 .div-restrict-width {
     width: 50%;
 }
+
+div.tab-comments {
+    padding-left:30px;
+    color: red;
+}

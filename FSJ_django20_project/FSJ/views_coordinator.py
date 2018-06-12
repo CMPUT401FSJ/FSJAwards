@@ -792,29 +792,37 @@ def coordinator_upload_students(request):
                     csv_file = request.FILES['student_file']
                     # Gets line 0 of the file, containing the headers
                     csv_file.seek(0)
-                    studentreader = csv.DictReader(io.StringIO(csv_file.read().decode('utf-8-sig')))
+                    studentreader = csv.DictReader(io.StringIO(csv_file.read().decode('windows-1252')))
 
                     # processes each row into a Student object, creating them when they don't exist and updating them
                     # when they do
                     for row in studentreader:
-                        program = Program.objects.get(code = row['Prog'])
-                        year = YearOfStudy.objects.get(year = row['Year'])
-                        obj, created = Student.objects.update_or_create(
-                            student_id = row['ID'],
-                            defaults={'ccid' : row['CCID'], 'first_name': row['First Name'], 'last_name': row['Last Name'], 'email' : row['Email (Univ)'],
-                                      'program' : program, 'year' : year, 'middle_name' : row['Middle Name'],},
-                        ) 
+                        if row['ID']:
+                            program = Program.objects.get(code = row['Prog'])
+                            year = YearOfStudy.objects.get(year = row['Year'])
+                            obj, created = Student.objects.update_or_create(
+                                student_id = row['ID'],
+                                defaults={'ccid' : row['CCID'], 'first_name': row['First Name'], 'last_name': row['Last Name'], 'email' : row['Email (Univ)'],
+                                          'program' : program, 'year' : year, 'middle_name' : row['Middle Name'],},
+                            )
 
                 # gpa_file contains the GPAs for students who have been added to the system
                 if 'gpa_file' in request.FILES:
                     csv_file = request.FILES['gpa_file']
                     csv_file.seek(0)
-                    gpareader = csv.DictReader(io.StringIO(csv_file.read().decode('utf-8-sig')))    
+                    gpareader = csv.DictReader(io.StringIO(csv_file.read().decode('windows-1252')))
                     for row in gpareader:
-                        student = Student.objects.get(student_id = row['ID'])
-                        if row['GPA']:
-                            student.gpa = row['GPA']
-                            student.save()
+                        if row['ID']:
+                            try:
+                                student = Student.objects.get(student_id = row['ID'])
+                                if row['GPA']:
+                                    student.gpa = row['GPA']
+                                if row['Credits']:
+                                    student.credits = row['Credits']
+                                student.save()
+
+                            except Student.DoesNotExist:
+                                pass
                 
                 form = FileUploadForm()                    
                 messages.success(request, _('Upload success!'))
@@ -834,7 +842,8 @@ def coordinator_upload_students(request):
             except Student.DoesNotExist:
                 messages.warning(request, _("The student you are attempting to upload a GPA for does not exist."))
                 
-            except:
+            except Exception as e:
+                print(e)
                 messages.warning(request, _("Unexpected error. Please confirm file is in a valid format, and has all required columns/programs/years."))
                 
             

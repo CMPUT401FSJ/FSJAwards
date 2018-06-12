@@ -34,6 +34,7 @@
                     <th>{% trans "Program" %}</th>
                     <th>{% trans "Year" %}</th>
                     <th>{% trans "GPA" %}</th>
+                    <th>{% trans "Credits" %}</th>
                     <th>{% trans "Is Submitted?" %}</th>
                     {% if FSJ_user.user_class == "Adjudicator" %}
                         <th>{% trans "Rank" %}</th>
@@ -57,6 +58,11 @@
                         <td>
                             {% if application.0.student.gpa %} 
                                 {{ application.0.student.gpa }}
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if application.0.student.credits %}
+                                {{ application.0.student.credits }}
                             {% endif %}
                         </td>
                         <td><input type="checkbox" disabled {% if application.0.is_submitted %}checked{% endif %}></td>
