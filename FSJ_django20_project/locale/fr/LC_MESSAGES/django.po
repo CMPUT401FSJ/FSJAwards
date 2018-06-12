@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-06-12 12:34-0600\n"
-"PO-Revision-Date: 2018-06-12 13:11-0600\n"
+"POT-Creation-Date: 2018-06-12 13:16-0600\n"
+"PO-Revision-Date: 2018-06-12 13:18-0600\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: fr\n"
@@ -50,39 +50,39 @@ msgstr "Année d'étude:"
 msgid "Program:"
 msgstr "Programme:"
 
-#: .\FSJ\filters.py:59
+#: .\FSJ\filters.py:60
 msgid "Student CCID contains:"
 msgstr "CCID contient:"
 
-#: .\FSJ\filters.py:60
+#: .\FSJ\filters.py:61
 msgid "Student First Name contains:"
 msgstr "Prénom contient:"
 
-#: .\FSJ\filters.py:61
+#: .\FSJ\filters.py:62
 msgid "Student Last Name contains:"
 msgstr "Nom de famille contient:"
 
-#: .\FSJ\filters.py:62
+#: .\FSJ\filters.py:63
 msgid "Award Name contains:"
 msgstr "Nom de la bourse contient:"
 
-#: .\FSJ\filters.py:72
+#: .\FSJ\filters.py:73
 msgid "Award:"
 msgstr "Bourse:"
 
-#: .\FSJ\filters.py:73
+#: .\FSJ\filters.py:74
 msgid "Award Programs:"
 msgstr "Programmes de la bourse:"
 
-#: .\FSJ\filters.py:74
+#: .\FSJ\filters.py:75
 msgid "Is Submitted:"
 msgstr "Soumise:"
 
-#: .\FSJ\filters.py:75
+#: .\FSJ\filters.py:76
 msgid "Is Archived:"
 msgstr "Archivée:"
 
-#: .\FSJ\filters.py:76
+#: .\FSJ\filters.py:77
 msgid "Is Reviewed:"
 msgstr "Évaluée:"
 
@@ -252,9 +252,9 @@ msgstr "Évaluation en attente"
 msgid "View Application"
 msgstr "Voir la demande de bourse"
 
-#: .\FSJ\models\models_award.py:29 .\FSJ\models\models_program.py:19
+#: .\FSJ\models\models_award.py:29
 msgid "Name"
-msgstr "Nom de la bourse"
+msgstr "Nom"
 
 #. Translators: Award description header in awards table
 #. Translators: Description for award on student application page
@@ -354,11 +354,13 @@ msgstr "Comités"
 msgid "Awards"
 msgstr "Bourses"
 
-#. Translators: Program Code header in program table
 #: .\FSJ\models\models_program.py:18
-#: .\FSJ\templates\FSJ\coord_program_list.html:24
-msgid "Code"
-msgstr "Code"
+msgid "Program Code"
+msgstr "Code du programme"
+
+#: .\FSJ\models\models_program.py:19
+msgid "Program Name"
+msgstr "Nom du programme"
 
 #. Translators: Program name header in program table
 #. Translators: Program header in student table
@@ -787,6 +789,11 @@ msgstr "Retour aux comités"
 #: .\FSJ\templates\FSJ\coord_program_list.html:17
 msgid "Add program"
 msgstr "Ajouter programme"
+
+#. Translators: Program Code header in program table
+#: .\FSJ\templates\FSJ\coord_program_list.html:24
+msgid "Code"
+msgstr "Code"
 
 #. Translators: Button to delete selected programs
 #: .\FSJ\templates\FSJ\coord_program_list.html:42

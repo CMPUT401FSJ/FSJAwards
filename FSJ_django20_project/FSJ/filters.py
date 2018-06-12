@@ -47,6 +47,7 @@ class AwardFilter(django_filters.FilterSet):
 	"""Filter for Award model"""
 	name = django_filters.CharFilter(lookup_expr='icontains')
 	description = django_filters.CharFilter(lookup_expr='icontains')
+	value = django_filters.CharFilter(lookup_expr='icontains')
 	start_date = django_filters.DateFilter(widget = DateInput())
 	end_date = django_filters.DateFilter(widget = DateInput())
 
