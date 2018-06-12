@@ -15,8 +15,8 @@ class Program(models.Model):
         ordering = ('name',)
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    code = models.CharField(max_length = 10, unique=True, verbose_name = _("Code"))
-    name = models.CharField(max_length = 255, verbose_name = _("Name"))
+    code = models.CharField(max_length = 10, unique=True, verbose_name = _("Program Code"))
+    name = models.CharField(max_length = 255, verbose_name = _("Program Name"))
     
     def __str__(self):
         return self.name

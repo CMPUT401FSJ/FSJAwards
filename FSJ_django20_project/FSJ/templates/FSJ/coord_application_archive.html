@@ -25,6 +25,7 @@
                     <th>{% trans "Program" %}</th>
                     <th>{% trans "Year" %}</th>
                     <th>{% trans "GPA" %}</th>
+                    <th>{% trans "Credits" %}</th>
                     <th>{% trans "View" %}</th>
                 </tr>
                 {% for application in archived_list %}
@@ -42,6 +43,11 @@
                         <td>
                             {% if application.student.gpa %} 
                                 {{ application.student.gpa }}
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if application.student.credits %}
+                                {{ application.student.credits }}
                             {% endif %}
                         </td>
                         <td><a href="/awards/applications/archive/view/?award_id={{ award.awardid }}&application_id={{application.application_id}}">{% trans "View" %}</a></td>

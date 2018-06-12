@@ -12,12 +12,14 @@ class Student(FSJUser):
     program -- foreign key representing the student's university program
     year - foreign key representing the student's year of study
     gpa - optional field to enter the student's GPA
+    credits - optional field to enter the student's number of credits
     middle_name - the student's middle name if they have one
     student_id -- the student's UAlberta ID number
     """
     program = models.ForeignKey(Program, on_delete = models.SET_NULL, null = True, blank = True, verbose_name = _("Program"))
     year = models.ForeignKey(YearOfStudy, on_delete=models.PROTECT, verbose_name = _("Year"))
     gpa = models.CharField(max_length = 10, null = True, blank = True, verbose_name = _("GPA"))
+    credits = models.CharField(max_length = 10, null = True, blank = True, verbose_name = _("Credits"))
     middle_name = models.CharField(max_length = 50, blank = True, verbose_name = _("Middle Name"))
     student_id = models.CharField(max_length = 10, unique = True, verbose_name = _("U of A Student ID"), validators=[validate_student_id])    
 

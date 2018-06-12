@@ -96,6 +96,15 @@
                         <br>
                     {% endif %}
 
+                    {%if student.credits %}
+                        <div>
+                            <h4><b>{% trans "Credits" %}</b></h4>
+                            <hr class="hr-div">
+                            {{ student.credits }}
+                        </div>
+                        <br>
+                    {% endif %}
+
                     {% if award.documents_needed %}
                         <div>
                             <h4><b>{% trans "Document" %} </b></h4>

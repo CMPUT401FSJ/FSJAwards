@@ -8,7 +8,7 @@ class StudentForm(ModelForm):
     """Unrestricted student form available to coordinators creating a new student"""
     class Meta:
         model = Student
-        fields = ('ccid', 'first_name', 'middle_name', 'last_name', 'email', 'lang_pref', 'program', 'year', 'student_id', 'gpa')
+        fields = ('ccid', 'first_name', 'middle_name', 'last_name', 'email', 'lang_pref', 'program', 'year', 'student_id', 'gpa', 'credits')
         
     def __init__(self, *args, **kwargs):
         super(StudentForm, self).__init__(*args, **kwargs)               
@@ -26,7 +26,7 @@ class StudentRestrictedForm(ModelForm):
     """Restricted form available to students who are editing their own profiles"""
     class Meta:
         model = Student
-        fields = ('ccid', 'first_name', 'middle_name', 'last_name', 'email', 'lang_pref', 'program', 'year', 'student_id', 'gpa')
+        fields = ('ccid', 'first_name', 'middle_name', 'last_name', 'email', 'lang_pref', 'program', 'year', 'student_id', 'gpa', 'credits')
         widgets = {
             "student_id": TextInput
         }
@@ -38,6 +38,7 @@ class StudentRestrictedForm(ModelForm):
         self.fields['year'].disabled=True
         self.fields['student_id'].disabled=True
         self.fields['gpa'].disabled=True
+        self.fields['credits'].disabled=True
         self.fields['first_name'].disabled=True
         self.fields['middle_name'].disabled=True
         self.fields['last_name'].disabled=True
