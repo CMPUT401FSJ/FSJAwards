@@ -17,23 +17,19 @@
             {% csrf_token %}
             {% for field in form %}
                 <div>
-                    <div>
-                        {% if field.label %}
-                            {{field.label_tag}}
-                        {% endif %}
-                    </div>
-                    <div>
-                        {% if field.help_text %}
-                            {{ field.help_text }}
-                        {% endif %}
-                    </div>
-                    <div {% if field.errors %}class='has-error'{% endif %}>
-                        {{ field }}
-                    </div>
+                    {% if field.label %}
+                        {{field.label_tag}}<br>
+                    {% endif %}
+                    {% if field.help_text %}
+                        {{ field.help_text }}
+                    {% endif %}
+                    {% if field.errors %}class='has-error'{% endif %}
+                    {{ field }}
                     {% if field.errors %}
                         {{ field.errors }}
                     {% endif %}
                 </div>
+                <br>
             {% endfor %}
             <br>
 

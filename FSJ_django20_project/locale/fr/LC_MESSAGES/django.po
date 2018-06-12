@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-06-12 13:16-0600\n"
-"PO-Revision-Date: 2018-06-12 13:18-0600\n"
+"POT-Creation-Date: 2018-06-12 13:48-0600\n"
+"PO-Revision-Date: 2018-06-12 13:50-0600\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: fr\n"
@@ -116,16 +116,16 @@ msgid ""
 "Upload a CSV with fields CCID, ID, First Name, Middle Name, Last Name, Email "
 "(Univ), Prog & Year"
 msgstr ""
-"Téléverser un fichier CSV avec les champs CCID, ID, prénom, deuxième prénom, "
-"nom de famille, e-mail (Univ), Prog & Year"
+"Téléverser un fichier CSV avec les champs CCID, ID, First Name, Middle Name, "
+"Last Name, Email (Univ), Prog & Year"
 
 #: .\FSJ\forms\forms_fileupload.py:10
 msgid "Student File"
 msgstr "Dossier étudiant"
 
 #: .\FSJ\forms\forms_fileupload.py:11
-msgid "Upload a CSV with fields ID & GPA"
-msgstr "Téléverser un fichier CSV avec les champs CCID & GPA"
+msgid "Upload a CSV with fields ID, GPA & Credits"
+msgstr "Téléverser un fichier CSV avec les champs CCID, GPA & Credits"
 
 #: .\FSJ\forms\forms_fileupload.py:11
 msgid "GPA File"
@@ -776,7 +776,7 @@ msgid "Rank 5"
 msgstr "5e choix"
 
 #: .\FSJ\templates\FSJ\coord_final_review.html:100
-#: .\FSJ\templates\FSJ\coord_student_upload.html:41
+#: .\FSJ\templates\FSJ\coord_student_upload.html:36
 #: .\FSJ\templates\FSJ\modelform.html:26
 msgid "Save"
 msgstr "Sauvegarder"
