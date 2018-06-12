@@ -32,8 +32,6 @@
                         <th class="desc-column">{% trans "Description" %}</th>
                         {# Translators: Award value header in awards table #}
                         <th>{% trans "Value" %}</th>
-                        {# Translators: Award years of study header in awards table #}
-                        <th>{% trans "Years of Study" %}</th>
                         {# Translators: Award start date header in awards table #}
                         <th>{% trans "Start date" %}</th>
                         {# Translators: Award end date header in awards table #}
@@ -47,11 +45,6 @@
                                 <td>{{award.name }}</td>
                                 <td>{{award.description|linebreaks}}</td>
                                 <td>{{award.value}}</td>
-                                <td>
-                                    {% for year in award.years_of_study.all %}
-                                        {{year}} <br>
-                                    {% endfor %}
-                                </td>
                                 <td class='date-column'>{{award.start_date|date:"Y-m-d"}}</td>
                                 <td class='date-column'>{{award.end_date|date:"Y-m-d"}}</td>
                                 {# Translators: Apply button in award table #}
@@ -74,8 +67,6 @@
                             <th class="desc-column">{% trans "Description" %}</th>
                             {# Translators: Award value header in awards table #}
                             <th>{% trans "Value" %}</th>
-                            {# Translators: Award years of study header in awards table #}
-                            <th>{% trans "Years of Study" %}</th>
                             {# Translators: Award start date header in awards table #}
                             <th>{% trans "Start date" %}</th>
                             {# Translators: Award end date header in awards table #}
@@ -90,11 +81,6 @@
                                 <td>{{award.name }}</td>
                                 <td>{{award.description|linebreaks}}</td>
                                 <td>{{award.value}}</td>
-                                <td>
-                                    {% for year in award.years_of_study.all %}
-                                        {{year}} <br>
-                                    {% endfor %}
-                                </td>
                                 <td class='date-column'>{{award.start_date|date:"Y-m-d"}}</td>
                                 <td class='date-column'>{{award.end_date|date:"Y-m-d"}}</td>
                                 {# Translators: Edit application button in student award table #}
@@ -117,8 +103,6 @@
                         <th class="desc-column">{% trans "Description" %}</th>
                         {# Translators: Award value header in awards table #}
                         <th>{% trans "Value" %}</th>
-                        {# Translators: Award years of study header in awards table #}
-                        <th>{% trans "Years of Study" %}</th>
                         {# Translators: Award start date header in awards table #}
                         <th>{% trans "Start date" %}</th>
                         {# Translators: Award end date header in awards table #}
@@ -132,11 +116,6 @@
                                 <td>{{award.name }}</td>
                                 <td>{{award.description|linebreaks}}</td>
                                 <td>{{award.value}}</td>
-                                <td>
-                                    {% for year in award.years_of_study.all %}
-                                        {{year}} <br>
-                                    {% endfor %}
-                                </td>
                                 <td class='date-column'>{{award.start_date|date:"Y-m-d"}}</td>
                                 <td class='date-column'>{{award.end_date|date:"Y-m-d"}}</td>
                                 {# Translators: Unsubmit application button in student award table #}

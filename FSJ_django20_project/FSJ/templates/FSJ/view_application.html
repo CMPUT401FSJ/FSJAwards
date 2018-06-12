@@ -87,23 +87,24 @@
                     </div>
                     <br>
 
-                    {% if student.gpa %}
-                        <div>
-                            <h4><b>{% trans "GPA" %}</b></h4>
-                            <hr class="hr-div">
+                    <div>
+                        <h4><b>{% trans "GPA" %}</b></h4>
+                        <hr class="hr-div">
+                        {% if student.gpa %}
                             {{ student.gpa }}
-                        </div>
-                        <br>
-                    {% endif %}
+                             <br>
+                        {% endif %}
+                    </div>
 
-                    {% if student.credits %}
-                        <div>
-                            <h4><b>{% trans "Credits" %}</b></h4>
-                            <hr class="hr-div">
+                    <div>
+                        <h4><b>{% trans "Credits" %}</b></h4>
+                        <hr class="hr-div">
+                        {% if student.credits %}
                             {{ student.credits }}
-                        </div>
-                        <br>
-                    {% endif %}
+                            <br>
+                        {% endif %}
+                    </div>
+
 
                     {% if award.documents_needed %}
                         <div>
