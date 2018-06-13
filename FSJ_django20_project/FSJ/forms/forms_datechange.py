@@ -33,4 +33,9 @@ class DateChangeForm(forms.Form):
         if start_date and end_date:
             if start_date > end_date:
                 msg = forms.ValidationError(_("The start date must be later than the end date."))
-                self.add_error('start_date', msg)    
+                self.add_error('start_date', msg)
+
+    def clean_end_date(self):
+        data = self.cleaned_data['end_date']
+        end_date = data.replace(hour=23, minute=59, second=59)
+        return end_date

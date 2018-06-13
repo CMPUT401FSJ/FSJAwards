@@ -103,8 +103,8 @@ class CoordinatorSeleniumTest(SeleniumTest):
         self.assertEquals(award.value, self.award_value)
         self.assertEquals(award.programs.get(code=self.program_code), self.award_program)
         self.assertEquals(award.years_of_study.get(year=self.year_name), self.award_year)
-        self.assertEquals(award.start_date.strftime('%Y-%m-%d'), self.start_date)
-        self.assertEquals(award.end_date.strftime('%Y-%m-%d'), self.end_date)
+        self.assertEquals(award.start_date.astimezone(pytz.timezone('America/Edmonton')).strftime('%Y-%m-%d'), self.start_date)
+        self.assertEquals(award.end_date.astimezone(pytz.timezone('America/Edmonton')).strftime('%Y-%m-%d'), self.end_date)
         self.assertEquals(award.documents_needed, True)
         self.assertEquals(award.is_active, True)
 
@@ -139,8 +139,8 @@ class CoordinatorSeleniumTest(SeleniumTest):
             lambda driver: driver.find_element_by_name("awardaction"))
 
         award.refresh_from_db()
-        self.assertEquals(award.start_date.strftime('%Y-%m-%d'), self.new_start_date)
-        self.assertEquals(award.end_date.strftime('%Y-%m-%d'), self.new_end_date)
+        self.assertEquals(award.start_date.astimezone(pytz.timezone('America/Edmonton')).strftime('%Y-%m-%d'), self.new_start_date)
+        self.assertEquals(award.end_date.astimezone(pytz.timezone('America/Edmonton')).strftime('%Y-%m-%d'), self.new_end_date)
 
         self.selenium.find_element_by_link_text("Edit").click()
 

@@ -3,6 +3,7 @@ from django.utils.translation import gettext_lazy as _
 from django.db import models
 from .models_yearofstudy import *
 from datetime import datetime
+from django.utils import timezone
 import pytz
 from .models_program import Program
 from .models_adjudicator import Adjudicator
@@ -44,7 +45,7 @@ class Award(models.Model):
 
 	#Returns a bool stating whether the award is open or not due to start/end date
 	def is_open(self):
-		now = datetime.now(pytz.timezone('America/Edmonton'))
+		now = timezone.now()
 		if self.start_date > now or self.end_date < now:
 			return False
 		else:
