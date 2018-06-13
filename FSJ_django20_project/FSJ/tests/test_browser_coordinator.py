@@ -209,6 +209,7 @@ class CoordinatorSeleniumTest(SeleniumTest):
         self.student_year = YearOfStudy.objects.create(year=self.year_name)
         self.student_email = "student@csjawards.ca"
         self.student_gpa = "4.0"
+        self.student_credits = "24"
 
         self.new_student_first_name = "New"
         self.new_student_middle_name = "Student"
@@ -291,6 +292,7 @@ class CoordinatorSeleniumTest(SeleniumTest):
         WebDriverWait(self.selenium, timeout).until(
             lambda driver: driver.find_element_by_id("id_student_file"))
 
+        self.selenium.find_element_by_id("id_encoding_0").click()
         self.selenium.find_element_by_id("id_student_file").send_keys(settings.TEST_FILE_ROOT+'\selenium_test_student.csv')
         self.selenium.find_element_by_id("id_gpa_file").send_keys(settings.TEST_FILE_ROOT+'\selenium_test_gpa.csv')
         self.selenium.find_element_by_css_selector("button.btn.btn-success").click()
@@ -312,6 +314,7 @@ class CoordinatorSeleniumTest(SeleniumTest):
         self.assertEquals(student.year, self.student_year)
         self.assertEquals(student.student_id, self.student_ualberta_id)
         self.assertEquals(student.gpa, self.student_gpa)
+        self.assertEquals(student.credits, self.student_credits)
 
 
 

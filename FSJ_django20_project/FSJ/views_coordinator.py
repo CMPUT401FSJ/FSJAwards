@@ -786,13 +786,15 @@ def coordinator_upload_students(request):
         form = FileUploadForm(request.POST, request.FILES)
         if form.is_valid():
 
+            encoding = request.POST.get('encoding')
+
             try:
                 # student_file contains the records of the students to be used for Student creation/update
                 if 'student_file' in request.FILES:
                     csv_file = request.FILES['student_file']
                     # Gets line 0 of the file, containing the headers
                     csv_file.seek(0)
-                    studentreader = csv.DictReader(io.StringIO(csv_file.read().decode('windows-1252')))
+                    studentreader = csv.DictReader(io.StringIO(csv_file.read().decode(encoding)))
 
                     # processes each row into a Student object, creating them when they don't exist and updating them
                     # when they do
@@ -810,7 +812,7 @@ def coordinator_upload_students(request):
                 if 'gpa_file' in request.FILES:
                     csv_file = request.FILES['gpa_file']
                     csv_file.seek(0)
-                    gpareader = csv.DictReader(io.StringIO(csv_file.read().decode('windows-1252')))
+                    gpareader = csv.DictReader(io.StringIO(csv_file.read().decode(encoding)))
                     for row in gpareader:
                         if row['ID']:
                             try:
@@ -828,7 +830,7 @@ def coordinator_upload_students(request):
                 messages.success(request, _('Upload success!'))
             
             except UnicodeDecodeError:
-                messages.warning(request, _('Please upload a UTF-8 encoded CSV file.'))
+                messages.warning(request, _('Please ensure you have selected the correct encoding.'))
                 
             except KeyError:
                 messages.warning(request, _('Please make sure all column names match specified column names.'))     
