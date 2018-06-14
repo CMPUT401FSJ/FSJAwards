@@ -30,7 +30,7 @@ class ProfileViewTests(TestCase):
         response = profile(request)
         # redirect to login page
         self.assertEqual(response.status_code, 302)
-        self.assertEqual(response.url, '/FSJ/login/?next=' + self.url)
+        self.assertEqual(response.url, '/login/?next=' + self.url)
         
     def test_get_logged_in_without_FSJ_user(self):
         request = self.factory.get(self.url)
