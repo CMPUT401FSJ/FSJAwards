@@ -38,7 +38,7 @@ def adjudicator_awards(request):
     committees to the template
     """
     FSJ_user = get_FSJ_user(request.user.username)
-    committee_list = Committee.objects.filter(adjudicators = FSJ_user)
+    committee_list = Committee.objects.filter(adjudicators = FSJ_user).order_by('committee_name')
     template = loader.get_template("FSJ/adj_awards_list.html")
     context = get_standard_context(FSJ_user)
     context["committee_list"] = committee_list
