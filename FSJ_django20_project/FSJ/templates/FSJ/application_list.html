@@ -53,7 +53,12 @@
                         {% if FSJ_user.user_class == "Coordinator" %}
                             <td><input type="checkbox"  name="applicationaction" value="{{application.0.application_id}}" ></td>
                         {% endif %}
-                        <td><a href="/view_student/?ccid={{ application.0.student.ccid }}&awardid={{application.0.award.awardid}}&return={{ request.get_full_path|quote }}">{{ application.0.student.get_name }}</a></td>
+                        {% if FSJ_user.user_class == "Coordinator" %}
+                            <td><a href="/view_student/?ccid={{ application.0.student.ccid }}&awardid={{application.0.award.awardid}}&return={{ request.get_full_path|quote }}">{{ application.0.student.get_name }}</a></td>
+                        {% endif %}
+                        {% if FSJ_user.user_class == "Adjudicator" %}
+                            <td>{{ application.0.student.get_name }}</td>
+                        {% endif %}
                         <td>{{ application.0.student.ccid }}</td>
                         {% if FSJ_user.user_class == "Coordinator" %}
                             <td>{{ application.0.student.student_id }}</td>
