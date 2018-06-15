@@ -120,6 +120,7 @@ class Application(models.Model):
         else:
             return False
 
+# Code adapted from from https://stackoverflow.com/questions/16041232/django-delete-filefield/16041527
 @receiver(models.signals.post_delete, sender=Application)
 def auto_delete_file_on_delete(sender, instance, **kwargs):
     if instance.application_file:
