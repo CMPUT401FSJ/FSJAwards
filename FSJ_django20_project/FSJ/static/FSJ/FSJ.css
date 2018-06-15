@@ -150,3 +150,10 @@ b {
 div.tab-comments {
     color: red;
 }
+
+.award-info {
+    border: 2px;
+    border-style: solid;
+    border-color: #007C41;
+    padding-left: 1em;
+}

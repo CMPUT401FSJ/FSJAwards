@@ -19,3 +19,7 @@ class Committee(models.Model):
 	
 	def __str__(self):
 		return self.committee_name
+
+	def get_sorted_awards(self):
+		awards_list = self.awards.order_by('name')
+		return awards_list

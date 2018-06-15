@@ -40,7 +40,7 @@ def student_awardslist(request):
     # unfiltered_list contains all awards for which the student is eligible. The awards must match the student's
     # program and year of study and must be active awards.
     unfiltered_list = Award.objects.filter(Q(is_active = True), Q(years_of_study = FSJ_user.year) | Q(years_of_study__isnull = True),
-                                           Q(programs = FSJ_user.program) | Q(programs__isnull = True))
+                                           Q(programs = FSJ_user.program) | Q(programs__isnull = True)).order_by('name')
 
     # awards_list -- a list of awards the student hasn't applied for yet
     awards_list = []
