@@ -13,7 +13,9 @@
     <div class='center-content' xmlns="http://www.w3.org/1999/html">
         <div class="award-info">
             <h3>{{ award.name }}</h3>
-            <h5>{{ award.description|linebreaks }}</h5>
+            {% if FSJ_user.user_class == "Coordinator" %}
+                <h5>{{ award.description|linebreaks }}</h5>
+            {% endif %}
         </div>
         <br>
         <form action ='{{ url }}' method="POST" >
