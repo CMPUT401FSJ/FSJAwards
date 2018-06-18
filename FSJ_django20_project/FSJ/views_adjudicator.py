@@ -63,7 +63,7 @@ def adjudicator_application_list(request):
     # ranking_list is a list of all the adjudicator's rankings for this award, which is retrieved to help sort the
     # applications by ranking
 
-    application_list = award.applications.filter(is_archived = False)
+    application_list = award.applications.filter(is_archived = False).order_by('student__ccid')
     ranking_list = Ranking.objects.filter(award = award, adjudicator = FSJ_user).order_by('rank')
     
     sorted_application_list = []
