@@ -3,6 +3,7 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 from .models_award import Award
 from ..validators import validate_file_extension
+from django.core.validators import FileExtensionValidator
 from .models_student import Student
 from .models_adjudicator import Adjudicator
 from .models_FSJUser import FSJUser
@@ -32,7 +33,7 @@ class Application(models.Model):
     is_reviewed = models.BooleanField(default = False, verbose_name = _("Is Reviewed"))
     is_archived = models.BooleanField(default = False, verbose_name = _("Is Archived"))
     application_file = models.FileField(null=True, blank=True, upload_to='documents/', 
-                                        verbose_name = _("Application Document"), validators=[validate_file_extension])
+                                        verbose_name = _("Application Document"), validators=[FileExtensionValidator(["pdf"])])
     viewed = models.ManyToManyField(FSJUser, related_name='viewed', verbose_name = _("Viewed"))
     adjudicators = models.ManyToManyField(Adjudicator, related_name='applications', verbose_name = _("Adjudicators"))
     
