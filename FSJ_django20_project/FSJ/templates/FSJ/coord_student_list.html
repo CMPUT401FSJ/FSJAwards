@@ -21,16 +21,12 @@
                     {% render_field filter.form.ccid class="form-control" %}
                 </div>
                 <div class = "form-group col-sm-4 col-md-3">
+                    {{ filter.form.last_name.label_tag }}
+                    {% render_field filter.form.last_name class="form-control" %}
+                </div>
+                <div class = "form-group col-sm-4 col-md-3">
                     {{ filter.form.first_name.label_tag }}
                     {% render_field filter.form.first_name class="form-control" %}
-                </div>
-                <div class = "form-group col-sm-4 col-md-3">
-                    {{ filter.form.middle_name.label_tag }}
-                    {% render_field filter.form.middle_name class="form-control" %}
-                </div>
-                <div class = "form-group col-sm-4 col-md-3">
-                  {{ filter.form.last_name.label_tag }}
-                  {% render_field filter.form.last_name class="form-control" %}
                 </div>
                 <div class = "form-group col-sm-4 col-md-3">
                   {{ filter.form.student_id.label_tag }}

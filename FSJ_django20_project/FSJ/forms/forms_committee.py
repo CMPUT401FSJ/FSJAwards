@@ -1,6 +1,7 @@
 """Contains all Django ModelForms based on the Committee model"""
 
-from ..models import Committee
+from ..models import Committee, Adjudicator
+from django import forms
 from django.forms import ModelForm, CheckboxSelectMultiple
 
 class CommitteeForm(ModelForm):
@@ -9,6 +10,9 @@ class CommitteeForm(ModelForm):
 
     available_awards -- a list of the awards currently not associated with a committee
     """
+
+    adjudicators = forms.ModelMultipleChoiceField(queryset=Adjudicator.objects.order_by('ccid'), widget=CheckboxSelectMultiple)
+
     class Meta:
         model = Committee
         exclude = ()

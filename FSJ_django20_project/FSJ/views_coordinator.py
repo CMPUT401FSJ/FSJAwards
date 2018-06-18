@@ -529,7 +529,7 @@ def coordinator_addcommittee(request):
                 awards_blocked.append(award.awardid)
 
     # An award should only be in one committee at a time, so this prevents awards being added to multiple committees
-    available_awards = Award.objects.exclude(awardid__in = awards_blocked).values_list('awardid','name')
+    available_awards = Award.objects.exclude(awardid__in = awards_blocked).order_by('name').values_list('awardid','name')
 
     # If the coordinator has just saved their new committee, check for form validity before saving. Invalid forms are put back into the template to show errors.
     if request.method == "POST":
@@ -613,7 +613,7 @@ def coordinator_application_list(request):
     except Award.DoesNotExist:
         raise Http404("Award does not exist")
 
-    application_list = award.applications.filter(is_archived = False)
+    application_list = award.applications.filter(is_archived = False).order_by('student__ccid')
 
     #delete in-progress applications if deadline is past
     if datetime.now(timezone.utc) > award.end_date: 
