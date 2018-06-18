@@ -1,6 +1,5 @@
 {% extends "FSJ/base_with_banner.html" %}
 {% load i18n %} {# NOTE YOU MUST LOAD i18n to every HTML page even though it's also loaded to base.html #}
-
 {# A standardized page for viewing the fields of an individual committee #}
 {# This page is also used to edit committees, it is up to the form to disable/enable views #}
 {% block heading %}
@@ -15,6 +14,39 @@
 
 {% block content %}
 	<div class='center-content'>
-	{% include 'FSJ/modelform.html' with form=form url=url return_url=return_url %}
+        <form action='{{ url }}' method='post'>
+            {% csrf_token %}
+            <div>
+                <div>{{ form.committee_name.label_tag }}</div>
+                <div>{{ form.committee_name.errors }}</div>
+                <div>{{ form.committee_name.help_text }}</div>
+                <div>{{ form.committee_name }}</div>
+            </div>
+            <br>
+            <div>
+                <div>{{ form.adjudicators.label_tag }}</div>
+                <div>{{ form.adjudicators.errors }}</div>
+                <div>{{ form.adjudicators.help_text }}</div>
+                <div>{{ form.adjudicators }}</div>
+
+            </div>
+
+            <div>
+                <div>{{ form.awards.label_tag }}</div>
+                <div>{{ form.awards.errors }}</div>
+                <div>{{ form.awards.help_text }}</div>
+                <div>
+                    <ul><li><input type='checkbox' id='awardselect' onClick="award_toggle(this);"/><b>{% trans " Select all" %}</b></li></ul>
+                    {{ form.awards }}
+                </div>
+            </div>
+
+            <br/>
+            {# Save button #}
+            <button class='btn btn-success' type='submit'>{% trans "Save" %}</button>
+            <a class="btn btn-danger" role="button" href="{{ return_url }}">{% trans "Cancel" %}</a>
+        </form>
     </div>
+
+
 {% endblock %}
