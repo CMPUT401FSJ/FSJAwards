@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-06-12 13:48-0600\n"
-"PO-Revision-Date: 2018-06-12 13:50-0600\n"
+"POT-Creation-Date: 2018-06-15 14:51-0600\n"
+"PO-Revision-Date: 2018-06-15 14:53-0600\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: fr\n"
@@ -86,18 +86,18 @@ msgstr "Archivée:"
 msgid "Is Reviewed:"
 msgstr "Évaluée:"
 
-#: .\FSJ\forms\forms_award.py:40 .\FSJ\forms\forms_datechange.py:35
+#: .\FSJ\forms\forms_award.py:42 .\FSJ\forms\forms_datechange.py:35
 msgid "The start date must be later than the end date."
 msgstr "La date de début doit précéder la date de fin."
 
 #. Translators: Start date for award on student application page
 #. Translators: Award start date header in awards table
-#: .\FSJ\forms\forms_datechange.py:14 .\FSJ\models\models_award.py:34
+#: .\FSJ\forms\forms_datechange.py:14 .\FSJ\models\models_award.py:35
 #: .\FSJ\templates\FSJ\student_apply.html:60
 #: .\FSJ\templates\FSJ\student_award_history.html:24
-#: .\FSJ\templates\FSJ\student_awards_list.html:38
-#: .\FSJ\templates\FSJ\student_awards_list.html:80
-#: .\FSJ\templates\FSJ\student_awards_list.html:123
+#: .\FSJ\templates\FSJ\student_awards_list.html:36
+#: .\FSJ\templates\FSJ\student_awards_list.html:71
+#: .\FSJ\templates\FSJ\student_awards_list.html:107
 msgid "Start date"
 msgstr "Date de début"
 
@@ -105,13 +105,21 @@ msgstr "Date de début"
 #. Translators: Award end date header in awards table
 #: .\FSJ\forms\forms_datechange.py:15 .\FSJ\templates\FSJ\student_apply.html:67
 #: .\FSJ\templates\FSJ\student_award_history.html:26
-#: .\FSJ\templates\FSJ\student_awards_list.html:40
-#: .\FSJ\templates\FSJ\student_awards_list.html:82
-#: .\FSJ\templates\FSJ\student_awards_list.html:125
+#: .\FSJ\templates\FSJ\student_awards_list.html:38
+#: .\FSJ\templates\FSJ\student_awards_list.html:73
+#: .\FSJ\templates\FSJ\student_awards_list.html:109
 msgid "End date"
 msgstr "Date de fin"
 
-#: .\FSJ\forms\forms_fileupload.py:9
+#: .\FSJ\forms\forms_fileupload.py:11
+msgid "CSV Encoding"
+msgstr "Codage du CSV"
+
+#: .\FSJ\forms\forms_fileupload.py:11
+msgid "Please choose the encoding for your CSV."
+msgstr "Veuillez choisir le codage de votre CSV."
+
+#: .\FSJ\forms\forms_fileupload.py:13
 msgid ""
 "Upload a CSV with fields CCID, ID, First Name, Middle Name, Last Name, Email "
 "(Univ), Prog & Year"
@@ -119,21 +127,21 @@ msgstr ""
 "Téléverser un fichier CSV avec les champs CCID, ID, First Name, Middle Name, "
 "Last Name, Email (Univ), Prog & Year"
 
-#: .\FSJ\forms\forms_fileupload.py:10
+#: .\FSJ\forms\forms_fileupload.py:14
 msgid "Student File"
 msgstr "Dossier étudiant"
 
-#: .\FSJ\forms\forms_fileupload.py:11
+#: .\FSJ\forms\forms_fileupload.py:15
 msgid "Upload a CSV with fields ID, GPA & Credits"
 msgstr "Téléverser un fichier CSV avec les champs CCID, GPA & Credits"
 
-#: .\FSJ\forms\forms_fileupload.py:11
+#: .\FSJ\forms\forms_fileupload.py:15
 msgid "GPA File"
 msgstr "Fichier GPA"
 
 #: .\FSJ\forms\forms_ranking.py:23 .\FSJ\forms\forms_ranking.py:52
 #: .\FSJ\models\models_ranking.py:19
-#: .\FSJ\templates\FSJ\application_list.html:40
+#: .\FSJ\templates\FSJ\application_list.html:47
 msgid "Rank"
 msgstr "Classement"
 
@@ -153,7 +161,7 @@ msgstr "Une adresse @ualberta.ca est requise"
 #. Translators: CCID header in adjudicator table
 #. Translators: CCID header in student table
 #: .\FSJ\models\models_FSJUser.py:28
-#: .\FSJ\templates\FSJ\application_list.html:32
+#: .\FSJ\templates\FSJ\application_list.html:37
 #: .\FSJ\templates\FSJ\coord_adjudicator_list.html:49
 #: .\FSJ\templates\FSJ\coord_application_archive.html:23
 #: .\FSJ\templates\FSJ\coord_application_tab.html:75
@@ -188,50 +196,50 @@ msgstr "Langue de préférence"
 #. Translators: Award name header in awards table
 #. Translators: Award header in application table
 #. Translators: Award name header in awards table
-#: .\FSJ\models\models_application.py:26 .\FSJ\models\models_ranking.py:16
+#: .\FSJ\models\models_application.py:29 .\FSJ\models\models_ranking.py:16
 #: .\FSJ\templates\FSJ\adj_awards_list.html:33
 #: .\FSJ\templates\FSJ\adj_awards_list.html:85
 #: .\FSJ\templates\FSJ\awards_list.html:78
-#: .\FSJ\templates\FSJ\coord_application_tab.html:79
+#: .\FSJ\templates\FSJ\coord_application_tab.html:81
 #: .\FSJ\templates\FSJ\student_award_history.html:16
 #: .\FSJ\templates\FSJ\student_awards_list.html:30
-#: .\FSJ\templates\FSJ\student_awards_list.html:72
-#: .\FSJ\templates\FSJ\student_awards_list.html:115
+#: .\FSJ\templates\FSJ\student_awards_list.html:65
+#: .\FSJ\templates\FSJ\student_awards_list.html:101
 msgid "Award"
 msgstr "Bourses"
 
 #. Translators: Student header in application table
-#: .\FSJ\models\models_application.py:27
-#: .\FSJ\templates\FSJ\application_list.html:31
+#: .\FSJ\models\models_application.py:30
+#: .\FSJ\templates\FSJ\application_list.html:36
 #: .\FSJ\templates\FSJ\coord_application_archive.html:22
 #: .\FSJ\templates\FSJ\coord_application_tab.html:74
 msgid "Student"
 msgstr "Étudiant"
 
-#: .\FSJ\models\models_application.py:28
+#: .\FSJ\models\models_application.py:31
 msgid "Is Submitted"
 msgstr "Soumise"
 
-#: .\FSJ\models\models_application.py:29
+#: .\FSJ\models\models_application.py:32
 msgid "Is Reviewed"
 msgstr "Demande évaluée"
 
-#: .\FSJ\models\models_application.py:30
+#: .\FSJ\models\models_application.py:33
 msgid "Is Archived"
 msgstr "Demande archivée"
 
-#: .\FSJ\models\models_application.py:32
+#: .\FSJ\models\models_application.py:35
 msgid "Application Document"
 msgstr "Documents à soumettre"
 
-#: .\FSJ\models\models_application.py:33
+#: .\FSJ\models\models_application.py:36
 msgid "Viewed"
 msgstr "Demande en cours"
 
 #. Translators: Adjudicators link on the main banner
 #. Translators: Adjudicator page header
 #. Translators: Committee adjudicators header in committees table
-#: .\FSJ\models\models_application.py:34 .\FSJ\models\models_award.py:38
+#: .\FSJ\models\models_application.py:37 .\FSJ\models\models_award.py:39
 #: .\FSJ\models\models_committee.py:17
 #: .\FSJ\templates\FSJ\base_with_banner.html:29
 #: .\FSJ\templates\FSJ\coord_adjudicator_list.html:9
@@ -239,85 +247,85 @@ msgstr "Demande en cours"
 msgid "Adjudicators"
 msgstr "Évaluateurs"
 
-#: .\FSJ\models\models_application.py:54 .\FSJ\models\models_application.py:63
-#: .\FSJ\models\models_award.py:84 .\FSJ\models\models_award.py:90
+#: .\FSJ\models\models_application.py:57 .\FSJ\models\models_application.py:66
+#: .\FSJ\models\models_award.py:85 .\FSJ\models\models_award.py:91
 msgid "Review Completed"
 msgstr "Évaluation terminée"
 
-#: .\FSJ\models\models_application.py:56 .\FSJ\models\models_application.py:65
+#: .\FSJ\models\models_application.py:59 .\FSJ\models\models_application.py:68
 msgid "Review Pending"
 msgstr "Évaluation en attente"
 
-#: .\FSJ\models\models_application.py:58 .\FSJ\models\models_application.py:67
+#: .\FSJ\models\models_application.py:61 .\FSJ\models\models_application.py:70
 msgid "View Application"
 msgstr "Voir la demande de bourse"
 
-#: .\FSJ\models\models_award.py:29
+#: .\FSJ\models\models_award.py:30
 msgid "Name"
 msgstr "Nom"
 
 #. Translators: Award description header in awards table
 #. Translators: Description for award on student application page
 #. Translators: Award description header in awards table
-#: .\FSJ\models\models_award.py:30 .\FSJ\templates\FSJ\adj_awards_list.html:35
+#: .\FSJ\models\models_award.py:31 .\FSJ\templates\FSJ\adj_awards_list.html:35
 #: .\FSJ\templates\FSJ\adj_awards_list.html:87
 #: .\FSJ\templates\FSJ\awards_list.html:80
 #: .\FSJ\templates\FSJ\student_apply.html:15
 #: .\FSJ\templates\FSJ\student_award_history.html:18
 #: .\FSJ\templates\FSJ\student_awards_list.html:32
-#: .\FSJ\templates\FSJ\student_awards_list.html:74
-#: .\FSJ\templates\FSJ\student_awards_list.html:117
+#: .\FSJ\templates\FSJ\student_awards_list.html:67
+#: .\FSJ\templates\FSJ\student_awards_list.html:103
 #: .\FSJ\templates\FSJ\view_application.html:30
 msgid "Description"
 msgstr "Description"
 
 #. Translators: Value for award on student application page
 #. Translators: Award value header in awards table
-#: .\FSJ\models\models_award.py:31 .\FSJ\templates\FSJ\student_apply.html:22
+#: .\FSJ\models\models_award.py:32 .\FSJ\templates\FSJ\student_apply.html:22
 #: .\FSJ\templates\FSJ\student_award_history.html:20
 #: .\FSJ\templates\FSJ\student_awards_list.html:34
-#: .\FSJ\templates\FSJ\student_awards_list.html:76
-#: .\FSJ\templates\FSJ\student_awards_list.html:119
+#: .\FSJ\templates\FSJ\student_awards_list.html:69
+#: .\FSJ\templates\FSJ\student_awards_list.html:105
 #: .\FSJ\templates\FSJ\view_application.html:36
 msgid "Value"
 msgstr "Montant de la bourse"
 
 #. Translators: Programs link on the main banner
 #. Translators: Programs page home label
-#: .\FSJ\models\models_award.py:32 .\FSJ\templates\FSJ\base_with_banner.html:37
+#: .\FSJ\models\models_award.py:33 .\FSJ\templates\FSJ\base_with_banner.html:37
 #: .\FSJ\templates\FSJ\coord_program_list.html:7
 msgid "Programs"
 msgstr "Programmes"
 
-#: .\FSJ\models\models_award.py:33
+#: .\FSJ\models\models_award.py:34
 msgid "Years"
 msgstr "Année d'études"
 
 #. Translators: Award end date header in awards table
-#: .\FSJ\models\models_award.py:35 .\FSJ\templates\FSJ\adj_awards_list.html:39
+#: .\FSJ\models\models_award.py:36 .\FSJ\templates\FSJ\adj_awards_list.html:39
 #: .\FSJ\templates\FSJ\adj_awards_list.html:91
 #: .\FSJ\templates\FSJ\awards_list.html:84
 msgid "End Date"
 msgstr "Date de fin"
 
-#: .\FSJ\models\models_award.py:36
+#: .\FSJ\models\models_award.py:37
 msgid "Documents Required"
 msgstr "Documents requis"
 
-#: .\FSJ\models\models_award.py:37
+#: .\FSJ\models\models_award.py:38
 msgid "Is Active"
 msgstr "Bourse active"
 
-#: .\FSJ\models\models_award.py:39
-#: .\FSJ\templates\FSJ\view_application.html:190
+#: .\FSJ\models\models_award.py:40
+#: .\FSJ\templates\FSJ\view_application.html:193
 msgid "Comment"
 msgstr "Commentaire"
 
-#: .\FSJ\models\models_award.py:78 .\FSJ\models\models_award.py:100
+#: .\FSJ\models\models_award.py:79 .\FSJ\models\models_award.py:101
 msgid "Review Required"
 msgstr "Évaluation en attente"
 
-#: .\FSJ\models\models_award.py:81 .\FSJ\models\models_award.py:102
+#: .\FSJ\models\models_award.py:82 .\FSJ\models\models_award.py:103
 msgid "Review In Progress"
 msgstr "Évaluation en cours"
 
@@ -329,7 +337,7 @@ msgstr "Demande de bourse"
 #: .\FSJ\models\models_comment.py:17 .\FSJ\models\models_ranking.py:18
 #: .\FSJ\templates\FSJ\coord_final_review.html:31
 #: .\FSJ\templates\FSJ\coord_final_review.html:57
-#: .\FSJ\templates\FSJ\view_application.html:189
+#: .\FSJ\templates\FSJ\view_application.html:192
 msgid "Adjudicator"
 msgstr "Évaluateur"
 
@@ -365,7 +373,7 @@ msgstr "Nom du programme"
 #. Translators: Program name header in program table
 #. Translators: Program header in student table
 #: .\FSJ\models\models_student.py:19
-#: .\FSJ\templates\FSJ\application_list.html:34
+#: .\FSJ\templates\FSJ\application_list.html:41
 #: .\FSJ\templates\FSJ\coord_application_archive.html:25
 #: .\FSJ\templates\FSJ\coord_application_tab.html:76
 #: .\FSJ\templates\FSJ\coord_program_list.html:26
@@ -376,7 +384,7 @@ msgstr "Programme"
 
 #. Translators: Year header in years table
 #: .\FSJ\models\models_student.py:20
-#: .\FSJ\templates\FSJ\application_list.html:35
+#: .\FSJ\templates\FSJ\application_list.html:42
 #: .\FSJ\templates\FSJ\coord_application_archive.html:26
 #: .\FSJ\templates\FSJ\coord_application_tab.html:77
 #: .\FSJ\templates\FSJ\coord_years_list.html:24
@@ -386,17 +394,19 @@ msgstr "Année d'études"
 
 #. Translators: GPA header in student table
 #: .\FSJ\models\models_student.py:21
-#: .\FSJ\templates\FSJ\application_list.html:36
+#: .\FSJ\templates\FSJ\application_list.html:43
 #: .\FSJ\templates\FSJ\coord_application_archive.html:27
+#: .\FSJ\templates\FSJ\coord_application_tab.html:78
 #: .\FSJ\templates\FSJ\coord_student_list.html:84
-#: .\FSJ\templates\FSJ\view_application.html:92
+#: .\FSJ\templates\FSJ\view_application.html:91
 msgid "GPA"
 msgstr "GPA"
 
 #. Translators: Credits header in student table
 #: .\FSJ\models\models_student.py:22
-#: .\FSJ\templates\FSJ\application_list.html:37
+#: .\FSJ\templates\FSJ\application_list.html:44
 #: .\FSJ\templates\FSJ\coord_application_archive.html:28
+#: .\FSJ\templates\FSJ\coord_application_tab.html:79
 #: .\FSJ\templates\FSJ\coord_student_list.html:86
 #: .\FSJ\templates\FSJ\view_application.html:101
 msgid "Credits"
@@ -467,52 +477,52 @@ msgstr "Demandes de bourse"
 msgid "No Applications"
 msgstr "Aucune demande"
 
-#: .\FSJ\templates\FSJ\application_list.html:17
+#: .\FSJ\templates\FSJ\application_list.html:22
 msgid "Return to Awards"
 msgstr "Retour page de bourses"
 
-#: .\FSJ\templates\FSJ\application_list.html:19
+#: .\FSJ\templates\FSJ\application_list.html:24
 msgid "View Archive"
 msgstr "Voir archive"
 
 #. Translators: Student ID header in student table
-#: .\FSJ\templates\FSJ\application_list.html:33
+#: .\FSJ\templates\FSJ\application_list.html:39
 #: .\FSJ\templates\FSJ\coord_application_archive.html:24
 #: .\FSJ\templates\FSJ\coord_student_list.html:78
 #: .\FSJ\templates\FSJ\view_application.html:84
 msgid "Student ID"
 msgstr "Numéro d'étudiant"
 
-#: .\FSJ\templates\FSJ\application_list.html:38
+#: .\FSJ\templates\FSJ\application_list.html:45
 msgid "Is Submitted?"
 msgstr "Demande soumise?"
 
-#: .\FSJ\templates\FSJ\application_list.html:42
-#: .\FSJ\templates\FSJ\coord_application_tab.html:83
+#: .\FSJ\templates\FSJ\application_list.html:49
+#: .\FSJ\templates\FSJ\coord_application_tab.html:85
 msgid "Status"
 msgstr "Statut"
 
-#: .\FSJ\templates\FSJ\application_list.html:78
-#: .\FSJ\templates\FSJ\coord_application_tab.html:164
+#: .\FSJ\templates\FSJ\application_list.html:92
+#: .\FSJ\templates\FSJ\coord_application_tab.html:176
 msgid "Review Application(s)"
 msgstr "Demande à évaluer"
 
-#: .\FSJ\templates\FSJ\application_list.html:79
-#: .\FSJ\templates\FSJ\coord_application_tab.html:165
+#: .\FSJ\templates\FSJ\application_list.html:93
+#: .\FSJ\templates\FSJ\coord_application_tab.html:177
 msgid "Archive Application(s)"
 msgstr "Demande à archiver"
 
 #. Translators: Button to delete archived applications
-#: .\FSJ\templates\FSJ\application_list.html:80
+#: .\FSJ\templates\FSJ\application_list.html:94
 #: .\FSJ\templates\FSJ\coord_application_archive.html:60
 msgid "Delete Application(s)"
 msgstr "Demande à supprimer"
 
-#: .\FSJ\templates\FSJ\application_list.html:84
+#: .\FSJ\templates\FSJ\application_list.html:98
 msgid "Finish Award Review"
 msgstr "Évaluation terminée"
 
-#: .\FSJ\templates\FSJ\application_list.html:85
+#: .\FSJ\templates\FSJ\application_list.html:99
 msgid "Mark Award Unreviewed"
 msgstr "Marqué comme non-évalué"
 
@@ -567,7 +577,7 @@ msgstr "Ajouter bourse"
 #: .\FSJ\templates\FSJ\coord_student_list.html:115
 #: .\FSJ\templates\FSJ\coord_years_list.html:26
 #: .\FSJ\templates\FSJ\coord_years_list.html:33
-#: .\FSJ\templates\FSJ\student_awards_list.html:101
+#: .\FSJ\templates\FSJ\student_awards_list.html:87
 msgid "Edit"
 msgstr "Modifier"
 
@@ -694,29 +704,29 @@ msgid "Archive"
 msgstr "Archive"
 
 #: .\FSJ\templates\FSJ\coord_application_archive.html:17
-#: .\FSJ\templates\FSJ\view_application.html:179
-#: .\FSJ\templates\FSJ\view_application.html:205
+#: .\FSJ\templates\FSJ\view_application.html:182
+#: .\FSJ\templates\FSJ\view_application.html:209
 #: .\FSJ\templates\FSJ\view_student.html:30
 msgid "Return to Applications"
 msgstr "Retour aux demandes"
 
 #. Translators: Button to reactivate archived applications
 #: .\FSJ\templates\FSJ\coord_application_archive.html:58
-#: .\FSJ\templates\FSJ\coord_application_tab.html:166
+#: .\FSJ\templates\FSJ\coord_application_tab.html:178
 msgid "Reactivate Application(s)"
 msgstr "Réactiver demande?"
 
 #. Translators: Submitted header in application table
-#: .\FSJ\templates\FSJ\coord_application_tab.html:81
+#: .\FSJ\templates\FSJ\coord_application_tab.html:83
 msgid "Submitted?"
 msgstr "Demande soumise?"
 
-#: .\FSJ\templates\FSJ\coord_application_tab.html:82
+#: .\FSJ\templates\FSJ\coord_application_tab.html:84
 msgid "Archived?"
 msgstr "Archivée?"
 
 #. Translators: Button to delete selected applications
-#: .\FSJ\templates\FSJ\coord_application_tab.html:168
+#: .\FSJ\templates\FSJ\coord_application_tab.html:180
 msgid "Delete application(s)"
 msgstr "Supprimer demande"
 
@@ -776,7 +786,7 @@ msgid "Rank 5"
 msgstr "5e choix"
 
 #: .\FSJ\templates\FSJ\coord_final_review.html:100
-#: .\FSJ\templates\FSJ\coord_student_upload.html:36
+#: .\FSJ\templates\FSJ\coord_student_upload.html:37
 #: .\FSJ\templates\FSJ\modelform.html:26
 msgid "Save"
 msgstr "Sauvegarder"
@@ -828,9 +838,6 @@ msgstr "Retour page d'étudiants"
 #. Translators: Award years of study header in awards table
 #: .\FSJ\templates\FSJ\coord_years_list.html:7
 #: .\FSJ\templates\FSJ\student_award_history.html:22
-#: .\FSJ\templates\FSJ\student_awards_list.html:36
-#: .\FSJ\templates\FSJ\student_awards_list.html:78
-#: .\FSJ\templates\FSJ\student_awards_list.html:121
 msgid "Years of Study"
 msgstr "Année d'études"
 
@@ -919,7 +926,7 @@ msgstr "Ajouter programme"
 
 #. Translators: Apply button in award table
 #: .\FSJ\templates\FSJ\student_apply.html:6
-#: .\FSJ\templates\FSJ\student_awards_list.html:58
+#: .\FSJ\templates\FSJ\student_awards_list.html:51
 msgid "Apply"
 msgstr "Soumettre une demande"
 
@@ -1013,26 +1020,26 @@ msgid "Submitted Awards"
 msgstr "Demandes soumises"
 
 #. Translators: Apply button header in awards table
-#: .\FSJ\templates\FSJ\student_awards_list.html:42
-#: .\FSJ\templates\FSJ\student_awards_list.html:84
-#: .\FSJ\templates\FSJ\student_awards_list.html:127
+#: .\FSJ\templates\FSJ\student_awards_list.html:40
+#: .\FSJ\templates\FSJ\student_awards_list.html:75
+#: .\FSJ\templates\FSJ\student_awards_list.html:111
 msgid "Action"
 msgstr "Action"
 
-#: .\FSJ\templates\FSJ\student_awards_list.html:62
+#: .\FSJ\templates\FSJ\student_awards_list.html:55
 msgid "No new awards"
 msgstr "Pas de nouvelle  bourse"
 
-#: .\FSJ\templates\FSJ\student_awards_list.html:105
+#: .\FSJ\templates\FSJ\student_awards_list.html:91
 msgid "No in-progress awards"
 msgstr "Aucune demande en cours"
 
 #. Translators: Unsubmit application button in student award table
-#: .\FSJ\templates\FSJ\student_awards_list.html:143
+#: .\FSJ\templates\FSJ\student_awards_list.html:122
 msgid "Unsubmit"
 msgstr "Annuler demande soumise"
 
-#: .\FSJ\templates\FSJ\student_awards_list.html:147
+#: .\FSJ\templates\FSJ\student_awards_list.html:126
 msgid "No submitted awards"
 msgstr "Aucune demande soumise"
 
@@ -1058,33 +1065,33 @@ msgstr "Programme"
 msgid "Year(s)"
 msgstr "Année d'études"
 
-#: .\FSJ\templates\FSJ\view_application.html:110
+#: .\FSJ\templates\FSJ\view_application.html:113
 msgid "Document"
 msgstr "Document"
 
-#: .\FSJ\templates\FSJ\view_application.html:115
+#: .\FSJ\templates\FSJ\view_application.html:118
 msgid "No document has been uploaded yet, but one is expected."
 msgstr "Document obligtoire. Prière de soumettre."
 
-#: .\FSJ\templates\FSJ\view_application.html:128
-#: .\FSJ\templates\FSJ\view_application.html:203
+#: .\FSJ\templates\FSJ\view_application.html:131
+#: .\FSJ\templates\FSJ\view_application.html:207
 msgid "Mark reviewed"
 msgstr "Marqué comme  évalué"
 
-#: .\FSJ\templates\FSJ\view_application.html:130
-#: .\FSJ\templates\FSJ\view_application.html:204
+#: .\FSJ\templates\FSJ\view_application.html:133
+#: .\FSJ\templates\FSJ\view_application.html:208
 msgid "Mark unreviewed"
 msgstr "Marqué comme non-évalué"
 
-#: .\FSJ\templates\FSJ\view_application.html:174
+#: .\FSJ\templates\FSJ\view_application.html:177
 msgid "Application Reviewed"
 msgstr "Demande évalué"
 
-#: .\FSJ\templates\FSJ\view_application.html:176
+#: .\FSJ\templates\FSJ\view_application.html:179
 msgid "Delete comment & ranking"
 msgstr "Supprimer commentaire et choix de candidat"
 
-#: .\FSJ\templates\FSJ\view_application.html:191
+#: .\FSJ\templates\FSJ\view_application.html:194
 msgid "Ranking"
 msgstr "Classement"
 
@@ -1228,7 +1235,7 @@ msgstr "[NE PAS RÉPONDRE] Activer votre compte Bourse du Campus Saint Jean"
 msgid "Student does not exist"
 msgstr "Profil inexistant"
 
-#: .\FSJ\views_adjudicator.py:258 .\FSJ\views_coordinator.py:1066
+#: .\FSJ\views_adjudicator.py:258 .\FSJ\views_coordinator.py:1068
 msgid "This application does not exist"
 msgstr "Cette demande n'existe pas"
 
@@ -1256,31 +1263,31 @@ msgstr "La date de début doit précéder la date de fin"
 msgid "Year does not exist"
 msgstr "L'année d'études n'existe pas"
 
-#: .\FSJ\views_coordinator.py:828
+#: .\FSJ\views_coordinator.py:830
 msgid "Upload success!"
 msgstr "Téléchargement réussi!"
 
-#: .\FSJ\views_coordinator.py:831
-msgid "Please upload a UTF-8 encoded CSV file."
-msgstr "Veuillez técharger un fichier au format CSV encodage UTF-8."
+#: .\FSJ\views_coordinator.py:833
+msgid "Please ensure you have selected the correct encoding."
+msgstr "Veuillez vous assurer que vous avez choisi le bon codage."
 
-#: .\FSJ\views_coordinator.py:834
+#: .\FSJ\views_coordinator.py:836
 msgid "Please make sure all column names match specified column names."
 msgstr "Veuillez vous assurer que les noms des colonnes correspondent."
 
-#: .\FSJ\views_coordinator.py:837
+#: .\FSJ\views_coordinator.py:839
 msgid "Please ensure all required programs have been added."
 msgstr "Veuillez vous assurer que tous les programmes requis ont été ajoutés."
 
-#: .\FSJ\views_coordinator.py:840
+#: .\FSJ\views_coordinator.py:842
 msgid "Please ensure all required years of study have been added."
 msgstr "Veuillez vous assurer que toutes les années d'études ont été ajoutées."
 
-#: .\FSJ\views_coordinator.py:843
+#: .\FSJ\views_coordinator.py:845
 msgid "The student you are attempting to upload a GPA for does not exist."
 msgstr "Cet étudiant n'existe pas."
 
-#: .\FSJ\views_coordinator.py:847
+#: .\FSJ\views_coordinator.py:849
 msgid ""
 "Unexpected error. Please confirm file is in a valid format, and has all "
 "required columns/programs/years."
@@ -1288,11 +1295,11 @@ msgstr ""
 "Erreur inattendue. Veuillez verifier que toutes les informations sont "
 "incluses, ainsi que le format du fichier."
 
-#: .\FSJ\views_coordinator.py:931 .\FSJ\views_coordinator.py:1021
+#: .\FSJ\views_coordinator.py:933 .\FSJ\views_coordinator.py:1023
 msgid "Committee does not exist"
 msgstr "Le comité n'existe pas"
 
-#: .\FSJ\views_coordinator.py:1078
+#: .\FSJ\views_coordinator.py:1080
 msgid "This application is missing a document"
 msgstr "Cette demande de bourse manque un document"
 
@@ -1303,3 +1310,6 @@ msgstr "English"
 #: .\FSJ_django20_project\settings.py:117
 msgid "French"
 msgstr "Français"
+
+#~ msgid "Please upload a UTF-8 encoded CSV file."
+#~ msgstr "Veuillez técharger un fichier au format CSV encodage UTF-8."

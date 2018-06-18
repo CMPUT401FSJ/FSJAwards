@@ -105,7 +105,6 @@ div.ualberta-themed-header {
 }
 
 .desc-column {
-    width:300px;
     min-width:300px;
 }
 
@@ -149,4 +148,11 @@ b {
 
 div.tab-comments {
     color: red;
+}
+
+.award-info {
+    border: 2px;
+    border-style: solid;
+    border-color: #007C41;
+    padding-left: 1em;
 }

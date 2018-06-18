@@ -92,19 +92,21 @@
                         <hr class="hr-div">
                         {% if student.gpa %}
                             {{ student.gpa }}
-                             <br>
+                        {% else %}
+                            <br>
                         {% endif %}
                     </div>
-
+                    <br>
                     <div>
                         <h4><b>{% trans "Credits" %}</b></h4>
                         <hr class="hr-div">
                         {% if student.credits %}
                             {{ student.credits }}
+                        {% else %}
                             <br>
                         {% endif %}
                     </div>
-
+                    <br>
 
                     {% if award.documents_needed %}
                         <div>
@@ -199,13 +201,13 @@
                                 </tr>
                             {% endfor %}
                         </table>
-
-                        <br>
-                            <button class = "btn btn-success" type="submit" name="_review">{% trans "Mark reviewed" %}</button>
-                            <button class = "btn btn-success" type="submit" name="_unreview">{% trans "Mark unreviewed" %}</button>
-                            <a class="btn btn-success" role="button" href="{{ return_url|unquote }}">{% trans "Return to Applications" %}</a>
-
                     {% endif %}
+                    <br>
+
+                    <button class = "btn btn-success" type="submit" name="_review">{% trans "Mark reviewed" %}</button>
+                    <button class = "btn btn-success" type="submit" name="_unreview">{% trans "Mark unreviewed" %}</button>
+                    <a class="btn btn-success" role="button" href="{{ return_url|unquote }}">{% trans "Return to Applications" %}</a>
+
                 </div>
             {% endif %}
         </div>

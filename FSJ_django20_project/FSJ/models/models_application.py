@@ -7,6 +7,9 @@ from django.core.validators import FileExtensionValidator
 from .models_student import Student
 from .models_adjudicator import Adjudicator
 from .models_FSJUser import FSJUser
+import os
+from django.dispatch import receiver
+
 
 class Application(models.Model):
     """Represents a student's application for a specific award, which is then reviewed by adjudicators and the
@@ -35,7 +38,7 @@ class Application(models.Model):
     adjudicators = models.ManyToManyField(Adjudicator, related_name='applications', verbose_name = _("Adjudicators"))
     
     def __str__(self):
-        return self.student.ccid + "'s application for " + self.award.name    
+        return self.student.ccid + "'s application for " + self.award.name
     
     def getawardname(self):
         return self.award.name
@@ -117,3 +120,27 @@ class Application(models.Model):
         
         else:
             return False
+
+# Code adapted from from https://stackoverflow.com/questions/16041232/django-delete-filefield/16041527
+@receiver(models.signals.post_delete, sender=Application)
+def auto_delete_file_on_delete(sender, instance, **kwargs):
+    if instance.application_file:
+        if os.path.isfile(instance.application_file.path):
+            os.remove(instance.application_file.path)
+
+@receiver(models.signals.pre_save, sender=Application)
+def auto_delete_file_on_change(sender, instance, **kwargs):
+
+    if not instance.pk:
+        return False
+
+    try:
+        old_file = Application.objects.get(pk=instance.pk).application_file
+    except:
+        return False
+
+    if old_file:
+        new_file = instance.application_file
+        if not old_file == new_file:
+            if os.path.isfile(old_file.path):
+                os.remove(old_file.path)

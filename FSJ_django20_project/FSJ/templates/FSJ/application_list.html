@@ -11,6 +11,14 @@
 
 {% block content %}
     <div class='center-content' xmlns="http://www.w3.org/1999/html">
+        <div>
+            <h3>{{ award.name }}</h3>
+            <hr class="hr-div">
+            {% if FSJ_user.user_class == "Coordinator" %}
+                <h5>{{ award.description|linebreaks }}</h5>
+            {% endif %}
+        </div>
+        <br>
         <form action ='{{ url }}' method="POST" >
             {% csrf_token %}
             
@@ -30,7 +38,9 @@
 
                     <th>{% trans "Student" %}</th>
                     <th>{% trans "CCID" %}</th>
-                    <th>{% trans "Student ID" %}</th>
+                    {% if FSJ_user.user_class == "Coordinator" %}
+                        <th>{% trans "Student ID" %}</th>
+                    {% endif %}
                     <th>{% trans "Program" %}</th>
                     <th>{% trans "Year" %}</th>
                     <th>{% trans "GPA" %}</th>
@@ -46,9 +56,16 @@
                         {% if FSJ_user.user_class == "Coordinator" %}
                             <td><input type="checkbox"  name="applicationaction" value="{{application.0.application_id}}" ></td>
                         {% endif %}
-                        <td><a href="/view_student/?ccid={{ application.0.student.ccid }}&awardid={{application.0.award.awardid}}&return={{ request.get_full_path|quote }}">{{ application.0.student.get_name }}</a></td>
+                        {% if FSJ_user.user_class == "Coordinator" %}
+                            <td><a href="/view_student/?ccid={{ application.0.student.ccid }}&awardid={{application.0.award.awardid}}&return={{ request.get_full_path|quote }}">{{ application.0.student.get_name }}</a></td>
+                        {% endif %}
+                        {% if FSJ_user.user_class == "Adjudicator" %}
+                            <td>{{ application.0.student.get_name }}</td>
+                        {% endif %}
                         <td>{{ application.0.student.ccid }}</td>
-                        <td>{{ application.0.student.student_id }}</td>
+                        {% if FSJ_user.user_class == "Coordinator" %}
+                            <td>{{ application.0.student.student_id }}</td>
+                        {% endif %}
                         <td>
                             {% if application.0.student.program %}
                                 {{ application.0.student.program }}
