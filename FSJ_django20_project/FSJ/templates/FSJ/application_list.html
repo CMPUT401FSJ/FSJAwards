@@ -11,8 +11,9 @@
 
 {% block content %}
     <div class='center-content' xmlns="http://www.w3.org/1999/html">
-        <div class="award-info">
+        <div>
             <h3>{{ award.name }}</h3>
+            <hr class="hr-div">
             {% if FSJ_user.user_class == "Coordinator" %}
                 <h5>{{ award.description|linebreaks }}</h5>
             {% endif %}
