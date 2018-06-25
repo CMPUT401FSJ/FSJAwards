@@ -90,11 +90,86 @@ def coordinator_adjudicators(request):
 @user_passes_test(is_coordinator)
 def coordinator_edit_student(request):
     student_ccid = request.GET.get("ccid","")
+    return_url = request.GET.get("return", "")
+    url_is_safe = is_safe_url(url=urllib.parse.unquote(return_url),
+                              allowed_hosts=settings.ALLOWED_HOSTS,
+                              require_https=request.is_secure(), )
     FSJ_user = get_FSJ_user(request.user.username)
+    //////////////////////////
+
+   
+
+
+    if request.method == 'POST':
+
+        # Applications cannot be marked as reviewed and complete if they are missing an application document
+        if '_review' in request.POST:
+            if application.award.documents_needed and not application.application_file:
+                messages.warning(request, _("This application is missing a document"))
+                return redirect("/view_application/?application_id=" + str(
+                    application.application_id) + "&return=" + urllib.parse.quote(return_url))
+            else:
+                application.is_reviewed = True
+        elif '_unreview' in request.POST:
+            application.is_reviewed = False
+
+        application.save()
+
+        if url_is_safe:
+            return redirect(urllib.parse.unquote(return_url))
+        else:
+            return redirect('/applications/')
+
+    else:
+        adjudicators = application.adjudicators.all()
+        comment_list = []
+        ranking_list = []
+
+        # Produces a list of all comments and rankings for the award which are then zipped together to produce a list
+        # of tuples in the format (adjudicator, comment, ranking)
+        if adjudicators.count() > 0:
+            for adjudicator in adjudicators:
+                try:
+                    comment = Comment.objects.get(application=application, adjudicator=adjudicator)
+                    comment_list.append(comment.comment_text)
+                except:
+                    comment_list.append("")
+
+                try:
+                    ranking = Ranking.objects.get(application=application, adjudicator=adjudicator)
+                    ranking_list.append(ranking.rank)
+
+                except Ranking.DoesNotExist:
+                    ranking_list.append("--")
+
+            review_list = zip(adjudicators.values_list('ccid', flat=True), comment_list, ranking_list)
+            context["review_list"] = review_list
+
+        context["student"] = application.student
+        if application.application_file:
+            context["document"] = settings.MEDIA_URL + str(application.application_file)
+        context["award"] = application.award
+
+        url = "/view_application/?application_id=" + str(application.application_id) + "&return=" + urllib.parse.quote(
+            return_url)
+        context["url"] = url
+
+        if url_is_safe and return_url:
+            context["return_url"] = str(return_url)
+
+        context["archived"] = False
+        context["FSJ_user"] = FSJ_user
+        template = loader.get_template("FSJ/view_application.html")
+
+    //////////////////////////
     try:
         student = Student.objects.get(ccid = student_ccid)
     except Student.DoesNotExist:
-        raise Http404(_("Student does not exist"))
+        if url_is_safe:
+            return redirect(urllib.parse.unquote(return_url))
+        else:
+            messages.warning(request, _"This student does not exist.")
+            return redirect('/students/')
     
     # load a form with the year info with editable fields
     if request.method == 'POST':

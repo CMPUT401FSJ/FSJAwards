@@ -13,42 +13,46 @@
 {% block content %}
     <body>
         <div class='center-content'>
-          <form method="get">
-            <div class = "well">
-              <div class="row">
-                <div class = "form-group col-sm-4 col-md-3">
-                    {{ filter.form.ccid.label_tag }}
-                    {% render_field filter.form.ccid class="form-control" %}
+            <form method="get">
+                <div class = "well">
+                    <div class="row">
+                        <div class = "form-group col-sm-4 col-md-3">
+                            {{ filter.form.ccid.label_tag }}
+                            {% render_field filter.form.ccid class="form-control" %}
+                        </div>
+                        <div class = "form-group col-sm-4 col-md-3">
+                            {{ filter.form.last_name.label_tag }}
+                            {% render_field filter.form.last_name class="form-control" %}
+                        </div>
+                        <div class = "form-group col-sm-4 col-md-3">
+                            {{ filter.form.first_name.label_tag }}
+                            {% render_field filter.form.first_name class="form-control" %}
+                        </div>
+                        <div class = "form-group col-sm-4 col-md-3">
+                            {{ filter.form.student_id.label_tag }}
+                            {% render_field filter.form.student_id class="form-control" %}
+                        </div>
+                        <div class = "form-group col-sm-4 col-md-3">
+                            {{ filter.form.year.label_tag }}
+                            {% render_field filter.form.year class="form-control" %}
+                        </div>
+                        <div class = "form-group col-sm-4 col-md-3">
+                            {{ filter.form.program.label_tag }}
+                            {% render_field filter.form.program class="form-control" %}
+                        </div>
+                        <div class = "form-group col-sm-4 col-md-3">
+                            {{ filter.form.gpa.label_tag }}
+                            {% render_field filter.form.gpa class="form-control" %}
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-success">
+                        <span class="glyphicon glyphicon-search"></span>
+                        {# Translators: Search button for filtering #}
+                        {% trans "Search" %}
+                    </button>
+                    <a role="button" class="btn btn-success" href='/students'>{% trans "Clear Filters" %}</a>
                 </div>
-                <div class = "form-group col-sm-4 col-md-3">
-                    {{ filter.form.last_name.label_tag }}
-                    {% render_field filter.form.last_name class="form-control" %}
-                </div>
-                <div class = "form-group col-sm-4 col-md-3">
-                    {{ filter.form.first_name.label_tag }}
-                    {% render_field filter.form.first_name class="form-control" %}
-                </div>
-                <div class = "form-group col-sm-4 col-md-3">
-                  {{ filter.form.student_id.label_tag }}
-                  {% render_field filter.form.student_id class="form-control" %}
-                </div>
-                <div class = "form-group col-sm-4 col-md-3">
-                  {{ filter.form.year.label_tag }}
-                  {% render_field filter.form.year class="form-control" %}
-                </div>
-                <div class = "form-group col-sm-4 col-md-3">
-                  {{ filter.form.program.label_tag }}
-                  {% render_field filter.form.program class="form-control" %}
-                </div>
-              </div>
-              <button type="submit" class="btn btn-success">
-                <span class="glyphicon glyphicon-search"></span>
-                {# Translators: Search button for filtering #}
-                {% trans "Search" %}
-              </button>          
-              <a role="button" class="btn btn-success" href='/students'>{% trans "Clear Filters" %}</a>
-            </div>
-          </form>
+            </form>
 
         <form action="/students/delete/" method="POST">
             {% csrf_token %}
