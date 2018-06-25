@@ -6,7 +6,9 @@ from django.forms import CheckboxSelectMultiple, DateInput
 from django.utils.translation import gettext_lazy as _
 
 LOOKUP_TYPES = [
-        ('icontains', _("contains"))
+    ('icontains', _("contains")),
+	('startswith', _('starts with')),
+
 ]
 
 # Custom date input that changes from default text input to date input and uses custom HTML
@@ -21,10 +23,11 @@ class StudentFilter(django_filters.FilterSet):
 	middle_name = django_filters.CharFilter(label=_("Middle Name contains:"), lookup_expr='icontains')
 	last_name = django_filters.CharFilter(label=_("Last Name contains:"), lookup_expr='icontains')
 	student_id = django_filters.CharFilter(label =_("Student ID contains:"), lookup_expr='icontains')
+	gpa = django_filters.CharFilter(label=_("GPA starts with:"), lookup_expr='startswith')
 
 	class Meta:
 		model = Student
-		fields = ['ccid','first_name','middle_name','last_name','student_id','year','program']
+		fields = ['ccid','first_name','middle_name','last_name','student_id','gpa','year','program']
 
 	def __init__(self, *args, **kwargs):
 		super(StudentFilter, self).__init__(*args, **kwargs)

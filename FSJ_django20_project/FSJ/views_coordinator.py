@@ -90,11 +90,22 @@ def coordinator_adjudicators(request):
 @user_passes_test(is_coordinator)
 def coordinator_edit_student(request):
     student_ccid = request.GET.get("ccid","")
+    return_url = request.GET.get("return", "")
+    url_is_safe = is_safe_url(url=urllib.parse.unquote(return_url),
+                              allowed_hosts=settings.ALLOWED_HOSTS,
+                              require_https=request.is_secure(), )
     FSJ_user = get_FSJ_user(request.user.username)
+
+
     try:
         student = Student.objects.get(ccid = student_ccid)
     except Student.DoesNotExist:
-        raise Http404(_("Student does not exist"))
+        if url_is_safe:
+            messages.warning(request, _("This student does not exist."))
+            return redirect(urllib.parse.unquote(return_url))
+        else:
+            messages.warning(request, _("This student does not exist."))
+            return redirect('/students/')
     
     # load a form with the year info with editable fields
     if request.method == 'POST':
@@ -102,14 +113,19 @@ def coordinator_edit_student(request):
         if form.is_valid():
             student = form.save(commit = False)
             student.save()
-            return redirect('/students/')
+            if url_is_safe:
+                return redirect(urllib.parse.unquote(return_url))
+            else:
+                return '/students/'
     else:
         form = StudentEditForm(instance=student)
-    return_url = "/students/"
-        
+
+    url = "/students/edit/?ccid=" + student_ccid + "&return=" + urllib.parse.quote(return_url)
+    
     context = get_standard_context(FSJ_user)
     context["student"] = student
     context["form"] = form
+    context["url"] = url
     context["return_url"] = return_url
     template = loader.get_template("FSJ/profile.html")
     return HttpResponse(template.render(context, request))
