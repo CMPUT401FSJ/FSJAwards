@@ -95,29 +95,16 @@ def coordinator_edit_student(request):
                               allowed_hosts=settings.ALLOWED_HOSTS,
                               require_https=request.is_secure(), )
     FSJ_user = get_FSJ_user(request.user.username)
-    //////////////////////////
-
-        if url_is_safe:
-            return redirect(urllib.parse.unquote(return_url))
-        else:
-            return redirect('/applications/')
 
 
-        url = "/view_application/?application_id=" + str(application.application_id) + "&return=" + urllib.parse.quote(
-            return_url)
-        context["url"] = url
-
-        if url_is_safe and return_url:
-            context["return_url"] = str(return_url)
-
-    //////////////////////////
     try:
         student = Student.objects.get(ccid = student_ccid)
     except Student.DoesNotExist:
         if url_is_safe:
+            messages.warning(request, _("This student does not exist."))
             return redirect(urllib.parse.unquote(return_url))
         else:
-            messages.warning(request, _"This student does not exist.")
+            messages.warning(request, _("This student does not exist."))
             return redirect('/students/')
     
     # load a form with the year info with editable fields
@@ -126,14 +113,19 @@ def coordinator_edit_student(request):
         if form.is_valid():
             student = form.save(commit = False)
             student.save()
-            return redirect('/students/')
+            if url_is_safe:
+                return redirect(urllib.parse.unquote(return_url))
+            else:
+                return '/students/'
     else:
         form = StudentEditForm(instance=student)
-    return_url = "/students/"
-        
+
+    url = "/students/edit/?ccid=" + student_ccid + "&return=" + urllib.parse.quote(return_url)
+    
     context = get_standard_context(FSJ_user)
     context["student"] = student
     context["form"] = form
+    context["url"] = url
     context["return_url"] = return_url
     template = loader.get_template("FSJ/profile.html")
     return HttpResponse(template.render(context, request))
