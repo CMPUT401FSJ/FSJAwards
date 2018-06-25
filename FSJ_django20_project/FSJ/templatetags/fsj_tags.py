@@ -113,7 +113,8 @@ def link_name(path, page_number):
     """
     output = re.search('(page=\d+)', path)
     if output is not None:
-        return path.replace(str(output.group(1)), "page={page_number}")
+        print(str(output.group(1)))
+        return path.replace(str(output.group(1)), f"page={page_number}")
     if re.search('(page=\d+)', path):
         path.replace()
     page_number = str(page_number)
