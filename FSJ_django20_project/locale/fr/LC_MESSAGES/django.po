@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-06-25 11:29-0600\n"
-"PO-Revision-Date: 2018-06-25 11:29-0600\n"
+"PO-Revision-Date: 2018-07-17 11:10-0600\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: fr\n"
@@ -513,7 +513,7 @@ msgstr "Statut"
 #: .\FSJ\templates\FSJ\application_list.html:95
 #: .\FSJ\templates\FSJ\coord_application_tab.html:176
 msgid "Review Application(s)"
-msgstr "Demande à évaluer"
+msgstr "Demandé évaluée"
 
 #: .\FSJ\templates\FSJ\application_list.html:96
 #: .\FSJ\templates\FSJ\coord_application_tab.html:177
