@@ -177,9 +177,6 @@
                         <br/>
                         {# Save button #}
                         <button class='btn btn-success' type='submit'>{% trans "Application Reviewed" %}</button>
-                        {% if delete_url %}
-                            <a class="btn btn-danger" role="button" href="{{ delete_url }}">{% trans "Delete comment & ranking" %}</a>
-                        {% endif %}
                     {% endif %}
                     <a class="btn btn-success" role="button" href="{{ return_url|unquote }}">{% trans "Return to Applications" %}</a>
                 </form>
