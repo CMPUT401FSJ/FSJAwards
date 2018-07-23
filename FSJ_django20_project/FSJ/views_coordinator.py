@@ -965,7 +965,7 @@ def coordinator_export_final_review(request, committee_id):
             sheet_name = str((award.name).replace(" ", ""))[:30]
             ws = wb.add_sheet(sheet_name)
 
-            col_width = 256 * 20  # 20 characters wide
+            col_width = 256 * 30  # 20 characters wide
 
             try:
                 for i in range(0, 6):
@@ -992,11 +992,11 @@ def coordinator_export_final_review(request, committee_id):
 
                 row_num += 1
                 row = [None] * 6
-                row[0] = str(adjudicator.ccid)
+                row[0] = str(adjudicator.get_name())
 
                 for i in range(1, 6):
                     try:
-                        row[i] = str(Ranking.objects.get(award=award, adjudicator=adjudicator, rank=i).application.student)
+                        row[i] = str(Ranking.objects.get(award=award, adjudicator=adjudicator, rank=i).application.student.get_name())
                     except:
                         row[i] = ""
 
@@ -1180,7 +1180,7 @@ def coordinator_export_master_review(request):
             sheet_name = str((committee.committee_name).replace(" ", ""))[:30]
             ws = wb.add_sheet(sheet_name)
 
-            col_width = 256 * 20  # 20 characters wide
+            col_width = 256 * 30  # 20 characters wide
 
             try:
                 for i in range(0, 7):
@@ -1232,12 +1232,12 @@ def coordinator_export_master_review(request):
 
                         row_num += 1
                         row = [None] * 7
-                        row[1] = str(adjudicator.ccid)
+                        row[1] = str(adjudicator.get_name())
 
                         for i in range(2, 7):
                             try:
                                 row[i] = str(
-                                    Ranking.objects.get(award=award, adjudicator=adjudicator, rank=i).application.student)
+                                    Ranking.objects.get(award=award, adjudicator=adjudicator, rank=i).application.student.get_name())
                             except:
                                 row[i] = ""
 
