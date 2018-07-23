@@ -57,8 +57,8 @@ def get_ranking(context, rank):
     adjudicator = context['adjudicator']
     try:
         ranking = Ranking.objects.get(award=award, adjudicator=adjudicator, rank=rank)
-        ccid = ranking.application.student.ccid
-        return ccid
+        name = ranking.application.student.get_name()
+        return name
 
     except:
         return ""

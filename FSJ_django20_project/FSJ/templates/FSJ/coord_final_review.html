@@ -42,7 +42,7 @@
                 </tr>
                 {% for adjudicator in committee.adjudicators.all %}
                   <tr>
-                    <td>{{ adjudicator.ccid }}</td>
+                    <td>{{ adjudicator.get_name }}</td>
                     {% for i in 5|get_range %}
                       <td><a href="{% get_url i %}">{% get_ranking i %}</a></td>
                     {% endfor %}
@@ -66,7 +66,7 @@
                 </tr>
                 {% for adjudicator in committee.adjudicators.all %}
                   <tr>
-                    <td>{{ adjudicator.ccid }}</td>
+                    <td>{{ adjudicator.get_name }}</td>
                     {% for i in 5|get_range %}
                       <td><a href="{% get_url i %}">{% get_ranking i %}</a></td>
                     {% endfor %}

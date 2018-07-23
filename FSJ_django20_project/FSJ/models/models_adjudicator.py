@@ -7,3 +7,6 @@ class Adjudicator(FSJUser):
     """A subclass of FSJUser for the user role which evaluates and ranks applications"""
     def user_class(self):
         return "Adjudicator"
+
+    def get_name(self):
+        return self.first_name + ' ' + self.last_name
