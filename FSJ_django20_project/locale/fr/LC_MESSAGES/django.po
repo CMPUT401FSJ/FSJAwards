@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-06-25 11:29-0600\n"
-"PO-Revision-Date: 2018-07-17 11:10-0600\n"
+"POT-Creation-Date: 2018-07-23 12:29-0600\n"
+"PO-Revision-Date: 2018-07-23 12:31-0600\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: fr\n"
@@ -325,7 +325,7 @@ msgid "Is Active"
 msgstr "Bourse active"
 
 #: .\FSJ\models\models_award.py:40
-#: .\FSJ\templates\FSJ\view_application.html:193
+#: .\FSJ\templates\FSJ\view_application.html:195
 msgid "Comment"
 msgstr "Commentaire"
 
@@ -343,9 +343,9 @@ msgid "Application"
 msgstr "Demande de bourse"
 
 #: .\FSJ\models\models_comment.py:17 .\FSJ\models\models_ranking.py:18
-#: .\FSJ\templates\FSJ\coord_final_review.html:31
-#: .\FSJ\templates\FSJ\coord_final_review.html:57
-#: .\FSJ\templates\FSJ\view_application.html:192
+#: .\FSJ\templates\FSJ\coord_final_review.html:32
+#: .\FSJ\templates\FSJ\coord_final_review.html:60
+#: .\FSJ\templates\FSJ\view_application.html:194
 msgid "Adjudicator"
 msgstr "Évaluateur"
 
@@ -437,7 +437,7 @@ msgid "Year of Study"
 msgstr "Année d'études"
 
 #: .\FSJ\templates\FSJ\adj_awards_list.html:18
-#: .\FSJ\templates\FSJ\coord_final_review.html:19
+#: .\FSJ\templates\FSJ\coord_final_review.html:20
 msgid "View All"
 msgstr "Afficher"
 
@@ -484,6 +484,10 @@ msgstr "Demandes de bourse"
 #: .\FSJ\templates\FSJ\awards_list.html:112
 msgid "No Applications"
 msgstr "Aucune demande"
+
+#: .\FSJ\templates\FSJ\adj_awards_list.html:126
+msgid "Export Spreadsheet"
+msgstr "Exporter les évaluations"
 
 #: .\FSJ\templates\FSJ\application_list.html:25
 msgid "Return to Awards"
@@ -690,7 +694,7 @@ msgid " Select all"
 msgstr "Sélectionner tout"
 
 #: .\FSJ\templates\FSJ\committee.html:46
-#: .\FSJ\templates\FSJ\coord_final_review.html:100
+#: .\FSJ\templates\FSJ\coord_final_review.html:103
 #: .\FSJ\templates\FSJ\coord_student_upload.html:37
 #: .\FSJ\templates\FSJ\modelform.html:26
 msgid "Save"
@@ -723,12 +727,13 @@ msgstr "Supprimer évaluateur"
 
 #. Translators: Heading for the archived applications page
 #: .\FSJ\templates\FSJ\coord_application_archive.html:9
+#: .\FSJ\templates\FSJ\view_application.html:135
 msgid "Archive"
 msgstr "Archive"
 
 #: .\FSJ\templates\FSJ\coord_application_archive.html:17
-#: .\FSJ\templates\FSJ\view_application.html:182
-#: .\FSJ\templates\FSJ\view_application.html:209
+#: .\FSJ\templates\FSJ\view_application.html:184
+#: .\FSJ\templates\FSJ\view_application.html:211
 #: .\FSJ\templates\FSJ\view_student.html:30
 msgid "Return to Applications"
 msgstr "Retour aux demandes"
@@ -783,32 +788,32 @@ msgstr "Exporter"
 msgid "Delete committee(s)"
 msgstr "Supprimer comité"
 
-#: .\FSJ\templates\FSJ\coord_final_review.html:32
-#: .\FSJ\templates\FSJ\coord_final_review.html:58
+#: .\FSJ\templates\FSJ\coord_final_review.html:33
+#: .\FSJ\templates\FSJ\coord_final_review.html:61
 msgid "Rank 1"
 msgstr "1er choix"
 
-#: .\FSJ\templates\FSJ\coord_final_review.html:33
-#: .\FSJ\templates\FSJ\coord_final_review.html:59
+#: .\FSJ\templates\FSJ\coord_final_review.html:34
+#: .\FSJ\templates\FSJ\coord_final_review.html:62
 msgid "Rank 2"
 msgstr "2e choix"
 
-#: .\FSJ\templates\FSJ\coord_final_review.html:34
-#: .\FSJ\templates\FSJ\coord_final_review.html:60
+#: .\FSJ\templates\FSJ\coord_final_review.html:35
+#: .\FSJ\templates\FSJ\coord_final_review.html:63
 msgid "Rank 3"
 msgstr "3e choix"
 
-#: .\FSJ\templates\FSJ\coord_final_review.html:35
-#: .\FSJ\templates\FSJ\coord_final_review.html:61
+#: .\FSJ\templates\FSJ\coord_final_review.html:36
+#: .\FSJ\templates\FSJ\coord_final_review.html:64
 msgid "Rank 4"
 msgstr "4e choix"
 
-#: .\FSJ\templates\FSJ\coord_final_review.html:36
-#: .\FSJ\templates\FSJ\coord_final_review.html:62
+#: .\FSJ\templates\FSJ\coord_final_review.html:37
+#: .\FSJ\templates\FSJ\coord_final_review.html:65
 msgid "Rank 5"
 msgstr "5e choix"
 
-#: .\FSJ\templates\FSJ\coord_final_review.html:101
+#: .\FSJ\templates\FSJ\coord_final_review.html:104
 msgid "Return to Committees"
 msgstr "Retour aux comités"
 
@@ -1087,24 +1092,24 @@ msgid "No document has been uploaded yet, but one is expected."
 msgstr "Document obligtoire. Prière de soumettre."
 
 #: .\FSJ\templates\FSJ\view_application.html:131
-#: .\FSJ\templates\FSJ\view_application.html:207
+#: .\FSJ\templates\FSJ\view_application.html:209
 msgid "Mark reviewed"
 msgstr "Marqué comme  évalué"
 
 #: .\FSJ\templates\FSJ\view_application.html:133
-#: .\FSJ\templates\FSJ\view_application.html:208
+#: .\FSJ\templates\FSJ\view_application.html:210
 msgid "Mark unreviewed"
 msgstr "Marqué comme non-évalué"
 
-#: .\FSJ\templates\FSJ\view_application.html:177
+#: .\FSJ\templates\FSJ\view_application.html:179
 msgid "Application Reviewed"
 msgstr "Demande évalué"
 
-#: .\FSJ\templates\FSJ\view_application.html:179
+#: .\FSJ\templates\FSJ\view_application.html:181
 msgid "Delete comment & ranking"
 msgstr "Supprimer commentaire et choix de candidat"
 
-#: .\FSJ\templates\FSJ\view_application.html:194
+#: .\FSJ\templates\FSJ\view_application.html:196
 msgid "Ranking"
 msgstr "Classement"
 
@@ -1244,63 +1249,72 @@ msgstr "Numéro d'étudiant à 7 chiffres"
 msgid "[DO NOT REPLY] Activate Campus Saint Jean Awards Account"
 msgstr "[NE PAS RÉPONDRE] Activer votre compte Bourse du Campus Saint Jean"
 
-#: .\FSJ\views.py:220 .\FSJ\views_coordinator.py:97
+#: .\FSJ\views.py:220
 msgid "Student does not exist"
 msgstr "Profil inexistant"
 
-#: .\FSJ\views_adjudicator.py:258 .\FSJ\views_coordinator.py:1068
+#: .\FSJ\views_adjudicator.py:261 .\FSJ\views_coordinator.py:1084
 msgid "This application does not exist"
 msgstr "Cette demande n'existe pas"
 
-#: .\FSJ\views_coordinator.py:128
+#: .\FSJ\views_adjudicator.py:324 .\FSJ\views_coordinator.py:949
+#: .\FSJ\views_coordinator.py:1039
+msgid "Committee does not exist"
+msgstr "Le comité n'existe pas"
+
+#: .\FSJ\views_coordinator.py:104 .\FSJ\views_coordinator.py:107
+msgid "This student does not exist."
+msgstr "Profil inexistant"
+
+#: .\FSJ\views_coordinator.py:144
 msgid "Adjudicator does not exist"
 msgstr "Cet évaluateur n'existe pas"
 
-#: .\FSJ\views_coordinator.py:337
+#: .\FSJ\views_coordinator.py:353
 msgid "Awards reset and dates changed"
 msgstr "Bourses réinitialisées et dates modifiées"
 
-#: .\FSJ\views_coordinator.py:340
+#: .\FSJ\views_coordinator.py:356
 msgid "Awards reset"
 msgstr "Bourses réinitialisées"
 
-#: .\FSJ\views_coordinator.py:354
+#: .\FSJ\views_coordinator.py:370
 msgid "Award dates changed"
 msgstr "Dates modifiées"
 
-#: .\FSJ\views_coordinator.py:358
+#: .\FSJ\views_coordinator.py:374
 msgid "The start date cannot be later than the end date"
 msgstr "La date de début doit précéder la date de fin"
 
-#: .\FSJ\views_coordinator.py:475
+#: .\FSJ\views_coordinator.py:491
 msgid "Year does not exist"
 msgstr "L'année d'études n'existe pas"
 
-#: .\FSJ\views_coordinator.py:830
+#: .\FSJ\views_coordinator.py:846
 msgid "Upload success!"
 msgstr "Téléchargement réussi!"
 
-#: .\FSJ\views_coordinator.py:833
+#: .\FSJ\views_coordinator.py:849
 msgid "Please ensure you have selected the correct encoding."
 msgstr "Veuillez vous assurer que vous avez choisi le bon codage."
 
-#: .\FSJ\views_coordinator.py:836
+#: .\FSJ\views_coordinator.py:852
 msgid "Please make sure all column names match specified column names."
 msgstr "Veuillez vous assurer que les noms des colonnes correspondent."
 
-#: .\FSJ\views_coordinator.py:839
+#: .\FSJ\views_coordinator.py:855
 msgid "Please ensure all required programs have been added."
 msgstr "Veuillez vous assurer que tous les programmes requis ont été ajoutés."
 
-#: .\FSJ\views_coordinator.py:842
+#: .\FSJ\views_coordinator.py:858
 msgid "Please ensure all required years of study have been added."
 msgstr "Veuillez vous assurer que toutes les années d'études ont été ajoutées."
 
-#: .\FSJ\views_coordinator.py:845
+#: .\FSJ\views_coordinator.py:861
 msgid "The student you are attempting to upload a GPA for does not exist."
 msgstr "Cet étudiant n'existe pas."
 
-#: .\FSJ\views_coordinator.py:849
+#: .\FSJ\views_coordinator.py:865
 msgid ""
 "Unexpected error. Please confirm file is in a valid format, and has all "
 "required columns/programs/years."
@@ -1308,11 +1322,7 @@ msgstr ""
 "Erreur inattendue. Veuillez verifier que toutes les informations sont "
 "incluses, ainsi que le format du fichier."
 
-#: .\FSJ\views_coordinator.py:933 .\FSJ\views_coordinator.py:1023
-msgid "Committee does not exist"
-msgstr "Le comité n'existe pas"
-
-#: .\FSJ\views_coordinator.py:1080
+#: .\FSJ\views_coordinator.py:1096
 msgid "This application is missing a document"
 msgstr "Cette demande de bourse manque un document"
 

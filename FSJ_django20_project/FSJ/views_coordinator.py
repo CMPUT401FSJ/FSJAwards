@@ -1101,6 +1101,9 @@ def coordinator_view_application(request):
         elif '_unreview' in request.POST:
             application.is_reviewed = False
 
+        elif '_archive' in request.POST:
+            application.is_archived = True
+
         application.save()
 
         if url_is_safe:

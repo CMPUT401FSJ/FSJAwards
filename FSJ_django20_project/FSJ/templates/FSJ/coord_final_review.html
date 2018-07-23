@@ -5,101 +5,105 @@
 {# This page allows the coordinator to view a summary of the adjudicator's picks for an award and enter a final #}
 {# comment recording the decision #}
 {% block heading %}
-    {# Translators: Final Review page header #}
-    {% trans "Final Review" %}
+  {# Translators: Final Review page header #}
+  {% trans "Final Review" %}
 {% endblock %}
 
 {% block content %}
-    <body>
-        <div class='center-content'>
-        <form action='{{ url }}' method='post'>
-            {% csrf_token %}
+  <body>
+  <div class='center-content'>
+    <form action='{{ url }}' method='post'>
+      {% csrf_token %}
 
-            <ul class="nav nav-tabs">
-                <li class="active"><a data-toggle="tab" href="#all-awards">{% trans "View All" %}</a></li>
-                {# Each award is in its own tab #}
-                {% for award in awards_list %}
-                    <li><a data-toggle="tab" href="#award_{{ award.awardid }}">{{ award.name }}</a></li>
-                {% endfor %}
-            </ul>
-                <div class="tab-content">
+      {% with path=request.get_full_path %}
+        <ul class="nav nav-tabs">
+          <li class="active"><a data-toggle="tab" href="#all-awards">{% trans "View All" %}</a></li>
+          {# Each award is in its own tab #}
+          {% for award in awards_list %}
+            <li><a data-toggle="tab" href="#award_{{ award.awardid }}">{{ award.name }}</a></li>
+          {% endfor %}
+        </ul>
+        <div class="tab-content">
 
-                    <div id="all-awards" class="tab-pane fade in active">
+          <div id="all-awards" class="tab-pane fade in active">
 
-                        <table class="table table-bordered table-striped table-hover" align="center">
-                            <tr>
-                                <th>{% trans "Adjudicator" %}</th>
-                                <th>{% trans "Rank 1" %}</th>
-                                <th>{% trans "Rank 2" %}</th>
-                                <th>{% trans "Rank 3" %}</th>
-                                <th>{% trans "Rank 4" %}</th>
-                                <th>{% trans "Rank 5" %}</th>
-                            </tr>
-                            {% for award in awards_list %}
-                                <tr><th class="alternate-table-heading" colspan=7>{{ award.name }}</th></tr>
-                                {% for adjudicator in committee.adjudicators.all %}
-                                    <tr>
-                                        <td>{{ adjudicator.ccid }}</td>
-                                        {% for i in 5|get_range %}
-                                            <td>{% get_ranking i %}</td>
-                                        {% endfor %}
-                                    </tr>
-                                {% endfor %}
-                            {% endfor %}
-                        </table>
-
-                    </div>
-
-                    {% for award in awards_list %}
-                        <div id="award_{{ award.awardid }}" class="tab-pane fade">
-                            <table class="table table-bordered table-striped table-hover" align="center">
-                                <tr>
-                                    <th>{% trans "Adjudicator" %}</th>
-                                    <th>{% trans "Rank 1" %}</th>
-                                    <th>{% trans "Rank 2" %}</th>
-                                    <th>{% trans "Rank 3" %}</th>
-                                    <th>{% trans "Rank 4" %}</th>
-                                    <th>{% trans "Rank 5" %}</th>
-                                </tr>
-                                {% for adjudicator in committee.adjudicators.all %}
-                                    <tr>
-                                        <td>{{ adjudicator.ccid }}</td>
-                                        {% for i in 5|get_range %}
-                                            <td>{% get_ranking i %}</td>
-                                        {% endfor %}
-                                    </tr>
-                                {% endfor %}
-                            </table>
-
-
-                            {% for field in award.form %}
-                                <div>
-                                    <div>
-                                        {% if field.label %}
-                                            {{field.label_tag}}
-                                        {% endif %}
-                                    </div>
-                                    <div {% if field.errors %}class='has-error'{% endif %}>
-                                        {{ field }}
-                                    </div>
-                                    {% if field.help_text %}
-                                        {{ field.help_text }}
-                                    {% endif %}
-                                    {% if field.errors %}
-                                        {{ field.errors }}
-                                    {% endif %}
-                                </div>
-                            {% endfor %}
-                            <br>
-
-                        </div>
+            <table class="table table-bordered table-striped table-hover" align="center">
+              <tr>
+                <th>{% trans "Adjudicator" %}</th>
+                <th>{% trans "Rank 1" %}</th>
+                <th>{% trans "Rank 2" %}</th>
+                <th>{% trans "Rank 3" %}</th>
+                <th>{% trans "Rank 4" %}</th>
+                <th>{% trans "Rank 5" %}</th>
+              </tr>
+              {% for award in awards_list %}
+                <tr>
+                  <th class="alternate-table-heading" colspan=7>{{ award.name }}</th>
+                </tr>
+                {% for adjudicator in committee.adjudicators.all %}
+                  <tr>
+                    <td>{{ adjudicator.ccid }}</td>
+                    {% for i in 5|get_range %}
+                      <td><a href="{% get_url i %}">{% get_ranking i %}</a></td>
                     {% endfor %}
+                  </tr>
+                {% endfor %}
+              {% endfor %}
+            </table>
+
+          </div>
+
+          {% for award in awards_list %}
+            <div id="award_{{ award.awardid }}" class="tab-pane fade">
+              <table class="table table-bordered table-striped table-hover" align="center">
+                <tr>
+                  <th>{% trans "Adjudicator" %}</th>
+                  <th>{% trans "Rank 1" %}</th>
+                  <th>{% trans "Rank 2" %}</th>
+                  <th>{% trans "Rank 3" %}</th>
+                  <th>{% trans "Rank 4" %}</th>
+                  <th>{% trans "Rank 5" %}</th>
+                </tr>
+                {% for adjudicator in committee.adjudicators.all %}
+                  <tr>
+                    <td>{{ adjudicator.ccid }}</td>
+                    {% for i in 5|get_range %}
+                      <td><a href="{% get_url i %}">{% get_ranking i %}</a></td>
+                    {% endfor %}
+                  </tr>
+                {% endfor %}
+              </table>
 
 
+              {% for field in award.form %}
+                <div>
+                  <div>
+                    {% if field.label %}
+                      {{ field.label_tag }}
+                    {% endif %}
+                  </div>
+                  <div {% if field.errors %}class='has-error'{% endif %}>
+                    {{ field }}
+                  </div>
+                  {% if field.help_text %}
+                    {{ field.help_text }}
+                  {% endif %}
+                  {% if field.errors %}
+                    {{ field.errors }}
+                  {% endif %}
                 </div>
-                <button class='btn btn-success' type='submit'>{% trans "Save" %}</button>
-                <a class="btn btn-success" role="button" href="{{ return_url }}">{% trans "Return to Committees" %}</a>
-            </form>
+              {% endfor %}
+              <br>
+
+            </div>
+          {% endfor %}
+
+
         </div>
-    </body>
-{%  endblock %}
+        <button class='btn btn-success' type='submit'>{% trans "Save" %}</button>
+        <a class="btn btn-success" role="button" href="{{ return_url }}">{% trans "Return to Committees" %}</a>
+      {% endwith %}
+    </form>
+  </div>
+  </body>
+{% endblock %}
