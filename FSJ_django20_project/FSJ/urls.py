@@ -57,6 +57,7 @@ urlpatterns = [
     re_path(r'^export/xls/master/$', views.coordinator_export_master_review, name='coordinator_export_master_review'),
     re_path(r'^export/xls/committee/(?P<committee_id>\S+)/$', views.coordinator_export_final_review, name='coordinator_export_final_review'),
     re_path(r'^committees/(?P<committee_id>\S+)/review/$', views.coordinator_committee_review, name='coord_committeereview'),
+    re_path(r'^awards/export_committee/(?P<committee_id>\S+)/$', views.adjudicator_export_committee, name='adj_committee_export')
 ]
 
 if settings.DEBUG:

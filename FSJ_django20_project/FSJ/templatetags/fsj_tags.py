@@ -64,6 +64,22 @@ def get_ranking(context, rank):
         return ""
 
 @register.simple_tag(takes_context=True)
+def get_url(context, rank):
+    """Gets the url of an application based on rank"""
+
+    award = context['award']
+    adjudicator = context['adjudicator']
+    path = context['path']
+    try:
+        ranking = Ranking.objects.get(award=award, adjudicator=adjudicator, rank=rank)
+        url_string = "/view_application/?application_id=" + str(ranking.application.application_id) + "&return=" + urllib.parse.quote(path)
+        return url_string
+
+    except:
+        return ""
+
+
+@register.simple_tag(takes_context=True)
 def get_ranking_x(context, rank):
     """An unused tag from experimentation with forms"""
     awards_list = context['awards_list']

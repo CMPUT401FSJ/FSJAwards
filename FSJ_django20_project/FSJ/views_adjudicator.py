@@ -14,6 +14,9 @@ from .utils import *
 from .filters import *
 from .forms import *
 import urllib
+from datetime import timezone
+import xlwt
+
 
 # A test method to ensure a user is an Adjudicator to control access of certain views dependent on the user's class
 def is_adjudicator(usr):
@@ -306,3 +309,75 @@ def adjudicator_view_application(request):
 
         application.add_viewed(FSJ_user)
         return HttpResponse(template.render(context, request))
+
+@login_required
+@user_passes_test(is_adjudicator)
+def adjudicator_export_committee(request, committee_id):
+    """Function creates an Excel file for a committee which lists all of its awards, its adjudicators' reviews and
+    the final review comment for each award
+
+    committee_id -- the uuid of the committee to be exported
+    """
+    try:
+        committee = Committee.objects.get(committeeid=committee_id)
+    except:
+        messages.warning(request, _("Committee does not exist"))
+        return redirect('/awards/')
+
+    # filename is the name of the committee stripped of all spaces and with the current date appended
+    filename = str(committee.committee_name).replace(" ", "") + "-" + datetime.now(timezone.utc).strftime(
+        "%Y-%m-%d")
+    response = HttpResponse(content_type='application/ms-excel')
+    response['Content-Disposition'] = 'attachment; filename="' + filename + '.xls"'
+
+    wb = xlwt.Workbook(encoding='utf-8')
+
+    awards = committee.awards.all()
+
+    if awards:
+        # Each award gets a new sheet in the workbook
+        for award in awards:
+            sheet_name = str((award.name).replace(" ", ""))[:30]
+            ws = wb.add_sheet(sheet_name)
+
+            col_width = 256 * 20  # 30 characters wide
+
+            try:
+                ws.col(0).width = 256 * 30
+                for i in range(1, 6):
+                    ws.col(i).width = col_width
+            except ValueError:
+                pass
+
+            # Sheet header, first row
+            row_num = 0
+            font_style = xlwt.XFStyle()
+            font_style.font.bold = True
+
+            columns = ['Étudiant', 'CCID', 'Programme', "Année d'études", 'GPA', 'Crédits', ]
+
+            # Writes headers to the workbook
+            for col_num in range(len(columns)):
+                ws.write(row_num, col_num, columns[col_num], font_style)
+
+            # Sheet body, remaining rows
+            font_style = xlwt.XFStyle()
+
+            applications = award.applications.filter(is_archived = False).order_by('student__ccid')
+
+            # Write a row for each adjudicator containing their ccid and the ccids of their top-ranked applications
+            for application in applications:
+
+                student = application.student
+
+                row_num += 1
+                row = (student.get_name(), student.ccid, str(student.program.code), str(student.year), student.gpa, student.credits)
+
+                for col_num in range(len(row)):
+                    ws.write(row_num, col_num, row[col_num], font_style)
+
+    else:
+        ws = wb.add_sheet("Sheet1")
+
+    wb.save(response)
+    return response
