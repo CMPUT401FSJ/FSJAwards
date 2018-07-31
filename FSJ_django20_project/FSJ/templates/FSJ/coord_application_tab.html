@@ -41,14 +41,6 @@
                             {% render_field filter.form.award__programs class="form-control" %}
                         </div>
                         <div class = "form-group col-sm-3 col-md-2">
-                            {{ filter.form.is_submitted.label_tag }}
-                            {% render_field filter.form.is_submitted class="form-control" %}
-                        </div>
-                        <div class = "form-group col-sm-3 col-md-2">
-                            {{ filter.form.is_archived.label_tag }}
-                            {% render_field filter.form.is_archived class="form-control" %}
-                        </div>
-                        <div class = "form-group col-sm-3 col-md-2">
                             {{ filter.form.is_reviewed.label_tag }}
                             {% render_field filter.form.is_reviewed class="form-control" %}
                         </div>
@@ -62,7 +54,7 @@
                 </div>
             </form>
             
-            <form action="/applications/action/" method="POST">
+            <form action="{{ url }}" method="POST">
             {% csrf_token %}
             
                 <table class="table table-bordered table-striped table-hover" align="center">
@@ -80,8 +72,6 @@
                         {# Translators: Award header in application table #}
                         <th>{% trans "Award" %}</th>
                         {# Translators: Submitted header in application table #}
-                        <th>{% trans "Submitted?" %}</th>
-                        <th>{% trans "Archived?" %}</th>
                         <th>{% trans "Status" %}</th>
                         
                     </tr>
@@ -108,12 +98,6 @@
                                 {% endif %}
                             </td>
                             <td>{{application.award}}</td>
-                            <td>
-                                <input type="checkbox" disabled {% if application.is_submitted %}checked{% endif %}>
-                            </td>
-                            <td>
-                                <input type="checkbox" disabled {% if application.is_archived %}checked{% endif %}>
-                            </td>
                             <td><a href="/view_application/?application_id={{ application.application_id }}&return={{ request.get_full_path|quote }}">{% get_status %}</a></td>
                             
                         </tr>

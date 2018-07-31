@@ -6,127 +6,136 @@
 {# A page for the adjudicator to view a list of awards  #}
 {# This page is separate from the template for displaying awards to students or coordinators due to the added functionality #}
 {% block heading %}
-    {# Translators: Awards page home label #}
-    {% trans "Awards" %}
+  {# Translators: Awards page home label #}
+  {% trans "Awards" %}
 {% endblock %}
 
 {% block content %}
-    <body>
-        <div class='center-content'>
+  <body>
+  <div class='center-content'>
 
-            <ul class="nav nav-tabs">
-                <li class="active"><a data-toggle="tab" href="#all-committees">{% trans "View All" %}</a></li>
+    <ul class="nav nav-tabs">
+      <li class="active"><a data-toggle="tab" href="#all-committees">{% trans "View All" %}</a></li>
 
-                {# Each committee an adjudicator is part of gets its own tab#}
-                {% for committee in committee_list %}
-                    <li><a data-toggle="tab" href="#committee_{{ committee.committeeid }}">{{ committee.committee_name }}</a></li>
-                {% endfor %}
-            </ul>
+      {# Each committee an adjudicator is part of gets its own tab#}
+      {% for committee in committee_list %}
+        <li><a data-toggle="tab" href="#committee_{{ committee.committeeid }}">{{ committee.committee_name }}</a></li>
+      {% endfor %}
+    </ul>
 
-            <div class="tab-content">
-                {# The all-committees tab displays a table with a list of all committees and all awards in those committees #}
-                <div id="all-committees" class="tab-pane fade in active">
+    <div class="tab-content">
+      {# The all-committees tab displays a table with a list of all committees and all awards in those committees #}
+      <div id="all-committees" class="tab-pane fade in active">
 
-                    <table class="table table-bordered table-striped table-hover" align="center">
-                        <tr>
-                            {# Translators: Award name header in awards table #}
-                            <th>{% trans "Award" %}</th>
-                            {# Translators: Award description header in awards table #}
-                            <th class="desc-column">{% trans "Description" %}</th>
-                            {# Translators: Award start date header in awards table #}
-                            <th>{% trans "Start Date" %}</th>
-                            {# Translators: Award end date header in awards table #}
-                            <th>{% trans "End Date" %}</th>
-                            {# Translators: Documents required header in awards table #}
-                            <th>{% trans "Doc?" %}</th>
-                            {# Translators: Award is active header in awards table #}
-                            <th>{% trans "Active?" %}</th>
-                            {# Translators: Awards application header in awards table #}
-                            <th>{% trans "Applications" %}</th>
-                        </tr>
-                        {% for committee in committee_list %}
-                            <tr><th class="alternate-table-heading" colspan=7>{{ committee.committee_name }}</th></tr>
-                            {% for award in committee.get_sorted_awards %}
-                                <tr>
+        <table class="table table-bordered table-striped table-hover" align="center">
+          <tr>
+            {# Translators: Award name header in awards table #}
+            <th>{% trans "Award" %}</th>
+            {# Translators: Award description header in awards table #}
+            <th class="desc-column">{% trans "Description" %}</th>
+            {# Translators: Award start date header in awards table #}
+            <th>{% trans "Start Date" %}</th>
+            {# Translators: Award end date header in awards table #}
+            <th>{% trans "End Date" %}</th>
+            {# Translators: Documents required header in awards table #}
+            <th>{% trans "Doc?" %}</th>
+            {# Translators: Award is active header in awards table #}
+            <th>{% trans "Active?" %}</th>
+            {# Translators: Awards application header in awards table #}
+            <th>{% trans "Applications" %}</th>
+          </tr>
+          {% for committee in committee_list %}
+            <tr>
+              <th class="alternate-table-heading" colspan=7>{{ committee.committee_name }}</th>
+            </tr>
+            {% for award in committee.get_sorted_awards %}
+              <tr>
 
-                                    <td>{{award.name }}</td>
-                                    <td>{{award.description|linebreaks }}</td>
-                                    <td class='date-column'>{{award.start_date|date:"Y-m-d"}}</td>
-                                    <td class='date-column'>{{award.end_date|date:"Y-m-d"}}</td>
-                                    <td>
-                                        <input type="checkbox" disabled {% if award.documents_needed %}checked{% endif %}>
-                                    </td>
-                                    <td>
-                                        <input type="checkbox" disabled {% if award.is_active %}checked{% endif %}>
-                                    </td>
+                <td>{{ award.name }}</td>
+                <td>{{ award.description|linebreaks }}</td>
+                <td class='date-column'>{{ award.start_date|date:"Y-m-d" }}</td>
+                <td class='date-column'>{{ award.end_date|date:"Y-m-d" }}</td>
+                <td>
+                  <input type="checkbox" disabled {% if award.documents_needed %}checked{% endif %}>
+                </td>
+                <td>
+                  <input type="checkbox" disabled {% if award.is_active %}checked{% endif %}>
+                </td>
 
-                                    {% if award.applications.count == 0 %}
-                                        {# Translators: No applications message in adjudicator awards list #}
-                                        <td>{% trans "No Applications" %}</td>
-                                    {% elif award.all_archived %}
-                                        <td>{% trans "No Applications" %}</td>
-                                    {% else %}
-                                        <td><a href="/awards/applications/?award_id={{ award.awardid }}">{% get_review_status %}</a></td>
-                                    {% endif %}
+                {% if award.applications.count == 0 %}
+                  {# Translators: No applications message in adjudicator awards list #}
+                  <td>{% trans "No Applications" %}</td>
+                {% elif award.all_archived %}
+                  <td>{% trans "No Applications" %}</td>
+                {% else %}
+                  <td><a href="/awards/applications/?award_id={{ award.awardid }}">{% get_review_status %}</a></td>
+                {% endif %}
 
-                                </tr>
-                            {% endfor %}
-                        {% endfor %}
+              </tr>
+            {% endfor %}
+          {% endfor %}
 
-                    </table>
-                </div>
+        </table>
+      </div>
 
-                {% for committee in committee_list %}
-                    {# Each committee gets its own tab with a table that displays its awards #}
-                    <div id="committee_{{ committee.committeeid }}" class = "tab-pane fade">
-                        <table class="table table-bordered table-striped table-hover" align="center">
-                            <tr>
-                                {# Translators: Award name header in awards table #}
-                                <th>{% trans "Award" %}</th>
-                                {# Translators: Award description header in awards table #}
-                                <th class="desc-column">{% trans "Description" %}</th>
-                                {# Translators: Award start date header in awards table #}
-                                <th>{% trans "Start Date" %}</th>
-                                {# Translators: Award end date header in awards table #}
-                                <th>{% trans "End Date" %}</th>
-                                {# Translators: Documents required header in awards table #}
-                                <th>{% trans "Doc?" %}</th>
-                                {# Translators: Award is active header in awards table #}
-                                <th>{% trans "Active?" %}</th>
-                                {# Translators: Awards application header in awards table #}
-                                <th>{% trans "Applications" %}</th>
-                            </tr>
+      {% for committee in committee_list %}
+        {# Each committee gets its own tab with a table that displays its awards #}
+        <div id="committee_{{ committee.committeeid }}" class="tab-pane fade">
 
-                            {% for award in committee.get_sorted_awards %}
-                                <tr>
+          <div>
+            <br>
+            <a class="btn btn-success"
+             href="/awards/export_committee/{{ committee.committeeid }}/">{% trans "Export Spreadsheet" %}</a>
+          </div>
 
-                                    <td>{{award.name }}</td>
-                                    <td>{{award.description|linebreaks }}</td>
-                                    <td class='date-column'>{{award.start_date|date:"Y-m-d"}}</td>
-                                    <td class='date-column'>{{award.end_date|date:"Y-m-d"}}</td>
-                                    <td>
-                                        <input type="checkbox" disabled {% if award.documents_needed %}checked{% endif %}>
-                                    </td>
-                                    <td>
-                                        <input type="checkbox" disabled {% if award.is_active %}checked{% endif %}>
-                                    </td>
+          <table class="table table-bordered table-striped table-hover" align="center">
+            <tr>
+              {# Translators: Award name header in awards table #}
+              <th>{% trans "Award" %}</th>
+              {# Translators: Award dsecription header in awards table #}
+              <th class="desc-column">{% trans "Description" %}</th>
+              {# Translators: Award start date header in awards table #}
+              <th>{% trans "Start Date" %}</th>
+              {# Translators: Award end date header in awards table #}
+              <th>{% trans "End Date" %}</th>
+              {# Translators: Documents required header in awards table #}
+              <th>{% trans "Doc?" %}</th>
+              {# Translators: Award is active header in awards table #}
+              <th>{% trans "Active?" %}</th>
+              {# Translators: Awards application header in awards table #}
+              <th>{% trans "Applications" %}</th>
+            </tr>
 
-                                    {% if award.applications.count == 0 %}
-                                        {# Translators: No applications message in adjudicator awards list #}
-                                        <td>{% trans "No Applications" %}</td>
-                                    {% else %}
-                                        <td><a href="/awards/applications/?award_id={{ award.awardid }}">{% get_review_status %}</a></td>
-                                    {% endif %}
+            {% for award in committee.get_sorted_awards %}
+              <tr>
 
-                                </tr>
-                            {% endfor %}
+                <td>{{ award.name }}</td>
+                <td>{{ award.description|linebreaks }}</td>
+                <td class='date-column'>{{ award.start_date|date:"Y-m-d" }}</td>
+                <td class='date-column'>{{ award.end_date|date:"Y-m-d" }}</td>
+                <td>
+                  <input type="checkbox" disabled {% if award.documents_needed %}checked{% endif %}>
+                </td>
+                <td>
+                  <input type="checkbox" disabled {% if award.is_active %}checked{% endif %}>
+                </td>
+
+                {% if award.applications.count == 0 %}
+                  {# Translators: No applications message in adjudicator awards list #}
+                  <td>{% trans "No Applications" %}</td>
+                {% else %}
+                  <td><a href="/awards/applications/?award_id={{ award.awardid }}">{% get_review_status %}</a></td>
+                {% endif %}
+
+              </tr>
+            {% endfor %}
 
 
-                        </table>
-                        <a class="btn btn-success" href="/awards/export_committee/{{ committee.committeeid }}/">{% trans "Export Spreadsheet" %}</a>
-                    </div>
-                {% endfor %}
-            </div>
+          </table>
+          <br>
         </div>
-    </body>
+      {% endfor %}
+    </div>
+  </div>
+  </body>
 {% endblock %}

@@ -67,7 +67,7 @@ class ApplicationFilter(django_filters.FilterSet):
 	
 	class Meta:
 		model = Application
-		fields = ['award', 'award__programs', 'is_submitted', 'is_archived', 'is_reviewed']
+		fields = ['award', 'award__programs', 'is_reviewed']
 
 	def __init__(self, *args, **kwargs):
 		super(ApplicationFilter, self).__init__(*args, **kwargs)
@@ -75,6 +75,4 @@ class ApplicationFilter(django_filters.FilterSet):
 		# Custom translatable labels
 		self.filters['award'].label = _("Award:")
 		self.filters['award__programs'].label = _("Award Programs:")
-		self.filters['is_submitted'].label = _("Is Submitted:")
-		self.filters['is_archived'].label = _("Is Archived:")
 		self.filters['is_reviewed'].label = _("Is Reviewed:")
