@@ -30,8 +30,5 @@ class Student(FSJUser):
         return self.program
     
     def get_name(self):
-        if self.middle_name:
-            return self.first_name + ' ' + self.middle_name + ' ' + self.last_name
-        else:
-            return self.first_name + ' ' + self.last_name
+        return self.first_name + ' ' + self.last_name
     

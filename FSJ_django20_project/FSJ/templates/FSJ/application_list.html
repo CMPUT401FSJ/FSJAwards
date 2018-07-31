@@ -24,8 +24,9 @@
             
             <a class="btn btn-success" role="button" href="{{ return_url }}">{% trans "Return to Awards" %}</a>
             {% if FSJ_user.user_class == "Coordinator" %}
-                <a class="btn btn-action" role="button" href='archive/?award_id={{ award.awardid }}'>{% trans "View Archive" %}</a>
-                <br>
+              <a role="button" class="btn btn-success" href="{% url 'coordinator_export_award' award_id=award.awardid %}">{% trans "Export applications" %}</a>
+              <a class="btn btn-action" role="button" href='archive/?award_id={{ award.awardid }}'>{% trans "View Archive" %}</a>
+              <br>
             {% endif %}
 
             
@@ -37,8 +38,8 @@
                     {% endif %}
 
                     <th>{% trans "Student" %}</th>
-                    <th>{% trans "CCID" %}</th>
                     {% if FSJ_user.user_class == "Coordinator" %}
+                        <th>{% trans "CCID" %}</th>
                         <th>{% trans "Student ID" %}</th>
                     {% endif %}
                     <th>{% trans "Program" %}</th>
@@ -62,8 +63,8 @@
                         {% if FSJ_user.user_class == "Adjudicator" %}
                             <td>{{ application.0.student.get_name }}</td>
                         {% endif %}
-                        <td>{{ application.0.student.ccid }}</td>
                         {% if FSJ_user.user_class == "Coordinator" %}
+                            <td>{{ application.0.student.ccid }}</td>
                             <td>{{ application.0.student.student_id }}</td>
                         {% endif %}
                         <td>
