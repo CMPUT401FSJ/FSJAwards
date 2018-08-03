@@ -354,7 +354,7 @@ def adjudicator_export_committee(request, committee_id):
             font_style = xlwt.XFStyle()
             font_style.font.bold = True
 
-            columns = ['Étudiant', 'CCID', 'Programme', "Année d'études", 'GPA', 'Crédits', ]
+            columns = ['Étudiant', 'Programme', "Année d'études", 'GPA', 'Crédits', ]
 
             # Writes headers to the workbook
             for col_num in range(len(columns)):
@@ -371,7 +371,7 @@ def adjudicator_export_committee(request, committee_id):
                 student = application.student
 
                 row_num += 1
-                row = (student.get_name(), student.ccid, str(student.program.code), str(student.year), student.gpa, student.credits)
+                row = (student.get_name(), str(student.program.code), str(student.year), student.gpa, student.credits)
 
                 for col_num in range(len(row)):
                     ws.write(row_num, col_num, row[col_num], font_style)
