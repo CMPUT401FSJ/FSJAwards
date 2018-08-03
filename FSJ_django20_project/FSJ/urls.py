@@ -54,8 +54,11 @@ urlpatterns = [
     path('view_application/', views.view_application, name = 'view_application'),
     path('applications/', views.coordinator_application_tab, name='coord_applicationtab'),
     path('applications/action/', views.coordinator_application_tab_action, name='coord_applicationtabaction'),
+    path('archive/', views.coordinator_archive_tab, name='coord_archivetab'),
+    path('archive/action/', views.coordinator_archive_tab_action, name='coord_archivetabaction'),
     re_path(r'^export/xls/master/$', views.coordinator_export_master_review, name='coordinator_export_master_review'),
     re_path(r'^export/xls/committee/(?P<committee_id>\S+)/$', views.coordinator_export_final_review, name='coordinator_export_final_review'),
+    re_path(r'^export/xls/award/(?P<award_id>\S+)/$', views.coordinator_export_award, name='coordinator_export_award'),
     re_path(r'^committees/(?P<committee_id>\S+)/review/$', views.coordinator_committee_review, name='coord_committeereview'),
     re_path(r'^awards/export_committee/(?P<committee_id>\S+)/$', views.adjudicator_export_committee, name='adj_committee_export')
 ]

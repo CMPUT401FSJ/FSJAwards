@@ -880,7 +880,7 @@ def coordinator_upload_students(request):
 @user_passes_test(is_coordinator)
 def coordinator_application_tab(request):
     FSJ_user = get_FSJ_user(request.user.username)
-    application_list = Application.objects.all().order_by('student__ccid')
+    application_list = Application.objects.filter(is_archived=False, is_submitted=True).order_by('student__ccid')
     filtered_list = ApplicationFilter(request.GET, queryset=application_list)
 
     # application_paginator breaks the filtered queryset into pages of 25 entries each
@@ -934,6 +934,62 @@ def coordinator_application_tab_action(request):
         return redirect('/applications/')
 
 
+@login_required
+@user_passes_test(is_coordinator)
+def coordinator_archive_tab(request):
+    FSJ_user = get_FSJ_user(request.user.username)
+    application_list = Application.objects.filter(is_archived=True).order_by('student__ccid')
+    filtered_list = ApplicationFilter(request.GET, queryset=application_list)
+
+    # application_paginator breaks the filtered queryset into pages of 25 entries each
+    application_paginator = Paginator(filtered_list.qs, 25)
+
+    page = request.GET.get('page', 1)
+
+    try:
+        applications = application_paginator.page(page)
+    except PageNotAnInteger:
+        applications = application_paginator.page(1)
+    except EmptyPage:
+        applications = application_paginator.page(application_paginator.num_pages)
+
+    template = loader.get_template("FSJ/coord_application_tab.html")
+    context = get_standard_context(FSJ_user)
+    context["application_list"] = application_list
+    context["filter"] = filtered_list
+    context['applications'] = applications
+    context["return_url"] = "/archive/"
+    context["url"] = "/archive/action/"
+    return HttpResponse(template.render(context, request))
+
+
+# View handles POST requests from coordinator_application_tab
+@login_required
+@user_passes_test(is_coordinator)
+def coordinator_archive_tab_action(request):
+    if request.method == 'POST':
+        application_list = request.POST.getlist('applicationaction')
+
+        if "_archive" in request.POST:
+            for applicationid in application_list:
+                application = Application.objects.get(application_id=applicationid)
+                application.is_archived = True
+                application.save()
+        if "_removeFromArchive" in request.POST:
+            for applicationid in application_list:
+                application = Application.objects.get(application_id=applicationid)
+                application.is_archived = False
+                application.save()
+        elif "_review" in request.POST:
+            for applicationid in application_list:
+                application = Application.objects.get(application_id=applicationid)
+                application.is_reviewed = True
+                application.save()
+        elif "_delete" in request.POST:
+            for applicationid in application_list:
+                Application.objects.get(application_id=applicationid).delete()
+
+        return redirect('/archive/')
 
 @login_required
 @user_passes_test(is_coordinator)
@@ -996,7 +1052,10 @@ def coordinator_export_final_review(request, committee_id):
 
                 for i in range(1, 6):
                     try:
-                        row[i] = str(Ranking.objects.get(award=award, adjudicator=adjudicator, rank=i).application.student.get_name())
+                        student =  Ranking.objects.get(award=award, adjudicator=adjudicator, rank=i).application.student
+                        name = student.get_name()
+                        id = student.student_id
+                        row[i] = str(name + " | " + id)
                     except:
                         row[i] = ""
 
@@ -1051,7 +1110,8 @@ def coordinator_committee_review(request, committee_id):
             if form.is_valid():
                 form.save()
 
-        return redirect('/committees/')
+        path = '/committees/' + str(committee_id) + "/review/"
+        return redirect(path)
 
     # Adds a comment form with a unique prefix for each award in the committee
     for award in awards_list:
@@ -1236,8 +1296,10 @@ def coordinator_export_master_review(request):
 
                         for i in range(2, 7):
                             try:
-                                row[i] = str(
-                                    Ranking.objects.get(award=award, adjudicator=adjudicator, rank=i).application.student.get_name())
+                                student = Ranking.objects.get(award=award, adjudicator=adjudicator, rank=i).application.student
+                                name = student.get_name()
+                                id = student.student_id
+                                row[i] = str(name + " | " + id)
                             except:
                                 row[i] = ""
 
@@ -1262,3 +1324,71 @@ def coordinator_export_master_review(request):
     wb.save(response)
     return response
 
+@login_required
+@user_passes_test(is_coordinator)
+def coordinator_export_award(request, award_id):
+    """Function creates an Excel file for an which lists all of its applications
+
+    award_id - the id of the award to be exported
+    """
+    try:
+        award = Award.objects.get(awardid = award_id)
+    except:
+        messages.warning(request, _("Award does not exist"))
+        return redirect('/awards/')
+
+    # filename is the name of the committee stripped of all spaces and with the current date appended
+    filename = str(award.name).replace(" ", "") + "-" + datetime.now(timezone.utc).strftime(
+        "%Y-%m-%d")
+    response = HttpResponse(content_type='application/ms-excel')
+    response['Content-Disposition'] = 'attachment; filename="' + filename + '.xls"'
+
+    wb = xlwt.Workbook(encoding='utf-8')
+
+    applications = award.applications.all()
+
+    if applications:
+        sheet_name = str((award.name).replace(" ", ""))[:30]
+        ws = wb.add_sheet(sheet_name)
+
+        col_width = 256 * 20  # 30 characters wide
+
+        try:
+            ws.col(0).width = 256 * 30
+            for i in range(1, 6):
+                ws.col(i).width = col_width
+        except ValueError:
+            pass
+
+        # Sheet header, first row
+        row_num = 0
+        font_style = xlwt.XFStyle()
+        font_style.font.bold = True
+
+        columns = ['Étudiant', 'CCID', "Numéro d'étudiant", 'Programme', "Année d'études", 'GPA', 'Crédits', ]
+
+        # Writes headers to the workbook
+        for col_num in range(len(columns)):
+            ws.write(row_num, col_num, columns[col_num], font_style)
+
+        # Sheet body, remaining rows
+        font_style = xlwt.XFStyle()
+
+        applications = award.applications.filter(is_archived = False).order_by('student__ccid')
+
+        # Write a row for each adjudicator containing their ccid and the ccids of their top-ranked applications
+        for application in applications:
+
+            student = application.student
+
+            row_num += 1
+            row = (student.get_name(), student.ccid, str(student.student_id), str(student.program.code), str(student.year), student.gpa, student.credits)
+
+            for col_num in range(len(row)):
+                ws.write(row_num, col_num, row[col_num], font_style)
+
+    else:
+        ws = wb.add_sheet("Sheet1")
+
+    wb.save(response)
+    return response
