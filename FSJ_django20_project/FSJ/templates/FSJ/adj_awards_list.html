@@ -62,7 +62,8 @@
                   <input type="checkbox" disabled {% if award.is_active %}checked{% endif %}>
                 </td>
 
-                {% if award.applications.count == 0 %}
+
+                {% if award.get_adj_applications.count == 0 %}
                   {# Translators: No applications message in adjudicator awards list #}
                   <td>{% trans "No Applications" %}</td>
                 {% elif award.all_archived %}
@@ -120,7 +121,7 @@
                   <input type="checkbox" disabled {% if award.is_active %}checked{% endif %}>
                 </td>
 
-                {% if award.applications.count == 0 %}
+                {% if award.get_adj_applications.count == 0 %}
                   {# Translators: No applications message in adjudicator awards list #}
                   <td>{% trans "No Applications" %}</td>
                 {% else %}

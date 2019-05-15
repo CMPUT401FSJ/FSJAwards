@@ -1158,8 +1158,8 @@ def coordinator_view_application(request):
                     application.application_id) + "&return=" + urllib.parse.quote(return_url))
             else:
                 application.is_reviewed = True
-        elif '_unreview' in request.POST:
-            application.is_reviewed = False
+        elif '_ineligible' in request.POST:
+            application.is_eligible = False
 
         elif '_archive' in request.POST:
             application.is_archived = True

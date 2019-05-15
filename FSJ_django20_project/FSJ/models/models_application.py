@@ -37,7 +37,7 @@ class Application(models.Model):
                                         verbose_name = _("Application Document"), validators=[FileExtensionValidator(["pdf"])])
     viewed = models.ManyToManyField(FSJUser, related_name='viewed', verbose_name = _("Viewed"))
     adjudicators = models.ManyToManyField(Adjudicator, related_name='applications', verbose_name = _("Adjudicators"))
-    
+
     def __str__(self):
         return self.student.ccid + "'s application for " + self.award.name
     
@@ -56,7 +56,9 @@ class Application(models.Model):
         if FSJ_user.user_class() == "Coordinator":
             
             if self.is_reviewed:
-                return _("Review Completed")                
+                return _("Review Completed")
+            elif not self.is_eligible:
+                return _("Not Eligible")
             elif self.viewed.filter(pk = FSJ_user.pk):
                 return _("Review Pending")   
             else:

@@ -141,9 +141,9 @@
           {% if FSJ_user.user_class == "Coordinator" %}
 
             {% if not archived %}
-              <button class="btn btn-success" type="submit" name="_review">{% trans "Mark reviewed" %}</button>
+              <button class="btn btn-success" type="submit" name="_review">{% trans "Approved" %}</button>
 
-              <button class="btn btn-success" type="submit" name="_unreview">{% trans "Mark unreviewed" %}</button>
+              <button class="btn btn-danger" type="submit" name="_ineligible">{% trans "Ineligible" %}</button>
 
               <button class="btn btn-action" type="submit" name="_archive">{% trans "Archive" %}</button>
             {% endif %}
