@@ -32,6 +32,7 @@ class Application(models.Model):
     is_submitted = models.BooleanField(verbose_name = _("Is Submitted"))
     is_reviewed = models.BooleanField(default = False, verbose_name = _("Is Reviewed"))
     is_archived = models.BooleanField(default = False, verbose_name = _("Is Archived"))
+    is_eligible = models.BooleanField(default = True, verbose_name = _("Is Eligible"))
     application_file = models.FileField(null=True, blank=True, upload_to='documents/', 
                                         verbose_name = _("Application Document"), validators=[FileExtensionValidator(["pdf"])])
     viewed = models.ManyToManyField(FSJUser, related_name='viewed', verbose_name = _("Viewed"))

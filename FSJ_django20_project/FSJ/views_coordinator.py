@@ -639,7 +639,7 @@ def coordinator_application_list(request):
         award.refresh_from_db()
         #refresh application list after any deletes, if this isn't here, application list will
         #not update correctly after deletion
-        application_list = award.applications.all()
+        application_list = award.applications.filter(is_archived = False).order_by('student__ccid')
 
     ranking_list = []
     
