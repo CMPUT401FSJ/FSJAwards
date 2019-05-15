@@ -70,7 +70,7 @@ class Award(models.Model):
 			# This counts the number of applications which need review and those which are already reviewed
 			for application in applications:
 
-				if application.is_reviewed or not application.is_eligible:
+				if application.is_reviewed:
 					reviewed += 1
 				else:
 					need_review += 1

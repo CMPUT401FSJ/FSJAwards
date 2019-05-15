@@ -55,9 +55,9 @@ class Application(models.Model):
 
         if FSJ_user.user_class() == "Coordinator":
             
-            if self.is_reviewed:
+            if self.is_reviewed and self.is_eligible:
                 return _("Review Completed")
-            elif not self.is_eligible:
+            elif self.is_reviewed and not self.is_eligible:
                 return _("Not Eligible")
             elif self.viewed.filter(pk = FSJ_user.pk):
                 return _("Review Pending")   
