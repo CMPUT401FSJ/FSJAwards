@@ -32,11 +32,12 @@ class Application(models.Model):
     is_submitted = models.BooleanField(verbose_name = _("Is Submitted"))
     is_reviewed = models.BooleanField(default = False, verbose_name = _("Is Reviewed"))
     is_archived = models.BooleanField(default = False, verbose_name = _("Is Archived"))
+    is_eligible = models.BooleanField(default = True, verbose_name = _("Is Eligible"))
     application_file = models.FileField(null=True, blank=True, upload_to='documents/', 
                                         verbose_name = _("Application Document"), validators=[FileExtensionValidator(["pdf"])])
     viewed = models.ManyToManyField(FSJUser, related_name='viewed', verbose_name = _("Viewed"))
     adjudicators = models.ManyToManyField(Adjudicator, related_name='applications', verbose_name = _("Adjudicators"))
-    
+
     def __str__(self):
         return self.student.ccid + "'s application for " + self.award.name
     
@@ -54,8 +55,10 @@ class Application(models.Model):
 
         if FSJ_user.user_class() == "Coordinator":
             
-            if self.is_reviewed:
-                return _("Review Completed")                
+            if self.is_reviewed and self.is_eligible:
+                return _("Review Completed")
+            elif self.is_reviewed and not self.is_eligible:
+                return _("Not Eligible")
             elif self.viewed.filter(pk = FSJ_user.pk):
                 return _("Review Pending")   
             else:

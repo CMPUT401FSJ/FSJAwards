@@ -90,13 +90,17 @@ class Award(models.Model):
 			if FSJ_user in self.adjudicators.all():
 				return _("Review Completed")
 			else: 
-				applications = self.applications.all()
+				applications = self.applications.filter(is_reviewed = True, is_eligible = True, is_archived=False)
+
+				if applications.count() == 0:
+					return "No Applications"
+
 				need_review = 0
 				for application in applications:
 					
 					if not application.is_adj_reviewed(FSJ_user):
 						need_review += 1
-						
+
 				if need_review == applications.count():
 					return _("Review Required")
 				else:
@@ -162,3 +166,7 @@ class Award(models.Model):
 				return False
 
 		return True
+
+	def get_adj_applications(self):
+
+		return self.applications.filter(is_archived = False, is_reviewed = True, is_eligible=True)
