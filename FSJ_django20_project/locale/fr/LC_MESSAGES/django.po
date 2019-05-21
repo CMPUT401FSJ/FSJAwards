@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-05-15 13:19-0600\n"
-"PO-Revision-Date: 2019-05-15 13:24-0600\n"
+"PO-Revision-Date: 2019-05-21 09:55-0600\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: fr\n"
@@ -133,7 +133,7 @@ msgstr "Dossier étudiant"
 
 #: .\FSJ\forms\forms_fileupload.py:15
 msgid "Upload a CSV with fields ID, GPA & Credits"
-msgstr "Téléverser un fichier CSV avec les champs CCID, GPA & Credits"
+msgstr "Téléverser un fichier CSV avec les champs ID, GPA & Credits"
 
 #: .\FSJ\forms\forms_fileupload.py:15
 msgid "GPA File"
